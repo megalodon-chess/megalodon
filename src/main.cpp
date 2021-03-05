@@ -31,5 +31,8 @@ int main() {
         if (cmd == "quit") return 0;
         else if (cmd == "isready") std::cout << "readyok" << std::endl;
         else if (cmd == "uci") std::cout << "uciok" << std::endl;
+        else if (cmd == "d");
+
+        else if (cmd.substr(0, 2) == "go") std::cout << "e2e4" << std::endl;
     }
 }
