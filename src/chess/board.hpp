@@ -35,6 +35,7 @@ class Board {
 public:
     Board();
     string fen(void);
+    void set_fen(string);
 
 private:
     vector<vector<int>> _board;

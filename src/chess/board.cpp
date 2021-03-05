@@ -47,6 +47,10 @@ Board::Board() {
     _ep = false;
 }
 
+void Board::set_fen(string fen) {
+    ;
+}
+
 string Board::fen(void) {
     string fen;
     int space = 0;
