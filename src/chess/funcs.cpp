@@ -111,6 +111,9 @@ bool in_board(vector<int> loc) {
 string strip(string str) {
     int start = str.find_first_not_of(" ");
     int end = str.find_last_not_of(" ");
+
+    if (start == string::npos) start = 0;
+    if (end == string::npos) end = str.size()-1;
     return str.substr(start, end-start+1);
 }
 
