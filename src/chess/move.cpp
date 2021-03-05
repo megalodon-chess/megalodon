@@ -20,6 +20,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "constants.hpp"
+#include "move.hpp"
 
 using std::cout;
 using std::endl;
