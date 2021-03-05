@@ -18,19 +18,24 @@
 #
 
 FILES=chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o main.o
-.PHONY: main clean run
+.PHONY: compile clean run
 
-all: main clean
+# Compile and clean files.
+all: compile clean
 
-dev: main clean run
+# Compile, clean, and run executable.
+dev: compile clean run
 
-main: $(FILES)
+# Uses g++ to compile files.
+compile: $(FILES)
 	g++ -std=c++17 -o Megalodon $(FILES)
 
+# Removes all c++ objects and clears console.
 clean:
 	rm *.o
 	rm chess/*.o
 	clear
 
+# Runs executable.
 run:
 	./Megalodon
