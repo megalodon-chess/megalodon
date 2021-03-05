@@ -39,4 +39,7 @@ public:
 private:
     vector<vector<int>> _board;
     bool _turn;
+    vector<bool> _castling;
+    bool _ep;
+    vector<int> _ep_square;
 };

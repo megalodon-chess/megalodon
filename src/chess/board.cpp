@@ -43,6 +43,8 @@ Board::Board() {
         {WR, WN, WB, WQ, WK, WB, WN, WR}
     };
     _turn = true;
+    _castling = {true, true, true, true};
+    _ep = false;
 }
 
 
@@ -68,5 +70,31 @@ string Board::fen(void) {
     }
     fen.pop_back();
 
+    fen += " ";
+    if (_turn) fen += "w";
+    else fen += "b";
+
+    bool contains = false;
+    for (auto c: _castling) {
+        if (c) {
+            contains = true;
+            break;
+        }
+    }
+    fen += " ";
+    if (contains) {
+        string symbols = "KQkq";
+        for (auto i = 0; i < 4; i++) {
+            if (_castling[i]) fen += symbols[i];
+        }
+    } else {
+        fen += "-";
+    }
+
+    fen += " ";
+    if (_ep) fen += square_to_string(_ep_square);
+    else fen += "-";
+
+    fen += " 0 1";
     return fen;
 }
