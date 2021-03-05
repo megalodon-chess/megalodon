@@ -244,4 +244,5 @@ vector<Move> Board::bishop_moves(vector<int> sq) {
             }
         }
     }
+    return moves;
 }
