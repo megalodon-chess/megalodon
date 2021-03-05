@@ -41,4 +41,49 @@ Board::Board() {
         {WP, WP, WP, WP, WP, WP, WP, WP},
         {WR, WN, WB, WQ, WK, WB, WN, WR}
     };
+    _turn = true;
+}
+
+
+string Board::get_fen(void) {
+    string fen;
+    int space = 0;
+
+    for (auto row = 0; row < 8; row++) {
+        for (auto col = 0; col < 8; col++) {
+            int sq = _board[row][col];
+            if (sq != EM) {
+                if (space) fen += std::to_string(space);
+                fen += get_symbol(sq);
+                space = 0;
+            }
+            else {
+                space++;
+            }
+
+        }
+        if (space) fen += std::to_string(space);
+        space = 0;
+        fen += "/";
+    }
+    fen.pop_back();
+
+    return fen;
+}
+
+string Board::get_symbol(int piece) {
+    switch (piece) {
+        case WP: return "P";
+        case WN: return "N";
+        case WB: return "B";
+        case WR: return "R";
+        case WQ: return "Q";
+        case WK: return "K";
+        case BP: return "p";
+        case BN: return "n";
+        case BB: return "b";
+        case BR: return "r";
+        case BQ: return "q";
+        case BK: return "k";
+    }
 }

@@ -33,7 +33,10 @@ using std::string;
 class Board {
 public:
     Board();
+    string get_fen(void);
+    string get_symbol(int);
 
 private:
     vector<vector<int>> _board;
+    bool _turn;
 };

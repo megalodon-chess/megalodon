@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "chess/board.hpp"
 
 using std::cin;
 using std::cout;
