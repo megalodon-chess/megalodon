@@ -218,4 +218,18 @@ vector<Move> Board::rook_moves(vector<int> sq) {
             moves.push_back(Move(curr + square_to_string(cell)));
         }
     }
+    // Left
+    for (auto c = sq[1]; c > 0; c--) {
+        vector<int> cell = {sq[0], c};
+        int piece = _board[cell[0]][cell[1]];
+        if (piece != EM) {
+            bool cell_col = piece_color(piece);
+            if (_turn == cell_col) break;
+            moves.push_back(Move(curr + square_to_string(cell)));
+            if (_turn != cell_col) break;
+        }
+        else {
+            moves.push_back(Move(curr + square_to_string(cell)));
+        }
+    }
 }
