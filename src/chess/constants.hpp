@@ -27,3 +27,14 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+constexpr int PAWN = 0;
+constexpr int KNIGHT = 1;
+constexpr int BISHOP = 2;
+constexpr int ROOK = 3;
+constexpr int QUEEN = 4;
+constexpr int KING = 5;
+
+constexpr bool WHITE = true;
+constexpr bool BLACK = false;
