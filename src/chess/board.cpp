@@ -32,10 +32,13 @@ using std::string;
 
 Board::Board() {
     _board = {
-        {}
+        {BR, BN, BB, BQ, BK, BB, BN, BR},
+        {BP, BP, BP, BP, BP, BP, BP, BP},
+        {EM, EM, EM, EM, EM, EM, EM, EM},
+        {EM, EM, EM, EM, EM, EM, EM, EM},
+        {EM, EM, EM, EM, EM, EM, EM, EM},
+        {EM, EM, EM, EM, EM, EM, EM, EM},
+        {WP, WP, WP, WP, WP, WP, WP, WP},
+        {WR, WN, WB, WQ, WK, WB, WN, WR}
     };
-}
-
-void Board::print(void) {
-    return;
 }
