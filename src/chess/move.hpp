@@ -38,4 +38,8 @@ public:
     Move(string);
 
 private:
+    bool _promotion;
+    int _promo_piece;
+    vector<int> _from_square;
+    vector<int> _to_square;
 };
