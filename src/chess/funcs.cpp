@@ -83,9 +83,7 @@ vector<int> string_to_square(string str) {
 }
 
 string square_to_string(vector<int> square, bool cap) {
-    string column;
-    if (cap) column = string(1, square[1]+65);
-    else column = string(1, square[1]+97);
+    string column = cap ? string(1, square[1]+65) : string(1, square[1]+97);
     return column + std::to_string(8-square[0]);
 }
 
