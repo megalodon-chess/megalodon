@@ -164,8 +164,8 @@ void Board::push(Move move) {
     vector<int> to = move.to_square();
     vector<int> from = move.from_square();
 
-    _board[to[1]][to[0]] = move.promotion() ? move.promo_piece() : _board[from[1]][from[0]];
-    _board[from[1]][from[0]] = EM;
+    _board[to[0]][to[1]] = move.promotion() ? move.promo_piece() : _board[from[0]][from[1]];
+    _board[from[0]][from[1]] = EM;
 }
 
 void Board::push_uci(string str) {
