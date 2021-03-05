@@ -57,8 +57,7 @@ string Board::fen(void) {
                 if (space) fen += std::to_string(space);
                 fen += piece_to_symbol(sq);
                 space = 0;
-            }
-            else {
+            } else {
                 space++;
             }
 
