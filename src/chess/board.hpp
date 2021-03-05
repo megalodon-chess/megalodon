@@ -35,6 +35,7 @@ using std::string;
 class Board {
 public:
     Board();
+    Board(string);
 
     string fen();
     void set_fen(string);

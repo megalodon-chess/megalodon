@@ -48,6 +48,10 @@ Board::Board() {
     _ep = false;
 }
 
+Board::Board(string fen) {
+    set_fen(fen);
+}
+
 void Board::set_fen(string fen) {
     vector<string> parts = split(fen, " ");
     int i = 0;
