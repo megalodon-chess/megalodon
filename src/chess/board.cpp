@@ -71,5 +71,18 @@ string Board::get_fen(void) {
 }
 
 string Board::get_symbol(int piece) {
-    ;
+    switch (piece) {
+        case WP: return "P";
+        case WN: return "N";
+        case WB: return "B";
+        case WR: return "R";
+        case WQ: return "Q";
+        case WK: return "K";
+        case BP: return "p";
+        case BN: return "n";
+        case BB: return "b";
+        case BR: return "r";
+        case BQ: return "q";
+        case BK: return "k";
+    }
 }
