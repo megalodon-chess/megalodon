@@ -47,14 +47,25 @@ Board::Board() {
 
 string Board::get_fen(void) {
     string fen;
-    int slash = 1;
     int space = 0;
 
-    for (auto row = 0; row < _board.size(); row++) {
-        for (auto col = 0; col < _board[row].size(); col++) {
-            ;
+    for (auto row = 0; row < 8; row++) {
+        for (auto col = 0; col < 8; col++) {
+            int sq = _board[row][col];
+            if (sq != EM) {
+                if (space) fen += std::to_string(space);
+                fen += get_symbol(sq);
+                space = 0;
+            }
+            else {
+                space++;
+            }
+
         }
+        if (space) fen += std::to_string(space);
+        fen += "/";
     }
+    fen.pop_back();
 
     return fen;
 }
