@@ -40,8 +40,8 @@ Move::Move() {
 }
 
 Move::Move(string uci) {
-    _to_square = string_to_square(uci.substr(0, 2));
-    _from_square = string_to_square(uci.substr(2, 2));
+    _from_square = string_to_square(uci.substr(0, 2));
+    _to_square = string_to_square(uci.substr(2, 2));
     if (uci.size() > 4) {
         _promo_piece = symbol_to_piece(uci.substr(4, 1));
         _promotion = true;
@@ -52,7 +52,7 @@ Move::Move(string uci) {
 
 string Move::as_string() {
     string str;
-    str = "<Move(" + square_to_string(_from_square) + " " + square_to_string(_to_square) + ">";
+    str = "<Move(" + square_to_string(_from_square) + " " + square_to_string(_to_square) + ")>";
     return str;
 }
 
