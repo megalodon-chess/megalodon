@@ -73,11 +73,15 @@ string Board::as_string() {
 
 void Board::set_fen(string fen) {
     vector<string> parts = split(fen, " ");
+    string position = parts[0];
+    string turn = parts[1];
+    string castling = parts[2];
+    string ep = parts[3];
 
     _board = {};
     vector<int> row = {};
-    for (auto i = 0; i < parts[0].size(); i++) {
-        char ch = parts[0][i];
+    for (auto i = 0; i < position.size(); i++) {
+        char ch = position[i];
         if (ch == '/') {
             _board.push_back(row);
             row = {};
@@ -89,6 +93,22 @@ void Board::set_fen(string fen) {
             }
         }
     }
+
+    _turn = (turn == "w");
+
+    for (auto i: castling) {
+        int ind;
+        switch (i) {
+            case 'K': ind = 0; break;
+            case 'Q': ind = 1; break;
+            case 'k': ind = 2; break;
+            case 'q': ind = 3; break;
+        }
+        _castling[ind] = true;
+    }
+
+    _ep = (ep != "-");
+    if (_ep) _ep_square = string_to_square(ep);
 }
 
 string Board::fen() {
