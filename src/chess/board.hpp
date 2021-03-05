@@ -34,7 +34,7 @@ using std::string;
 class Board {
 public:
     Board();
-    string fen(void);
+    string fen();
 
     friend std::ostream& operator << (std::ostream&, const Board&);
 
