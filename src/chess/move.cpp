@@ -40,3 +40,7 @@ Move::Move() {
 
 Move::Move(string uci) {
 }
+
+std::ostream& operator << (std::ostream& out, const Move& move) {
+    return out;
+}

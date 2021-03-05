@@ -37,6 +37,8 @@ public:
     Move();
     Move(string);
 
+    friend std::ostream& operator << (std::ostream&, const Move&);
+
 private:
     bool _promotion;
     int _promo_piece;
