@@ -17,8 +17,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-main: main.o
-	g++ main.o -o Megalodon
+main: chess/constants.o chess/board.o chess/move.o main.o
+	g++ chess/constants.o chess/board.o chess/move.o main.o -o Megalodon
 
 clean:
 	rm *.o
+	rm chess/*.o
