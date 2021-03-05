@@ -50,6 +50,12 @@ Move::Move(string uci) {
     }
 }
 
+string Move::as_string() {
+    string str;
+    str = "<Move(" + square_to_string(_from_square) + " " + square_to_string(_to_square) + ">";
+    return str;
+}
+
 vector<int> Move::to_square() {
     return _to_square;
 }
@@ -64,9 +70,4 @@ bool Move::promotion() {
 
 int Move::promo_piece() {
     return _promo_piece;
-}
-
-std::ostream& operator << (std::ostream& out, const Move& move) {
-    out << "<Move(" << square_to_string(move._from_square) << " " << square_to_string(move._to_square) << ">";
-    return out;
 }
