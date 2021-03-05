@@ -57,7 +57,13 @@ void Board::set_fen(string fen) {
 
     for (auto p: pos) {
         if (std::isdigit(p)) {
-            ;
+            int val = i + std::stoi(string(1, p));
+            for (auto j = i; j < val; j++) _board[j / 8][j % 8] = EM;
+            i = val;
+        }
+        else {
+            _board[i / 8][i % 8] = symbol_to_piece(string(1, p));
+            i++;
         }
     }
 }
