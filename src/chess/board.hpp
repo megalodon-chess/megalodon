@@ -45,6 +45,8 @@ public:
 
     vector<int> king_pos(bool);
 
+    vector<Move> rook_moves(vector<int>);
+
     vector<vector<int>> board();
 
     friend std::ostream& operator << (std::ostream&, const Board&);
