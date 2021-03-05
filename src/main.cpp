@@ -20,8 +20,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "chess/board.hpp"
-#include "eval.hpp"
 #include "uci.hpp"
 
 using std::cin;

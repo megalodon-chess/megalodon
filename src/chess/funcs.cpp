@@ -108,6 +108,12 @@ bool in_board(vector<int> loc) {
 }
 
 
+string strip(string str) {
+    int start = str.find_first_not_of(" ");
+    int end = str.find_last_not_of(" ");
+    return str.substr(start, end-start+1);
+}
+
 vector<string> split(string str, string delim) {
     vector<string> parts;
     int prev = 0, pos = 0;
