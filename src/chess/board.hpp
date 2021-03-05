@@ -49,6 +49,7 @@ public:
     vector<int> king_pos(bool);
 
     vector<Move> rook_moves(vector<int>);
+    vector<Move> bishop_moves(vector<int>);
 
 
 private:
