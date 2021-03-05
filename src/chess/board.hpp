@@ -36,4 +36,5 @@ public:
 
 private:
     vector<vector<int>> _board;
+    bool _turn;
 };

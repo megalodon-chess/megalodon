@@ -41,4 +41,5 @@ Board::Board() {
         {WP, WP, WP, WP, WP, WP, WP, WP},
         {WR, WN, WB, WQ, WK, WB, WN, WR}
     };
+    _turn = true;
 }
