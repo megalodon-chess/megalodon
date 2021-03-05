@@ -27,9 +27,10 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-
-class Board {
-    public:
-        ~Board();
-        Board();
-};
+namespace chess {
+    class Board {
+        public:
+            ~Board();
+            Board();
+    };
+}
