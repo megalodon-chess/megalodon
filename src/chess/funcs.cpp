@@ -76,7 +76,7 @@ int letter_to_column(char letter) {
 
 vector<int> string_to_square(string str) {
     int col = letter_to_column(str[0]);
-    int row = std::stoi(str.substr(1, 1))-1;
+    int row = 8 - std::stoi(str.substr(1, 1));
     return {row, col};
 }
 
