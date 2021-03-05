@@ -33,19 +33,7 @@ using std::string;
 
 
 Board::Board() {
-    _board = {
-        {BR, BN, BB, BQ, BK, BB, BN, BR},
-        {BP, BP, BP, BP, BP, BP, BP, BP},
-        {EM, EM, EM, EM, EM, EM, EM, EM},
-        {EM, EM, EM, EM, EM, EM, EM, EM},
-        {EM, EM, EM, EM, EM, EM, EM, EM},
-        {EM, EM, EM, EM, EM, EM, EM, EM},
-        {WP, WP, WP, WP, WP, WP, WP, WP},
-        {WR, WN, WB, WQ, WK, WB, WN, WR}
-    };
-    _turn = true;
-    _castling = {true, true, true, true};
-    _ep = false;
+    set_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 }
 
 Board::Board(string fen) {
