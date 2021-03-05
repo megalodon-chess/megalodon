@@ -30,3 +30,12 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+class Move {
+public:
+    Move();
+    Move(string);
+
+private:
+};

@@ -29,3 +29,10 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+Move::Move() {
+}
+
+Move::Move(string uci) {
+}
