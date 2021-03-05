@@ -18,7 +18,7 @@
 #
 
 main: main.o
-	g++ main.o -o megalodon.out
+	g++ main.o -o Megalodon
 
 clean:
 	rm *.o
