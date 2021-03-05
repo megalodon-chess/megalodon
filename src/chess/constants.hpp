@@ -31,16 +31,18 @@ using std::vector;
 using std::string;
 
 
-constexpr int WP = 0;
-constexpr int WN = 1;
-constexpr int WB = 2;
-constexpr int WR = 3;
-constexpr int WQ = 4;
-constexpr int WK = 5;
+constexpr int EM = 0;
 
-constexpr int BP = 10;
-constexpr int BN = 11;
-constexpr int BB = 12;
-constexpr int BR = 13;
-constexpr int BQ = 14;
-constexpr int BK = 15;
+constexpr int WP = 1;
+constexpr int WN = 2;
+constexpr int WB = 3;
+constexpr int WR = 4;
+constexpr int WQ = 5;
+constexpr int WK = 6;
+
+constexpr int BP = 11;
+constexpr int BN = 12;
+constexpr int BB = 13;
+constexpr int BR = 14;
+constexpr int BQ = 15;
+constexpr int BK = 16;
