@@ -198,10 +198,9 @@ vector<Move> Board::rook_moves(vector<int> sq) {
         if (!in_board(new_sq)) break;
         int piece = _board[new_sq[0]][new_sq[1]];
         if (piece != EM) {
-            bool same_col = _turn == piece_color(piece);
-            if (same_col) break;
+            if (_turn == piece_color(piece)) break;
             moves.push_back(Move(from + square_to_string(new_sq)));
-            if (!same_col) break;
+            break;
         }
         else {
             moves.push_back(Move(from + square_to_string(new_sq)));
