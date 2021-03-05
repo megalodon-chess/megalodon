@@ -32,6 +32,10 @@ using std::string;
 
 
 Move::Move() {
+    _promotion = false;
+    _promo_piece = WP;
+    _from_square = {0, 0};
+    _to_square = {0, 0};
 }
 
 Move::Move(string uci) {
