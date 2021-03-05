@@ -80,6 +80,17 @@ void Board::set_fen(string fen) {
     }
 
     _turn = (turn == "w") ? true : false;
+
+    for (auto i: castling) {
+        int ind;
+        switch (i) {
+            case 'K': ind = 0; break;
+            case 'Q': ind = 1; break;
+            case 'k': ind = 2; break;
+            case 'q': ind = 3; break;
+        }
+        _castling[ind] = true;
+    }
 }
 
 string Board::fen() {
