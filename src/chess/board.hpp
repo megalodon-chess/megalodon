@@ -49,6 +49,8 @@ public:
     vector<int> king_pos(bool);
 
     vector<Move> rook_moves(vector<int>);
+    vector<Move> bishop_moves(vector<int>);
+    vector<Move> queen_moves(vector<int>);
 
 
 private:
@@ -58,4 +60,6 @@ private:
     vector<Move> _move_stack;
     bool _turn;
     bool _ep;
+
+    vector<Move> _calculate_sliding_moves(vector<int>, vector<vector<int>>);
 };
