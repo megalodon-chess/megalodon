@@ -24,15 +24,16 @@ using std::string;
 
 
 int main() {
-    while (true) {
-        string cmd;
-        getline(std::cin, cmd);
+    string cmd;
 
-        if (cmd == "quit") return 0;
+    while (getline(std::cin, cmd)) {
+        if (cmd == "quit") break;
         else if (cmd == "isready") std::cout << "readyok" << std::endl;
         else if (cmd == "uci") std::cout << "uciok" << std::endl;
         else if (cmd == "d");
 
         else if (cmd.substr(0, 2) == "go") std::cout << "bestmove e2e4" << std::endl;
     }
+
+    return 0;
 }
