@@ -67,6 +67,6 @@ int Move::promo_piece() {
 }
 
 std::ostream& operator << (std::ostream& out, const Move& move) {
-    out << "<Move(" << square_to_string(move._from_square) << square_to_string(move._to_square) << ">";
+    out << "<Move(" << square_to_string(move._from_square) << " " << square_to_string(move._to_square) << ">";
     return out;
 }
