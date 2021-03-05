@@ -31,7 +31,7 @@ dev: compile clean run
 compile: $(FILES)
 	g++ -std=c++17 -o Megalodon $(FILES)
 
-# Compiles for Windows.
+# Compiles for Windows. Doesn't work fully.
 compilewin: $(FILES)
 	x86_64-w64-mingw32-g++-win32 -o Megalodon-Windows $(CFILES)
 
