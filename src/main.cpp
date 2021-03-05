@@ -31,6 +31,13 @@ using std::vector;
 using std::string;
 
 
+void print_info() {
+    cout << "Megalodon v0.0.1 - UCI chess engine" << "\n";
+    cout << "Copyright Patrick Huang and Arjun Sahlot 2021" << "\n";
+    cout << "Licensed under GNU GPL v3" << endl;
+}
+
+
 void loop() {
     string cmd;
 
@@ -46,5 +53,6 @@ void loop() {
 
 
 int main() {
+    print_info();
     loop();
 }
