@@ -19,3 +19,6 @@
 
 main: main.o
 	g++ main.o -o megalodon.out
+
+clean:
+	rm *.o
