@@ -33,3 +33,6 @@ using std::string;
 
 string piece_to_symbol(int);
 int symbol_to_piece(string);
+
+int letter_to_column(char);
+vector<int> string_to_square(string);

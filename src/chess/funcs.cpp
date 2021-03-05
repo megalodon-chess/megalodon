@@ -64,3 +64,12 @@ int symbol_to_piece(string symbol) {
         case 'k': return BK;
     }
 }
+
+
+int letter_to_column(char letter) {
+    if (letter >= 97) {
+        return letter - 97;
+    } else {
+        return letter - 65;
+    }
+}
