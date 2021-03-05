@@ -113,6 +113,7 @@ string Board::fen() {
 }
 
 void Board::push(Move move) {
+    // todo promotion
     vector<int> to = move.to_square();
     vector<int> from = move.from_square();
     _board[to[1]][to[0]] = _board[from[1]][from[0]];
@@ -120,6 +121,7 @@ void Board::push(Move move) {
 }
 
 void Board::push_uci(string str) {
+    // todo promotion
     push(Move(str));
 }
 
