@@ -124,6 +124,14 @@ string replace(string str, string rep) {
     return str;
 }
 
+bool startswith(string str, string prefix) {
+    return (str.substr(0, prefix.size()) == prefix);
+}
+
+bool endswith(string str, string suffix) {
+    return (str.substr(str.size()-suffix.size(), suffix.size()) == suffix);
+}
+
 vector<string> split(string str, string delim) {
     vector<string> parts;
     int prev = 0, pos = 0;
