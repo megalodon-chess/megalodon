@@ -40,3 +40,4 @@ int piece_value(int);
 bool piece_color(int);
 
 vector<string> split(string, string);
+vector<int> addvecs(vector<int>, vector<int>);
