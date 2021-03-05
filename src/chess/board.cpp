@@ -144,6 +144,7 @@ void Board::push_uci(string str) {
 }
 
 vector<int> Board::king_pos(bool side) {
+    int k = side ? WK : BK;
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col++) {
             if (_board[row][col] == k) return {row, col};
