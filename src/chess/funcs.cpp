@@ -117,9 +117,14 @@ string strip(string str) {
 string replace(string str, string rep) {
     int size = rep.size();
     while (true) {
+        if (str.size() == 0) break;
+
         int pos = str.find(rep);
         if (pos == string::npos) break;
-        str = str.substr(0, pos) + str.substr(pos+size);
+
+        if (pos > 0) str = str.substr(0, pos) + str.substr(pos+size);
+        else if (pos+size < str.size()) str = str.substr(pos+size);
+        else str = "";
     }
     return str;
 }
