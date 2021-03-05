@@ -23,7 +23,7 @@
 using std::string;
 
 
-int main() {
+void loop() {
     string cmd;
 
     while (getline(std::cin, cmd)) {
@@ -34,6 +34,9 @@ int main() {
 
         else if (cmd.substr(0, 2) == "go") std::cout << "bestmove e2e4" << std::endl;
     }
+}
 
-    return 0;
+
+int main() {
+    loop();
 }
