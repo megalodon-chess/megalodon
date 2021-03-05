@@ -220,30 +220,7 @@ vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>>
 }
 
 vector<Move> Board::rook_moves(vector<int> sq) {
-    vector<Move> moves;
-    string from = square_to_string(sq);
-    vector<vector<int>> dirs = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-
-    for (auto dir: dirs) {
-        // Loop till edge of board
-        for (auto i = 1; i < 8; i++) {
-            // Move in the direction for i distance
-            vector<int> sum = {0, 0};
-            for (auto j = 0; j < i; j++) sum = addvecs(sum, dir);
-            vector<int> new_sq = addvecs(sq, sum);
-
-            if (!in_board(new_sq)) break;  // break if dir has reached out of board
-            int piece = _board[new_sq[0]][new_sq[1]];
-            if (piece != EM) {
-                if (_turn == piece_color(piece)) break;
-                moves.push_back(Move(from + square_to_string(new_sq)));
-                break;
-            } else {
-                moves.push_back(Move(from + square_to_string(new_sq)));
-            }
-        }
-    }
-    return moves;
+    return _calculate_sliding_moves(sq, {{0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
 
 vector<Move> Board::bishop_moves(vector<int> sq) {
