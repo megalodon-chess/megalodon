@@ -17,5 +17,5 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-main:
-	g++ main.cpp -o megalodon.out
+main: main.o
+	g++ main.o -o megalodon.out
