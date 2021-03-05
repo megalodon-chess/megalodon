@@ -219,3 +219,7 @@ vector<Move> Board::rook_moves(vector<int> sq) {
     }
     return moves;
 }
+
+vector<Move> Board::bishop_moves() {
+    ;
+}
