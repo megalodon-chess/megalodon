@@ -18,4 +18,15 @@
 //
 
 #include <iostream>
+#include <vector>
 #include "board.hpp"
+
+using std::cout;
+using std::endl;
+using std::vector;
+
+
+Board::~Board() {}
+
+
+Board::Board() {}
