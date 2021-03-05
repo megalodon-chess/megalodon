@@ -48,10 +48,21 @@ Board::Board() {
 }
 
 void Board::set_fen(string fen) {
-    
+    vector<string> parts = split(fen, " ");
+    int i = 0;
+    string pos = parts[0];
+    string turn = parts[1];
+    string castling = parts[2];
+    string ep = parts[2];
+
+    for (auto p: pos) {
+        if (std::isdigit(p)) {
+            ;
+        }
+    }
 }
 
-string Board::fen(void) {
+string Board::fen() {
     string fen;
     int space = 0;
 
