@@ -32,7 +32,6 @@ using std::string;
 
 class Board {
     public:
-        ~Board();
         Board();
         void print(void);
 };
