@@ -46,10 +46,12 @@ Board::Board() {
     _turn = true;
     _castling = {true, true, true, true};
     _ep = false;
+    _move_stack = {};
 }
 
 Board::Board(string fen) {
     set_fen(fen);
+    _move_stack = {};
 }
 
 string Board::as_string() {
@@ -69,6 +71,14 @@ string Board::as_string() {
 
     str += "\n\nFen: " + fen();
     return str;
+}
+
+vector<vector<int>> Board::board() {
+    return _board;
+}
+
+vector<Move> Board::move_stack() {
+    return _move_stack;
 }
 
 void Board::set_fen(string fen) {
@@ -166,6 +176,8 @@ void Board::push(Move move) {
 
     _board[to[0]][to[1]] = move.promotion() ? move.promo_piece() : _board[from[0]][from[1]];
     _board[from[0]][from[1]] = EM;
+    _turn = !_turn;
+    _move_stack.push_back(move);
 }
 
 void Board::push_uci(string str) {
@@ -180,13 +192,6 @@ vector<int> Board::king_pos(bool side) {
         }
     }
 }
-
-vector<vector<int>> Board::board() {
-    return _board;
-}
-
-
-// Legal moves
 
 vector<Move> Board::rook_moves(vector<int> sq) {
     vector<Move> moves;
