@@ -88,3 +88,17 @@ string square_to_string(vector<int> square, bool cap) {
     else column = string(1, square[1]+97);
     return column + std::to_string(8-square[0]);
 }
+
+vector<string> split(string str, string delim) {
+    vector<string> parts;
+    int prev = 0, pos = 0;
+    do {
+        pos = str.find(delim, prev);
+        if (pos == string::npos) pos = str.length();
+        string part = str.substr(prev, pos-prev);
+        if (!part.empty()) parts.push_back(part);
+        prev = pos + delim.length();
+    }
+    while (pos < str.length() && prev < str.length());
+    return parts;
+}

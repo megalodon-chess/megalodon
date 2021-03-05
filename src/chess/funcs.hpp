@@ -37,3 +37,5 @@ int symbol_to_piece(string);
 int letter_to_column(char);
 vector<int> string_to_square(string);
 string square_to_string(vector<int>, bool=false);
+
+vector<string> split(string, string);
