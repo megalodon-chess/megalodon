@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
