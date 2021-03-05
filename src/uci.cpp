@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
+#include "chess/funcs.hpp"
 
 using std::cin;
 using std::cout;
@@ -30,14 +31,23 @@ using std::vector;
 using std::string;
 
 
+void setup_position(Board& board, string cmd) {
+}
+
+
 void loop() {
     Board board;
     string cmd;
 
     while (getline(cin, cmd)) {
+        cmd = strip(cmd);
+
         if (cmd == "quit") break;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") cout << "uciok" << endl;
         else if (cmd == "d") cout << board.as_string() << endl;
+
+        else if (cmd == "ucinewgame") board = Board();
+        else if (startswith(cmd, "position")) setup_position(board, cmd);
     }
 }
