@@ -79,7 +79,7 @@ void Board::set_fen(string fen) {
         }
     }
 
-    _turn = (turn == "w") ? true : false;
+    _turn = (turn == "w");
 
     for (auto i: castling) {
         int ind;
