@@ -248,7 +248,7 @@ vector<Move> Board::rook_moves(vector<int> sq) {
     return moves;
 }
 
-vector<int> Board::rook_moves(vector<int> sq) {
+vector<Move> Board::rook_moves(vector<int> sq) {
     vector<Move> moves;
     string curr = square_to_string(sq);
     vector<vector<int>> directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
