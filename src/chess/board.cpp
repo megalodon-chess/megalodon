@@ -191,57 +191,63 @@ vector<vector<int>> Board::board() {
 vector<Move> Board::rook_moves(vector<int> sq) {
     vector<Move> moves;
     string curr = square_to_string(sq);
-    // Up
-    for (auto r = sq[0]; r > 0; r--) {
-        vector<int> cell = {r, sq[1]};
-        int piece = _board[cell[0]][cell[1]];
-        if (piece != EM) {
-            bool cell_col = piece_color(piece);
-            if (_turn == cell_col) break;
-            moves.push_back(Move(curr + square_to_string(cell)));
-            if (_turn != cell_col) break;
-        } else {
-            moves.push_back(Move(curr + square_to_string(cell)));
-        }
+    vector<vector<int>> dirs = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+
+    for (auto dir: dirs) {
+        ;
     }
-    // Down
-    for (auto r = sq[0]; r > 8; r++) {
-        vector<int> cell = {r, sq[1]};
-        int piece = _board[cell[0]][cell[1]];
-        if (piece != EM) {
-            bool cell_col = piece_color(piece);
-            if (_turn == cell_col) break;
-            moves.push_back(Move(curr + square_to_string(cell)));
-            if (_turn != cell_col) break;
-        } else {
-            moves.push_back(Move(curr + square_to_string(cell)));
-        }
-    }
-    // Left
-    for (auto c = sq[1]; c > 0; c--) {
-        vector<int> cell = {sq[0], c};
-        int piece = _board[cell[0]][cell[1]];
-        if (piece != EM) {
-            bool cell_col = piece_color(piece);
-            if (_turn == cell_col) break;
-            moves.push_back(Move(curr + square_to_string(cell)));
-            if (_turn != cell_col) break;
-        } else {
-            moves.push_back(Move(curr + square_to_string(cell)));
-        }
-    }
-    // Right
-    for (auto c = sq[0]; c > 8; c++) {
-        vector<int> cell = {sq[0], c};
-        int piece = _board[cell[0]][cell[1]];
-        if (piece != EM) {
-            bool cell_col = piece_color(piece);
-            if (_turn == cell_col) break;
-            moves.push_back(Move(curr + square_to_string(cell)));
-            if (_turn != cell_col) break;
-        } else {
-            moves.push_back(Move(curr + square_to_string(cell)));
-        }
-    }
-    return moves;
+    // // Up
+    // for (auto r = sq[0]; r > 0; r--) {
+    //     vector<int> cell = {r, sq[1]};
+    //     int piece = _board[cell[0]][cell[1]];
+    //     if (piece != EM) {
+    //         bool cell_col = piece_color(piece);
+    //         if (_turn == cell_col) break;
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //         if (_turn != cell_col) break;
+    //     } else {
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //     }
+    // }
+    // // Down
+    // for (auto r = sq[0]; r > 8; r++) {
+    //     vector<int> cell = {r, sq[1]};
+    //     int piece = _board[cell[0]][cell[1]];
+    //     if (piece != EM) {
+    //         bool cell_col = piece_color(piece);
+    //         if (_turn == cell_col) break;
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //         if (_turn != cell_col) break;
+    //     } else {
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //     }
+    // }
+    // // Left
+    // for (auto c = sq[1]; c > 0; c--) {
+    //     vector<int> cell = {sq[0], c};
+    //     int piece = _board[cell[0]][cell[1]];
+    //     if (piece != EM) {
+    //         bool cell_col = piece_color(piece);
+    //         if (_turn == cell_col) break;
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //         if (_turn != cell_col) break;
+    //     } else {
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //     }
+    // }
+    // // Right
+    // for (auto c = sq[0]; c > 8; c++) {
+    //     vector<int> cell = {sq[0], c};
+    //     int piece = _board[cell[0]][cell[1]];
+    //     if (piece != EM) {
+    //         bool cell_col = piece_color(piece);
+    //         if (_turn == cell_col) break;
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //         if (_turn != cell_col) break;
+    //     } else {
+    //         moves.push_back(Move(curr + square_to_string(cell)));
+    //     }
+    // }
+    // return moves;
 }
+
