@@ -18,7 +18,7 @@
 #
 
 FILES = chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o main.o
-.PHONY: compile clean run
+.PHONY: all dev compile clean run
 
 # Compile and clean files.
 all: compile clean

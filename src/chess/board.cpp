@@ -202,8 +202,7 @@ vector<Move> Board::rook_moves(vector<int> sq) {
             if (_turn == cell_col) break;
             moves.push_back(Move(curr + square_to_string(cell)));
             if (_turn != cell_col) break;
-        }
-        else {
+        } else {
             moves.push_back(Move(curr + square_to_string(cell)));
         }
     }
@@ -216,8 +215,7 @@ vector<Move> Board::rook_moves(vector<int> sq) {
             if (_turn == cell_col) break;
             moves.push_back(Move(curr + square_to_string(cell)));
             if (_turn != cell_col) break;
-        }
-        else {
+        } else {
             moves.push_back(Move(curr + square_to_string(cell)));
         }
     }
@@ -230,8 +228,7 @@ vector<Move> Board::rook_moves(vector<int> sq) {
             if (_turn == cell_col) break;
             moves.push_back(Move(curr + square_to_string(cell)));
             if (_turn != cell_col) break;
-        }
-        else {
+        } else {
             moves.push_back(Move(curr + square_to_string(cell)));
         }
     }
@@ -244,10 +241,15 @@ vector<Move> Board::rook_moves(vector<int> sq) {
             if (_turn == cell_col) break;
             moves.push_back(Move(curr + square_to_string(cell)));
             if (_turn != cell_col) break;
-        }
-        else {
+        } else {
             moves.push_back(Move(curr + square_to_string(cell)));
         }
     }
     return moves;
+}
+
+vector<int> Board::rook_moves(vector<int> sq) {
+    vector<Move> moves;
+    string curr = square_to_string(sq);
+    vector<vector<int>> directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 }
