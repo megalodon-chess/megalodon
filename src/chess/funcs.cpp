@@ -114,6 +114,16 @@ string strip(string str) {
     return str.substr(start, end-start+1);
 }
 
+string replace(string str, string rep) {
+    int size = rep.size();
+    while (true) {
+        int pos = str.find(rep);
+        if (pos == string::npos) break;
+        str = str.substr(0, pos) + str.substr(pos+size);
+    }
+    return str;
+}
+
 vector<string> split(string str, string delim) {
     vector<string> parts;
     int prev = 0, pos = 0;
