@@ -101,6 +101,13 @@ string Board::fen() {
     return fen;
 }
 
+void Board::push(Move move) {
+    vector<int> to = move.to_square();
+    vector<int> from = move.from_square();
+    _board[to[1]][to[0]] = _board[from[1]][from[0]];
+    _board[from[1]][from[0]] = EM;
+}
+
 std::ostream& operator << (std::ostream& out, const Board& board) {
     out << " " << BOARD_OUTROW << "\n";
     for (auto i = 0; i < 8; i++) {
