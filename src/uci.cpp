@@ -21,8 +21,6 @@
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
-#include "eval.hpp"
-#include "uci.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,15 +30,16 @@ using std::vector;
 using std::string;
 
 
-void print_info() {
-    cout << "Megalodon v0.0.1 - UCI chess engine" << "\n";
-    cout << "Copyright Patrick Huang and Arjun Sahlot 2021" << "\n";
-    cout << "https://github.com/HuangPatrick16777216/megalodon" << "\n";
-    cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << endl;
-}
+void loop() {
+    Board board;
+    string cmd;
 
+    while (getline(cin, cmd)) {
+        if (cmd == "quit") break;
+        else if (cmd == "isready") cout << "readyok" << endl;
+        else if (cmd == "uci") cout << "uciok" << endl;
+        else if (cmd == "d") cout << board.as_string() << endl;
 
-int main() {
-    print_info();
-    loop();
+        else if (cmd.substr(0, 2) == "go") cout << "bestmove e2e4" << endl;
+    }
 }

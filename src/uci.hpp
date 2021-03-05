@@ -17,12 +17,11 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <string>
-#include "chess/board.hpp"
-#include "eval.hpp"
-#include "uci.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,15 +31,4 @@ using std::vector;
 using std::string;
 
 
-void print_info() {
-    cout << "Megalodon v0.0.1 - UCI chess engine" << "\n";
-    cout << "Copyright Patrick Huang and Arjun Sahlot 2021" << "\n";
-    cout << "https://github.com/HuangPatrick16777216/megalodon" << "\n";
-    cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << endl;
-}
-
-
-int main() {
-    print_info();
-    loop();
-}
+void loop();
