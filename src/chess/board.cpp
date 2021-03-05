@@ -228,5 +228,5 @@ vector<Move> Board::bishop_moves(vector<int> sq) {
 }
 
 vector<Move> Board::queen_moves(vector<int> sq) {
-    return _calculate_sliding_moves(s1, {{1, 1}, {-1, 1}, {1, -1}, {1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
