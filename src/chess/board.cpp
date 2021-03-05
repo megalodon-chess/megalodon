@@ -46,10 +46,12 @@ Board::Board() {
     _turn = true;
     _castling = {true, true, true, true};
     _ep = false;
+    _move_stack = {};
 }
 
 Board::Board(string fen) {
     set_fen(fen);
+    _move_stack = {};
 }
 
 string Board::as_string() {
@@ -167,6 +169,7 @@ void Board::push(Move move) {
     _board[to[0]][to[1]] = move.promotion() ? move.promo_piece() : _board[from[0]][from[1]];
     _board[from[0]][from[1]] = EM;
     _turn = !_turn;
+    _move_stack.push_back(move);
 }
 
 void Board::push_uci(string str) {
