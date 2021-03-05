@@ -37,6 +37,9 @@ public:
     Move();
     Move(string);
 
+    vector<int> to_square();
+    vector<int> from_square();
+
     friend std::ostream& operator << (std::ostream&, const Move&);
 
 private:
