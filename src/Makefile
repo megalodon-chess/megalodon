@@ -18,4 +18,4 @@
 #
 
 main:
-	g++ main.cpp -o megalodon
+	g++ main.cpp -o megalodon.out
