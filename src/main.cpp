@@ -21,6 +21,8 @@
 #include <string>
 
 using std::string;
+using std::endl;
+using std::cout;
 
 
 void loop() {

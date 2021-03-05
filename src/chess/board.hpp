@@ -16,3 +16,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
+
+#pragma once
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using std::cout;
+using std::endl;
+
+
+class Board {
+
+};
