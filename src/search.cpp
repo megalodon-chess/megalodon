@@ -23,6 +23,7 @@
 #include "chess/board.hpp"
 #include "chess/funcs.hpp"
 #include "eval.hpp"
+#include "search.hpp"
 
 using std::cin;
 using std::cout;
