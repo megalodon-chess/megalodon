@@ -149,8 +149,7 @@ void Board::push(Move move) {
     vector<int> to = move.to_square();
     vector<int> from = move.from_square();
 
-    if (move.promotion()) _board[to[1]][to[0]] = move.promo_piece();
-    else _board[to[1]][to[0]] = _board[from[1]][from[0]];
+    _board[to[1]][to[0]] = move.promotion() ? move.promo_piece() : _board[from[1]][from[0]];
     _board[from[1]][from[0]] = EM;
 }
 
