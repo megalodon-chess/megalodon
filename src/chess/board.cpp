@@ -48,7 +48,7 @@ Board::Board() {
 }
 
 void Board::set_fen(string fen) {
-    ;
+    
 }
 
 string Board::fen(void) {
