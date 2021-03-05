@@ -54,20 +54,20 @@ Board::Board(string fen) {
 
 string Board::as_string() {
     string str;
-    str = " " + BOARD_OUTROW + "\n";
+    str += " " + BOARD_OUTROW + "\n";
     for (auto i = 0; i < 8; i++) {
         str += BOARD_OUTCOL;
         for (auto piece: _board[i]) {
-            str += piece_to_symbol(piece);
-            str += BOARD_OUTCOL;
+            string symbol = piece_to_symbol(piece);
+            str += symbol + BOARD_OUTCOL;
         }
-        str += 8-i + "\n";
+        str += std::to_string(8-i) + "\n";
         str += " " + BOARD_OUTROW + "\n";
     }
     str += "   ";
-    for (auto i: "abcdefgh") str += i + "   ";
-    str += "\n";
+    for (auto i: "abcdefgh") str += string(1, i) + "   ";
 
+    str += "\n\nFen: " + fen();
     return str;
 }
 
