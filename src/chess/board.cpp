@@ -69,3 +69,7 @@ string Board::get_fen(void) {
 
     return fen;
 }
+
+string Board::get_symbol(int piece) {
+    ;
+}

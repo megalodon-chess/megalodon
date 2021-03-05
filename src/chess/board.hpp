@@ -34,6 +34,7 @@ class Board {
 public:
     Board();
     string get_fen(void);
+    string get_symbol(int piece);
 
 private:
     vector<vector<int>> _board;
