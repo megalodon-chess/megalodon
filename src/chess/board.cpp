@@ -46,7 +46,7 @@ Board::Board() {
 }
 
 
-string Board::get_fen(void) {
+string Board::fen(void) {
     string fen;
     int space = 0;
 
@@ -71,4 +71,3 @@ string Board::get_fen(void) {
 
     return fen;
 }
-

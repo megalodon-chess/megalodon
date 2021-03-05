@@ -34,7 +34,7 @@ using std::string;
 class Board {
 public:
     Board();
-    string get_fen(void);
+    string fen(void);
 
 private:
     vector<vector<int>> _board;
