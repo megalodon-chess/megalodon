@@ -73,6 +73,14 @@ string Board::as_string() {
     return str;
 }
 
+vector<vector<int>> Board::board() {
+    return _board;
+}
+
+vector<Move> Board::move_stack() {
+    return _move_stack;
+}
+
 void Board::set_fen(string fen) {
     vector<string> parts = split(fen, " ");
     string position = parts[0];
@@ -184,13 +192,6 @@ vector<int> Board::king_pos(bool side) {
         }
     }
 }
-
-vector<vector<int>> Board::board() {
-    return _board;
-}
-
-
-// Legal moves
 
 vector<Move> Board::rook_moves(vector<int> sq) {
     vector<Move> moves;

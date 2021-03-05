@@ -39,6 +39,7 @@ public:
     string as_string();
 
     vector<vector<int>> board();
+    vector<Move> move_stack();
     string fen();
     void set_fen(string);
 
