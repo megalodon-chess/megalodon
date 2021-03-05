@@ -184,3 +184,14 @@ std::ostream& operator << (std::ostream& out, const Board& board) {
 
     return out;
 }
+
+// Legal moves
+
+vector<Move> Board::rook_moves(vector<int> sq) {
+    vector<Move> moves;
+    string curr = square_to_string(sq);
+    for (auto r = sq[0]; r > 0; r--) {
+        vector<int> cell = {r, sq[1]};
+        if (_turn == piece_color(_board[cell[0]][cell[1]])) break;
+    }
+}
