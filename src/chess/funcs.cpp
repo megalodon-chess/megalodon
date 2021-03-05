@@ -112,3 +112,7 @@ int piece_value(int piece) {
     else if (piece == BQ) return 9;
     else if (piece == BK) return 0;
 }
+
+bool piece_color(int piece) {
+    return piece <= 6;
+}

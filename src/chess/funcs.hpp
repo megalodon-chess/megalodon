@@ -41,3 +41,4 @@ string square_to_string(vector<int>, bool=false);
 vector<string> split(string, string);
 
 int piece_value(int);
+bool piece_color(int);
