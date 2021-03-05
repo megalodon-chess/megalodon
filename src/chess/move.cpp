@@ -40,6 +40,8 @@ Move::Move() {
 }
 
 Move::Move(string uci) {
+    _to_square = string_to_square(uci.substr(0, 2));
+    _from_square = string_to_square(uci.substr(2, 2));
 }
 
 std::ostream& operator << (std::ostream& out, const Move& move) {
