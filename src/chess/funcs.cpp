@@ -114,6 +114,24 @@ string strip(string str) {
     return str.substr(start, end-start+1);
 }
 
+string replace(string str, string rep) {
+    int size = rep.size();
+    while (true) {
+        int pos = str.find(rep);
+        if (pos == string::npos) break;
+        str = str.substr(0, pos) + str.substr(pos+size);
+    }
+    return str;
+}
+
+bool startswith(string str, string prefix) {
+    return (str.substr(0, prefix.size()) == prefix);
+}
+
+bool endswith(string str, string suffix) {
+    return (str.substr(str.size()-suffix.size(), suffix.size()) == suffix);
+}
+
 vector<string> split(string str, string delim) {
     vector<string> parts;
     int prev = 0, pos = 0;
