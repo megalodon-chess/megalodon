@@ -17,12 +17,12 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-#pragma once
-
 #include <iostream>
 #include <vector>
 #include <string>
+#include "board.hpp"
 #include "constants.hpp"
+#include "funcs.hpp"
 
 using std::cin;
 using std::cout;
@@ -31,12 +31,19 @@ using std::vector;
 using std::string;
 
 
-class Board {
-public:
-    Board();
-    string get_fen(void);
-
-private:
-    vector<vector<int>> _board;
-    bool _turn;
-};
+string piece_to_symbol(int piece) {
+    switch (piece) {
+        case WP: return "P";
+        case WN: return "N";
+        case WB: return "B";
+        case WR: return "R";
+        case WQ: return "Q";
+        case WK: return "K";
+        case BP: return "p";
+        case BN: return "n";
+        case BB: return "b";
+        case BR: return "r";
+        case BQ: return "q";
+        case BK: return "k";
+    }
+}

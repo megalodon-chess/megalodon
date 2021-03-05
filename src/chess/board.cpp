@@ -22,6 +22,7 @@
 #include <string>
 #include "board.hpp"
 #include "constants.hpp"
+#include "funcs.hpp"
 
 using std::cin;
 using std::cout;
@@ -54,7 +55,7 @@ string Board::get_fen(void) {
             int sq = _board[row][col];
             if (sq != EM) {
                 if (space) fen += std::to_string(space);
-                fen += get_symbol(sq);
+                fen += piece_to_symbol(sq);
                 space = 0;
             }
             else {
@@ -71,19 +72,3 @@ string Board::get_fen(void) {
     return fen;
 }
 
-string Board::get_symbol(int piece) {
-    switch (piece) {
-        case WP: return "P";
-        case WN: return "N";
-        case WB: return "B";
-        case WR: return "R";
-        case WQ: return "Q";
-        case WK: return "K";
-        case BP: return "p";
-        case BN: return "n";
-        case BB: return "b";
-        case BR: return "r";
-        case BQ: return "q";
-        case BK: return "k";
-    }
-}
