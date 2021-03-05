@@ -21,9 +21,11 @@
 #include <vector>
 #include <string>
 #include "constants.hpp"
+#include "move.hpp"
 
 using std::cin;
 using std::cout;
+using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
