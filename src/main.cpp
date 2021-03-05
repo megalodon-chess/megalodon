@@ -33,6 +33,6 @@ int main() {
         else if (cmd == "uci") std::cout << "uciok" << std::endl;
         else if (cmd == "d");
 
-        else if (cmd.substr(0, 2) == "go") std::cout << "e2e4" << std::endl;
+        else if (cmd.substr(0, 2) == "go") std::cout << "bestmove e2e4" << std::endl;
     }
 }
