@@ -106,15 +106,15 @@ vector<string> split(string str, string delim) {
 int piece_value(int piece) {
     // not working with switch
     if (piece == WP) return 1;
-    if (piece == WN) return 3;
-    if (piece == WB) return 3;
-    if (piece == WR) return 5;
-    if (piece == WQ) return 9;
-    if (piece == WK) return 0;
-    if (piece == BP) return 1;
-    if (piece == BN) return 3;
-    if (piece == BB) return 3;
-    if (piece == BR) return 5;
-    if (piece == BQ) return 9;
-    if (piece == BK) return 0;
+    else if (piece == WN) return 3;
+    else if (piece == WB) return 3;
+    else if (piece == WR) return 5;
+    else if (piece == WQ) return 9;
+    else if (piece == WK) return 0;
+    else if (piece == BP) return 1;
+    else if (piece == BN) return 3;
+    else if (piece == BB) return 3;
+    else if (piece == BR) return 5;
+    else if (piece == BQ) return 9;
+    else if (piece == BK) return 0;
 }
