@@ -93,6 +93,7 @@ void Board::set_fen(string fen) {
             }
         }
     }
+    _board.push_back(row);
 
     _turn = (turn == "w");
 
