@@ -56,10 +56,11 @@ string Board::as_string() {
     string str;
     str = " " + BOARD_OUTROW + "\n";
     for (auto i = 0; i < 8; i++) {
-        vector<int> row = _board[i];
         str += BOARD_OUTCOL;
-        for (auto piece: row) str += piece_to_symbol(piece) + BOARD_OUTCOL;
-
+        for (auto piece: _board[i]) {
+            str += piece_to_symbol(piece);
+            str += BOARD_OUTCOL;
+        }
         str += 8-i + "\n";
         str += " " + BOARD_OUTROW + "\n";
     }
