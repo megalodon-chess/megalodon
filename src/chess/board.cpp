@@ -97,3 +97,7 @@ string Board::fen(void) {
     fen += " 0 1";
     return fen;
 }
+
+std::ostream& operator << (std::ostream& out, const Board& move) {
+    return out;
+}

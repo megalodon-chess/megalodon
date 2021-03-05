@@ -36,6 +36,8 @@ public:
     Board();
     string fen(void);
 
+    friend std::ostream& operator << (std::ostream&, const Board&);
+
 private:
     vector<vector<int>> _board;
     vector<bool> _castling;
