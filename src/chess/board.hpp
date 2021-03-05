@@ -31,9 +31,9 @@ using std::vector;
 using std::string;
 
 class Board {
-    public:
+public:
     Board();
-    void print(void);
-    private:
+
+private:
     vector<vector<int>> _board;
 };
