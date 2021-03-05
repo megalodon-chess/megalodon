@@ -35,7 +35,7 @@ void print_info() {
     cout << "Megalodon v0.0.1 - UCI chess engine" << "\n";
     cout << "Copyright Patrick Huang and Arjun Sahlot 2021" << "\n";
     cout << "https://github.com/HuangPatrick16777216/megalodon" << "\n";
-    cout << "Licensed under GNU GPL v3" << endl;
+    cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << endl;
 }
 
 
