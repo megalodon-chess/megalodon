@@ -34,7 +34,7 @@ using std::string;
 
 Move::Move() {
     _promotion = false;
-    _promo_piece = WP;
+    _promo_piece = EM;
     _from_square = {0, 0};
     _to_square = {0, 0};
 }
@@ -42,6 +42,28 @@ Move::Move() {
 Move::Move(string uci) {
     _to_square = string_to_square(uci.substr(0, 2));
     _from_square = string_to_square(uci.substr(2, 2));
+    if (uci.size() > 4) {
+        _promo_piece = symbol_to_piece(uci.substr(4, 1));
+        _promotion = true;
+    } else {
+        _promotion = false;
+    }
+}
+
+vector<int> Move::to_square() {
+    return _to_square;
+}
+
+vector<int> Move::from_square() {
+    return _from_square;
+}
+
+bool Move::promotion() {
+    return _promotion;
+}
+
+int Move::promo_piece() {
+    return _promo_piece;
 }
 
 std::ostream& operator << (std::ostream& out, const Move& move) {
