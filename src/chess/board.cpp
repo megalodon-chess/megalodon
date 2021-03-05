@@ -193,6 +193,10 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
+vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>> dirs) {
+    ;
+}
+
 vector<Move> Board::rook_moves(vector<int> sq) {
     vector<Move> moves;
     string from = square_to_string(sq);
