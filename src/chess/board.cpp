@@ -119,8 +119,7 @@ string Board::fen() {
     fen.pop_back();
 
     fen += " ";
-    if (_turn) fen += "w";
-    else fen += "b";
+    fen += _turn ? "w" : "b";
 
     bool contains = false;
     for (auto c: _castling) {
