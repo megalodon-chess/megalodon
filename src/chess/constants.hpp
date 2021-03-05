@@ -31,12 +31,16 @@ using std::vector;
 using std::string;
 
 
-constexpr int PAWN = 0;
-constexpr int KNIGHT = 1;
-constexpr int BISHOP = 2;
-constexpr int ROOK = 3;
-constexpr int QUEEN = 4;
-constexpr int KING = 5;
+constexpr int WP = 0;
+constexpr int WN = 1;
+constexpr int WB = 2;
+constexpr int WR = 3;
+constexpr int WQ = 4;
+constexpr int WK = 5;
 
-constexpr bool WHITE = true;
-constexpr bool BLACK = false;
+constexpr int BP = 10;
+constexpr int BN = 11;
+constexpr int BB = 12;
+constexpr int BR = 13;
+constexpr int BQ = 14;
+constexpr int BK = 15;
