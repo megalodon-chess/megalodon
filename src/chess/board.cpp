@@ -17,6 +17,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -50,14 +51,27 @@ Board::Board() {
 void Board::set_fen(string fen) {
     vector<string> parts = split(fen, " ");
     int i = 0;
-    string pos = parts[0];
+    string pos;
+
+    for (auto p: parts[0]) {
+        if (p != '/') pos.push_back(p);
+    }
+
     string turn = parts[1];
     string castling = parts[2];
     string ep = parts[2];
 
     for (auto p: pos) {
         if (std::isdigit(p)) {
-            ;
+            int val = i + std::stoi(string(1, p));
+            for (auto j = i; j < val; j++) {
+                _board[j / 8][j % 8] = EM;
+            }
+            i = val;
+        }
+        else {
+            _board[i / 8][i % 8] = symbol_to_piece(string(1, p));
+            i++;
         }
     }
 }
