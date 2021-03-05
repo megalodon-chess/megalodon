@@ -86,4 +86,5 @@ string Board::get_symbol(int piece) {
         case BQ: return "q";
         case BK: return "k";
     }
+    return " ";
 }
