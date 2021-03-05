@@ -28,3 +28,6 @@ clean:
 	rm *.o
 	rm chess/*.o
 	clear
+
+run:
+	./Megalodon
