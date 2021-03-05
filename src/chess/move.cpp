@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "constants.hpp"
 
 using std::cout;
 using std::endl;

@@ -19,11 +19,13 @@
 
 #include <iostream>
 #include <vector>
-#include "board.hpp"
+#include <string>
+#include "constants.hpp"
 
 using std::cout;
 using std::endl;
 using std::vector;
+using std::string;
 
 
 Board::~Board() {}
