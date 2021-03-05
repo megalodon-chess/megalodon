@@ -190,6 +190,7 @@ std::ostream& operator << (std::ostream& out, const Board& board) {
 vector<Move> Board::rook_moves(vector<int> sq) {
     vector<Move> moves;
     string curr = square_to_string(sq);
+    // Up
     for (auto r = sq[0]; r > 0; r--) {
         vector<int> cell = {r, sq[1]};
         int piece = _board[cell[0]][cell[1]];
