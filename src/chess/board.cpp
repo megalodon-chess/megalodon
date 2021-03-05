@@ -108,6 +108,10 @@ void Board::push(Move move) {
     _board[from[1]][from[0]] = EM;
 }
 
+void Board::push_uci(string str) {
+    push(Move(str));
+}
+
 std::ostream& operator << (std::ostream& out, const Board& board) {
     out << " " << BOARD_OUTROW << "\n";
     for (auto i = 0; i < 8; i++) {
