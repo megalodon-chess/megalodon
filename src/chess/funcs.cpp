@@ -82,6 +82,7 @@ string square_to_string(vector<int> square, bool cap) {
     return column + std::to_string(8-square[0]);
 }
 
+
 int piece_value(int piece) {
     // not working with switch
     if      (piece == WP) return 1;
