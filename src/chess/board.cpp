@@ -139,8 +139,7 @@ string Board::fen() {
     }
 
     fen += " ";
-    if (_ep) fen += square_to_string(_ep_square);
-    else fen += "-";
+    fen += _ep ? square_to_string(_ep_square) : "-";
 
     fen += " 0 1";
     return fen;
