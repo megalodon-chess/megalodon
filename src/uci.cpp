@@ -42,8 +42,5 @@ void loop() {
         else if (cmd == "d") cout << board.as_string() << endl;
 
         else if (cmd.substr(0, 2) == "go") cout << "bestmove e2e4" << endl;
-        else {
-            for (auto i: board.rook_moves({0, 7})) cout << i.as_string() << endl;
-        }
     }
 }
