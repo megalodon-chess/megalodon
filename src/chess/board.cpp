@@ -246,4 +246,5 @@ vector<Move> Board::rook_moves(vector<int> sq) {
             moves.push_back(Move(curr + square_to_string(cell)));
         }
     }
+    return moves;
 }
