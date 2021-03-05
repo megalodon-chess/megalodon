@@ -208,4 +208,3 @@ vector<Move> Board::rook_moves(vector<int> sq) {
         }
     }
 }
-
