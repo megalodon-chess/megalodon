@@ -46,6 +46,7 @@ string piece_to_symbol(int piece) {
         case BQ: return "q";
         case BK: return "k";
     }
+    return " ";
 }
 
 int symbol_to_piece(string symbol) {
@@ -63,6 +64,7 @@ int symbol_to_piece(string symbol) {
         case 'q': return BQ;
         case 'k': return BK;
     }
+    return EM;
 }
 
 
