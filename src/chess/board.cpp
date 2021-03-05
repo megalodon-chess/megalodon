@@ -47,7 +47,6 @@ Board::Board() {
     _ep = false;
 }
 
-
 string Board::fen(void) {
     string fen;
     int space = 0;
