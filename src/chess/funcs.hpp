@@ -41,5 +41,6 @@ int piece_value(int);
 bool piece_color(int);
 bool in_board(vector<int>);
 
-vector<string> split(string, string);
+string strip(string);
+vector<string> split(string, string="");
 vector<int> addvecs(vector<int>, vector<int>);
