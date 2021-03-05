@@ -246,3 +246,7 @@ vector<Move> Board::bishop_moves(vector<int> sq) {
     }
     return moves;
 }
+
+vector<Move> Board::queen_moves(vector<int> sq) {
+    ;
+}
