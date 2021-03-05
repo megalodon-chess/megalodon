@@ -24,6 +24,7 @@
 #include <string>
 #include "constants.hpp"
 
+using std::cin;
 using std::cout;
 using std::cin;
 using std::endl;

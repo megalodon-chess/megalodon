@@ -20,8 +20,10 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "board.hpp"
 #include "constants.hpp"
 
+using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
