@@ -67,7 +67,6 @@ int symbol_to_piece(string symbol) {
     return EM;
 }
 
-
 int letter_to_column(char letter) {
     return (letter >= 97) ? letter - 97 : letter - 65;
 }
@@ -81,20 +80,6 @@ vector<int> string_to_square(string str) {
 string square_to_string(vector<int> square, bool cap) {
     string column = cap ? string(1, square[1]+65) : string(1, square[1]+97);
     return column + std::to_string(8-square[0]);
-}
-
-vector<string> split(string str, string delim) {
-    vector<string> parts;
-    int prev = 0, pos = 0;
-    do {
-        pos = str.find(delim, prev);
-        if (pos == string::npos) pos = str.length();
-        string part = str.substr(prev, pos-prev);
-        if (!part.empty()) parts.push_back(part);
-        prev = pos + delim.length();
-    }
-    while (pos < str.length() && prev < str.length());
-    return parts;
 }
 
 int piece_value(int piece) {
@@ -115,4 +100,19 @@ int piece_value(int piece) {
 
 bool piece_color(int piece) {
     return piece <= 6;
+}
+
+
+vector<string> split(string str, string delim) {
+    vector<string> parts;
+    int prev = 0, pos = 0;
+    do {
+        pos = str.find(delim, prev);
+        if (pos == string::npos) pos = str.length();
+        string part = str.substr(prev, pos-prev);
+        if (!part.empty()) parts.push_back(part);
+        prev = pos + delim.length();
+    }
+    while (pos < str.length() && prev < str.length());
+    return parts;
 }

@@ -33,12 +33,10 @@ using std::string;
 
 string piece_to_symbol(int);
 int symbol_to_piece(string);
-
 int letter_to_column(char);
 vector<int> string_to_square(string);
 string square_to_string(vector<int>, bool=false);
-
-vector<string> split(string, string);
-
 int piece_value(int);
 bool piece_color(int);
+
+vector<string> split(string, string);
