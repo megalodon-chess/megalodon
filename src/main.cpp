@@ -23,18 +23,19 @@
 using std::string;
 using std::endl;
 using std::cout;
+using std::cin;
 
 
 void loop() {
     string cmd;
 
-    while (getline(std::cin, cmd)) {
+    while (getline(cin, cmd)) {
         if (cmd == "quit") break;
-        else if (cmd == "isready") std::cout << "readyok" << std::endl;
-        else if (cmd == "uci") std::cout << "uciok" << std::endl;
+        else if (cmd == "isready") cout << "readyok" << endl;
+        else if (cmd == "uci") cout << "uciok" << endl;
         else if (cmd == "d");
 
-        else if (cmd.substr(0, 2) == "go") std::cout << "bestmove e2e4" << std::endl;
+        else if (cmd.substr(0, 2) == "go") cout << "bestmove e2e4" << endl;
     }
 }
 
