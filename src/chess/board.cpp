@@ -63,6 +63,7 @@ string Board::get_fen(void) {
 
         }
         if (space) fen += std::to_string(space);
+        space = 0;
         fen += "/";
     }
     fen.pop_back();
