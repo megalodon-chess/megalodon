@@ -271,4 +271,5 @@ vector<Move> Board::queen_moves(vector<int> sq) {
             }
         }
     }
+    return moves;
 }
