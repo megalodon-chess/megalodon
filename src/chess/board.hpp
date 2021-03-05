@@ -36,7 +36,9 @@ class Board {
 public:
     Board();
     Board(string);
+    string as_string();
 
+    vector<vector<int>> board();
     string fen();
     void set_fen(string);
 
@@ -47,9 +49,6 @@ public:
 
     vector<Move> rook_moves(vector<int>);
 
-    vector<vector<int>> board();
-
-    friend std::ostream& operator << (std::ostream&, const Board&);
 
 private:
     vector<vector<int>> _board;

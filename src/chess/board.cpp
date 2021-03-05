@@ -52,6 +52,24 @@ Board::Board(string fen) {
     set_fen(fen);
 }
 
+string Board::as_string() {
+    string str;
+    str = " " + BOARD_OUTROW + "\n";
+    for (auto i = 0; i < 8; i++) {
+        vector<int> row = _board[i];
+        str += BOARD_OUTCOL;
+        for (auto piece: row) str += piece_to_symbol(piece) + BOARD_OUTCOL;
+
+        str += 8-i + "\n";
+        str += " " + BOARD_OUTROW + "\n";
+    }
+    str += "   ";
+    for (auto i: "abcdefgh") str += i + "   ";
+    str += "\n";
+
+    return str;
+}
+
 void Board::set_fen(string fen) {
     vector<string> parts = split(fen, " ");
     int i = 0;
@@ -168,22 +186,6 @@ vector<vector<int>> Board::board() {
     return _board;
 }
 
-std::ostream& operator << (std::ostream& out, const Board& board) {
-    out << " " << BOARD_OUTROW << "\n";
-    for (auto i = 0; i < 8; i++) {
-        vector<int> row = board._board[i];
-        out << BOARD_OUTCOL;
-        for (auto piece: row) out << piece_to_symbol(piece) << BOARD_OUTCOL;
-
-        out << 8-i << "\n";
-        out << " " << BOARD_OUTROW << "\n";
-    }
-    out << "   ";
-    for (auto i: "abcdefgh") out << i << "   ";
-    out << endl;
-
-    return out;
-}
 
 // Legal moves
 
