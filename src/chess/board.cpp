@@ -201,8 +201,7 @@ vector<Move> Board::rook_moves(vector<int> sq) {
             if (_turn == piece_color(piece)) break;
             moves.push_back(Move(from + square_to_string(new_sq)));
             break;
-        }
-        else {
+        } else {
             moves.push_back(Move(from + square_to_string(new_sq)));
         }
     }
