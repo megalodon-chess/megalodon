@@ -37,6 +37,8 @@ public:
     string fen(void);
     void set_fen(string);
 
+    friend std::ostream& operator << (std::ostream&, const Board&);
+
 private:
     vector<vector<int>> _board;
     vector<bool> _castling;

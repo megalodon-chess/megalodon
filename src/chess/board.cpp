@@ -86,9 +86,8 @@ string Board::fen(void) {
     }
     fen += " ";
     if (contains) {
-        string symbols = "KQkq";
         for (auto i = 0; i < 4; i++) {
-            if (_castling[i]) fen += symbols[i];
+            if (_castling[i]) fen += CASTLING_SYMBOLS[i];
         }
     } else {
         fen += "-";
@@ -100,4 +99,8 @@ string Board::fen(void) {
 
     fen += " 0 1";
     return fen;
+}
+
+std::ostream& operator << (std::ostream& out, const Board& move) {
+    return out;
 }

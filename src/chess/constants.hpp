@@ -46,3 +46,5 @@ constexpr int BB = 13;
 constexpr int BR = 14;
 constexpr int BQ = 15;
 constexpr int BK = 16;
+
+const string CASTLING_SYMBOLS = "KQkq";
