@@ -93,6 +93,7 @@ void Board::set_fen(string fen) {
     }
 
     _ep = (ep != "-");
+    if (_ep) _ep_square = string_to_square(ep);
 }
 
 string Board::fen() {
