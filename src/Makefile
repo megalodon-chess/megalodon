@@ -27,3 +27,4 @@ main: chess/funcs.o chess/constants.o chess/board.o chess/move.o main.o
 clean:
 	rm *.o
 	rm chess/*.o
+	clear
