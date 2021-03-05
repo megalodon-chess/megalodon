@@ -18,9 +18,11 @@
 #
 
 FILES=chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o main.o
-.PHONY: main clean
+.PHONY: main clean run
 
 all: main clean
+
+dev: main clean run
 
 main: $(FILES)
 	g++ -std=c++17 -o Megalodon $(FILES)
