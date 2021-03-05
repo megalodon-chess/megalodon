@@ -143,6 +143,14 @@ void Board::push_uci(string str) {
     push(Move(str));
 }
 
+vector<int> Board::king_pos(bool side) {
+    for (auto row = 0; row < 8; row++) {
+        for (auto col = 0; col < 8; col++) {
+            if (_board[row][col] == k) return {row, col};
+        }
+    }
+}
+
 vector<vector<int>> Board::board() {
     return _board;
 }
