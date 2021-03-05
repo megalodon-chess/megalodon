@@ -49,10 +49,6 @@ void loop() {
         else if (cmd == "d");
 
         else if (cmd.substr(0, 2) == "go") cout << "bestmove e2e4" << endl;
-        else {
-            Board b = Board();
-            
-        }
     }
 }
 
