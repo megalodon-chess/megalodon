@@ -18,6 +18,7 @@
 #
 
 FILES = chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o search.o uci.o main.o
+CFILES = chess/funcs.cpp chess/constants.cpp chess/board.cpp chess/move.cpp eval.cpp search.cpp uci.cpp main.cpp
 .PHONY: all dev compile clean run
 
 # Compile and clean files.
@@ -29,6 +30,10 @@ dev: compile clean run
 # Uses g++ to compile files.
 compile: $(FILES)
 	g++ -std=c++17 -o Megalodon $(FILES)
+
+# Compiles for Windows.
+compilewin: $(FILES)
+	x86_64-w64-mingw32-g++-win32 -o Megalodon-Windows $(CFILES)
 
 # Removes all c++ objects and clears console.
 clean:
