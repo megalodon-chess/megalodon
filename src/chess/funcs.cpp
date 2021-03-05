@@ -76,6 +76,13 @@ int letter_to_column(char letter) {
 
 vector<int> string_to_square(string str) {
     int col = letter_to_column(str[0]);
-    int row = std::stoi(str.substr(1, 1));
+    int row = std::stoi(str.substr(1, 1))-1;
     return {row, col};
+}
+
+string square_to_string(vector<int> square, bool cap) {
+    string column;
+    if (cap) column = string(1, square[1]+65);
+    else column = string(1, square[1]+97);
+    return column + std::to_string(8-square[0]);
 }
