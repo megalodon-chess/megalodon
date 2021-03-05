@@ -69,11 +69,7 @@ int symbol_to_piece(string symbol) {
 
 
 int letter_to_column(char letter) {
-    if (letter >= 97) {
-        return letter - 97;
-    } else {
-        return letter - 65;
-    }
+    return (letter >= 97) ? letter - 97 : letter - 65;
 }
 
 vector<int> string_to_square(string str) {
