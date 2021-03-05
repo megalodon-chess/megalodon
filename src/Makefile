@@ -17,12 +17,13 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+FILES=chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o main.o
 .PHONY: main clean
 
 all: main clean
 
-main: chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o main.o
-	g++ chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o main.o -o Megalodon
+main: $(FILES)
+	g++ -std=c++17 -o Megalodon $(FILES)
 
 clean:
 	rm *.o
