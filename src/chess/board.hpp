@@ -35,6 +35,7 @@ class Board {
 public:
     Board();
     string fen();
+    void set_fen(string);
 
     friend std::ostream& operator << (std::ostream&, const Board&);
 
