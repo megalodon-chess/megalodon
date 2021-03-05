@@ -39,3 +39,5 @@ vector<int> string_to_square(string);
 string square_to_string(vector<int>, bool=false);
 
 vector<string> split(string, string);
+
+int piece_value(int);

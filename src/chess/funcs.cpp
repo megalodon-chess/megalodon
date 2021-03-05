@@ -102,3 +102,20 @@ vector<string> split(string str, string delim) {
     while (pos < str.length() && prev < str.length());
     return parts;
 }
+
+int piece_value(int piece) {
+    switch (piece) {
+        case WP: return 1;
+        case WN: return 3;
+        case WB: return 3;
+        case WR: return 5;
+        case WQ: return 9;
+        case WK: return 0;
+        case BP: return 1;
+        case BN: return 3;
+        case BB: return 3;
+        case BR: return 5;
+        case BQ: return 9;
+        case BK: return 0;
+    }
+}
