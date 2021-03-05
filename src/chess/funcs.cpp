@@ -130,10 +130,12 @@ string replace(string str, string rep) {
 }
 
 bool startswith(string str, string prefix) {
+    if (str.size() < prefix.size()) return false;
     return (str.substr(0, prefix.size()) == prefix);
 }
 
 bool endswith(string str, string suffix) {
+    if (str.size() < suffix.size()) return false;
     return (str.substr(str.size()-suffix.size(), suffix.size()) == suffix);
 }
 
