@@ -195,8 +195,14 @@ vector<Move> Board::rook_moves(vector<int> sq) {
 
     for (auto dir: dirs) {
         vector<int> new_sq = addvecs(sq, dir);
-        if (!in_board(new_sq) or _turn == piece_color(_board[new_sq[0]][new_sq[1]])) break;
-        moves.push_back(Move(from + square_to_string(new_sq)));
+        if (!in_board(new_sq)) break;
+        int piece = _board[new_sq[0]][new_sq[1]];
+        if (piece != EM) {
+            bool same_col = _turn == piece_color(piece);
+            if (same_col) break;
+            moves.push_back(Move(from + square_to_string(new_sq)));
+            if (!same_col) break;
+        }
     }
 }
 
