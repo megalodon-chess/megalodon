@@ -32,7 +32,6 @@ using std::string;
 
 void loop() {
     Board board;
-    board.set_fen("8/8/8/8/8/8/8/8 w KQkq - 0 1");
     string cmd;
 
     while (getline(cin, cmd)) {
