@@ -78,6 +78,8 @@ void Board::set_fen(string fen) {
             i++;
         }
     }
+
+    _turn = (turn == "w") ? true : false;
 }
 
 string Board::fen() {
