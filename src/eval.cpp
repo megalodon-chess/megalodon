@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
+#include "chess/funcs.hpp"
 #include "eval.hpp"
 
 using std::cin;
@@ -31,5 +32,21 @@ using std::vector;
 using std::string;
 
 
+int material(Board board) {
+    int mat = 0;
+
+    for (auto row: board.board()) {
+        for (auto piece: row) {
+            int value = piece_value(piece);
+            if (piece >= 11) mat -= value;
+            else mat += value;
+        }
+    }
+
+    return mat;
+}
+
 int eval(Board board) {
+    int mat = material(board);
+    return mat;
 }

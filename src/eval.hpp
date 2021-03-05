@@ -32,4 +32,5 @@ using std::vector;
 using std::string;
 
 
+int material(Board);
 int eval(Board);
