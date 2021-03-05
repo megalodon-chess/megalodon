@@ -14,3 +14,7 @@ cd src
 make
 ./Megalodon
 ```
+
+## The Name
+
+The name megalodon comes from an extinct species of shark that lived millions of years ago.
