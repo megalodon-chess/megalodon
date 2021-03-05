@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 #include "constants.hpp"
+#include "move.hpp"
 
 using std::cin;
 using std::cout;
@@ -34,8 +35,12 @@ using std::string;
 class Board {
 public:
     Board();
-    string fen(void);
+
+    string fen();
     void set_fen(string);
+
+    void push(Move);
+    void push_uci(string);
 
     friend std::ostream& operator << (std::ostream&, const Board&);
 

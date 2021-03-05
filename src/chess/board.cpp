@@ -112,6 +112,19 @@ string Board::fen() {
     return fen;
 }
 
-std::ostream& operator << (std::ostream& out, const Board& move) {
+std::ostream& operator << (std::ostream& out, const Board& board) {
+    out << " " << BOARD_OUTROW << "\n";
+    for (auto i = 0; i < 8; i++) {
+        vector<int> row = board._board[i];
+        out << BOARD_OUTCOL;
+        for (auto piece: row) out << piece_to_symbol(piece) << BOARD_OUTCOL;
+
+        out << 8-i << "\n";
+        out << " " << BOARD_OUTROW << "\n";
+    }
+    out << "   ";
+    for (auto i: "abcdefgh") out << i << "   ";
+    out << endl;
+
     return out;
 }

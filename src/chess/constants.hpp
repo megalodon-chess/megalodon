@@ -48,3 +48,5 @@ constexpr int BQ = 15;
 constexpr int BK = 16;
 
 const string CASTLING_SYMBOLS = "KQkq";
+const string BOARD_OUTROW = "+---+---+---+---+---+---+---+---+";
+const string BOARD_OUTCOL = " | ";
