@@ -30,7 +30,11 @@ using std::vector;
 using std::string;
 
 
-Board::Board() {}
+Board::Board() {
+    _board = {
+        {}
+    };
+}
 
 void Board::print(void) {
     return;
