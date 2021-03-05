@@ -40,11 +40,6 @@ void loop() {
         else if (cmd == "d");
 
         else if (cmd.substr(0, 2) == "go") cout << "bestmove e2e4" << endl;
-        else {
-            Board b = Board();
-            b.set_fen("8/p3p1p1/3k1b1r/2npBPp1/1PqrN1Pp/2p1N3/Pp2Pb2/8 w - - 0 1");
-            cout << b << endl;
-        }
     }
 }
 
