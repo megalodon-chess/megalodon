@@ -91,6 +91,8 @@ void Board::set_fen(string fen) {
         }
         _castling[ind] = true;
     }
+
+    _ep = (ep != "-");
 }
 
 string Board::fen() {
