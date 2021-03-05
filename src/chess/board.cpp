@@ -125,6 +125,10 @@ void Board::push_uci(string str) {
     push(Move(str));
 }
 
+vector<vector<int>> Board::board() {
+    return _board;
+}
+
 std::ostream& operator << (std::ostream& out, const Board& board) {
     out << " " << BOARD_OUTROW << "\n";
     for (auto i = 0; i < 8; i++) {

@@ -42,6 +42,8 @@ public:
     void push(Move);
     void push_uci(string);
 
+    vector<vector<int>> board();
+
     friend std::ostream& operator << (std::ostream&, const Board&);
 
 private:
