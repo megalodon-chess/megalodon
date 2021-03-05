@@ -32,6 +32,15 @@ using std::string;
 
 
 void setup_position(Board& board, string cmd) {
+    cmd = strip(replace(cmd, "position"));
+    if (startswith(cmd, "startpos")) {
+        board.reset();
+        cmd = strip(replace(cmd, "startpos"));
+        if (startswith(cmd, "moves")) {
+            vector<string> uci_moves = split(strip(replace(cmd, "moves")), " ");
+            for (auto move: uci_moves) board.push_uci(move);
+        }
+    }
 }
 
 
