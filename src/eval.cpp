@@ -38,8 +38,7 @@ int material(Board board) {
     for (auto row: board.board()) {
         for (auto piece: row) {
             int value = piece_value(piece);
-            if (piece >= 11) mat -= value;
-            else mat += value;
+            mat += (piece >= 11) ? -value : value;
         }
     }
 
