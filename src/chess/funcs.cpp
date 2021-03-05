@@ -103,6 +103,10 @@ bool piece_color(int piece) {
     return piece <= 6;
 }
 
+bool in_board(vector<int> loc) {
+    return (0<=loc[0] && loc[0]<=7 && 0<=loc[1] && loc[1]<=7);
+}
+
 
 vector<string> split(string str, string delim) {
     vector<string> parts;

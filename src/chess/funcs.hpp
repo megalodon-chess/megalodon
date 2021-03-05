@@ -39,6 +39,7 @@ string square_to_string(vector<int>, bool=false);
 
 int piece_value(int);
 bool piece_color(int);
+bool in_board(vector<int>);
 
 vector<string> split(string, string);
 vector<int> addvecs(vector<int>, vector<int>);
