@@ -73,45 +73,22 @@ string Board::as_string() {
 
 void Board::set_fen(string fen) {
     vector<string> parts = split(fen, " ");
-    int i = 0;
-    string pos;
 
-    for (auto p: parts[0]) {
-        if (p != '/') pos.push_back(p);
-    }
-
-    string turn = parts[1];
-    string castling = parts[2];
-    string ep = parts[2];
-
-    for (auto p: pos) {
-        if (std::isdigit(p)) {
-            int val = i + std::stoi(string(1, p));
-            for (auto j = i; j < val; j++) {
-                _board[j / 8][j % 8] = EM;
-            }
-            i = val;
+    _board = {};
+    vector<int> row = {};
+    for (auto i = 0; i < parts[0].size(); i++) {
+        char ch = parts[0][i];
+        if (ch == '/') {
+            _board.push_back(row);
+            row = {};
         } else {
-            _board[i / 8][i % 8] = symbol_to_piece(string(1, p));
-            i++;
+            if (48 <= ch && ch <= 57) {
+                for (auto j = 0; j < ch-48; j++) row.push_back(EM);
+            } else {
+                row.push_back(symbol_to_piece(string(1, ch)));
+            }
         }
     }
-
-    _turn = (turn == "w");
-
-    for (auto i: castling) {
-        int ind;
-        switch (i) {
-            case 'K': ind = 0; break;
-            case 'Q': ind = 1; break;
-            case 'k': ind = 2; break;
-            case 'q': ind = 3; break;
-        }
-        _castling[ind] = true;
-    }
-
-    _ep = (ep != "-");
-    if (_ep) _ep_square = string_to_square(ep);
 }
 
 string Board::fen() {
