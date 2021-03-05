@@ -17,6 +17,10 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+.PHONY: main clean
+
+all: main clean
+
 main: chess/constants.o chess/board.o chess/move.o main.o
 	g++ chess/constants.o chess/board.o chess/move.o main.o -o Megalodon
 
