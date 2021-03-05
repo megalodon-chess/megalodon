@@ -22,6 +22,7 @@
 #include <string>
 #include "constants.hpp"
 #include "move.hpp"
+#include "funcs.hpp"
 
 using std::cin;
 using std::cout;
@@ -42,5 +43,6 @@ Move::Move(string uci) {
 }
 
 std::ostream& operator << (std::ostream& out, const Move& move) {
+    out << "<Move(" << square_to_string(move._from_square) << square_to_string(move._to_square) << ">";
     return out;
 }
