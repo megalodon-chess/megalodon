@@ -47,3 +47,20 @@ string piece_to_symbol(int piece) {
         case BK: return "k";
     }
 }
+
+int symbol_to_piece(string symbol) {
+    switch (symbol[0]) {
+        case 'P': return WP;
+        case 'N': return WN;
+        case 'B': return WB;
+        case 'R': return WR;
+        case 'Q': return WQ;
+        case 'K': return WK;
+        case 'p': return BP;
+        case 'n': return BN;
+        case 'b': return BB;
+        case 'r': return BR;
+        case 'q': return BQ;
+        case 'k': return BK;
+    }
+}

@@ -32,3 +32,4 @@ using std::string;
 
 
 string piece_to_symbol(int);
+int symbol_to_piece(string);
