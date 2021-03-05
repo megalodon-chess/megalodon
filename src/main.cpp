@@ -47,7 +47,7 @@ void loop() {
         if (cmd == "quit") break;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") cout << "uciok" << endl;
-        else if (cmd == "d") cout << board << endl;
+        else if (cmd == "d") cout << board.as_string() << endl;
 
         else if (cmd.substr(0, 2) == "go") cout << "bestmove e2e4" << endl;
     }
