@@ -21,8 +21,8 @@
 
 all: main clean
 
-main: chess/constants.o chess/board.o chess/move.o main.o
-	g++ chess/constants.o chess/board.o chess/move.o main.o -o Megalodon
+main: chess/funcs.o chess/constants.o chess/board.o chess/move.o main.o
+	g++ chess/funcs.o chess/constants.o chess/board.o chess/move.o main.o -o Megalodon
 
 clean:
 	rm *.o
