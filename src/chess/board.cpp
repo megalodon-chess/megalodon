@@ -43,3 +43,18 @@ Board::Board() {
     };
     _turn = true;
 }
+
+
+string Board::get_fen(void) {
+    string fen;
+    int slash = 1;
+    int space = 0;
+
+    for (auto row = 0; row < _board.size(); row++) {
+        for (auto col = 0; col < _board[row].size(); col++) {
+            ;
+        }
+    }
+
+    return fen;
+}

@@ -33,6 +33,7 @@ using std::string;
 class Board {
 public:
     Board();
+    string get_fen(void);
 
 private:
     vector<vector<int>> _board;
