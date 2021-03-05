@@ -18,4 +18,17 @@
 //
 
 #include <iostream>
-#include "board.hpp"
+#include <vector>
+#include <string>
+#include "constants.hpp"
+
+using std::cout;
+using std::endl;
+using std::vector;
+using std::string;
+
+
+Board::~Board() {}
+
+
+Board::Board() {}
