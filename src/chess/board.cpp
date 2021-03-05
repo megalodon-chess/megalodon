@@ -31,3 +31,7 @@ using std::string;
 
 
 Board::Board() {}
+
+void Board::print(void) {
+    return;
+}
