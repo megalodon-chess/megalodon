@@ -18,8 +18,18 @@
 //
 
 #include <iostream>
+#include <string>
+
+using std::string;
 
 
 int main() {
-    std::cout << "hello" << std::endl;
+    while (true) {
+        string cmd;
+        getline(std::cin, cmd);
+
+        if (cmd == "quit") return 0;
+        else if (cmd == "isready") std::cout << "readyok" << std::endl;
+        else if (cmd == "uci") std::cout << "uciok" << std::endl;
+    }
 }
