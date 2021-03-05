@@ -221,5 +221,7 @@ vector<Move> Board::rook_moves(vector<int> sq) {
 }
 
 vector<Move> Board::bishop_moves(vector<int> sq) {
-    ;
+    vector<Move> moves;
+    string from = square_to_string(sq);
+    vector<vector<int>> dirs = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
 }
