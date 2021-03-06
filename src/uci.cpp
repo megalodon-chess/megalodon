@@ -23,6 +23,7 @@
 #include "chess/board.hpp"
 #include "chess/funcs.hpp"
 #include "eval.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -79,6 +80,7 @@ void setup_position(Board& board, string cmd) {
 
 
 void loop() {
+    Options options;
     Board board;
     string cmd;
 
@@ -95,6 +97,8 @@ void loop() {
             vector<string> parts = split(cmd, " ");
             string name = parts[2];
             string value = parts[4];
+
+            if (name == "UsePieceMaps") options.UsePieceMaps = (value == "true");
         }
 
         else if (cmd == "d") cout << board.as_string() << endl;
