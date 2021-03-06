@@ -260,3 +260,7 @@ vector<Move> Board::knight_moves(vector<int> sq) {
 vector<Move> Board::king_moves(vector<int> sq) {
     return _calc_jump_moves(sq, {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}});
 }
+
+vector<Move> Board::pawn_moves(vector<int> sq) {
+    ;
+}
