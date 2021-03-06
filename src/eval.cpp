@@ -24,6 +24,7 @@
 #include "chess/board.hpp"
 #include "chess/funcs.hpp"
 #include "eval.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -111,7 +112,17 @@ float material_weight(int movect) {
 }
 
 
-float piece_map(Board board) {
+float piece_map(Board board, Options options) {
+    if (!options.pm_loaded) {
+        options.pmaps["pawn"] = PieceMap("pmaps/pawn");
+        options.pmaps["knight"] = PieceMap("pmaps/knight");
+        options.pmaps["bishop"] = PieceMap("pmaps/bishop");
+        options.pmaps["rook"] = PieceMap("pmaps/rook");
+        options.pmaps["queen"] = PieceMap("pmaps/queen");
+        options.pmaps["king"] = PieceMap("pmaps/king");
+        options.pm_loaded = true;
+    }
+
     return 123;
 }
 
@@ -120,10 +131,13 @@ float piece_map_weight(int movect) {
 }
 
 
-float eval(Board board) {
+float eval(Board board, Options options) {
     int movect = board.move_stack().size();
 
     float mat = material(board) * material_weight(movect);
+    float pmaps;
+    if (options.UsePieceMaps) pmaps = piece_map(board, options) * piece_map_weight(movect);
+    else pmaps = 0;
 
-    return mat;
+    return mat + pmaps;
 }
