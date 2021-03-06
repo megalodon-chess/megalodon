@@ -118,7 +118,7 @@ void loop() {
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
         else if (startswith(cmd, "go")) {
-            mmrval result = minimax(board, options, 0, 4);
+            mmrval result = minimax(board, options, 0, 3); 
             cout << "bestmove " << result.second.uci() << endl;
         }
         else if (cmd == "stop");
