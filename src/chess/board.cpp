@@ -197,8 +197,20 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
-vector<Move> get_all_legal_moves() {
-    ;
+vector<Move> Board::get_all_legal_moves() {
+    vector<Move> moves;
+    for (auto row = 0; row < 8; row++) {
+        for (auto col = 0; col < 8; col++) {
+            int piece = _board[row][col];
+            switch (piece) {
+                case WP:
+                    vector<Move> new_moves = pawn_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end());
+                
+            }
+        }
+    }
 }
 
 vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
