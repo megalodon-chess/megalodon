@@ -203,7 +203,7 @@ vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs
 
     for (auto dir: dirs) {
         // Loop till edge of board
-        for (auto i = 1; i < max_dist; i++) {
+        for (auto i = 1; i < max_dist+1; i++) {
             // Move in the direction for i distance
             vector<int> sum = {0, 0};
             for (auto j = 0; j < i; j++) sum = addvecs(sum, dir);
@@ -258,12 +258,49 @@ vector<Move> Board::knight_moves(vector<int> sq) {
 }
 
 vector<Move> Board::king_moves(vector<int> sq) {
-    return _calc_jump_moves(sq, {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}});
+    vector<Move> moves = _calc_jump_moves(sq, {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}});
+
+    if (_turn) {
+        if (_castling[0]) moves.push_back(Move("e1g1"));
+        if (_castling[1]) moves.push_back(Move("e1c1"));
+    } else {
+        if (_castling[2]) moves.push_back(Move("e8g8"));
+        if (_castling[3]) moves.push_back(Move("e8c8"));
+    }
+    return moves;
 }
 
 vector<Move> Board::pawn_moves(vector<int> sq) {
     vector<Move> moves;
+    const string from = square_to_string(sq);
+    vector<vector<int>> sides;
 
-    if (_turn) moves = _calc_sliding_moves(sq, {{-1, 0}}, sq[1] == 6 ? 2 : 1);  // If pawn is on first rank then move 2 else 1
-    else moves = _calc_sliding_moves(sq, {{1, 0}}, sq[1] == 1 ? 2 : 1);  // If pawn is on seventh rank then move 2 else 1
+    if (_turn) {
+        for (auto r = sq[0]; r > sq[0] - 2; r--) {
+            const vector<int> pos = {r, sq[1]};
+            if (!in_board(pos)) break;  // If out of board break
+            if (_board[pos[0]][pos[1]] != EM) break;  // If piece in way break
+            moves.push_back(Move(from + square_to_string(pos)));
+        }
+        sides = {{-1, -1}, {-1, 1}};
+    } else {
+        for (auto r = sq[0]; r < sq[0] + 2; r++) {
+            const vector<int> pos = {r, sq[1]};
+            if (!in_board(pos)) break;  // If out of board break
+            if (_board[pos[0]][pos[1]] != EM) break;  // If piece in way break
+            moves.push_back(Move(from + square_to_string(pos)));
+        }
+        sides = {{1, -1}, {1, 1}};
+    }
+
+    for (auto side: sides) {
+        vector<int> pos = addvecs(sq, side);
+        if (in_board(pos)) {
+            int piece = _board[pos[0]][pos[1]];
+            if (pos == _ep_square || (piece != EM && _turn != piece_color(piece))) {
+                moves.push_back(Move(from + square_to_string(pos)));
+            }
+        }
+    }
+    return moves;
 }
