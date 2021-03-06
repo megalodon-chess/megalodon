@@ -86,7 +86,22 @@ string Board::as_string() {
 }
 
 Board Board::copy() {
-    return Board(_board, _castling, _ep, _ep_square, _move_stack);
+    Board board;
+
+    board._board.clear();
+    for (auto row: _board) {
+        vector<int> new_row;
+        for (auto piece: row) new_row.push_back(piece);
+        board._board.push_back(row);
+    }
+
+    board._castling = _castling;
+    board._turn = _turn;
+    board._ep = _ep;
+    board._ep_square = _ep_square;
+    board._move_stack = _move_stack;
+
+    return board;
 }
 
 vector<vector<int>> Board::board() {
