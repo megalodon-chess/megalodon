@@ -25,7 +25,7 @@ CFILES = chess/funcs.cpp chess/constants.cpp chess/board.cpp chess/move.cpp piec
 all: compile clean
 
 # Compile, clean, and run executable.
-dev: compile clean run
+dev: compile run
 
 # Uses g++ to compile files.
 compile: $(FILES)
