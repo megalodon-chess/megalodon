@@ -61,9 +61,13 @@ void loop() {
         if (cmd == "quit") break;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") cout << "uciok" << endl;
+
         else if (cmd == "d") cout << board.as_string() << endl;
+        else if (cmd == "eval");
 
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
+        else if (startswith(cmd, "go"));
+        else if (cmd == "stop");
     }
 }
