@@ -233,7 +233,7 @@ vector<Move> Board::queen_moves(vector<int> sq) {
 
 vector<Move> Board::knight_moves(vector<int> sq) {
     vector<Move> moves;
-    vector<vector<int>> ends = {
+    const vector<vector<int>> ends = {
         {-2,  1},
         { 2,  1},
         {-2, -1},
