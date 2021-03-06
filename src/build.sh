@@ -17,7 +17,6 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-FILES="src/chess/funcs.cpp src/chess/constants.cpp src/chess/board.cpp src/chess/move.cpp src/eval.cpp \
-    src/search.cpp src/options.cpp src/uci.cpp src/main.cpp"
+FILES="chess/funcs.cpp chess/constants.cpp chess/board.cpp chess/move.cpp piecemap.cpp eval.cpp search.cpp options.cpp uci.cpp main.cpp"
 
 g++ -std=c++17 $FILES -o Megalodon
