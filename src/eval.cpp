@@ -82,7 +82,9 @@ float piece_map(Board board, Options& options) {
 }
 
 float piece_map_weight(int movect) {
-    return 1.0;
+    float weight = -0.05*movect + 2;
+    if (weight < 0) weight = 0;
+    return weight;
 }
 
 
