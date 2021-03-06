@@ -267,10 +267,10 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
     vector<vector<int>> sides;
 
     if (_turn) {
-        moves = _calc_sliding_moves(sq, {{-1, 0}}, sq[1] == 6 ? 2 : 1);  // If pawn is on first rank then move 2 else 1
+        moves = _calc_sliding_moves(sq, {{-1, 0}}, sq[0] == 6 ? 2 : 1);  // If pawn is on first rank then move 2 else 1
         sides = {{-1, -1}, {-1, 1}};
     } else {
-        moves = _calc_sliding_moves(sq, {{1, 0}}, sq[1] == 1 ? 2 : 1);  // If pawn is on seventh rank then move 2 else 1
+        moves = _calc_sliding_moves(sq, {{1, 0}}, sq[0] == 1 ? 2 : 1);  // If pawn is on seventh rank then move 2 else 1
         sides = {{1, -1}, {1, 1}};
     }
 
