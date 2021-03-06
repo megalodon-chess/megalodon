@@ -77,10 +77,6 @@ string Board::as_string() {
     return str;
 }
 
-Board Board::copy() {
-    return Board(fen());
-}
-
 vector<vector<int>> Board::board() {
     return _board;
 }
