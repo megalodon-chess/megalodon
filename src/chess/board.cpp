@@ -197,6 +197,10 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
+vector<Move> get_all_legal_moves() {
+    ;
+}
+
 vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
     vector<Move> moves;
     const string from = square_to_string(sq);
