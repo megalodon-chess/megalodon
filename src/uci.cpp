@@ -82,8 +82,6 @@ void loop() {
     Board board;
     string cmd;
 
-    bool opt_usepm = true;
-
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
 
@@ -97,9 +95,6 @@ void loop() {
             vector<string> parts = split(cmd, " ");
             string name = parts[2];
             string value = parts[4];
-
-            if (name == "UsePieceMaps") opt_usepm = (value == "true");
-            cout << opt_usepm << endl;
         }
 
         else if (cmd == "d") cout << board.as_string() << endl;
