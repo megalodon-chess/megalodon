@@ -31,6 +31,13 @@ using std::vector;
 using std::string;
 
 
+void print_eval(Board board) {
+    cout << "   Category   |  Eval  |  Weight  |  Final\n";
+    cout << " -------------+--------+----------+---------\n";
+    cout << "     Material | ";
+}
+
+
 void setup_position(Board& board, string cmd) {
     cmd = strip(replace(cmd, "position"));
     if (startswith(cmd, "startpos")) {
@@ -63,7 +70,7 @@ void loop() {
         else if (cmd == "uci") cout << "uciok" << endl;
 
         else if (cmd == "d") cout << board.as_string() << endl;
-        else if (cmd == "eval");
+        else if (cmd == "eval") print_eval(board);
 
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
