@@ -56,6 +56,13 @@ string Move::as_string() {
     return str;
 }
 
+string Move::uci() {
+    string str;
+    str += square_to_string(_from_square);
+    str += square_to_string(_to_square);
+    return str;
+}
+
 vector<int> Move::to_square() {
     return _to_square;
 }
