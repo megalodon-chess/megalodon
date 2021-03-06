@@ -41,6 +41,7 @@ public:
 
     vector<vector<int>> board();
     vector<Move> move_stack();
+    Move peek();
     string fen();
     bool turn();
     Board copy();

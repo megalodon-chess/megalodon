@@ -89,6 +89,10 @@ vector<Move> Board::move_stack() {
     return _move_stack;
 }
 
+Move Board::peek() {
+    return _move_stack.back();
+}
+
 void Board::set_fen(string fen) {
     vector<string> parts = split(fen, " ");
     string position = parts[0];
