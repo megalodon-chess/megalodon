@@ -118,8 +118,9 @@ void loop() {
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
         else if (startswith(cmd, "go")) {
-            mmrval result = minimax(board, options, 0, 3); 
-            cout << "info score cp " << (int)(result.first*100) << endl;
+            mmrval result = minimax(board, options, 0, 3);
+            float score = result.first * (board.turn() ? 100 : -100);
+            cout << "info score cp " << (int)score << endl;
             cout << "bestmove " << result.second.uci() << endl;
         }
         else if (cmd == "stop");
