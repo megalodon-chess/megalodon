@@ -242,7 +242,10 @@ vector<Move> Board::get_all_legal_moves() {
 }
 
 vector<Move> Board::_filter_moves(vector<Move> moves) {
-    ;
+    for (auto move: moves) {
+        Board tmp;
+        tmp.set_fen(fen());
+    }
 }
 
 vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
