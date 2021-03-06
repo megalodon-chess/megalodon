@@ -174,6 +174,10 @@ string Board::fen() {
     return fen;
 }
 
+bool Board::turn() {
+    return _turn;
+}
+
 void Board::push(Move move) {
     vector<int> to = move.to_square();
     vector<int> from = move.from_square();
