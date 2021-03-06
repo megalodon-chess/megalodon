@@ -33,6 +33,15 @@ using std::string;
 
 
 Board::Board() {
+    reset();
+}
+
+Board::Board(string fen) {
+    set_fen(fen);
+    _move_stack = {};
+}
+
+void Board::reset() {
     _board = {
         {BR, BN, BB, BQ, BK, BB, BN, BR},
         {BP, BP, BP, BP, BP, BP, BP, BP},
@@ -46,11 +55,6 @@ Board::Board() {
     _turn = true;
     _castling = {true, true, true, true};
     _ep = false;
-    _move_stack = {};
-}
-
-Board::Board(string fen) {
-    set_fen(fen);
     _move_stack = {};
 }
 
