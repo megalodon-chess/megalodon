@@ -44,6 +44,7 @@ public:
     Move peek();
     string fen();
     bool turn();
+    Board copy();
     void set_fen(string);
 
     void push(Move);
