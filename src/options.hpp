@@ -22,8 +22,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <map>
-#include "eval.hpp"
+#include "piecemap.hpp"
 
 using std::cin;
 using std::cout;
@@ -44,5 +43,10 @@ public:
     bool UsePieceMaps;
 
     bool pm_loaded;
-    std::map<string, PieceMap> pmaps;
+    PieceMap pm_pawn;
+    PieceMap pm_knight;
+    PieceMap pm_bishop;
+    PieceMap pm_rook;
+    PieceMap pm_queen;
+    PieceMap pm_king;
 };
