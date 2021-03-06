@@ -225,6 +225,11 @@ vector<Move> Board::get_all_legal_moves() {
                     new_moves = queen_moves({row, col});
                     moves.reserve(moves.size() + new_moves.size());  // reverse for performance
                     moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+                case WK:
+                case BK:
+                    new_moves = king_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
             }
         }
     }
