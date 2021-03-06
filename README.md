@@ -18,6 +18,7 @@ make
 If you don't have GNU make installed, run `build.sh`
 
 ``` bash
+cd src
 ./build.sh
 ```
 
