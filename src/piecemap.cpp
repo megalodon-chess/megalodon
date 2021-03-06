@@ -67,6 +67,10 @@ void PieceMap::set_weights(string fname) {
     cout << "info string loading piece map from " << fname << "..." << std::flush;
 
     std::ifstream file(fname);
+    if (!file.good()) {
+        cout << "\ninfo string failed to load piece map from " << fname << ". Aborting." << endl;
+        std::exit(1);
+    }
     _weights = {};
     for (auto y = 0; y < 8; y++) {
         vector<float> row;
