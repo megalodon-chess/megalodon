@@ -32,8 +32,8 @@ using std::vector;
 using std::string;
 
 
-int material(Board board) {
-    int mat = 0;
+float material(Board board) {
+    float mat = 0;
 
     for (auto row: board.board()) {
         for (auto piece: row) {

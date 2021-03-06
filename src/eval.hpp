@@ -32,7 +32,7 @@ using std::vector;
 using std::string;
 
 
-int material(Board);
+float material(Board);
 float material_weight(int);
 
 float eval(Board);
