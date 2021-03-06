@@ -50,10 +50,11 @@ float material_weight(int movect) {
 }
 
 
-float piece_maps(Board board) {
+float piece_map(Board board) {
+    return 123;
 }
 
-float piece_maps_weight(int movect) {
+float piece_map_weight(int movect) {
     return 1.0;
 }
 

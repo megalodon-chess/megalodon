@@ -35,7 +35,7 @@ using std::string;
 float material(Board);
 float material_weight(int);
 
-float piece_maps(Board);
-float piece_maps_weight(int);
+float piece_map(Board);
+float piece_map_weight(int);
 
 float eval(Board);
