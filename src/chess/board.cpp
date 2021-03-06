@@ -219,14 +219,18 @@ vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>>
     return moves;
 }
 
-vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> ends) {
+vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> jumps) {
     vector<Move> moves;
     const string from = square_to_string(sq);
 
-    for (auto end: ends) {
+    // For each endpoint in jumps
+    for (auto end: jumps) {
+        // Check that position
         vector<int> pos = addvecs(sq, end);
+        // If position is inside board
         if (in_board(pos)) {
             int piece = _board[pos[0]][pos[1]];
+            // If the piece is empty, or of opposite color; add move
             if (piece == EM || _turn != piece_color(piece)) moves.push_back(Move(from + square_to_string(pos)));
         }
     }
