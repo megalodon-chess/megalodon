@@ -50,9 +50,8 @@ mmrval minimax(Board board, Options& options, int depth, int max_depth) {
             if (result.first > best_eval) {
                 best_ind = i;
                 best_eval = result.first;
-                best_move = result.second;
             }
         }
-        return mmrval(best_eval, best_move);
+        return mmrval(best_eval, moves[best_ind]);
     }
 }
