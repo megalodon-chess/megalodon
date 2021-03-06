@@ -36,6 +36,7 @@ class Board {
 public:
     Board();
     Board(string);
+    Board(vector<vector<int>>, vector<bool>, bool, vector<int>, vector<Move>);
     void reset();
     string as_string();
 
