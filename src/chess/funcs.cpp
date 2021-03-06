@@ -132,6 +132,16 @@ string replace(string str, string rep) {
     return str;
 }
 
+string join(string sep, vector<string> parts) {
+    string str;
+    for (auto i = 0; i < parts.size()-1; i++) {
+        str += parts[i];
+        str += sep;
+    }
+    str += parts[parts.size()-1];
+    return str;
+}
+
 bool startswith(string str, string prefix) {
     if (str.size() < prefix.size()) return false;
     return (str.substr(0, prefix.size()) == prefix);

@@ -43,7 +43,9 @@ bool in_board(vector<int>);
 
 string strip(string);
 string replace(string, string);
+string join(string, vector<string>);
 bool startswith(string, string);
 bool endswith(string, string);
 vector<string> split(string, string="");
+
 vector<int> addvecs(vector<int>, vector<int>);
