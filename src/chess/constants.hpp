@@ -50,3 +50,7 @@ constexpr int BK = 16;
 const string CASTLING_SYMBOLS = "KQkq";
 const string BOARD_OUTROW = "+---+---+---+---+---+---+---+---+";
 const string BOARD_OUTCOL = " | ";
+
+const vector<vector<int>> DIR_R = {};
+const vector<vector<int>> DIR_B = {};
+const vector<vector<int>> DIR_Q = {};
