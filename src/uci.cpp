@@ -22,6 +22,7 @@
 #include <string>
 #include "chess/board.hpp"
 #include "chess/funcs.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
@@ -31,10 +32,28 @@ using std::vector;
 using std::string;
 
 
+string evstr(float num, int width=10) {
+    string ev = std::to_string(num);
+    if (ev.size() > 6) ev = ev.substr(0, 6);
+
+    int padding = width - 2 - ev.size();
+    for (auto i = 0; i < padding; i++) ev += " ";
+    ev = "  " + ev;
+
+    return ev;
+}
+
+
 void print_eval(Board board) {
-    cout << "   Category   |  Eval  |  Weight  |  Final\n";
-    cout << " -------------+--------+----------+---------\n";
-    cout << "     Material | ";
+    int movect = board.move_stack().size();
+    float mat = material(board);
+    float mat_weight = material_weight(movect);
+    float mat_final = mat * mat_weight;
+
+    cout << "   Category   |   Eval   |  Weight  |  Final\n";
+    cout << " -------------+----------+----------+----------\n";
+    cout << "     Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat_final) << "\n";
+    cout << std::flush;
 }
 
 
