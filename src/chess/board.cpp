@@ -203,9 +203,10 @@ vector<Move> Board::get_all_legal_moves() {
         for (auto col = 0; col < 8; col++) {
             int piece = _board[row][col];
             switch (piece) {
+                // reverse for performance
                 case WP:
                     vector<Move> new_moves = pawn_moves({row, col});
-                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.reserve(moves.size() + new_moves.size());
                     moves.insert(moves.end(), new_moves.begin(), new_moves.end());
                 
             }
