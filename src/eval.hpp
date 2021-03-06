@@ -38,6 +38,7 @@ public:
     PieceMap(string);
 
     void normalize(int=1);
+    float eval(int, int);
 
 private:
     vector<vector<float>> _weights;

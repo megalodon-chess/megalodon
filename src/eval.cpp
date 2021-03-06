@@ -71,6 +71,10 @@ void PieceMap::normalize(int bound) {
     }
 }
 
+float PieceMap::eval(int x, int y) {
+    return _weights[y][x];
+}
+
 
 float material(Board board) {
     float mat = 0;
