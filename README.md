@@ -2,6 +2,8 @@
 
 UCI chess engine.
 
+[Version 0.0.1][latest] was recently released!
+
 ## To Run
 
 1. Clone or download the repository.
@@ -25,3 +27,5 @@ cd src
 ## The Name
 
 The name megalodon comes from an extinct species of shark that lived millions of years ago.
+
+[latest]: https://github.com/HuangPatrick16777216/megalodon/releases/latest
