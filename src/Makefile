@@ -33,7 +33,7 @@ compile: $(FILES)
 
 # Compiles for Windows. Doesn't work fully.
 compilewin: $(FILES)
-	x86_64-w64-mingw32-g++-win32 -o Megalodon-Windows $(CFILES)
+	x86_64-w64-mingw32-g++ -o Megalodon-Windows $(CFILES)
 
 # Removes all c++ objects and clears console.
 clean:
