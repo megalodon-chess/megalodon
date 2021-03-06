@@ -220,6 +220,11 @@ vector<Move> Board::get_all_legal_moves() {
                     new_moves = bishop_moves({row, col});
                     moves.reserve(moves.size() + new_moves.size());  // reverse for performance
                     moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+                case WQ:
+                case BQ:
+                    new_moves = queen_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
             }
         }
     }
