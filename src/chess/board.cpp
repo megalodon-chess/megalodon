@@ -197,13 +197,13 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
-bool Board::in_check() {
-    vector<int> k_pos = king_pos(_turn);
+bool Board::in_check(bool side) {
+    vector<int> k_pos = king_pos(side);
 
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col++) {
             int piece = _board[row][col];
-            if (piece_color(piece) == _turn) break;
+            if (piece_color(piece) == side) break;
             vector<Move> moves;
             switch (piece) {
                 case WP: case BP: moves = pawn_moves({row, col}); break;
@@ -245,6 +245,8 @@ vector<Move> Board::_filter_moves(vector<Move> moves) {
     for (auto move: moves) {
         Board tmp;
         tmp.set_fen(fen());
+        tmp.push(move);
+
     }
 }
 

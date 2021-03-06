@@ -60,7 +60,7 @@ public:
 
     vector<Move> pawn_moves(vector<int>);
 
-    bool in_check();
+    bool in_check(bool);
 
 
 private:
