@@ -242,23 +242,23 @@ vector<Move> Board::_calc_jump_moves(vector<int> sq, vector<vector<int>> jumps) 
 }
 
 vector<Move> Board::rook_moves(vector<int> sq) {
-    return _calc_sliding_moves(sq, {{0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+    return _calc_sliding_moves(sq, DIR_R);
 }
 
 vector<Move> Board::bishop_moves(vector<int> sq) {
-    return _calc_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}});
+    return _calc_sliding_moves(sq, DIR_B);
 }
 
 vector<Move> Board::queen_moves(vector<int> sq) {
-    return _calc_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+    return _calc_sliding_moves(sq, DIR_Q);
 }
 
 vector<Move> Board::knight_moves(vector<int> sq) {
-    return _calc_jump_moves(sq, {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}});
+    return _calc_jump_moves(sq, DIR_N);
 }
 
 vector<Move> Board::king_moves(vector<int> sq) {
-    vector<Move> moves = _calc_jump_moves(sq, {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}});
+    vector<Move> moves = _calc_jump_moves(sq, DIR_K);
 
     if (_turn) {
         if (_castling[0]) moves.push_back(Move("e1g1"));
