@@ -313,7 +313,7 @@ vector<Move> Board::_calc_jump_moves(vector<int> sq, vector<vector<int>> jumps) 
         // If position is inside board
         if (in_board(pos)) {
             int piece = _board[pos[0]][pos[1]];
-            // If the piece is empty, or of opposite color; add move
+            // If the piece is empty or of opposite color add move
             if (piece == EM || _turn != piece_color(piece)) moves.push_back(Move(from + square_to_string(pos)));
         }
     }
