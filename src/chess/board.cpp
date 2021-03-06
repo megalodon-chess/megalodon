@@ -203,7 +203,7 @@ vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs
 
     for (auto dir: dirs) {
         // Loop till edge of board
-        for (auto i = 1; i < max_dist; i++) {
+        for (auto i = 1; i < max_dist+1; i++) {
             // Move in the direction for i distance
             vector<int> sum = {0, 0};
             for (auto j = 0; j < i; j++) sum = addvecs(sum, dir);
