@@ -50,10 +50,5 @@ void loop() {
 
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
-        else {
-            for (auto m: board.knight_moves({4, 5})) {
-                cout << m.as_string() << endl;
-            }
-        }
     }
 }
