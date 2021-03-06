@@ -45,7 +45,7 @@ string evstr(float num, int width=10) {
 }
 
 
-void print_eval(Board board, Options options) {
+void print_eval(Board board, Options& options) {
     int movect = board.move_stack().size();
 
     cout << "\n";
@@ -58,7 +58,7 @@ void print_eval(Board board, Options options) {
     cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat*mat_weight) << "\n";
 
     if (options.UsePieceMaps) {
-        float pm = piece_map(board);
+        float pm = piece_map(board, options);
         float pm_weight = piece_map_weight(movect);
         cout << "   Piece Map |" << evstr(pm) << "|" << evstr(pm_weight) << "|" << evstr(pm*pm_weight) << "\n";
     } else {
