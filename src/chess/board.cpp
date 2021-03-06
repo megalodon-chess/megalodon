@@ -231,6 +231,7 @@ vector<Move> Board::queen_moves(vector<int> sq) {
     return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
 
-vector<Moves> Board::knight_moves(vector<int> sq) {
-    ;
+vector<Move> Board::knight_moves(vector<int> sq) {
+    vector<Move> moves;
+    return moves;
 }
