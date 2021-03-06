@@ -23,6 +23,7 @@
 #include "chess/board.hpp"
 #include "chess/funcs.hpp"
 #include "eval.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -44,16 +45,26 @@ string evstr(float num, int width=10) {
 }
 
 
-void print_eval(Board board) {
+void print_eval(Board board, Options options) {
     int movect = board.move_stack().size();
-    float mat = material(board);
-    float mat_weight = material_weight(movect);
-    float mat_final = mat * mat_weight;
 
     cout << "\n";
     cout << "    Category |   Eval   |  Weight  |  Final\n";
     cout << " ------------+----------+----------+----------\n";
-    cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat_final) << "\n";
+
+
+    float mat = material(board);
+    float mat_weight = material_weight(movect);
+    cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat*mat_weight) << "\n";
+
+    if (options.UsePieceMaps) {
+        float pm = piece_map(board);
+        float pm_weight = piece_map_weight(movect);
+        cout << "   Piece Map |" << evstr(pm) << "|" << evstr(pm_weight) << "|" << evstr(pm*pm_weight) << "\n";
+    } else {
+        cout << "   Piece Map | Disabled | Disabled | Disabled";
+    }
+
     cout << endl;
 }
 
@@ -79,6 +90,7 @@ void setup_position(Board& board, string cmd) {
 
 
 void loop() {
+    Options options;
     Board board;
     string cmd;
 
@@ -95,10 +107,12 @@ void loop() {
             vector<string> parts = split(cmd, " ");
             string name = parts[2];
             string value = parts[4];
+
+            if (name == "UsePieceMaps") options.UsePieceMaps = (value == "true");
         }
 
         else if (cmd == "d") cout << board.as_string() << endl;
-        else if (cmd == "eval") print_eval(board);
+        else if (cmd == "eval") print_eval(board, options);
 
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);

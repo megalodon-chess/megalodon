@@ -29,3 +29,14 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+class Options {
+/*
+UsePieceMaps: type=check, default=true, whether to use piece maps for evaluation.
+*/
+
+public:
+    Options();
+    bool UsePieceMaps;
+};
