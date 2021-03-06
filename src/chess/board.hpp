@@ -56,6 +56,8 @@ public:
     vector<Move> knight_moves(vector<int>);
     vector<Move> king_moves(vector<int>);
 
+    vector<Move> pawn_moves(vector<int>);
+
 
 private:
     vector<vector<int>> _board;
