@@ -56,6 +56,21 @@ PieceMap::PieceMap(string fname) {
     }
 }
 
+void PieceMap::normalize(int bound) {
+    int max_val = 0;
+    for (auto row: _weights) {
+        for (auto weight: row) {
+            if (weight > max_val) max_val = weight;
+        }
+    }
+
+    for (auto y = 0; y < 8; y++) {
+        for (auto x = 0; x < 8; x++) {
+            _weights[y][x] *= (bound/max_val); 
+        }
+    }
+}
+
 
 float material(Board board) {
     float mat = 0;
