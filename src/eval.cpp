@@ -18,6 +18,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
@@ -30,6 +31,30 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+PieceMap::PieceMap() {
+    _weights = {};
+    for (auto y = 0; y < 8; y++) {
+        vector<float> row;
+        for (auto x = 0; x < 8; x++) row.push_back(0);
+        _weights.push_back(row);
+    }
+}
+
+PieceMap::PieceMap(string fname) {
+    std::ifstream file(fname);
+    _weights = {};
+    for (auto y = 0; y < 8; y++) {
+        vector<float> row;
+        for (auto x = 0; x < 8; x++) {
+            float weight;
+            file >> weight;
+            row.push_back(weight);
+        }
+        _weights.push_back(row);
+    }
+}
 
 
 float material(Board board) {
