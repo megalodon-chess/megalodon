@@ -49,6 +49,8 @@ public:
 
     vector<int> king_pos(bool);
 
+    vector<Move> get_all_legal_moves();
+
     vector<Move> rook_moves(vector<int>);
     vector<Move> bishop_moves(vector<int>);
     vector<Move> queen_moves(vector<int>);
