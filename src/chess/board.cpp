@@ -206,7 +206,7 @@ vector<int> Board::king_pos(bool side) {
 }
 
 bool Board::in_check(bool side) {
-    vector<int> k_pos = king_pos(side);
+    const vector<int> k_pos = king_pos(side);
 
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col++) {
@@ -220,8 +220,7 @@ bool Board::in_check(bool side) {
                 case WQ: case BQ: moves = queen_moves({row, col}); break;
                 case WK: case BK: moves = king_moves({row, col}); break;
 
-                // todo bug next line
-                //if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
+                if (std::find_if(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
             }
         }
     }
