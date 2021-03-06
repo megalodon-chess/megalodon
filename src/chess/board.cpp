@@ -219,7 +219,7 @@ vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>>
     return moves;
 }
 
-vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> sqs) {
+vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> ends) {
     ;
 }
 
