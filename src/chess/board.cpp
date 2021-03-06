@@ -349,9 +349,10 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
     vector<Move> moves;
     const string from = square_to_string(sq);
     vector<vector<int>> sides;
+    int speed = sq[0] == (_turn ? 6 : 1) ? 3 : 2;
 
     if (_turn) {
-        for (auto r = sq[0] - 1; r > sq[0] - 3; r--) {
+        for (auto r = sq[0] - 1; r > sq[0] - speed; r--) {
             vector<int> pos{r, sq[1]};
             if (!in_board(pos)) break;  // If out of board break
             if (_board[pos[0]][pos[1]] != EM) break;  // If piece in way break
@@ -359,7 +360,7 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
         }
         sides = {{-1, -1}, {-1, 1}};
     } else {
-        for (auto r = sq[0] + 1; r < sq[0] + 3; r++) {
+        for (auto r = sq[0] + 1; r < sq[0] + speed; r++) {
             vector<int> pos{r, sq[1]};
             if (!in_board(pos)) break;  // If out of board break
             if (_board[pos[0]][pos[1]] != EM) break;  // If piece in way break
