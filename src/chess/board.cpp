@@ -233,6 +233,7 @@ vector<Move> Board::queen_moves(vector<int> sq) {
 
 vector<Move> Board::knight_moves(vector<int> sq) {
     vector<Move> moves;
+    const string from = square_to_string(sq);
     const vector<vector<int>> ends = {
         {-2,  1},
         { 2,  1},
@@ -247,6 +248,9 @@ vector<Move> Board::knight_moves(vector<int> sq) {
 
     for (auto end: ends) {
         vector<int> pos = addvecs(sq, end);
+        if (in_board(pos) && _turn != piece_color(_board[pos[0]][pos[1]])) {
+            moves.push_back(Move(from + square_to_string(pos)));
+        }
     }
     return moves;
 }
