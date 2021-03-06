@@ -256,3 +256,7 @@ vector<Move> Board::queen_moves(vector<int> sq) {
 vector<Move> Board::knight_moves(vector<int> sq) {
     return _calculate_jump_moves(sq, {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}});
 }
+
+vector<Move> Board::king_moves(vector<int> sq) {
+    ;
+}
