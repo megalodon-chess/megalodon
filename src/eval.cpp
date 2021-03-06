@@ -50,6 +50,14 @@ float material_weight(int movect) {
 }
 
 
+float piece_maps(Board board) {
+}
+
+float piece_maps_weight(int movect) {
+    return 1.0;
+}
+
+
 float eval(Board board) {
     int movect = board.move_stack().size();
 
