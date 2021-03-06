@@ -336,11 +336,11 @@ vector<Move> Board::king_moves(vector<int> sq) {
     vector<Move> moves = _calc_jump_moves(sq, DIR_K);
 
     if (_turn) {
-        if (_castling[0]) moves.push_back(Move("e1g1"));
-        if (_castling[1]) moves.push_back(Move("e1c1"));
+        if (_castling[0] && _board[7][5] == EM && _board[7][6] == EM) moves.push_back(Move("e1g1"));
+        if (_castling[1] && _board[7][3] == EM && _board[7][2] == EM && _board[7][1]) moves.push_back(Move("e1c1"));
     } else {
-        if (_castling[2]) moves.push_back(Move("e8g8"));
-        if (_castling[3]) moves.push_back(Move("e8c8"));
+        if (_castling[2] && _board[0][5] == EM && _board[0][6] == EM) moves.push_back(Move("e8g8"));
+        if (_castling[3] && _board[0][3] == EM && _board[0][2] == EM && _board[0][1]) moves.push_back(Move("e8c8"));
     }
     return moves;
 }
