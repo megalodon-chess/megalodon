@@ -55,8 +55,15 @@ void print_eval(Board board, Options options) {
 
     float mat = material(board);
     float mat_weight = material_weight(movect);
-    float mat_final = mat * mat_weight;
-    cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat_final) << "\n";
+    cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat*mat_weight) << "\n";
+
+    if (options.UsePieceMaps) {
+        float pm = piece_map(board);
+        float pm_weight = piece_map_weight(movect);
+        cout << "   Piece Map |" << evstr(pm) << "|" << evstr(pm_weight) << "|" << evstr(pm*pm_weight) << "\n";
+    } else {
+        cout << "   Piece Map | Disabled | Disabled | Disabled";
+    }
 
     cout << endl;
 }
