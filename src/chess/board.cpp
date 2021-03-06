@@ -127,15 +127,19 @@ void Board::set_fen(string fen) {
 
     _turn = (turn == "w");
 
-    for (auto i: castling) {
-        int ind;
-        switch (i) {
-            case 'K': ind = 0; break;
-            case 'Q': ind = 1; break;
-            case 'k': ind = 2; break;
-            case 'q': ind = 3; break;
+    if (castling == "-") {
+        _castling = {false, false, false, false};
+    } else {
+        for (auto i: castling) {
+            int ind;
+            switch (i) {
+                case 'K': ind = 0; break;
+                case 'Q': ind = 1; break;
+                case 'k': ind = 2; break;
+                case 'q': ind = 3; break;
+            }
+            _castling[ind] = true;
         }
-        _castling[ind] = true;
     }
 
     _ep = (ep != "-");
