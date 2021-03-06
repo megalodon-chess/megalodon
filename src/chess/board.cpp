@@ -349,7 +349,7 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
     vector<Move> moves;
     const string from = square_to_string(sq);
     vector<vector<int>> sides;
-    int speed = sq[0] == (_turn ? 6 : 1) ? 3 : 2;
+    int speed = sq[0] == (_turn ? 6 : 1) ? 3 : 2;  // If white then check rank 6 else rank 1. Depending on if the pawn is there decide speed.
 
     if (_turn) {
         for (auto r = sq[0] - 1; r > sq[0] - speed; r--) {
