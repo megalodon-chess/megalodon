@@ -281,4 +281,5 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
             if (piece != EM && _turn != piece_color(piece)) moves.push_back(Move(from + square_to_string(pos)));
         }
     }
+    return moves;
 }
