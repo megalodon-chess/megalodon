@@ -267,7 +267,12 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
     vector<vector<int>> sides;
 
     if (_turn) {
-        moves = _calc_sliding_moves(sq, {{-1, 0}}, sq[0] == 6 ? 2 : 1);  // If pawn is on first rank then move 2 else 1
+        for (auto r = sq[0]; r > sq[0] - 2; r--) {
+            const vector<int> pos = {r, sq[1]};
+            if (!in_board(pos)) break;  // If out of board break
+            if (_board[pos[0]][pos[1]] != EM) break;  // If piece in way break
+            moves.push_back(Move(from + square_to_string(pos)));
+        }
         sides = {{-1, -1}, {-1, 1}};
     } else {
         moves = _calc_sliding_moves(sq, {{1, 0}}, sq[0] == 1 ? 2 : 1);  // If pawn is on seventh rank then move 2 else 1
@@ -278,7 +283,9 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
         vector<int> pos = addvecs(sq, side);
         if (in_board(pos)) {
             int piece = _board[pos[0]][pos[1]];
-            if (piece != EM && _turn != piece_color(piece)) moves.push_back(Move(from + square_to_string(pos)));
+            if (piece != EM && _turn != piece_color(piece)) {
+                moves.push_back(Move(from + square_to_string(pos)));
+            }
         }
     }
     return moves;
