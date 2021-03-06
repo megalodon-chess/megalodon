@@ -39,7 +39,7 @@ mmrval minimax(Board board, Options& options, int depth, int max_depth) {
     } else if (depth < max_depth) {
         vector<Move> moves = board.get_all_legal_moves();
         int best_ind = 0;
-        int best_eval = INT_MIN;
+        int best_eval = board.turn() ? INT_MIN : INT_MAX;
         Move best_move;
 
         for (auto i = 0; i < moves.size(); i++) {
@@ -47,7 +47,11 @@ mmrval minimax(Board board, Options& options, int depth, int max_depth) {
             Board new_board = board.copy();
             new_board.push(move);
             mmrval result = minimax(new_board, options, depth+1, max_depth);
-            if (result.first > best_eval) {
+
+            bool exceeds = false;
+            if (board.turn() && result.first > best_eval) exceeds = true;
+            if (!board.turn() && result.first < best_eval) exceeds = true;
+            if (exceeds) {
                 best_ind = i;
                 best_eval = result.first;
             }
