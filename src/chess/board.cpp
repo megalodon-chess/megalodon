@@ -262,5 +262,9 @@ vector<Move> Board::king_moves(vector<int> sq) {
 }
 
 vector<Move> Board::pawn_moves(vector<int> sq) {
-    ;
+    vector<Move> moves;
+    bool starting;
+
+    if (_turn) moves = _calc_sliding_moves(sq, {{-1, 0}}, sq[1] == 6 ? 2 : 1);  // If pawn is on first rank then move 2 else 1
+    else moves = _calc_sliding_moves(sq, {{1, 0}}, sq[1] == 1 ? 2 : 1);  // If pawn is on seventh rank then move 2 else 1
 }
