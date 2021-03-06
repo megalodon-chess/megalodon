@@ -77,6 +77,10 @@ string Board::as_string() {
     return str;
 }
 
+Board Board::copy() {
+    return Board(fen());
+}
+
 vector<vector<int>> Board::board() {
     return _board;
 }
@@ -174,6 +178,10 @@ string Board::fen() {
     return fen;
 }
 
+bool Board::turn() {
+    return _turn;
+}
+
 void Board::push(Move move) {
     vector<int> to = move.to_square();
     vector<int> from = move.from_square();
@@ -227,11 +235,11 @@ vector<Move> Board::get_all_legal_moves() {
             if (piece_color(piece) != _turn) continue;
             vector<Move> new_moves;
             switch (piece) {
-                case WP: case BP: new_moves = pawn_moves({row, col}); break; 
-                case WN: case BN: new_moves = knight_moves({row, col}); break;
-                case WB: case BB: new_moves = bishop_moves({row, col}); break;
-                case WQ: case BQ: new_moves = queen_moves({row, col}); break;
-                case WK: case BK: new_moves = king_moves({row, col}); break;
+                case WP: case BP: new_moves = _filter_moves(pawn_moves({row, col})); break; 
+                case WN: case BN: new_moves = _filter_moves(knight_moves({row, col})); break;
+                case WB: case BB: new_moves = _filter_moves(bishop_moves({row, col})); break;
+                case WQ: case BQ: new_moves = _filter_moves(queen_moves({row, col})); break;
+                case WK: case BK: new_moves = _filter_moves(king_moves({row, col})); break;
             }
 
             moves.reserve(moves.size() + new_moves.size());  // reverse for performance
@@ -242,12 +250,14 @@ vector<Move> Board::get_all_legal_moves() {
 }
 
 vector<Move> Board::_filter_moves(vector<Move> moves) {
+    vector<Move> final_moves;
     for (auto move: moves) {
         Board tmp;
         tmp.set_fen(fen());
         tmp.push(move);
-
+        if (!tmp.in_check(!tmp.turn())) final_moves.push_back(move);
     }
+    return final_moves;
 }
 
 vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
