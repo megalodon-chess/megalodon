@@ -204,38 +204,31 @@ bool Board::in_check() {
         for (auto col = 0; col < 8; col++) {
             int piece = _board[row][col];
             if (piece_color(piece) == _turn) break;
+            vector<Move> moves;
             switch (piece) {
                 case WP: case BP:
-                    vector<Move> moves = pawn_moves({row, col});
-
-                    if(std::find(moves.begin(), moves.end(), ) != moves.end()) {
-                        /* v contains x */
-                    } else {
-                        /* v does not contain x */
-                    }
+                    moves = pawn_moves({row, col});
+                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
 
                 case WN: case BN:
-                    new_moves = knight_moves({row, col});
-                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
-                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+                    moves = knight_moves({row, col});
+                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
 
                 case WB: case BB:
-                    new_moves = bishop_moves({row, col});
-                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
-                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+                    moves = bishop_moves({row, col});
+                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
 
                 case WQ: case BQ:
-                    new_moves = queen_moves({row, col});
-                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
-                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+                    moves = queen_moves({row, col});
+                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
 
                 case WK: case BK:
-                    new_moves = king_moves({row, col});
-                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
-                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+                    moves = king_moves({row, col});
+                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
             }
         }
     }
+    return false;
 }
 
 vector<Move> Board::get_all_legal_moves() {
