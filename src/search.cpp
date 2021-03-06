@@ -24,6 +24,7 @@
 #include "chess/funcs.hpp"
 #include "eval.hpp"
 #include "search.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,8 +33,8 @@ using std::endl;
 using std::vector;
 using std::string;
 
-int search(Board board, int depth) {
-    if (depth == 0) return eval(board);
+int search(Board board, Options options, int depth) {
+    if (depth == 0) return eval(board, options);
 
-    moves = board.
+    vector<Move> moves = board.get_all_legal_moves();
 }

@@ -31,4 +31,4 @@ using std::endl;
 using std::vector;
 using std::string;
 
-int search(Board, int);
+int search(Board, Options, int);
