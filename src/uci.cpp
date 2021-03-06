@@ -24,6 +24,7 @@
 #include "chess/funcs.hpp"
 #include "eval.hpp"
 #include "options.hpp"
+#include "search.hpp"
 
 using std::cin;
 using std::cout;
@@ -116,7 +117,10 @@ void loop() {
 
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
-        else if (startswith(cmd, "go"));
+        else if (startswith(cmd, "go")) {
+            mmrval result = minimax(board, options, 0, 4);
+            cout << "bestmove " << result.second.uci() << endl;
+        }
         else if (cmd == "stop");
     }
 }

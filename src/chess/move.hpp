@@ -37,6 +37,7 @@ public:
     Move();
     Move(string);
     string as_string();
+    string uci();
 
     vector<int> to_square();
     vector<int> from_square();
