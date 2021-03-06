@@ -40,6 +40,13 @@ void setup_position(Board& board, string cmd) {
             vector<string> uci_moves = split(strip(replace(cmd, "moves")), " ");
             for (auto move: uci_moves) board.push_uci(move);
         }
+    } else if (startswith(cmd, "fen")) {
+        vector<string> parts = split(strip(replace(cmd, "fen")), " ");
+        board.set_fen(join(" ", vector<string>(parts.begin(), parts.begin()+6)));
+        if (parts.size() >= 7 && parts[6] == "moves") {
+            vector<string> uci_moves = vector<string>(parts.begin()+7, parts.end());
+            for (auto move: uci_moves) board.push_uci(move);
+        }
     }
 }
 
