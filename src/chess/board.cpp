@@ -204,13 +204,12 @@ vector<Move> Board::get_all_legal_moves() {
             int piece = _board[row][col];
             if (piece_color(piece) != _turn) break;
             switch (piece) {
-                // reverse for performance
                 case WP:
                 case BP:
                     vector<Move> new_moves = pawn_moves({row, col});
-                    moves.reserve(moves.size() + new_moves.size());
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
                     moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
-                
+                case 
             }
         }
     }
