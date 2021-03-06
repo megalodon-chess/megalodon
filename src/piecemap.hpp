@@ -39,7 +39,7 @@ public:
     string as_string();
 
     void set_weights(string);
-    void normalize(int=1);
+    void normalize(float=1);
     float eval_square(int, int);
     float eval(Board, int);
 

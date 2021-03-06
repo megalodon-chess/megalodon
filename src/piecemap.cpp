@@ -81,8 +81,8 @@ void PieceMap::set_weights(string fname) {
     cout << "finished" << endl;
 }
 
-void PieceMap::normalize(int bound) {
-    int max_val = 0;
+void PieceMap::normalize(float bound) {
+    float max_val = 0;
     for (auto row: _weights) {
         for (auto weight: row) {
             if (weight > max_val) max_val = weight;
@@ -104,7 +104,7 @@ float PieceMap::eval(Board board, int piece) {
     vector<vector<int>> pos = board.board();
     bool reverse = (piece >= BP);
     int count = 0;
-    int total_eval = 0;
+    float total_eval = 0;
 
     for (auto y = 0; y < 8; y++) {
         for (auto x = 0; x < 8; x++) {
