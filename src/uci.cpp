@@ -118,8 +118,5 @@ void loop() {
         else if (startswith(cmd, "position")) setup_position(board, cmd);
         else if (startswith(cmd, "go"));
         else if (cmd == "stop");
-        else {
-            for (auto m: board.get_all_legal_moves()) cout << m.as_string() << endl;
-        }
     }
 }
