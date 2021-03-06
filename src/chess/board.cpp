@@ -17,10 +17,10 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include "board.hpp"
 #include "constants.hpp"
 #include "funcs.hpp"
@@ -220,7 +220,8 @@ bool Board::in_check(bool side) {
                 case WQ: case BQ: moves = queen_moves({row, col}); break;
                 case WK: case BK: moves = king_moves({row, col}); break;
 
-                if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
+                // todo bug next line
+                //if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
             }
         }
     }
