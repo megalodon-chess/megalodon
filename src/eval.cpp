@@ -75,6 +75,23 @@ float PieceMap::eval(int x, int y) {
     return _weights[y][x];
 }
 
+string PieceMap::as_string() {
+    string str;
+    str += " " + BOARD_OUTROW + "\n";
+    for (auto i = 0; i < 8; i++) {
+        str += BOARD_OUTCOL;
+        for (auto piece: _weights[i]) {
+            str += std::to_string(piece) + BOARD_OUTCOL;
+        }
+        str += std::to_string(8-i) + "\n";
+        str += " " + BOARD_OUTROW + "\n";
+    }
+    str += "   ";
+    for (auto i: "abcdefgh") str += string(1, i) + "   ";
+
+    return str;
+}
+
 
 float material(Board board) {
     float mat = 0;

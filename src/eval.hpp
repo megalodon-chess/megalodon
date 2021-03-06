@@ -36,6 +36,7 @@ class PieceMap {
 public:
     PieceMap();
     PieceMap(string);
+    string as_string();
 
     void normalize(int=1);
     float eval(int, int);
