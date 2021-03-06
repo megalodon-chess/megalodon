@@ -215,6 +215,11 @@ vector<Move> Board::get_all_legal_moves() {
                     new_moves = knight_moves({row, col});
                     moves.reserve(moves.size() + new_moves.size());  // reverse for performance
                     moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+                case WB:
+                case BB:
+                    new_moves = bishop_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
             }
         }
     }
