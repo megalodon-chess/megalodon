@@ -206,25 +206,13 @@ bool Board::in_check() {
             if (piece_color(piece) == _turn) break;
             vector<Move> moves;
             switch (piece) {
-                case WP: case BP:
-                    moves = pawn_moves({row, col});
-                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
+                case WP: case BP: moves = pawn_moves({row, col}); break;
+                case WN: case BN: moves = knight_moves({row, col}); break;
+                case WB: case BB: moves = bishop_moves({row, col}); break;
+                case WQ: case BQ: moves = queen_moves({row, col}); break;
+                case WK: case BK: moves = king_moves({row, col}); break;
 
-                case WN: case BN:
-                    moves = knight_moves({row, col});
-                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
-
-                case WB: case BB:
-                    moves = bishop_moves({row, col});
-                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
-
-                case WQ: case BQ:
-                    moves = queen_moves({row, col});
-                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
-
-                case WK: case BK:
-                    moves = king_moves({row, col});
-                    if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
+                if (std::find(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
             }
         }
     }
