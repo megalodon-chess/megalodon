@@ -220,7 +220,7 @@ bool Board::in_check(bool side) {
                 case WQ: case BQ: moves = queen_moves({row, col}); break;
                 case WK: case BK: moves = king_moves({row, col}); break;
 
-                if (std::find_if(moves.begin(), moves.end(), k_pos) != moves.end()) return true;
+                if (std::find_if(moves.begin(), moves.end(), [&](Move m){return m.to_square()==k_pos;}) != moves.end()) return true;
             }
         }
     }
