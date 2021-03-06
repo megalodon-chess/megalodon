@@ -50,10 +50,11 @@ void print_eval(Board board) {
     float mat_weight = material_weight(movect);
     float mat_final = mat * mat_weight;
 
+    cout << "\n";
     cout << "    Category |   Eval   |  Weight  |  Final\n";
     cout << " ------------+----------+----------+----------\n";
     cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat_final) << "\n";
-    cout << std::flush;
+    cout << endl;
 }
 
 
@@ -79,7 +80,6 @@ void setup_position(Board& board, string cmd) {
 
 void loop() {
     Board board;
-    board.set_fen("8/8/8/8/8/8/8/8 w KQkq - 0 1");
     string cmd;
 
     while (getline(cin, cmd)) {
