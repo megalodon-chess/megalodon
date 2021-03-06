@@ -60,7 +60,7 @@ public:
 
     vector<Move> pawn_moves(vector<int>);
 
-    bool in_check();
+    bool in_check(bool);
 
 
 private:
@@ -73,4 +73,6 @@ private:
 
     vector<Move> _calc_sliding_moves(vector<int>, vector<vector<int>>, const int);
     vector<Move> _calc_jump_moves(vector<int>, vector<vector<int>>);
+
+    vector<Move> _filter_moves(vector<Move>);
 };
