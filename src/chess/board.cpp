@@ -288,7 +288,7 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
         vector<int> pos = addvecs(sq, side);
         if (in_board(pos)) {
             int piece = _board[pos[0]][pos[1]];
-            if (piece != EM && _turn != piece_color(piece)) {
+            if (pos == _ep_square || (piece != EM && _turn != piece_color(piece))) {
                 moves.push_back(Move(from + square_to_string(pos)));
             }
         }
