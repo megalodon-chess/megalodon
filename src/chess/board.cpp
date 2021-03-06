@@ -233,6 +233,7 @@ vector<Move> Board::get_all_legal_moves() {
             }
         }
     }
+    return moves;
 }
 
 vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
