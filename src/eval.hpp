@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,24 +33,10 @@ using std::vector;
 using std::string;
 
 
-class PieceMap {
-public:
-    PieceMap();
-    PieceMap(string);
-    string as_string();
-
-    void normalize(int=1);
-    float eval(int, int);
-
-private:
-    vector<vector<float>> _weights;
-};
-
-
 float material(Board);
 float material_weight(int);
 
-float piece_map(Board);
+float piece_map(Board, Options&);
 float piece_map_weight(int);
 
-float eval(Board);
+float eval(Board, Options&);

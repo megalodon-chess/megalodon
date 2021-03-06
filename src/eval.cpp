@@ -34,66 +34,6 @@ using std::vector;
 using std::string;
 
 
-PieceMap::PieceMap() {
-    _weights = {};
-    for (auto y = 0; y < 8; y++) {
-        vector<float> row;
-        for (auto x = 0; x < 8; x++) row.push_back(0);
-        _weights.push_back(row);
-    }
-}
-
-PieceMap::PieceMap(string fname) {
-    std::ifstream file(fname);
-    _weights = {};
-    for (auto y = 0; y < 8; y++) {
-        vector<float> row;
-        for (auto x = 0; x < 8; x++) {
-            float weight;
-            file >> weight;
-            row.push_back(weight);
-        }
-        _weights.push_back(row);
-    }
-}
-
-void PieceMap::normalize(int bound) {
-    int max_val = 0;
-    for (auto row: _weights) {
-        for (auto weight: row) {
-            if (weight > max_val) max_val = weight;
-        }
-    }
-
-    for (auto y = 0; y < 8; y++) {
-        for (auto x = 0; x < 8; x++) {
-            _weights[y][x] *= (bound/max_val); 
-        }
-    }
-}
-
-float PieceMap::eval(int x, int y) {
-    return _weights[y][x];
-}
-
-string PieceMap::as_string() {
-    string str;
-    str += " " + BOARD_OUTROW + "\n";
-    for (auto i = 0; i < 8; i++) {
-        str += BOARD_OUTCOL;
-        for (auto piece: _weights[i]) {
-            str += std::to_string(piece) + BOARD_OUTCOL;
-        }
-        str += std::to_string(8-i) + "\n";
-        str += " " + BOARD_OUTROW + "\n";
-    }
-    str += "   ";
-    for (auto i: "abcdefgh") str += string(1, i) + "   ";
-
-    return str;
-}
-
-
 float material(Board board) {
     float mat = 0;
 
@@ -112,14 +52,14 @@ float material_weight(int movect) {
 }
 
 
-float piece_map(Board board, Options options) {
+float piece_map(Board board, Options& options) {
     if (!options.pm_loaded) {
-        options.pmaps["pawn"] = PieceMap("pmaps/pawn");
-        options.pmaps["knight"] = PieceMap("pmaps/knight");
-        options.pmaps["bishop"] = PieceMap("pmaps/bishop");
-        options.pmaps["rook"] = PieceMap("pmaps/rook");
-        options.pmaps["queen"] = PieceMap("pmaps/queen");
-        options.pmaps["king"] = PieceMap("pmaps/king");
+        options.pm_pawn.set_weights("pmaps/pawn");
+        options.pm_knight.set_weights("pmaps/knight");
+        options.pm_bishop.set_weights("pmaps/bishop");
+        options.pm_rook.set_weights("pmaps/rook");
+        options.pm_queen.set_weights("pmaps/queen");
+        options.pm_king.set_weights("pmaps/king");
         options.pm_loaded = true;
     }
 
@@ -131,7 +71,7 @@ float piece_map_weight(int movect) {
 }
 
 
-float eval(Board board, Options options) {
+float eval(Board board, Options& options) {
     int movect = board.move_stack().size();
 
     float mat = material(board) * material_weight(movect);
