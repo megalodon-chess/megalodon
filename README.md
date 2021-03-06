@@ -9,10 +9,16 @@ UCI chess engine.
 3. Use `make` to compile
 4. Run the executable
 
-```
+``` bash
 cd src
 make
 ./Megalodon
+```
+
+If you don't have GNU make installed, run `build.sh`
+
+``` bash
+./build.sh
 ```
 
 ## The Name
