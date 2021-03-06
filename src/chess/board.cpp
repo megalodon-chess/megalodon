@@ -197,7 +197,7 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
-vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
+vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
     vector<Move> moves;
     const string from = square_to_string(sq);
 
@@ -223,7 +223,7 @@ vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>>
     return moves;
 }
 
-vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> jumps) {
+vector<Move> Board::_calc_jump_moves(vector<int> sq, vector<vector<int>> jumps) {
     vector<Move> moves;
     const string from = square_to_string(sq);
 
@@ -242,17 +242,21 @@ vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> ju
 }
 
 vector<Move> Board::rook_moves(vector<int> sq) {
-    return _calculate_sliding_moves(sq, {{0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+    return _calc_sliding_moves(sq, {{0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
 
 vector<Move> Board::bishop_moves(vector<int> sq) {
-    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}});
+    return _calc_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}});
 }
 
 vector<Move> Board::queen_moves(vector<int> sq) {
-    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+    return _calc_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
 
 vector<Move> Board::knight_moves(vector<int> sq) {
-    return _calculate_jump_moves(sq, {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}});
+    return _calc_jump_moves(sq, {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}});
+}
+
+vector<Move> Board::king_moves(vector<int> sq) {
+    return _calc_jump_moves(sq, {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}});
 }
