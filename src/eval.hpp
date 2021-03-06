@@ -32,6 +32,18 @@ using std::vector;
 using std::string;
 
 
+class PieceMap {
+public:
+    PieceMap();
+    PieceMap(string);
+
+    void normalize(int=1);
+
+private:
+    vector<vector<float>> _weights;
+};
+
+
 float material(Board);
 float material_weight(int);
 
