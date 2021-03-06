@@ -86,7 +86,7 @@ string Board::as_string() {
 }
 
 Board Board::copy() {
-    return Board(fen());
+    return Board(_board, _castling, _ep, _ep_square, _move_stack);
 }
 
 vector<vector<int>> Board::board() {
