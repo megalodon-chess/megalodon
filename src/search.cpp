@@ -31,9 +31,3 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
-
-int search(Board board, int depth) {
-    if (depth == 0) return eval(board);
-
-    moves = board.
-}
