@@ -195,7 +195,7 @@ vector<int> Board::king_pos(bool side) {
 
 vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>> dirs) {
     vector<Move> moves;
-    string from = square_to_string(sq);
+    const string from = square_to_string(sq);
 
     for (auto dir: dirs) {
         // Loop till edge of board
