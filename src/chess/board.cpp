@@ -203,13 +203,18 @@ vector<Move> Board::get_all_legal_moves() {
         for (auto col = 0; col < 8; col++) {
             int piece = _board[row][col];
             if (piece_color(piece) != _turn) break;
+            vector<Move> new_moves;
             switch (piece) {
                 case WP:
                 case BP:
-                    vector<Move> new_moves = pawn_moves({row, col});
+                    new_moves = pawn_moves({row, col});
                     moves.reserve(moves.size() + new_moves.size());  // reverse for performance
                     moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
-                case 
+                case WN:
+                case BN:
+                    new_moves = knight_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
             }
         }
     }
