@@ -245,5 +245,8 @@ vector<Move> Board::knight_moves(vector<int> sq) {
     };
 
 
+    for (auto end: ends) {
+        vector<int> pos = addvecs(sq, end);
+    }
     return moves;
 }
