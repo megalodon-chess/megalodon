@@ -32,4 +32,7 @@ using std::string;
 
 Options::Options() {
     UsePieceMaps = true;
+
+    pm_loaded = false;
+    pmaps.clear();
 }

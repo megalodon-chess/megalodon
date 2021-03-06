@@ -22,6 +22,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
@@ -38,5 +40,9 @@ UsePieceMaps: type=check, default=true, whether to use piece maps for evaluation
 
 public:
     Options();
+
     bool UsePieceMaps;
+
+    bool pm_loaded;
+    std::map<string, PieceMap> pmaps;
 };
