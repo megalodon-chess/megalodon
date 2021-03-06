@@ -198,10 +198,42 @@ vector<int> Board::king_pos(bool side) {
 }
 
 bool Board::in_check() {
+    vector<int> k_pos = king_pos(_turn);
+
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col++) {
             int piece = _board[row][col];
             if (piece_color(piece) == _turn) break;
+            switch (piece) {
+                case WP: case BP:
+                    vector<Move> moves = pawn_moves({row, col});
+
+                    if(std::find(moves.begin(), moves.end(), ) != moves.end()) {
+                        /* v contains x */
+                    } else {
+                        /* v does not contain x */
+                    }
+
+                case WN: case BN:
+                    new_moves = knight_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+
+                case WB: case BB:
+                    new_moves = bishop_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+
+                case WQ: case BQ:
+                    new_moves = queen_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+
+                case WK: case BK:
+                    new_moves = king_moves({row, col});
+                    moves.reserve(moves.size() + new_moves.size());  // reverse for performance
+                    moves.insert(moves.end(), new_moves.begin(), new_moves.end()); break;
+            }
         }
     }
 }
