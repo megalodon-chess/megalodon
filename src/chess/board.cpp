@@ -219,6 +219,10 @@ vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>>
     return moves;
 }
 
+vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> sqs) {
+    ;
+}
+
 vector<Move> Board::rook_moves(vector<int> sq) {
     return _calculate_sliding_moves(sq, {{0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
