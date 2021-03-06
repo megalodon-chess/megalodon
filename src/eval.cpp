@@ -72,11 +72,11 @@ float piece_map(Board board, Options& options) {
     }
 
     float pawns = options.pm_pawn.eval(board, WP) - options.pm_pawn.eval(board, BP);
-    float knights = options.pm_pawn.eval(board, WN) - options.pm_pawn.eval(board, BN);
-    float bishops = options.pm_pawn.eval(board, WB) - options.pm_pawn.eval(board, BB);
-    float rooks = options.pm_pawn.eval(board, WR) - options.pm_pawn.eval(board, BR);
-    float queens = options.pm_pawn.eval(board, WQ) - options.pm_pawn.eval(board, BQ);
-    float kings = options.pm_pawn.eval(board, WK) - options.pm_pawn.eval(board, BK);
+    float knights = options.pm_knight.eval(board, WN) - options.pm_knight.eval(board, BN);
+    float bishops = options.pm_bishop.eval(board, WB) - options.pm_bishop.eval(board, BB);
+    float rooks = options.pm_rook.eval(board, WR) - options.pm_rook.eval(board, BR);
+    float queens = options.pm_queen.eval(board, WQ) - options.pm_queen.eval(board, BQ);
+    float kings = options.pm_king.eval(board, WK) - options.pm_king.eval(board, BK);
 
     return pawns + knights + bishops + rooks + queens + kings;
 }
