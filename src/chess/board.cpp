@@ -241,6 +241,10 @@ vector<Move> Board::get_all_legal_moves() {
     return moves;
 }
 
+vector<Move> Board::_filter_moves(vector<Move> moves) {
+    ;
+}
+
 vector<Move> Board::_calc_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
     vector<Move> moves;
     const string from = square_to_string(sq);
