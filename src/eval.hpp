@@ -33,4 +33,6 @@ using std::string;
 
 
 int material(Board);
+int material_weight(int);
+
 int eval(Board);
