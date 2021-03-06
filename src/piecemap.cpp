@@ -102,7 +102,7 @@ float PieceMap::eval_square(int x, int y) {
 
 float PieceMap::eval(Board board, int piece) {
     vector<vector<int>> pos = board.board();
-    bool reverse = (piece >= BP);
+    bool black = (piece >= BP);
     int count = 0;
     float total_eval = 0;
 
@@ -110,7 +110,7 @@ float PieceMap::eval(Board board, int piece) {
         for (auto x = 0; x < 8; x++) {
             int curr_piece = pos[y][x];
             if (curr_piece == piece) {
-                total_eval += reverse ? _weights[7-y][x] : _weights[y][x];
+                total_eval += black ? _weights[7-y][x] : _weights[y][x];
                 count++;
             }
         }
