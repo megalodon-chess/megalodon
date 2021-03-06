@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include "chess/constants.hpp"
+#include "chess/board.hpp"
 #include "piecemap.hpp"
 
 using std::cin;
@@ -45,6 +46,23 @@ PieceMap::PieceMap(string fname) {
     set_weights(fname);
 }
 
+string PieceMap::as_string() {
+    string str;
+    str += " " + BOARD_OUTROW + "\n";
+    for (auto i = 0; i < 8; i++) {
+        str += BOARD_OUTCOL;
+        for (auto piece: _weights[i]) {
+            str += std::to_string(piece) + BOARD_OUTCOL;
+        }
+        str += std::to_string(8-i) + "\n";
+        str += " " + BOARD_OUTROW + "\n";
+    }
+    str += "   ";
+    for (auto i: "abcdefgh") str += string(1, i) + "   ";
+
+    return str;
+}
+
 void PieceMap::set_weights(string fname) {
     cout << "info string loading piece map from " << fname << "..." << std::flush;
 
@@ -63,8 +81,8 @@ void PieceMap::set_weights(string fname) {
     cout << "finished" << endl;
 }
 
-void PieceMap::normalize(int bound) {
-    int max_val = 0;
+void PieceMap::normalize(float bound) {
+    float max_val = 0;
     for (auto row: _weights) {
         for (auto weight: row) {
             if (weight > max_val) max_val = weight;
@@ -78,23 +96,25 @@ void PieceMap::normalize(int bound) {
     }
 }
 
-float PieceMap::eval(int x, int y) {
+float PieceMap::eval_square(int x, int y) {
     return _weights[y][x];
 }
 
-string PieceMap::as_string() {
-    string str;
-    str += " " + BOARD_OUTROW + "\n";
-    for (auto i = 0; i < 8; i++) {
-        str += BOARD_OUTCOL;
-        for (auto piece: _weights[i]) {
-            str += std::to_string(piece) + BOARD_OUTCOL;
-        }
-        str += std::to_string(8-i) + "\n";
-        str += " " + BOARD_OUTROW + "\n";
-    }
-    str += "   ";
-    for (auto i: "abcdefgh") str += string(1, i) + "   ";
+float PieceMap::eval(Board board, int piece) {
+    vector<vector<int>> pos = board.board();
+    bool reverse = (piece >= BP);
+    int count = 0;
+    float total_eval = 0;
 
-    return str;
+    for (auto y = 0; y < 8; y++) {
+        for (auto x = 0; x < 8; x++) {
+            int curr_piece = pos[y][x];
+            if (curr_piece == piece) {
+                total_eval += reverse ? _weights[7-y][x] : _weights[y][x];
+                count++;
+            }
+        }
+    }
+
+    return total_eval / count;
 }

@@ -22,6 +22,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "chess/board.hpp"
 
 using std::cin;
 using std::cout;
@@ -38,8 +39,9 @@ public:
     string as_string();
 
     void set_weights(string);
-    void normalize(int=1);
-    float eval(int, int);
+    void normalize(float=1);
+    float eval_square(int, int);
+    float eval(Board, int);
 
 private:
     vector<vector<float>> _weights;
