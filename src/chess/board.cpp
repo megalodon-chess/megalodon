@@ -197,13 +197,13 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
-vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>> dirs) {
+vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
     vector<Move> moves;
-    string from = square_to_string(sq);
+    const string from = square_to_string(sq);
 
     for (auto dir: dirs) {
         // Loop till edge of board
-        for (auto i = 1; i < 8; i++) {
+        for (auto i = 1; i < max_dist; i++) {
             // Move in the direction for i distance
             vector<int> sum = {0, 0};
             for (auto j = 0; j < i; j++) sum = addvecs(sum, dir);
@@ -223,14 +223,36 @@ vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>>
     return moves;
 }
 
+vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> jumps) {
+    vector<Move> moves;
+    const string from = square_to_string(sq);
+
+    // For each endpoint in jumps
+    for (auto end: jumps) {
+        // Check that position
+        vector<int> pos = addvecs(sq, end);
+        // If position is inside board
+        if (in_board(pos)) {
+            int piece = _board[pos[0]][pos[1]];
+            // If the piece is empty, or of opposite color; add move
+            if (piece == EM || _turn != piece_color(piece)) moves.push_back(Move(from + square_to_string(pos)));
+        }
+    }
+    return moves;
+}
+
 vector<Move> Board::rook_moves(vector<int> sq) {
     return _calculate_sliding_moves(sq, {{0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
 
 vector<Move> Board::bishop_moves(vector<int> sq) {
-    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {1, -1}});
+    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}});
 }
 
 vector<Move> Board::queen_moves(vector<int> sq) {
-    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+}
+
+vector<Move> Board::knight_moves(vector<int> sq) {
+    return _calculate_jump_moves(sq, {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}});
 }

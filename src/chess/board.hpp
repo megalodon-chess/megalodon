@@ -53,6 +53,8 @@ public:
     vector<Move> bishop_moves(vector<int>);
     vector<Move> queen_moves(vector<int>);
 
+    vector<Move> knight_moves(vector<int>);
+
 
 private:
     vector<vector<int>> _board;
@@ -62,5 +64,6 @@ private:
     bool _turn;
     bool _ep;
 
-    vector<Move> _calculate_sliding_moves(vector<int>, vector<vector<int>>);
+    vector<Move> _calculate_sliding_moves(vector<int>, vector<vector<int>>, const int);
+    vector<Move> _calculate_jump_moves(vector<int>, vector<vector<int>>);
 };
