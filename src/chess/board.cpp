@@ -258,7 +258,16 @@ vector<Move> Board::knight_moves(vector<int> sq) {
 }
 
 vector<Move> Board::king_moves(vector<int> sq) {
-    return _calc_jump_moves(sq, {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}});
+    vector<Move> moves = _calc_jump_moves(sq, {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}});
+
+    if (_turn) {
+        if (_castling[0]) moves.push_back(Move("e1g1"));
+        if (_castling[1]) moves.push_back(Move("e1c1"));
+    } else {
+        if (_castling[2]) moves.push_back(Move("e8g8"));
+        if (_castling[3]) moves.push_back(Move("e8c8"));
+    }
+    return moves;
 }
 
 vector<Move> Board::pawn_moves(vector<int> sq) {
