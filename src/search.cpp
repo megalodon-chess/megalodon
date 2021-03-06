@@ -32,12 +32,3 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
-
-int search(Board board, Options options, int depth) {
-    if (depth == 0) return eval(board, options);
-
-    vector<Move> moves = board.get_all_legal_moves();
-    if (moves.empty()) {
-        ;
-    }
-}
