@@ -35,4 +35,4 @@ using std::string;
 typedef std::pair<float, Move> mmrval;
 
 
-mmrval minimax(Board, int, int);
+mmrval minimax(Board, Options&, int, int);

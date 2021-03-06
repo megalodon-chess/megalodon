@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <climits>
 #include "chess/board.hpp"
 #include "eval.hpp"
 #include "search.hpp"
@@ -32,5 +33,26 @@ using std::vector;
 using std::string;
 
 
-mmrval minimax(Board board, int depth, int target_depth) {
+mmrval minimax(Board board, Options& options, int depth, int max_depth) {
+    if (depth == max_depth) {
+        return mmrval(eval(board, options), board.peek());
+    } else if (depth < max_depth) {
+        vector<Move> moves = board.get_all_legal_moves();
+        int best_ind = 0;
+        int best_eval = INT_MIN;
+        Move best_move;
+
+        for (auto i = 0; i < moves.size(); i++) {
+            Move move = moves[i];
+            Board new_board = board.copy();
+            new_board.push(move);
+            mmrval result = minimax(new_board, options, depth+1, max_depth);
+            if (result.first > best_eval) {
+                best_ind = i;
+                best_eval = result.first;
+                best_move = result.second;
+            }
+        }
+        return mmrval(best_eval, best_move);
+    }
 }
