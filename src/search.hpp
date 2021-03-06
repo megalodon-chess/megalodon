@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
+#include "chess/move.hpp"
 
 using std::cin;
 using std::cout;
@@ -30,3 +31,8 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
+typedef std::pair<float, Move> mmrval;
+
+
+mmrval minimax(Board, int, int);

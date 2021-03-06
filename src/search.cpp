@@ -21,10 +21,8 @@
 #include <vector>
 #include <string>
 #include "chess/board.hpp"
-#include "chess/funcs.hpp"
 #include "eval.hpp"
 #include "search.hpp"
-#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,3 +30,7 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+mmrval minimax(Board board, int depth, int target_depth) {
+}
