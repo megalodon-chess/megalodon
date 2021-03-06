@@ -52,6 +52,8 @@ public:
     vector<Move> bishop_moves(vector<int>);
     vector<Move> queen_moves(vector<int>);
 
+    vector<Move> knight_moves(vector<int>);
+
 
 private:
     vector<vector<int>> _board;
