@@ -45,15 +45,15 @@ int material(Board board) {
     return mat;
 }
 
-int material_weight(int movect) {
-    return 1;
+float material_weight(int movect) {
+    return 1.0;
 }
 
 
-int eval(Board board) {
+float eval(Board board) {
     int movect = board.move_stack().size();
 
-    int mat = material(board) * material_weight(movect);
+    float mat = material(board) * material_weight(movect);
 
     return mat;
 }
