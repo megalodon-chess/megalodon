@@ -93,7 +93,6 @@ void setup_position(Board& board, string cmd) {
 void loop() {
     Options options;
     Board board;
-    board.set_fen("8/8/8/3n4/8/8/8/8 b KQkq - 0 1");
     string cmd;
 
     while (getline(cin, cmd)) {
