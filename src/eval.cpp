@@ -60,6 +60,14 @@ float piece_map(Board board, Options& options) {
         options.pm_rook.set_weights("pmaps/rook");
         options.pm_queen.set_weights("pmaps/queen");
         options.pm_king.set_weights("pmaps/king");
+
+        options.pm_pawn.normalize(0.2);
+        options.pm_knight.normalize(0.5);
+        options.pm_bishop.normalize(0.3);
+        options.pm_rook.normalize(0.4);
+        options.pm_queen.normalize(0.5);
+        options.pm_king.normalize(0.3);
+
         options.pm_loaded = true;
     }
 
