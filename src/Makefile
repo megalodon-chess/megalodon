@@ -17,8 +17,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-FILES = chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o search.o uci.o main.o
-CFILES = chess/funcs.cpp chess/constants.cpp chess/board.cpp chess/move.cpp eval.cpp search.cpp uci.cpp main.cpp
+FILES = chess/funcs.o chess/constants.o chess/board.o chess/move.o eval.o search.o options.o uci.o main.o
+CFILES = chess/funcs.cpp chess/constants.cpp chess/board.cpp chess/move.cpp eval.cpp search.cpp options.cpp uci.cpp main.cpp
 .PHONY: all dev compile clean run
 
 # Compile and clean files.
