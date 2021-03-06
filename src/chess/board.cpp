@@ -197,12 +197,16 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
+bool Board::in_check() {
+    ;
+}
+
 vector<Move> Board::get_all_legal_moves() {
     vector<Move> moves;
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col++) {
             int piece = _board[row][col];
-            if (piece_color(piece) != _turn) break;
+            if (piece_color(piece) != _turn) continue;
             vector<Move> new_moves;
             switch (piece) {
                 case WP: case BP:

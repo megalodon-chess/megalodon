@@ -24,6 +24,7 @@
 #include "chess/funcs.hpp"
 #include "eval.hpp"
 #include "search.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
