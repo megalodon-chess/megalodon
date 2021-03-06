@@ -119,6 +119,7 @@ void loop() {
         else if (startswith(cmd, "position")) setup_position(board, cmd);
         else if (startswith(cmd, "go")) {
             mmrval result = minimax(board, options, 0, 3); 
+            cout << "info score cp " << (int)(result.first*100) << endl;
             cout << "bestmove " << result.second.uci() << endl;
         }
         else if (cmd == "stop");
