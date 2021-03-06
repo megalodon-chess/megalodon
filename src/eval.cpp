@@ -71,7 +71,14 @@ float piece_map(Board board, Options& options) {
         options.pm_loaded = true;
     }
 
-    return 123;
+    float pawns = options.pm_pawn.eval(board, WP) - options.pm_pawn.eval(board, BP);
+    float knights = options.pm_pawn.eval(board, WN) - options.pm_pawn.eval(board, BN);
+    float bishops = options.pm_pawn.eval(board, WB) - options.pm_pawn.eval(board, BB);
+    float rooks = options.pm_pawn.eval(board, WR) - options.pm_pawn.eval(board, BR);
+    float queens = options.pm_pawn.eval(board, WQ) - options.pm_pawn.eval(board, BQ);
+    float kings = options.pm_pawn.eval(board, WK) - options.pm_pawn.eval(board, BK);
+
+    return pawns + knights + bishops + rooks + queens + kings;
 }
 
 float piece_map_weight(int movect) {
