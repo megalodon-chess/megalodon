@@ -22,6 +22,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "piecemap.hpp"
 
 using std::cin;
 using std::cout;
@@ -38,5 +39,14 @@ UsePieceMaps: type=check, default=true, whether to use piece maps for evaluation
 
 public:
     Options();
+
     bool UsePieceMaps;
+
+    bool pm_loaded;
+    PieceMap pm_pawn;
+    PieceMap pm_knight;
+    PieceMap pm_bishop;
+    PieceMap pm_rook;
+    PieceMap pm_queen;
+    PieceMap pm_king;
 };

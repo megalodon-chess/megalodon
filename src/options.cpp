@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "piecemap.hpp"
 #include "options.hpp"
 
 using std::cin;
@@ -32,4 +33,12 @@ using std::string;
 
 Options::Options() {
     UsePieceMaps = true;
+
+    pm_loaded = false;
+    pm_pawn = PieceMap();
+    pm_knight = PieceMap();
+    pm_bishop = PieceMap();
+    pm_rook = PieceMap();
+    pm_queen = PieceMap();
+    pm_king = PieceMap();
 }
