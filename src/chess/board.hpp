@@ -64,4 +64,5 @@ private:
     bool _ep;
 
     vector<Move> _calculate_sliding_moves(vector<int>, vector<vector<int>>);
+    vector<Move> _calculate_jump_moves(vector<int>, vector<vector<int>>);
 };
