@@ -54,6 +54,7 @@ public:
     vector<Move> queen_moves(vector<int>);
 
     vector<Move> knight_moves(vector<int>);
+    vector<Move> king_moves(vector<int>);
 
 
 private:
