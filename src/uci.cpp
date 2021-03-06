@@ -37,6 +37,7 @@ void setup_position(Board& board, string cmd) {
 
 void loop() {
     Board board;
+    board.set_fen("8/8/8/8/8/8/8/8 w KQkq - 0 1");
     string cmd;
 
     while (getline(cin, cmd)) {
@@ -49,5 +50,10 @@ void loop() {
 
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
+        else {
+            for (auto m: board.knight_moves({4, 5})) {
+                cout << m.as_string() << endl;
+            }
+        }
     }
 }

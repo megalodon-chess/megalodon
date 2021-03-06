@@ -225,8 +225,10 @@ vector<Move> Board::_calculate_jump_moves(vector<int> sq, vector<vector<int>> en
 
     for (auto end: ends) {
         vector<int> pos = addvecs(sq, end);
-        if (in_board(pos) && _turn != piece_color(_board[pos[0]][pos[1]]))
-            moves.push_back(Move(from + square_to_string(pos)));
+        if (in_board(pos)) {
+            int piece = _board[pos[0]][pos[1]];
+            if (piece == EM || _turn != piece_color(piece)) moves.push_back(Move(from + square_to_string(pos)));
+        }
     }
     return moves;
 }
