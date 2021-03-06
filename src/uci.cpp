@@ -50,9 +50,9 @@ void print_eval(Board board) {
     float mat_weight = material_weight(movect);
     float mat_final = mat * mat_weight;
 
-    cout << "   Category   |   Eval   |  Weight  |  Final\n";
-    cout << " -------------+----------+----------+----------\n";
-    cout << "     Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat_final) << "\n";
+    cout << "    Category |   Eval   |  Weight  |  Final\n";
+    cout << " ------------+----------+----------+----------\n";
+    cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat_final) << "\n";
     cout << std::flush;
 }
 
