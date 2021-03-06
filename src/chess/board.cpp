@@ -236,13 +236,13 @@ vector<Move> Board::rook_moves(vector<int> sq) {
 }
 
 vector<Move> Board::bishop_moves(vector<int> sq) {
-    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {1, -1}});
+    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}});
 }
 
 vector<Move> Board::queen_moves(vector<int> sq) {
-    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
+    return _calculate_sliding_moves(sq, {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}});
 }
 
 vector<Move> Board::knight_moves(vector<int> sq) {
-    return _calculate_jump_moves(sq, {{-2,  1}, { 2,  1}, {-2, -1}, { 2, -1}, { 1, -2}, {-1,  2}, { 1, -2}, {-1,  2}});
+    return _calculate_jump_moves(sq, {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {1, -2}, {-1, 2}});
 }
