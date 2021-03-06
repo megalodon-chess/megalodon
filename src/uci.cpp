@@ -45,16 +45,19 @@ string evstr(float num, int width=10) {
 }
 
 
-void print_eval(Board board) {
+void print_eval(Board board, Options options) {
     int movect = board.move_stack().size();
-    float mat = material(board);
-    float mat_weight = material_weight(movect);
-    float mat_final = mat * mat_weight;
 
     cout << "\n";
     cout << "    Category |   Eval   |  Weight  |  Final\n";
     cout << " ------------+----------+----------+----------\n";
+
+
+    float mat = material(board);
+    float mat_weight = material_weight(movect);
+    float mat_final = mat * mat_weight;
     cout << "    Material |" << evstr(mat) << "|" << evstr(mat_weight) << "|" << evstr(mat_final) << "\n";
+
     cout << endl;
 }
 
@@ -102,7 +105,7 @@ void loop() {
         }
 
         else if (cmd == "d") cout << board.as_string() << endl;
-        else if (cmd == "eval") print_eval(board);
+        else if (cmd == "eval") print_eval(board, options);
 
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
