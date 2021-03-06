@@ -63,6 +63,6 @@ private:
     bool _turn;
     bool _ep;
 
-    vector<Move> _calculate_sliding_moves(vector<int>, vector<vector<int>>);
+    vector<Move> _calculate_sliding_moves(vector<int>, vector<vector<int>>, const int);
     vector<Move> _calculate_jump_moves(vector<int>, vector<vector<int>>);
 };

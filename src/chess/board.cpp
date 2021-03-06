@@ -193,13 +193,13 @@ vector<int> Board::king_pos(bool side) {
     }
 }
 
-vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>> dirs) {
+vector<Move> Board::_calculate_sliding_moves(vector<int> sq, vector<vector<int>> dirs, const int max_dist = 8) {
     vector<Move> moves;
     const string from = square_to_string(sq);
 
     for (auto dir: dirs) {
         // Loop till edge of board
-        for (auto i = 1; i < 8; i++) {
+        for (auto i = 1; i < max_dist; i++) {
             // Move in the direction for i distance
             vector<int> sum = {0, 0};
             for (auto j = 0; j < i; j++) sum = addvecs(sum, dir);
