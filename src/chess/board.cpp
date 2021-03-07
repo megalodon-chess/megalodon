@@ -399,8 +399,8 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
     return moves;
 }
 
-int Board::attackers(vector<int> sq, bool side) {
-    int count = 0;
+vector<int> Board::attackers(vector<int> sq, bool side) {
+    vector<int> attackers;
     int dest = _board[sq[0]][sq[1]];
     // Need to swap turns because otherwise we won't get proper moves. ex: white piece attacking white piece
     bool swap = (dest != EM && piece_color(dest) == side);
@@ -419,10 +419,10 @@ int Board::attackers(vector<int> sq, bool side) {
                 case WK: case BK: moves = king_moves({row, col}); break;
             }
             // Increase attack count if square in moves of curr piece.
-            if (std::find_if(moves.begin(), moves.end(), [&](Move m){return m.to_square()==sq;}) != moves.end()) count++;
+            if (std::find_if(moves.begin(), moves.end(), [&](Move m){return m.to_square()==sq;}) != moves.end()) attackers.push_back(piece);
         }
     }
 
     _turn = swap ? !_turn : _turn;
-    return count;
+    return attackers;
 }
