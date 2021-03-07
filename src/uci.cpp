@@ -39,7 +39,6 @@ void loop() {
         if (cmd == "quit") break;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
-            cout << "option name UsePieceMaps type check default true\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
