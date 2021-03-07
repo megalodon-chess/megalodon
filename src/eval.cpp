@@ -89,7 +89,7 @@ float piece_map_weight(int movect) {
 
 
 float center(Board board) {
-    ;
+    return 0.0;
 }
 
 float center_control(int movect) {
