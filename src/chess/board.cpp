@@ -409,14 +409,16 @@ int Board::attackers(vector<int> sq, bool side) {
         for (auto col = 0; col < 8; col ++) {
             int piece = _board[row][col];
             if (piece == EM || piece_color(piece) != side) break;
+            vector<Move> moves;
             switch (piece) {
                 case WP: case BP: moves = pawn_moves({row, col}); break;
                 case WN: case BN: moves = knight_moves({row, col}); break;
                 case WB: case BB: moves = bishop_moves({row, col}); break;
                 case WQ: case BQ: moves = queen_moves({row, col}); break;
                 case WK: case BK: moves = king_moves({row, col}); break;
-
             }
+            // Increase attack count if square in moves of curr piece.
+            if (std::find_if(moves.begin(), moves.end(), [&](Move m){return m.to_square()==sq;}) != moves.end()) count++;
         }
     }
 }
