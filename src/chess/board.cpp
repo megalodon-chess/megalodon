@@ -276,6 +276,22 @@ bool Board::in_check(bool side) {
         }
     }
 
+    // Pawn checks
+    vector<vector<int>> pawn_pos;
+    int check_piece;
+    if (side) {
+        pawn_pos = {{kx-1, ky-1}, {kx+1, ky-1}};
+        check_piece = BP;
+    } else {
+        pawn_pos = {{kx-1, ky+1}, {kx+1, ky+1}};
+        check_piece = WP;
+    }
+
+    for (auto pos: pawn_pos) {
+        int x = pos[0], y = pos[1];
+        if (in_board({x, y}) && _board[y][x] == check_piece) return true;
+    }
+
     return false;
 }
 
