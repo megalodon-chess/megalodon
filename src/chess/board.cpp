@@ -398,3 +398,7 @@ vector<Move> Board::pawn_moves(vector<int> sq) {
     }
     return moves;
 }
+
+int Board::attackers(vector<int> sq, bool side) {
+    ;
+}
