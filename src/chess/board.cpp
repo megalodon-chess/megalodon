@@ -241,15 +241,16 @@ bool Board::in_check(bool side) {
     int ky = k_pos[0], kx = k_pos[1];
 
     // Column and row checks
-    for (auto y = ky; y >= 0; y--) {
-        int piece = _board[y][kx];
-        if (side&&(piece==BQ||piece==BR) || !side&&(piece==WQ||piece==WR)) return true;
-        if (piece != 0) break;
-    }
-    for (auto y = ky; y < 8; y++) {
-        int piece = _board[y][kx];
-        if (side&&(piece==BQ||piece==BR) || !side&&(piece==WQ||piece==WR)) return true;
-        if (piece != 0) break;
+    for (auto dir: DIR_R) {
+        int x = kx, y = ky;
+        while (true) {
+            if (!in_board({x, y})) break;
+            int piece = _board[y][x];
+            if (side && (piece==BQ||piece==BR)) return false;
+            if (!side && (piece==WQ||piece==WR)) return false;
+            x += dir[0];
+            y += dir[1];
+        }
     }
 
     for (auto row = 0; row < 8; row++) {
