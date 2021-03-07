@@ -44,7 +44,10 @@ namespace Bitboard {
     constexpr unsigned long long START_BQ = 576460752303423488;
     constexpr unsigned long long START_BK = 1152921504606846976;
 
+    const vector<vector<int>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<int>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
+    const vector<vector<int>> DIR_B = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    const vector<vector<int>> DIR_Q = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<int>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(long long, int);
