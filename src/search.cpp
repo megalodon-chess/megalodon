@@ -45,6 +45,13 @@ Node::Node(Board board, int depth) {
     _active = true;
 }
 
+void Node::set_inactive() {
+    _active = false;
+    for (auto node: _branches) {
+        node._active = false;
+    }
+}
+
 void Node::branch(int target_depth) {
     if (target_depth == _depth+1) {
         for (auto move: _board.get_all_legal_moves()) {

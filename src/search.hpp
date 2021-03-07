@@ -40,6 +40,7 @@ public:
     Node();
     Node(Board, int);
 
+    void set_inactive();
     void branch(int);
 
 private:
