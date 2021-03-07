@@ -237,7 +237,20 @@ vector<int> Board::king_pos(bool side) {
 }
 
 bool Board::in_check(bool side) {
-    const vector<int> k_pos = king_pos(side);
+    vector<int> k_pos = king_pos(side);
+    int ky = k_pos[0], kx = k_pos[1];
+
+    // Column and row checks
+    for (auto y = ky; y >= 0; y--) {
+        int piece = _board[y][kx];
+        if (side&&(piece==BQ||piece==BR) || !side&&(piece==WQ||piece==WR)) return true;
+        if (piece != 0) break;
+    }
+    for (auto y = ky; y < 8; y++) {
+        int piece = _board[y][kx];
+        if (side&&(piece==BQ||piece==BR) || !side&&(piece==WQ||piece==WR)) return true;
+        if (piece != 0) break;
+    }
 
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col++) {
