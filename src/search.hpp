@@ -39,12 +39,13 @@ float time();
 class Node {
 public:
     Node();
-    Node(Board, int);
+    Node(Board, int, Options&);
 
     void set_inactive();
-    void branch(int);
+    void branch(int, Options&);
 
     int node_count();
+    float get_eval();
     evalmove minimax(Options&);
 
 private:
@@ -52,6 +53,7 @@ private:
     Board _board;
     bool _active;
     int _depth;
+    float _eval;
 };
 
 class Tree {

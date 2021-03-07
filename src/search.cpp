@@ -46,11 +46,12 @@ Node::Node() {
     _active = true;
 }
 
-Node::Node(Board board, int depth) {
+Node::Node(Board board, int depth, Options& options) {
     _board = board;
     _depth = depth;
     _branches = {};
     _active = true;
+    _eval = eval(_board, options);  // Decreases speed but improves branching features.
 }
 
 void Node::set_inactive() {
@@ -60,18 +61,18 @@ void Node::set_inactive() {
     }
 }
 
-void Node::branch(int target_depth) {
+void Node::branch(int target_depth, Options& options) {
     if (target_depth == _depth) {
         for (auto move: _board.get_all_legal_moves()) {
             if (!_active) return;
             Board new_board = _board.copy();
             new_board.push(move);
-            _branches.push_back(Node(new_board, _depth+1));
+            _branches.push_back(Node(new_board, _depth+1, options));
         }
     } else if (target_depth > _depth) {
         for (auto i = 0; i < _branches.size(); i++) {
             if (!_active) return;
-            _branches[i].branch(target_depth);
+            _branches[i].branch(target_depth, options);
         }
     }
 }
@@ -82,8 +83,13 @@ int Node::node_count() {
     return count;
 }
 
+float Node::get_eval() {
+    return _eval;
+}
+
 evalmove Node::minimax(Options& options) {
-    if (_branches.empty()) return evalmove(eval(_board, options), _board.peek());
+    if (_branches.empty()) return evalmove(_eval, _board.peek());
+
     int best_ind = 0;
     int best_eval = _board.turn() ? INT_MIN : INT_MAX;
 
@@ -135,13 +141,13 @@ void Tree::stop(Options& options) {
 }
 
 void Tree::go_depth(Options& options, Board board, int depth) {
-    _root = Node(board, 0);
+    _root = Node(board, 0, options);
     setup();
 
     for (auto d = 0; d < depth; d++) {
         _depth = d;
         print_info();
-        _root.branch(d);
+        _root.branch(d, options);
     }
     _depth = depth;
     stop(options);
