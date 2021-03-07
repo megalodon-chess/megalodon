@@ -79,7 +79,6 @@ namespace Bitboard {
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
                 }
-                break;
             }
         }
         return moves;
@@ -93,7 +92,6 @@ namespace Bitboard {
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
                 }
-                break;
             }
         }
         return moves;
@@ -107,7 +105,6 @@ namespace Bitboard {
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
                 }
-                break;
             }
         }
         return moves;
