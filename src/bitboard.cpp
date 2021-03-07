@@ -33,6 +33,16 @@ bool bit(long long num, int pos) {
     return ((1LL << pos) & num) != 0;
 }
 
+long long set_bit(long long num, int pos, bool value) {
+    bool on = bit(num, pos);
+    if (value && !on) {
+        num += (1LL << pos);
+    } else if (!value && on) {
+        num -= (1LL << pos);
+    }
+    return num;
+}
+
 string repr(long long board) {
     vector<string> rows;
     string final = "";
@@ -61,7 +71,7 @@ vector<vector<char>> knight_moves(long long knight, long long same_col, long lon
         if (bit(knight, i)) {
             for (auto dir: DIR_N) {
                 char pos = i + 8*dir[0] + dir[1];
-                if (((1 << pos) & same_col) == 0) moves.push_back({i, pos});
+                if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
             }
         }
     }
