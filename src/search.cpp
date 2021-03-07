@@ -69,7 +69,6 @@ void Node::branch(int target_depth) {
         }
     } else if (target_depth > _depth) {
         for (auto i = 0; i < _branches.size(); i++) {
-            if (_depth == 0) cout << i << endl;
             if (!_active) return;
             _branches[i].branch(target_depth);
         }
@@ -142,7 +141,9 @@ void Tree::go_depth(Options& options, Board board, int depth) {
 
     for (auto d = 0; d < depth; d++) {
         _depth = d;
+        print_info();
         _root.branch(d);
     }
+    _depth = depth;
     stop(options);
 }
