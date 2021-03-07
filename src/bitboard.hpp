@@ -45,11 +45,13 @@ namespace Bitboard {
     constexpr unsigned long long START_BK = 1152921504606846976;
 
     const vector<vector<int>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
+    const vector<vector<int>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(long long, int);
     long long set_bit(long long, int, bool);
     long long push(long long, vector<char>);
     string board_str(long long);
 
-    vector<vector<char>> knight_moves(long long knight, long long same_col, long long diff_col);
+    vector<vector<char>> knight_moves(long long, long long, long long);
+    vector<vector<char>> king_moves(long long, long long, long long);
 }
