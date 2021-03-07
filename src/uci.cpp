@@ -93,6 +93,7 @@ void setup_position(Board& board, string cmd) {
 void loop() {
     Options options;
     Board board;
+    Tree tree;
     string cmd;
 
     while (getline(cin, cmd)) {
@@ -118,11 +119,10 @@ void loop() {
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
         else if (startswith(cmd, "go")) {
-            evalmove result = minimax(board, options, 0, 3);
-            float score = result.first * (board.turn() ? 100 : -100);
-            cout << "info score cp " << (int)score << endl;
-            cout << "bestmove " << result.second.uci() << endl;
+            tree.go_depth(options, 3);
         }
-        else if (cmd == "stop");
+        else if (cmd == "stop") {
+            if (tree.active()) tree.stop(options);
+        }
     }
 }
