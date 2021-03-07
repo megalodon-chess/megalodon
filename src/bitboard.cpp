@@ -27,3 +27,8 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+bool bit(long long num, int pos) {
+    return ((1 << pos) & num) != 0;
+}

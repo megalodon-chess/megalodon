@@ -38,3 +38,5 @@ constexpr long long START_WQ = 4;
 constexpr long long START_WK = 8;
 
 constexpr long long START_BP = 71776118961217280;
+
+bool bit(long long, int);
