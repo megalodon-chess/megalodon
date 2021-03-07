@@ -91,30 +91,29 @@ float piece_map_weight(int movect) {
 float center(Board board) {
     int count = 0;
     float points = 0.0;
-    vector<vector<int>> inner_center = {{3, 3}, {3, 4}, {4, 3}, {4, 4}};
 
-    for (auto sq: inner_center) {
+    for (auto sq: INNER_CENTER) {
         vector<int> w_attack = board.attackers(sq, true);
         vector<int> b_attack = board.attackers(sq, false);
         for (auto p: w_attack) {
             switch (p) {
-                case WP: points += 2.5;
-                case WN: points += 1.75;
-                case WB: points += 1.6;
-                case WR: points += 1.3;
-                case WQ: points += 1.3;
-                case WK: points += 1;
+                case WP: points += 2.5; break;
+                case WN: points += 1.75; break;
+                case WB: points += 1.6; break;
+                case WR: points += 1.3; break;
+                case WQ: points += 1.3; break;
+                case WK: points += 1; break;
             }
             count++;
         }
         for (auto p: b_attack) {
             switch (p) {
-                case BP: points -= 2.5;
-                case BN: points -= 1.75;
-                case BB: points -= 1.6;
-                case BR: points -= 1.3;
-                case BQ: points -= 1.3;
-                case BK: points -= 1;
+                case BP: points -= 2.5; break;
+                case BN: points -= 1.75; break;
+                case BB: points -= 1.6; break;
+                case BR: points -= 1.3; break;
+                case BQ: points -= 1.3; break;
+                case BK: points -= 1; break;
             }
             count++;
         }
@@ -136,7 +135,7 @@ float eval(Board board, Options& options) {
     if (options.UsePieceMaps) pmaps = piece_map(board, options) * piece_map_weight(movect);
     else pmaps = 0;
 
-    float center_ctrl = center(board) * center_weight(movect);
+    //float center_ctrl = center(board) * center_weight(movect);
 
-    return mat + pmaps + center_ctrl;
+    return mat + pmaps;// + center_ctrl;
 }
