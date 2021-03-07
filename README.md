@@ -2,7 +2,7 @@
 
 UCI chess engine.
 
-[Version 0.0.1][latest] was recently released!
+[Version 0.0.2][latest] was recently released!
 
 ## To Run
 
