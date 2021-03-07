@@ -436,5 +436,5 @@ vector<int> Board::get_col(int ind) {
     for (auto row: _board) {
         col.push_back(row[ind]);
     }
-    return col
+    return col;
 }
