@@ -62,6 +62,8 @@ public:
     vector<Move> king_moves(vector<int>);
     vector<Move> pawn_moves(vector<int>);
 
+    int attackers(vector<int>, bool);
+
 private:
     vector<vector<int>> _board;
     vector<bool> _castling;
