@@ -18,3 +18,14 @@
 //
 
 #pragma once
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include "funcs.hpp"
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
+using std::string;

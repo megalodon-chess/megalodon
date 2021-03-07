@@ -16,3 +16,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include "funcs.hpp"
+
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
+using std::string;
