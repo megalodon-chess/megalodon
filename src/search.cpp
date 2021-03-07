@@ -91,8 +91,9 @@ evalmove Node::minimax(Options& options) {
         evalmove result = _branches[i].minimax(options);
         bool exceeds = false;
 
-        if (_board.turn() && result.first > best_eval) exceeds = true;
-        if (!_board.turn() && result.first < best_eval) exceeds = true;
+        if (_board.turn()) exceeds = result.first > best_eval;
+        else exceeds = result.first < best_eval;
+
         if (exceeds) {
             best_ind = i;
             best_eval = result.first;
