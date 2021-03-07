@@ -102,7 +102,7 @@ float center(Board board) {
                 case WB: points += 1.6; break;
                 case WR: points += 1.3; break;
                 case WQ: points += 1.3; break;
-                case WK: points += 1; break;
+                case WK: points += 1.0; break;
             }
             count++;
         }
@@ -113,7 +113,7 @@ float center(Board board) {
                 case BB: points -= 1.6; break;
                 case BR: points -= 1.3; break;
                 case BQ: points -= 1.3; break;
-                case BK: points -= 1; break;
+                case BK: points -= 1.0; break;
             }
             count++;
         }
