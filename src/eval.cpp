@@ -89,7 +89,7 @@ float piece_map_weight(int movect) {
 
 
 float center(Board board) {
-    return 0.0;
+    vector<vector<int>> inner_center = {{4, 4}, {4, 5}, {5, 4}, {5, 5}};
 }
 
 float center_control(int movect) {
