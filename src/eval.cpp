@@ -98,6 +98,21 @@ float center(Board board) {
         for (auto p: w_attack) {
             switch (p) {
                 case WP: points += 2.5;
+                case WN: points += 1.75;
+                case WB: points += 1.6;
+                case WR: points += 1.3;
+                case WQ: points += 1.3;
+                case WK: points += 1;
+            }
+        }
+        for (auto p: b_attack) {
+            switch (p) {
+                case BP: points -= 2.5;
+                case BN: points -= 1.75;
+                case BB: points -= 1.6;
+                case BR: points -= 1.3;
+                case BQ: points -= 1.3;
+                case BK: points -= 1;
             }
         }
     }
