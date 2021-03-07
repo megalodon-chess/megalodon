@@ -29,3 +29,12 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+constexpr long long START_WP = 65280;
+constexpr long long START_WN = 66;
+constexpr long long START_WB = 36;
+constexpr long long START_WR = 129;
+constexpr long long START_WQ = 4;
+constexpr long long START_WK = 8;
+
+constexpr long long START_BP = 71776118961217280;
