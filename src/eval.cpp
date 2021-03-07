@@ -97,23 +97,23 @@ float center(Board board) {
         vector<int> b_attack = board.attackers(sq, false);
         for (auto p: w_attack) {
             switch (p) {
-                case WP: points += 2.5;
-                case WN: points += 1.75;
-                case WB: points += 1.6;
-                case WR: points += 1.3;
-                case WQ: points += 1.3;
-                case WK: points += 1;
+                case WP: points += 2.5; break;
+                case WN: points += 1.75; break;
+                case WB: points += 1.6; break;
+                case WR: points += 1.3; break;
+                case WQ: points += 1.3; break;
+                case WK: points += 1; break;
             }
             count++;
         }
         for (auto p: b_attack) {
             switch (p) {
-                case BP: points -= 2.5;
-                case BN: points -= 1.75;
-                case BB: points -= 1.6;
-                case BR: points -= 1.3;
-                case BQ: points -= 1.3;
-                case BK: points -= 1;
+                case BP: points -= 2.5; break;
+                case BN: points -= 1.75; break;
+                case BB: points -= 1.6; break;
+                case BR: points -= 1.3; break;
+                case BQ: points -= 1.3; break;
+                case BK: points -= 1; break;
             }
             count++;
         }
