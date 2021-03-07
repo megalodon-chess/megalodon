@@ -253,6 +253,19 @@ bool Board::in_check(bool side) {
         }
     }
 
+    // Diagonal checks
+    for (auto dir: DIR_B) {
+        int x = kx, y = ky;
+        while (true) {
+            if (!in_board({x, y})) break;
+            int piece = _board[y][x];
+            if (side && (piece==BQ||piece==BB)) return false;
+            if (!side && (piece==WQ||piece==WB)) return false;
+            x += dir[0];
+            y += dir[1];
+        }
+    }
+
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col++) {
             int piece = _board[row][col];
