@@ -33,9 +33,9 @@ using std::vector;
 using std::string;
 
 
-mmrval minimax(Board board, Options& options, int depth, int max_depth) {
+evalmove minimax(Board board, Options& options, int depth, int max_depth) {
     if (depth == max_depth) {
-        return mmrval(eval(board, options), board.peek());
+        return evalmove(eval(board, options), board.peek());
     } else if (depth < max_depth) {
         vector<Move> moves = board.get_all_legal_moves();
         int best_ind = 0;
@@ -46,7 +46,7 @@ mmrval minimax(Board board, Options& options, int depth, int max_depth) {
             Move move = moves[i];
             Board new_board = board.copy();
             new_board.push(move);
-            mmrval result = minimax(new_board, options, depth+1, max_depth);
+            evalmove result = minimax(new_board, options, depth+1, max_depth);
 
             bool exceeds = false;
             if (board.turn() && result.first > best_eval) exceeds = true;
@@ -56,6 +56,6 @@ mmrval minimax(Board board, Options& options, int depth, int max_depth) {
                 best_eval = result.first;
             }
         }
-        return mmrval(best_eval, moves[best_ind]);
+        return evalmove(best_eval, moves[best_ind]);
     }
 }

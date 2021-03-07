@@ -32,7 +32,7 @@ using std::endl;
 using std::vector;
 using std::string;
 
-typedef std::pair<float, Move> mmrval;
+typedef std::pair<float, Move> evalmove;
 
 
-mmrval minimax(Board, Options&, int, int);
+evalmove minimax(Board, Options&, int, int);
