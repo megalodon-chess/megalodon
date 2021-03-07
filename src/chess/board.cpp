@@ -404,6 +404,7 @@ int Board::attackers(vector<int> sq, bool side) {
     int dest = _board[sq[0]][sq[1]];
     // Need to swap turns because otherwise we won't get proper moves. ex: white piece attacking white piece
     bool swap = (dest != EM && piece_color(dest) == side);
+    _turn = swap ? !_turn : _turn;
 
     for (auto row = 0; row < 8; row++) {
         for (auto col = 0; col < 8; col ++) {
