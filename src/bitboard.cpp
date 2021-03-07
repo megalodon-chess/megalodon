@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <map>
 #include "funcs.hpp"
 
 using std::cin;
