@@ -71,11 +71,11 @@ namespace Bitboard {
         return final;
     }
 
-    vector<vector<char>> knight_moves(long long knight, long long same_col, long long diff_col) {
+    vector<vector<char>> knight_moves(long long board, long long same_col, long long diff_col) {
         vector<vector<char>> moves;
 
         for (char i = 0; i < 64; i++) {
-            if (bit(knight, i)) {
+            if (bit(board, i)) {
                 for (auto dir: DIR_N) {
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
