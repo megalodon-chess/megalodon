@@ -17,7 +17,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-FILES = funcs.o uci.o main.o
+FILES = funcs.o bitboard.o uci.o main.o
 .PHONY: all dev compile clean run
 
 # Compile and clean files.
