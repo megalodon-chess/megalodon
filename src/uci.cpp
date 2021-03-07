@@ -65,9 +65,9 @@ void print_eval(Board board, Options& options) {
         cout << "       Piece Map | Disabled | Disabled | Disabled";
     }
 
-    float cent = center(board);
-    float cent_weight = center_weight(movect);
-    cout << "  Centralization |" << evstr(cent) << "|" << evstr(cent_weight) << "|" << evstr(cent*cent_weight) << "\n";
+    // float cent = center(board);
+    // float cent_weight = center_weight(movect);
+    // cout << "  Centralization |" << evstr(cent) << "|" << evstr(cent_weight) << "|" << evstr(cent*cent_weight) << "\n";
 
     cout << endl;
 }

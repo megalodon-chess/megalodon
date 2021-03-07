@@ -135,7 +135,7 @@ float eval(Board board, Options& options) {
     if (options.UsePieceMaps) pmaps = piece_map(board, options) * piece_map_weight(movect);
     else pmaps = 0;
 
-    float center_ctrl = center(board) * center_weight(movect);
+    //float center_ctrl = center(board) * center_weight(movect);
 
-    return mat + pmaps + center_ctrl;
+    return mat + pmaps;// + center_ctrl;
 }
