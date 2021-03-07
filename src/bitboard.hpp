@@ -43,5 +43,9 @@ constexpr unsigned long long START_BR = 9295429630892703744;
 constexpr unsigned long long START_BQ = 576460752303423488;
 constexpr unsigned long long START_BK = 1152921504606846976;
 
+const vector<vector<int>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
+
 bool bit(long long, int);
 string repr(long long);
+
+vector<vector<char>> knight_moves(long long knight, long long same_col, long long diff_col);
