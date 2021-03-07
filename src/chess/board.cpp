@@ -92,7 +92,7 @@ Board Board::copy() {
     for (auto row: _board) {
         vector<int> new_row;
         for (auto piece: row) new_row.push_back(piece);
-        board._board.push_back(row);
+        board._board.push_back(new_row);
     }
 
     board._castling = _castling;
