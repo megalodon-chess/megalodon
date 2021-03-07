@@ -246,8 +246,8 @@ bool Board::in_check(bool side) {
         while (true) {
             if (!in_board({x, y})) break;
             int piece = _board[y][x];
-            if (side && (piece==BQ||piece==BR)) return false;
-            if (!side && (piece==WQ||piece==WR)) return false;
+            if (side && (piece==BQ||piece==BR)) return true;
+            if (!side && (piece==WQ||piece==WR)) return true;
             x += dir[0];
             y += dir[1];
         }
@@ -259,10 +259,20 @@ bool Board::in_check(bool side) {
         while (true) {
             if (!in_board({x, y})) break;
             int piece = _board[y][x];
-            if (side && (piece==BQ||piece==BB)) return false;
-            if (!side && (piece==WQ||piece==WB)) return false;
+            if (side && (piece==BQ||piece==BB)) return true;
+            if (!side && (piece==WQ||piece==WB)) return true;
             x += dir[0];
             y += dir[1];
+        }
+    }
+
+    // Knight checks
+    for (auto dir: DIR_N) {
+        int x = kx+dir[0], y = ky+dir[1];
+        if (in_board({x, y})) {
+            int piece = _board[y][x];
+            if (side && (piece==BN)) return true;
+            if (!side && (piece==WN)) return true;
         }
     }
 
