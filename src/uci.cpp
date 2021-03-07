@@ -122,7 +122,7 @@ void loop() {
         else if (cmd == "ucinewgame") board = Board();
         else if (startswith(cmd, "position")) setup_position(board, cmd);
         else if (startswith(cmd, "go")) {
-            tree.go_depth(options, board, 3);
+            tree.go_depth(options, board, 4);
         }
         else if (cmd == "stop") {
             if (tree.active()) tree.stop(options);
