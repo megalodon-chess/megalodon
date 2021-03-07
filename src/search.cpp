@@ -83,25 +83,22 @@ int Node::node_count() {
 }
 
 evalmove Node::minimax(Options& options) {
-    if (_branches.size() == 0) {
-        return evalmove(eval(_board, options), _board.peek());
-    } else {
-        int best_ind = 0;
-        int best_eval = _board.turn() ? INT_MIN : INT_MAX;
+    if (_branches.size() == 0) return evalmove(eval(_board, options), _board.peek());
+    int best_ind = 0;
+    int best_eval = _board.turn() ? INT_MIN : INT_MAX;
 
-        for (auto i = 0; i < _branches.size(); i++) {
-            evalmove result = _branches[i].minimax(options);
-            bool exceeds = false;
+    for (auto i = 0; i < _branches.size(); i++) {
+        evalmove result = _branches[i].minimax(options);
+        bool exceeds = false;
 
-            if (_board.turn() && result.first > best_eval) exceeds = true;
-            if (!_board.turn() && result.first < best_eval) exceeds = true;
-            if (exceeds) {
-                best_ind = i;
-                best_eval = result.first;
-            }
+        if (_board.turn() && result.first > best_eval) exceeds = true;
+        if (!_board.turn() && result.first < best_eval) exceeds = true;
+        if (exceeds) {
+            best_ind = i;
+            best_eval = result.first;
         }
-        return evalmove(best_eval, _branches[best_ind]._board.peek());
     }
+    return evalmove(best_eval, _branches[best_ind]._board.peek());
 }
 
 
