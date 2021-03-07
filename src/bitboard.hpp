@@ -47,6 +47,7 @@ const vector<vector<int>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, 
 
 bool bit(long long, int);
 long long set_bit(long long, int, bool);
+long long push(long long, vector<char>);
 string repr(long long);
 
 vector<vector<char>> knight_moves(long long knight, long long same_col, long long diff_col);

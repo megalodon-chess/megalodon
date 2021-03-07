@@ -33,14 +33,20 @@ bool bit(long long num, int pos) {
     return ((1LL << pos) & num) != 0;
 }
 
-long long set_bit(long long num, int pos, bool value) {
-    bool on = bit(num, pos);
+long long set_bit(long long board, int pos, bool value) {
+    bool on = bit(board, pos);
     if (value && !on) {
-        num += (1LL << pos);
+        board += (1LL << pos);
     } else if (!value && on) {
-        num -= (1LL << pos);
+        board -= (1LL << pos);
     }
-    return num;
+    return board;
+}
+
+long long push(long long board, vector<char> move) {
+    board = set_bit(board, move[0], false);
+    board = set_bit(board, move[1], true);
+    return board;
 }
 
 string repr(long long board) {
