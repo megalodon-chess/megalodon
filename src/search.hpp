@@ -44,6 +44,7 @@ public:
     void branch(int);
 
     int node_count();
+    evalmove minimax(Options&);
 
 private:
     vector<Node> _branches;

@@ -75,34 +75,28 @@ int Node::node_count() {
     return count;
 }
 
-
-Tree::Tree() {
-}
-
-
-evalmove minimax(Board board, Options& options, int depth, int max_depth) {
-    if (depth == max_depth) {
-        return evalmove(eval(board, options), board.peek());
-    } else if (depth < max_depth) {
-        vector<Move> moves = board.get_all_legal_moves();
+evalmove Node::minimax(Options& options) {
+    if (_branches.size() == 0) {
+        return evalmove(eval(_board, options), _board.peek());
+    } else {
         int best_ind = 0;
-        int best_eval = board.turn() ? INT_MIN : INT_MAX;
-        Move best_move;
+        int best_eval = _board.turn() ? INT_MIN : INT_MAX;
 
-        for (auto i = 0; i < moves.size(); i++) {
-            Move move = moves[i];
-            Board new_board = board.copy();
-            new_board.push(move);
-            evalmove result = minimax(new_board, options, depth+1, max_depth);
-
+        for (auto i = 0; i < _branches.size(); i++) {
+            evalmove result = _branches[i].minimax(options);
             bool exceeds = false;
-            if (board.turn() && result.first > best_eval) exceeds = true;
-            if (!board.turn() && result.first < best_eval) exceeds = true;
+
+            if (_board.turn() && result.first > best_eval) exceeds = true;
+            if (!_board.turn() && result.first < best_eval) exceeds = true;
             if (exceeds) {
                 best_ind = i;
                 best_eval = result.first;
             }
         }
-        return evalmove(best_eval, moves[best_ind]);
+        return evalmove(best_eval, _branches[best_ind]._board.peek());
     }
+}
+
+
+Tree::Tree() {
 }
