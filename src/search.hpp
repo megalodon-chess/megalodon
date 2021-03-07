@@ -35,27 +35,10 @@ using std::string;
 typedef std::pair<float, Move> evalmove;
 
 
-class Tree {
-public:
-    Tree();
-
-private:
-    Node _root;
-};
-
-
 class Node {
 public:
     Node();
     Node(Board, int);
-
-    Board board();
-    bool active();
-    int depth();
-
-    void set_board(Board);
-    void set_active(bool);
-    void set_depth(int);
 
     void branch(int);
 
@@ -64,6 +47,15 @@ private:
     Board _board;
     bool _active;
     int _depth;
+};
+
+
+class Tree {
+public:
+    Tree();
+
+private:
+    Node _root;
 };
 
 

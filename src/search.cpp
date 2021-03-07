@@ -33,10 +33,6 @@ using std::vector;
 using std::string;
 
 
-Tree::Tree() {
-}
-
-
 Node::Node() {
     _branches = {};
     _active = true;
@@ -47,30 +43,6 @@ Node::Node(Board board, int depth) {
     _depth = depth;
     _branches = {};
     _active = true;
-}
-
-Board Node::board() {
-    return _board;
-}
-
-bool Node::active() {
-    return _active;
-}
-
-int Node::depth() {
-    return _depth;
-}
-
-void Node::set_board(Board board) {
-    _board = board;
-}
-
-void Node::set_active(bool active) {
-    _active = active;
-}
-
-void Node::set_depth(int depth) {
-    _depth = depth;
 }
 
 void Node::branch(int target_depth) {
@@ -88,6 +60,10 @@ void Node::branch(int target_depth) {
             node.branch(target_depth);
         }
     }
+}
+
+
+Tree::Tree() {
 }
 
 
