@@ -426,3 +426,15 @@ vector<int> Board::attackers(vector<int> sq, bool side) {
     _turn = swap ? !_turn : _turn;
     return attackers;
 }
+
+vector<int> Board::get_row(int ind) {
+    return _board[ind];
+}
+
+vector<int> Board::get_col(int ind) {
+    vector<int> col;
+    for (auto row: _board) {
+        col.push_back(row[ind]);
+    }
+    return col
+}
