@@ -90,6 +90,10 @@ float piece_map_weight(int movect) {
 
 float center(Board board) {
     vector<vector<int>> inner_center = {{4, 4}, {4, 5}, {5, 4}, {5, 5}};
+
+    for (auto sq: inner_center) {
+        vector<int> attackers = board.attackers(sq, true);
+    }
 }
 
 float center_control(int movect) {
