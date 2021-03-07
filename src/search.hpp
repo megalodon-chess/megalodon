@@ -43,6 +43,8 @@ public:
     void set_inactive();
     void branch(int);
 
+    int node_count();
+
 private:
     vector<Node> _branches;
     Board _board;

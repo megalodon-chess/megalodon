@@ -69,6 +69,12 @@ void Node::branch(int target_depth) {
     }
 }
 
+int Node::node_count() {
+    int count = 1;
+    for (auto node: _branches) count += node.node_count();
+    return count;
+}
+
 
 Tree::Tree() {
 }
