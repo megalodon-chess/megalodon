@@ -88,6 +88,15 @@ float piece_map_weight(int movect) {
 }
 
 
+float center(Board board) {
+    ;
+}
+
+float center_control(int movect) {
+    return 1.0;
+}
+
+
 float eval(Board board, Options& options) {
     int movect = board.move_stack().size();
 

@@ -39,4 +39,7 @@ float material_weight(int);
 float piece_map(Board, Options&);
 float piece_map_weight(int);
 
+float center(Board);
+float center_weight(int);
+
 float eval(Board, Options&);
