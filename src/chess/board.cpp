@@ -283,8 +283,7 @@ vector<Move> Board::get_all_legal_moves() {
 vector<Move> Board::_filter_moves(vector<Move> moves) {
     vector<Move> final_moves;
     for (auto move: moves) {
-        Board tmp;
-        tmp.set_fen(fen());
+        Board tmp = copy();
         tmp.push(move);
         if (!tmp.in_check(!tmp.turn())) final_moves.push_back(move);
     }
