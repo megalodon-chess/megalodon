@@ -424,4 +424,5 @@ int Board::attackers(vector<int> sq, bool side) {
     }
 
     _turn = swap ? !_turn : _turn;
+    return count;
 }
