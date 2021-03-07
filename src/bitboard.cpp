@@ -29,5 +29,26 @@ using std::string;
 
 
 bool bit(long long num, int pos) {
-    return ((1 << pos) & num) != 0;
+    return ((1LL << pos) & num) != 0;
+}
+
+string repr(long long board) {
+    vector<string> rows;
+    string final = "";
+
+    for (auto y = 0; y < 8; y++) {
+        string row = "";
+        for (auto x = 0; x < 8; x++) {
+            row += bit(board, 8*y+x) ? "1" : ".";
+            row += " ";
+        }
+        rows.push_back(row);
+    }
+
+    for (auto i = 7; i >= 0; i--) {
+        final += rows[i];
+        final += "\n";
+    }
+
+    return final;
 }
