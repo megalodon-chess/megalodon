@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include <climits>
+#include <chrono>
 #include "chess/board.hpp"
 #include "eval.hpp"
 #include "search.hpp"
@@ -31,6 +32,12 @@ using std::cin;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+float get_time() {
+    auto now = std::chrono::system_clock::now().time_since_epoch();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+}
 
 
 Node::Node() {
@@ -53,18 +60,18 @@ void Node::set_inactive() {
 }
 
 void Node::branch(int target_depth) {
-    if (target_depth == _depth+1) {
+    if (target_depth == _depth) {
         for (auto move: _board.get_all_legal_moves()) {
             if (!_active) return;
             Board new_board = _board.copy();
             new_board.push(move);
-            Node new_node = Node(new_board, _depth+1);
-            _branches.push_back(new_node);
+            _branches.push_back(Node(new_board, _depth+1));
         }
-    } else if (target_depth > _depth+1) {
-        for (auto node: _branches) {
+    } else if (target_depth > _depth) {
+        for (auto i = 0; i < _branches.size(); i++) {
+            if (_depth == 0) cout << i << endl;
             if (!_active) return;
-            node.branch(target_depth);
+            _branches[i].branch(target_depth);
         }
     }
 }
@@ -104,6 +111,16 @@ Tree::Tree() {
 
 void Tree::setup() {
     _active = true;
+    _depth = 0;
+    _time_start = get_time();
+}
+
+void Tree::print_info() {
+    int nodes = _root.node_count();
+    float elapse = get_time() - _time_start;
+
+    cout << "info depth " << _depth << " seldepth " << _depth << " multipv 1 score cp " << (int)(_score*100) << " nodes "
+        << nodes << " nps " << (int)(nodes/elapse) << " tbhits 0 time " << (int)(elapse*1000) << " pv" << endl;
 }
 
 bool Tree::active() {
@@ -112,12 +129,19 @@ bool Tree::active() {
 
 void Tree::stop(Options& options) {
     _root.set_inactive();
-    Move best = _root.minimax(options).second;
-    cout << "bestmove " << best.uci() << endl;
+    evalmove result = _root.minimax(options);
+    _score = result.first;
+
+    print_info();
+    cout << "bestmove " << result.second.uci() << endl;
 }
 
-void Tree::go_depth(Options& options, int depth) {
+void Tree::go_depth(Options& options, Board board, int depth) {
+    _root = Node(board, 0);
+    setup();
+
     for (auto d = 0; d < depth; d++) {
+        _depth = d;
         _root.branch(d);
     }
     stop(options);

@@ -34,6 +34,7 @@ using std::string;
 
 typedef std::pair<float, Move> evalmove;
 
+float time();
 
 class Node {
 public:
@@ -53,21 +54,23 @@ private:
     int _depth;
 };
 
-
 class Tree {
 public:
     Tree();
 
     void setup();
+    void print_info();
     bool active();
 
     void stop(Options&);
-    void go_depth(Options&, int);
+    void go_depth(Options&, Board, int);
 
 private:
     Node _root;
     bool _active;
+
+    int _depth;
+    float _score;
+    float _time_start;
+    Move _best_move;
 };
-
-
-evalmove minimax(Board, Options&, int, int);
