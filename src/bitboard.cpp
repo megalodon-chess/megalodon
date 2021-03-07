@@ -29,8 +29,8 @@ using std::vector;
 using std::string;
 
 
-bool bit(long long num, int pos) {
-    return ((1LL << pos) & num) != 0;
+bool bit(long long board, int pos) {
+    return ((1LL << pos) & board) != 0;
 }
 
 long long set_bit(long long board, int pos, bool value) {
