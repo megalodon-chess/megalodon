@@ -96,4 +96,9 @@ namespace Bitboard {
         }
         return moves;
     }
+
+    vector<vector<char>> rook_moves(long long board, long long same_col, long long diff_col) {
+        vector<vector<char>> moves;
+        return moves;
+    }
 }
