@@ -99,4 +99,22 @@ evalmove Node::minimax(Options& options) {
 
 
 Tree::Tree() {
+    _active = false;
+}
+
+void Tree::setup() {
+    _active = true;
+}
+
+void Tree::stop(Options& options) {
+    _root.set_inactive();
+    Move best = _root.minimax(options).second;
+    cout << "bestmove " << best.uci() << endl;
+}
+
+void Tree::go_depth(Options& options, int depth) {
+    for (auto d = 0; d < depth; d++) {
+        _root.branch(d);
+    }
+    stop(options);
 }

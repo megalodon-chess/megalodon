@@ -58,8 +58,14 @@ class Tree {
 public:
     Tree();
 
+    void setup();
+    void stop(Options&);
+
+    void go_depth(Options&, int);
+
 private:
     Node _root;
+    bool _active;
 };
 
 
