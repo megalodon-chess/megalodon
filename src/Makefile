@@ -24,7 +24,7 @@ FILES = funcs.o bitboard.o uci.o main.o
 all: compile clean
 
 # Compile, clean, and run executable.
-dev: compile run clean
+dev: compile clean run
 
 # Uses g++ to compile files.
 compile: $(FILES)
