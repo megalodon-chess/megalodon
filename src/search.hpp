@@ -47,6 +47,7 @@ private:
 class Node {
 public:
     Node();
+    Node(Board, int);
 
     Board board();
     bool active();
@@ -59,6 +60,7 @@ public:
     void branch(int);
 
 private:
+    vector<Node> _branches;
     Board _board;
     bool _active;
     int _depth;

@@ -38,6 +38,15 @@ Tree::Tree() {
 
 
 Node::Node() {
+    _branches = {};
+    _active = true;
+}
+
+Node::Node(Board board, int depth) {
+    _board = board;
+    _depth = depth;
+    _branches = {};
+    _active = true;
 }
 
 Board Node::board() {
@@ -65,6 +74,20 @@ void Node::set_depth(int depth) {
 }
 
 void Node::branch(int target_depth) {
+    if (target_depth == _depth+1) {
+        for (auto move: _board.get_all_legal_moves()) {
+            if (!_active) return;
+            Board new_board = _board.copy();
+            new_board.push(move);
+            Node new_node = Node(new_board, _depth+1);
+            _branches.push_back(new_node);
+        }
+    } else if (target_depth > _depth+1) {
+        for (auto node: _branches) {
+            if (!_active) return;
+            node.branch(target_depth);
+        }
+    }
 }
 
 
