@@ -83,7 +83,7 @@ int Node::node_count() {
 }
 
 evalmove Node::minimax(Options& options) {
-    if (_branches.size() == 0) return evalmove(eval(_board, options), _board.peek());
+    if (_branches.empty()) return evalmove(eval(_board, options), _board.peek());
     int best_ind = 0;
     int best_eval = _board.turn() ? INT_MIN : INT_MAX;
 
