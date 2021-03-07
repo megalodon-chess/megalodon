@@ -422,4 +422,6 @@ int Board::attackers(vector<int> sq, bool side) {
             if (std::find_if(moves.begin(), moves.end(), [&](Move m){return m.to_square()==sq;}) != moves.end()) count++;
         }
     }
+
+    _turn = swap ? !_turn : _turn;
 }
