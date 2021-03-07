@@ -51,6 +51,9 @@ public:
     void push(Move);
     void push_uci(string);
 
+    vector<int> get_row(int);
+    vector<int> get_col(int);
+
     vector<int> king_pos(bool);
     bool in_check(bool);
 
