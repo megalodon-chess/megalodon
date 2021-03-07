@@ -106,6 +106,10 @@ void Tree::setup() {
     _active = true;
 }
 
+bool Tree::active() {
+    return _active;
+}
+
 void Tree::stop(Options& options) {
     _root.set_inactive();
     Move best = _root.minimax(options).second;

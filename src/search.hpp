@@ -59,8 +59,9 @@ public:
     Tree();
 
     void setup();
-    void stop(Options&);
+    bool active();
 
+    void stop(Options&);
     void go_depth(Options&, int);
 
 private:
