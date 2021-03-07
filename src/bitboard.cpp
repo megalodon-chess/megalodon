@@ -79,6 +79,7 @@ namespace Bitboard {
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
                 }
+                break;
             }
         }
         return moves;
@@ -92,6 +93,7 @@ namespace Bitboard {
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
                 }
+                break;
             }
         }
         return moves;
@@ -99,6 +101,15 @@ namespace Bitboard {
 
     vector<vector<char>> rook_moves(long long board, long long same_col, long long diff_col) {
         vector<vector<char>> moves;
+        for (char i = 0; i < 64; i++) {
+            if (bit(board, i)) {
+                for (auto dir: DIR_K) {
+                    char pos = i + 8*dir[0] + dir[1];
+                    if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
+                }
+                break;
+            }
+        }
         return moves;
     }
 }
