@@ -71,6 +71,6 @@ private:
 
     int _depth;
     float _score;
-    float _time_start;
+    double _time_start;
     Move _best_move;
 };

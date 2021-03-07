@@ -34,9 +34,10 @@ using std::vector;
 using std::string;
 
 
-float get_time() {
+double get_time() {
     auto now = std::chrono::system_clock::now().time_since_epoch();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+    double elapse = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+    return elapse / 1000;
 }
 
 
@@ -116,7 +117,7 @@ void Tree::setup() {
 
 void Tree::print_info() {
     int nodes = _root.node_count();
-    float elapse = get_time() - _time_start;
+    double elapse = get_time() - _time_start;
 
     cout << "info depth " << _depth << " seldepth " << _depth << " multipv 1 score cp " << (int)(_score*100) << " nodes "
         << nodes << " nps " << (int)(nodes/elapse) << " tbhits 0 time " << (int)(elapse*1000) << " pv" << endl;
