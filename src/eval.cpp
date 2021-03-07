@@ -122,7 +122,7 @@ float center(Board board) {
     return points / count;
 }
 
-float center_control(int movect) {
+float center_weight(int movect) {
     return 1.0;
 }
 
@@ -131,9 +131,12 @@ float eval(Board board, Options& options) {
     int movect = board.move_stack().size();
 
     float mat = material(board) * material_weight(movect);
+
     float pmaps;
     if (options.UsePieceMaps) pmaps = piece_map(board, options) * piece_map_weight(movect);
     else pmaps = 0;
 
-    return mat + pmaps;
+    float center_ctrl = center(board) * center_weight(movect);
+
+    return mat + pmaps + center_ctrl;
 }
