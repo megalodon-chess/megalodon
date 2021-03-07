@@ -39,32 +39,29 @@ public:
     Board(vector<vector<int>>, vector<bool>, bool, vector<int>, vector<Move>);
     void reset();
     string as_string();
+    Board copy();
 
+    Move peek();
     vector<vector<int>> board();
     vector<Move> move_stack();
-    Move peek();
-    string fen();
     bool turn();
-    Board copy();
+    string fen();
     void set_fen(string);
 
     void push(Move);
     void push_uci(string);
 
     vector<int> king_pos(bool);
+    bool in_check(bool);
 
     vector<Move> get_all_legal_moves();
-
     vector<Move> rook_moves(vector<int>);
     vector<Move> bishop_moves(vector<int>);
     vector<Move> queen_moves(vector<int>);
-
     vector<Move> knight_moves(vector<int>);
     vector<Move> king_moves(vector<int>);
-
     vector<Move> pawn_moves(vector<int>);
 
-    bool in_check(bool);
 
 
 private:
