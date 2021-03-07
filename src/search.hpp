@@ -35,4 +35,16 @@ using std::string;
 typedef std::pair<float, Move> evalmove;
 
 
+class Tree {
+public:
+private:
+};
+
+
+class Node {
+public:
+private:
+};
+
+
 evalmove minimax(Board, Options&, int, int);
