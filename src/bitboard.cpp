@@ -121,9 +121,10 @@ namespace Bitboard {
                 for (auto dir: DIR_B) {
                     for (auto dist = 1; dist < 8; dist++) {
                         char pos = i + dist*8*dir[0] + dist*dir[1];
-                        if (((1LL << pos) & same_col) != 0) break;
+                        auto shift = 1LL << pos;
+                        if ((shift & same_col) != 0) break;
                         moves.push_back({i, pos});
-                        if (((1LL << pos) & diff_col) != 0) break;
+                        if ((shift & diff_col) != 0) break;
                     }
                 }
             }
