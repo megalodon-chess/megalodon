@@ -64,6 +64,10 @@ namespace Bitboard {
         return ((1LL << pos) & board) != 0;
     }
 
+    bool bit(char board, int pos) {
+        return ((1 << pos) & board) != 0;
+    }
+
     long long set_bit(long long board, int pos, bool value) {
         bool on = bit(board, pos);
         if (value && !on) {

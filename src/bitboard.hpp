@@ -75,6 +75,7 @@ namespace Bitboard {
     const vector<vector<int>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(long long, int);
+    bool bit(char, int);
     bool in_board(char, char);
     long long set_bit(long long, int, bool);
     long long push(long long, vector<char>);
