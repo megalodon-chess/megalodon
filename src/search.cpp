@@ -28,7 +28,3 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
-
-
-evalmove minimax(Position pos, int depth) {
-}

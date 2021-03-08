@@ -76,16 +76,6 @@ namespace Bitboard {
 
     bool bit(long long, int);
     bool bit(char, int);
-    bool in_board(char, char);
     long long set_bit(long long, int, bool);
-    long long push(long long, vector<char>);
     string board_str(long long);
-
-    vector<vector<char>> legal_moves(Position);
-    vector<vector<char>> knight_moves(long long, long long, long long);
-    vector<vector<char>> king_moves(long long, long long, long long, char);
-    vector<vector<char>> rook_moves(long long, long long, long long);
-    vector<vector<char>> bishop_moves(long long, long long, long long);
-    vector<vector<char>> queen_moves(long long, long long, long long);
-    vector<vector<char>> pawn_moves(long long, long long, long long, bool, bool, char);
 }

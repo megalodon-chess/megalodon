@@ -29,7 +29,3 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
-
-typedef std::pair<float, vector<char>> evalmove;
-
-evalmove minimax(Position, int);
