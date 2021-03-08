@@ -22,6 +22,7 @@
 #include <string>
 #include "funcs.hpp"
 #include "bitboard.hpp"
+#include "search.hpp"
 
 using std::cin;
 using std::cout;
@@ -56,7 +57,9 @@ void loop() {
 
         else if (cmd == "ucinewgame");
         else if (startswith(cmd, "position"));
-        else if (startswith(cmd, "go"));
+        else if (startswith(cmd, "go")) {
+            evalmove result = minimax(pos, 4);
+        }
         else if (cmd == "stop");
     }
 }
