@@ -17,24 +17,6 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-FILES = funcs.o bitboard.o uci.o main.o
-.PHONY: all dev compile clean run
+FILES="funcs.cpp bitboard.cpp uci.cpp main.cpp"
 
-# Compile and clean files.
-all: compile clean
-
-# Compile, clean, and run executable.
-dev: compile clean run
-
-# Uses g++ to compile files.
-compile: $(FILES)
-	g++ -std=c++17 -o Megalodon $(FILES)
-
-# Removes all c++ objects and clears console.
-clean:
-	rm -f $(FILES)
-	clear
-
-# Runs executable.
-run:
-	./Megalodon
+g++ -std=c++17 $FILES -o Megalodon

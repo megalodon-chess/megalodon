@@ -83,7 +83,7 @@ namespace Bitboard {
             long long same_col = wp | wn | wb | wr | wq | wk;
             long long diff_col = bp | bn | bb | br | bq | bk;
 
-            vector<vector<char>> pmoves = pawn_moves(wp, same_col, diff_col, ep, ep_square);
+            vector<vector<char>> pmoves = pawn_moves(wp, same_col, diff_col, turn, ep, ep_square);
             vector<vector<char>> nmoves = knight_moves(wn, same_col, diff_col);
             vector<vector<char>> bmoves = bishop_moves(wb, same_col, diff_col);
             vector<vector<char>> rmoves = rook_moves(wr, same_col, diff_col);
@@ -104,7 +104,7 @@ namespace Bitboard {
             long long same_col = bp | bn | bb | br | bq | bk;
             long long diff_col = wp | wn | wb | wr | wq | wk;
 
-            vector<vector<char>> pmoves = pawn_moves(bp, same_col, diff_col, ep, ep_square);
+            vector<vector<char>> pmoves = pawn_moves(bp, same_col, diff_col, turn, ep, ep_square);
             vector<vector<char>> nmoves = knight_moves(bn, same_col, diff_col);
             vector<vector<char>> bmoves = bishop_moves(bb, same_col, diff_col);
             vector<vector<char>> rmoves = rook_moves(br, same_col, diff_col);
@@ -207,8 +207,26 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<vector<char>> pawn_moves(long long board, long long same_col, long long diff_col, bool ep, char ep_square) {
+    vector<vector<char>> pawn_moves(long long board, long long same_col, long long diff_col, bool side, bool ep, char ep_square) {
         vector<vector<char>> moves;
+        for (char i = 0; i < 64; i++) {
+            if (bit(board, i)) {
+                int speed = i/8 == (side ? 6 : 1) ? 2 : 1;
+                int dir = side ? -1 : 1;
+                for (auto dist = 1; dist < speed + 1; dist++) {
+                    if (!in_board(i%8, i/8+8*dir)) break;
+                    char pos = i + dist*8*dir;
+                    auto shift = 1LL << pos;
+                    if ((shift & same_col) != 0 || (shift & diff_col) != 0) break;
+                    moves.push_back({i, pos});
+                }
+                char pos;
+                pos = i + 8*dir - 1;
+                if (in_board(i%8-1, i/8+8*dir) && (((1LL << pos) & diff_col) != 0)) moves.push_back({i, pos});
+                pos = i + 8*dir + 1;
+                if (in_board(i%8+1, i/8+8*dir) && (((1LL << pos) & diff_col) != 0)) moves.push_back({i, pos});
+            }
+        }
         return moves;
     }
 }
