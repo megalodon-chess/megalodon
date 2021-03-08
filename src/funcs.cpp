@@ -53,11 +53,11 @@ string replace(string str, string rep) {
     return str;
 }
 
-string join(string sep, vector<string> parts) {
+string join(string delim, vector<string> parts) {
     string str;
     for (auto i = 0; i < parts.size()-1; i++) {
         str += parts[i];
-        str += sep;
+        str += delim;
     }
     str += parts[parts.size()-1];
     return str;
@@ -85,11 +85,4 @@ vector<string> split(string str, string delim) {
     }
     while (pos < str.length() && prev < str.length());
     return parts;
-}
-
-vector<int> addvecs(vector<int> v1, vector<int> v2) {
-    if (v1.size() != v2.size()) cout << "Attempted to add two vectors of different sizes (file funcs.cpp)" << endl;
-    vector<int> final;
-    for (auto i = 0; i < v1.size(); i++) final.push_back(v1[i]+v2[i]);
-    return final;
 }

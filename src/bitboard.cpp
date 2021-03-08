@@ -52,23 +52,27 @@ namespace Bitboard {
 
     string board_str(long long board) {
         vector<string> rows;
-        string final = "";
+        string output = " " + BOARD_OUTROW + "\n";
 
         for (auto y = 0; y < 8; y++) {
             string row = "";
+            row += BOARD_OUTCOL;
             for (auto x = 0; x < 8; x++) {
-                row += bit(board, 8*y+x) ? "1" : ".";
-                row += " ";
+                row += bit(board, 8*y+x) ? "1" : " ";
+                row += BOARD_OUTCOL;
             }
+            row += std::to_string(8-y) + "\n " + BOARD_OUTROW + "\n";
             rows.push_back(row);
         }
 
         for (auto i = 7; i >= 0; i--) {
-            final += rows[i];
-            final += "\n";
+            output += rows[i];
         }
 
-        return final;
+        output += "   ";
+        for (auto i: "abcdefgh") output += string(1, i) + "   ";
+
+        return output;
     }
 
     vector<vector<char>> knight_moves(long long board, long long same_col, long long diff_col) {
@@ -97,16 +101,17 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<vector<char>> rook_moves(long long board, long long same_col, long long diff_col) {
+    vector<vector<char>> bishop_moves(long long board, long long same_col, long long diff_col) {
         vector<vector<char>> moves;
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
-                for (auto dir: DIR_R) {
+                for (auto dir: DIR_B) {
                     for (auto dist = 1; dist < 8; dist++) {
                         char pos = i + dist*8*dir[0] + dist*dir[1];
-                        if (((1LL << pos) & same_col) != 0) break;
+                        auto shift = 1LL << pos;
+                        if ((shift & same_col) != 0) break;
                         moves.push_back({i, pos});
-                        if (((1LL << pos) & diff_col) != 0) break;
+                        if ((shift & diff_col) != 0) break;
                     }
                 }
             }
@@ -114,6 +119,24 @@ namespace Bitboard {
         return moves;
     }
     
+    vector<vector<char>> rook_moves(long long board, long long same_col, long long diff_col) {
+        vector<vector<char>> moves;
+        for (char i = 0; i < 64; i++) {
+            if (bit(board, i)) {
+                for (auto dir: DIR_R) {
+                    for (auto dist = 1; dist < 8; dist++) {
+                        char pos = i + dist*8*dir[0] + dist*dir[1];
+                        auto shift = 1LL << pos;
+                        if ((shift & same_col) != 0) break;
+                        moves.push_back({i, pos});
+                        if ((shift & diff_col) != 0) break;
+                    }
+                }
+            }
+        }
+        return moves;
+    }
+
     vector<vector<char>> queen_moves(long long board, long long same_col, long long diff_col) {
         vector<vector<char>> moves;
         for (char i = 0; i < 64; i++) {
@@ -121,9 +144,10 @@ namespace Bitboard {
                 for (auto dir: DIR_B) {
                     for (auto dist = 1; dist < 8; dist++) {
                         char pos = i + dist*8*dir[0] + dist*dir[1];
-                        if (((1LL << pos) & same_col) != 0) break;
+                        auto shift = 1LL << pos;
+                        if ((shift & same_col) != 0) break;
                         moves.push_back({i, pos});
-                        if (((1LL << pos) & diff_col) != 0) break;
+                        if ((shift & diff_col) != 0) break;
                     }
                 }
             }

@@ -29,15 +29,6 @@ using std::endl;
 using std::vector;
 using std::string;
 
-
-string piece_to_symbol(int);
-int symbol_to_piece(string);
-int letter_to_column(char);
-vector<int> string_to_square(string);
-string square_to_string(vector<int>, bool=false);
-
-int piece_value(int);
-bool piece_color(int);
 bool in_board(vector<int>);
 
 string strip(string);
@@ -46,5 +37,3 @@ string join(string, vector<string>);
 bool startswith(string, string);
 bool endswith(string, string);
 vector<string> split(string, string="");
-
-vector<int> addvecs(vector<int>, vector<int>);
