@@ -32,7 +32,7 @@ compile: $(FILES)
 
 # Removes all c++ objects and clears console.
 clean:
-	rm *.o
+	rm -f $(FILES)
 	clear
 
 # Runs executable.
