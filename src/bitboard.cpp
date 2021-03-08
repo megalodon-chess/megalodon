@@ -83,7 +83,7 @@ namespace Bitboard {
             long long same_col = wp | wn | wb | wr | wq | wk;
             long long diff_col = bp | bn | bb | br | bq | bk;
 
-            vector<vector<char>> pmoves = pawn_moves(wp, same_col, diff_col, ep, ep_square);
+            vector<vector<char>> pmoves = pawn_moves(wp, same_col, diff_col, turn, ep, ep_square);
             vector<vector<char>> nmoves = knight_moves(wn, same_col, diff_col);
             vector<vector<char>> bmoves = bishop_moves(wb, same_col, diff_col);
             vector<vector<char>> rmoves = rook_moves(wr, same_col, diff_col);
