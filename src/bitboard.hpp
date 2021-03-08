@@ -59,4 +59,5 @@ namespace Bitboard {
     vector<vector<char>> king_moves(long long, long long, long long);
     vector<vector<char>> rook_moves(long long, long long, long long);
     vector<vector<char>> bishop_moves(long long, long long, long long);
+    vector<vector<char>> queen_moves(long long, long long, long long);
 }

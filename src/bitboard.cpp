@@ -114,7 +114,7 @@ namespace Bitboard {
         return moves;
     }
     
-    vector<vector<char>> bishop_moves(long long board, long long same_col, long long diff_col) {
+    vector<vector<char>> queen_moves(long long board, long long same_col, long long diff_col) {
         vector<vector<char>> moves;
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
