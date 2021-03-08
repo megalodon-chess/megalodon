@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "bitboard.hpp"
 #include "uci.hpp"
 
 using std::cin;
@@ -39,6 +40,12 @@ void print_info() {
 
 
 int main() {
-    print_info();
-    loop();
+    auto board = 1LL << 20;
+    auto moves = Bitboard::rook_moves(board, 0, 0);
+    for (auto m: moves) {
+        cout << Bitboard::board_str(Bitboard::push(board, m) | board);
+        int t; cin >> t;
+    }
+    // print_info();
+    // loop();
 }
