@@ -206,4 +206,9 @@ namespace Bitboard {
         }
         return moves;
     }
+
+    vector<vector<char>> pawn_moves(long long board, long long same_col, long long diff_col, bool ep, char ep_square) {
+        vector<vector<char>> moves;
+        return moves;
+    }
 }
