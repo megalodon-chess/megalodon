@@ -160,8 +160,13 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<vector<char>> pawn_moves(long long board, long long same_col, long long diff_col, bool ep, char ep_square) {
+    vector<vector<char>> pawn_moves(long long board, long long same_col, long long diff_col, bool side, bool ep, char ep_square) {
         vector<vector<char>> moves;
+        for (char i = 0; i < 64; i++) {
+            if (bit(board, i)) {
+                
+            }
+        }
         return moves;
     }
 }
