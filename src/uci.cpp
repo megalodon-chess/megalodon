@@ -31,7 +31,7 @@ using std::vector;
 using std::string;
 
 
-void loop() {
+int loop() {
     string cmd;
     Position pos(Bitboard::START_WP, Bitboard::START_WN, Bitboard::START_WB, Bitboard::START_WR, Bitboard::START_WQ,
         Bitboard::START_WK, Bitboard::START_BP, Bitboard::START_BN, Bitboard::START_BB, Bitboard::START_BR,
@@ -61,4 +61,6 @@ void loop() {
         }
         else if (cmd == "stop");
     }
+
+    return 0;
 }

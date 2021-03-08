@@ -40,5 +40,5 @@ void print_info() {
 
 int main() {
     print_info();
-    loop();
+    return loop();
 }

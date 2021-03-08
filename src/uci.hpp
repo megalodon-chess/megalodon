@@ -30,4 +30,4 @@ using std::vector;
 using std::string;
 
 
-void loop();
+int loop();
