@@ -80,6 +80,7 @@ namespace Bitboard {
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
                 for (auto dir: DIR_N) {
+                    if (!in_board(i%8+dir[1], i/8+8*dir[0])) continue;
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
                 }
@@ -93,6 +94,7 @@ namespace Bitboard {
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
                 for (auto dir: DIR_K) {
+                    if (!in_board(i%8+dir[1], i/8+8*dir[0])) continue;
                     char pos = i + 8*dir[0] + dir[1];
                     if (((1LL << pos) & same_col) == 0) moves.push_back({i, pos});
                 }
@@ -107,6 +109,7 @@ namespace Bitboard {
             if (bit(board, i)) {
                 for (auto dir: DIR_B) {
                     for (auto dist = 1; dist < 8; dist++) {
+                        if (!in_board(i%8+dir[1], i/8+8*dir[0])) break;
                         char pos = i + dist*8*dir[0] + dist*dir[1];
                         auto shift = 1LL << pos;
                         if ((shift & same_col) != 0) break;
@@ -125,6 +128,7 @@ namespace Bitboard {
             if (bit(board, i)) {
                 for (auto dir: DIR_R) {
                     for (auto dist = 1; dist < 8; dist++) {
+                        if (!in_board(i%8+dir[1], i/8+8*dir[0])) break;
                         char pos = i + dist*8*dir[0] + dist*dir[1];
                         auto shift = 1LL << pos;
                         if ((shift & same_col) != 0) break;
@@ -143,6 +147,7 @@ namespace Bitboard {
             if (bit(board, i)) {
                 for (auto dir: DIR_B) {
                     for (auto dist = 1; dist < 8; dist++) {
+                        if (!in_board(i%8+dir[1], i/8+8*dir[0])) break;
                         char pos = i + dist*8*dir[0] + dist*dir[1];
                         auto shift = 1LL << pos;
                         if ((shift & same_col) != 0) break;
