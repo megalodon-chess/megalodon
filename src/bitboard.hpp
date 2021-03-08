@@ -29,6 +29,30 @@ using std::endl;
 using std::vector;
 using std::string;
 
+struct Position {
+    Position();
+    Position(long long, long long, long long, long long, long long, long long, long long,
+        long long, long long, long long, long long, long long, bool, char, bool, char);
+
+    long long wp;
+    long long wn;
+    long long wb;
+    long long wr;
+    long long wq;
+    long long wk;
+    long long bp;
+    long long bn;
+    long long bb;
+    long long br;
+    long long bq;
+    long long bk;
+
+    bool turn;
+    char castling;
+    bool ep;
+    char ep_square;
+};
+
 namespace Bitboard {
     constexpr unsigned long long START_WP = 65280;
     constexpr unsigned long long START_WN = 66;

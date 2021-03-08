@@ -29,6 +29,32 @@ using std::vector;
 using std::string;
 
 
+Position::Position() {
+}
+
+Position::Position(long long _wp, long long _wn, long long _wb, long long _wr, long long _wq, long long _wk,
+        long long _bp, long long _bn, long long _bb, long long _br, long long _bq, long long _bk, bool _turn, char _castling,
+        bool _ep, char _ep_square) {
+    wp = _wp;
+    wn = _wn;
+    wb = _wb;
+    wr = _wr;
+    wq = _wq;
+    wk = _wk;
+    bp = _bp;
+    bn = _bn;
+    bb = _bb;
+    br = _br;
+    bq = _bq;
+    bk = _bk;
+
+    turn = _turn;
+    castling = _castling;
+    ep = _ep;
+    ep_square = _ep_square;
+}
+
+
 namespace Bitboard {
     bool in_board(char x, char y) {
         return (0 <= x && x <= 7 && 0 <= y && y <= 7);
