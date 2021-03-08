@@ -69,6 +69,9 @@ namespace Bitboard {
             output += rows[i];
         }
 
+        output += "   ";
+        for (auto i: "abcdefgh") output += string(1, i) + "   ";
+
         return output;
     }
 
