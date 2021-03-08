@@ -40,7 +40,6 @@ void print_info() {
 
 
 int main() {
-    cout << Bitboard::board_str(Bitboard::START_BB) << endl;
     print_info();
     loop();
 }
