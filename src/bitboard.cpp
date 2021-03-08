@@ -113,4 +113,21 @@ namespace Bitboard {
         }
         return moves;
     }
+    
+    vector<vector<char>> bishop_moves(long long board, long long same_col, long long diff_col) {
+        vector<vector<char>> moves;
+        for (char i = 0; i < 64; i++) {
+            if (bit(board, i)) {
+                for (auto dir: DIR_B) {
+                    for (auto dist = 1; dist < 8; dist++) {
+                        char pos = i + dist*8*dir[0] + dist*dir[1];
+                        if (((1LL << pos) & same_col) != 0) break;
+                        moves.push_back({i, pos});
+                        if (((1LL << pos) & diff_col) != 0) break;
+                    }
+                }
+            }
+        }
+        return moves;
+    }
 }
