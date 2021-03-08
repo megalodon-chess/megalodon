@@ -52,20 +52,21 @@ namespace Bitboard {
 
     string board_str(long long board) {
         vector<string> rows;
-        string output = "";
+        string output = " " + BOARD_OUTROW + "\n";
 
         for (auto y = 0; y < 8; y++) {
             string row = "";
+            row += BOARD_OUTCOL;
             for (auto x = 0; x < 8; x++) {
-                row += bit(board, 8*y+x) ? "1" : ".";
-                row += " ";
+                row += bit(board, 8*y+x) ? "1" : " ";
+                row += BOARD_OUTCOL;
             }
+            row += std::to_string(8-y) + "\n " + BOARD_OUTROW + "\n";
             rows.push_back(row);
         }
 
         for (auto i = 7; i >= 0; i--) {
             output += rows[i];
-            output += "\n";
         }
 
         return output;
