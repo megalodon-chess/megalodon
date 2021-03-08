@@ -30,6 +30,10 @@ using std::string;
 
 
 namespace Bitboard {
+    bool in_board(char x, char y) {
+        return (0 <= x && x <= 7 && 0 <= y && y <= 7);
+    }
+
     bool bit(long long board, int pos) {
         return ((1LL << pos) & board) != 0;
     }
