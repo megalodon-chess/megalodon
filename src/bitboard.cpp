@@ -52,7 +52,7 @@ namespace Bitboard {
 
     string board_str(long long board) {
         vector<string> rows;
-        string final = "";
+        string output = "";
 
         for (auto y = 0; y < 8; y++) {
             string row = "";
@@ -64,11 +64,11 @@ namespace Bitboard {
         }
 
         for (auto i = 7; i >= 0; i--) {
-            final += rows[i];
-            final += "\n";
+            output += rows[i];
+            output += "\n";
         }
 
-        return final;
+        return output;
     }
 
     vector<vector<char>> knight_moves(long long board, long long same_col, long long diff_col) {
