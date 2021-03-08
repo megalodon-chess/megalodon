@@ -159,4 +159,8 @@ namespace Bitboard {
         }
         return moves;
     }
+
+    vector<vector<char>> pawn_moves(long long board, long long same_col, long long diff_col) {
+        ;
+    }
 }
