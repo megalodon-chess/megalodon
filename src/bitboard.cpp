@@ -75,6 +75,53 @@ namespace Bitboard {
         return final;
     }
 
+    vector<vector<char>> legal_moves(long long wp, long long wn, long long wb, long long wr, long long wq, long long wk,
+            long long bp, long long bn, long long bb, long long br, long long bq, long long bk, bool turn, char castling,
+            bool ep, char ep_square) {
+        if (turn) {
+            vector<vector<char>> moves;
+            long long same_col = wp | wn | wb | wr | wq | wk;
+            long long diff_col = bp | bn | bb | br | bq | bk;
+
+            vector<vector<char>> pmoves = pawn_moves(wp, same_col, diff_col, ep, ep_square);
+            vector<vector<char>> nmoves = knight_moves(wn, same_col, diff_col);
+            vector<vector<char>> bmoves = bishop_moves(wb, same_col, diff_col);
+            vector<vector<char>> rmoves = rook_moves(wr, same_col, diff_col);
+            vector<vector<char>> qmoves = queen_moves(wq, same_col, diff_col);
+            vector<vector<char>> kmoves = king_moves(wk, same_col, diff_col, castling);
+
+            moves.insert(moves.end(), pmoves.begin(), pmoves.end());
+            moves.insert(moves.end(), nmoves.begin(), nmoves.end());
+            moves.insert(moves.end(), bmoves.begin(), bmoves.end());
+            moves.insert(moves.end(), rmoves.begin(), rmoves.end());
+            moves.insert(moves.end(), qmoves.begin(), qmoves.end());
+            moves.insert(moves.end(), kmoves.begin(), kmoves.end());
+
+            return moves;
+
+        } else {
+            vector<vector<char>> moves;
+            long long same_col = bp | bn | bb | br | bq | bk;
+            long long diff_col = wp | wn | wb | wr | wq | wk;
+
+            vector<vector<char>> pmoves = pawn_moves(bp, same_col, diff_col, ep, ep_square);
+            vector<vector<char>> nmoves = knight_moves(bn, same_col, diff_col);
+            vector<vector<char>> bmoves = bishop_moves(bb, same_col, diff_col);
+            vector<vector<char>> rmoves = rook_moves(br, same_col, diff_col);
+            vector<vector<char>> qmoves = queen_moves(bq, same_col, diff_col);
+            vector<vector<char>> kmoves = king_moves(bk, same_col, diff_col, castling);
+
+            moves.insert(moves.end(), pmoves.begin(), pmoves.end());
+            moves.insert(moves.end(), nmoves.begin(), nmoves.end());
+            moves.insert(moves.end(), bmoves.begin(), bmoves.end());
+            moves.insert(moves.end(), rmoves.begin(), rmoves.end());
+            moves.insert(moves.end(), qmoves.begin(), qmoves.end());
+            moves.insert(moves.end(), kmoves.begin(), kmoves.end());
+
+            return moves;
+        }
+    }
+
     vector<vector<char>> knight_moves(long long board, long long same_col, long long diff_col) {
         vector<vector<char>> moves;
         for (char i = 0; i < 64; i++) {
@@ -89,7 +136,7 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<vector<char>> king_moves(long long board, long long same_col, long long diff_col) {
+    vector<vector<char>> king_moves(long long board, long long same_col, long long diff_col, char castling) {
         vector<vector<char>> moves;
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
