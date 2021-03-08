@@ -53,11 +53,11 @@ string replace(string str, string rep) {
     return str;
 }
 
-string join(string sep, vector<string> parts) {
+string join(string delim, vector<string> parts) {
     string str;
     for (auto i = 0; i < parts.size()-1; i++) {
         str += parts[i];
-        str += sep;
+        str += delim;
     }
     str += parts[parts.size()-1];
     return str;
