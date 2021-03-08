@@ -164,7 +164,20 @@ namespace Bitboard {
         vector<vector<char>> moves;
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
-                
+                int speed = i/8 == (side ? 6 : 1) ? 2 : 1;
+                int dir = side ? -1 : 1;
+                for (auto dist = 1; dist < speed + 1; dist++) {
+                    if (!in_board(i%8, i/8+8*dir)) break;
+                    char pos = i + dist*8*dir;
+                    auto shift = 1LL << pos;
+                    if ((shift & same_col) != 0 || (shift & diff_col) != 0) break;
+                    moves.push_back({i, pos});
+                }
+                char pos;
+                pos = i + 8*dir - 1;
+                if (in_board(i%8-1, i/8+8*dir) && (((1LL << pos) & diff_col) != 0)) moves.push_back({i, pos});
+                pos = i + 8*dir + 1;
+                if (in_board(i%8+1, i/8+8*dir) && (((1LL << pos) & diff_col) != 0)) moves.push_back({i, pos});
             }
         }
         return moves;
