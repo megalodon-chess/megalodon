@@ -88,7 +88,7 @@ namespace Bitboard {
             vector<vector<char>> bmoves = bishop_moves(wb, same_col, diff_col);
             vector<vector<char>> rmoves = rook_moves(wr, same_col, diff_col);
             vector<vector<char>> qmoves = queen_moves(wq, same_col, diff_col);
-            vector<vector<char>> kmoves = king_moves(wk, same_col, diff_col);
+            vector<vector<char>> kmoves = king_moves(wk, same_col, diff_col, castling);
 
             moves.insert(moves.end(), pmoves.begin(), pmoves.end());
             moves.insert(moves.end(), nmoves.begin(), nmoves.end());
@@ -109,7 +109,7 @@ namespace Bitboard {
             vector<vector<char>> bmoves = bishop_moves(bb, same_col, diff_col);
             vector<vector<char>> rmoves = rook_moves(br, same_col, diff_col);
             vector<vector<char>> qmoves = queen_moves(bq, same_col, diff_col);
-            vector<vector<char>> kmoves = king_moves(bk, same_col, diff_col);
+            vector<vector<char>> kmoves = king_moves(bk, same_col, diff_col, castling);
 
             moves.insert(moves.end(), pmoves.begin(), pmoves.end());
             moves.insert(moves.end(), nmoves.begin(), nmoves.end());
@@ -136,7 +136,7 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<vector<char>> king_moves(long long board, long long same_col, long long diff_col) {
+    vector<vector<char>> king_moves(long long board, long long same_col, long long diff_col, char castling) {
         vector<vector<char>> moves;
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
