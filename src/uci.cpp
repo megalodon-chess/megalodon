@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include "funcs.hpp"
+#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,6 +33,9 @@ using std::string;
 
 void loop() {
     string cmd;
+    Position pos(Bitboard::START_WP, Bitboard::START_WN, Bitboard::START_WB, Bitboard::START_WR, Bitboard::START_WQ,
+        Bitboard::START_WK, Bitboard::START_BP, Bitboard::START_BN, Bitboard::START_BB, Bitboard::START_BR,
+        Bitboard::START_BQ, Bitboard::START_BK, true, 15, false, 0);
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
