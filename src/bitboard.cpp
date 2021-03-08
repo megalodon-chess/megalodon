@@ -52,27 +52,23 @@ namespace Bitboard {
 
     string board_str(long long board) {
         vector<string> rows;
-        string output = " " + BOARD_OUTROW + "\n";
+        string final = "";
 
         for (auto y = 0; y < 8; y++) {
             string row = "";
-            row += BOARD_OUTCOL;
             for (auto x = 0; x < 8; x++) {
-                row += bit(board, 8*y+x) ? "1" : " ";
-                row += BOARD_OUTCOL;
+                row += bit(board, 8*y+x) ? "1" : ".";
+                row += " ";
             }
-            row += std::to_string(8-y) + "\n " + BOARD_OUTROW + "\n";
             rows.push_back(row);
         }
 
         for (auto i = 7; i >= 0; i--) {
-            output += rows[i];
+            final += rows[i];
+            final += "\n";
         }
 
-        output += "   ";
-        for (auto i: "abcdefgh") output += string(1, i) + "   ";
-
-        return output;
+        return final;
     }
 
     vector<vector<char>> knight_moves(long long board, long long same_col, long long diff_col) {
