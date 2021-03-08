@@ -80,8 +80,7 @@ namespace Bitboard {
     long long push(long long, vector<char>);
     string board_str(long long);
 
-    vector<vector<char>> legal_moves(long long, long long, long long, long long, long long, long long, long long,
-        long long, long long, long long, long long, long long, bool, char, bool, char);
+    vector<vector<char>> legal_moves(Position);
     vector<vector<char>> knight_moves(long long, long long, long long);
     vector<vector<char>> king_moves(long long, long long, long long, char);
     vector<vector<char>> rook_moves(long long, long long, long long);

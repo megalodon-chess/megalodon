@@ -101,9 +101,25 @@ namespace Bitboard {
         return final;
     }
 
-    vector<vector<char>> legal_moves(long long wp, long long wn, long long wb, long long wr, long long wq, long long wk,
-            long long bp, long long bn, long long bb, long long br, long long bq, long long bk, bool turn, char castling,
-            bool ep, char ep_square) {
+    vector<vector<char>> legal_moves(Position pos) {
+        long long wp = pos.wp;
+        long long wn = pos.wn;
+        long long wb = pos.wb;
+        long long wr = pos.wr;
+        long long wq = pos.wq;
+        long long wk = pos.wk;
+        long long bp = pos.bp;
+        long long bn = pos.bn;
+        long long bb = pos.bb;
+        long long br = pos.br;
+        long long bq = pos.bq;
+        long long bk = pos.bk;
+
+        bool turn = pos.turn;
+        char castling = pos.castling;
+        bool ep = pos.ep;
+        char ep_square = pos.ep_square;
+
         if (turn) {
             vector<vector<char>> moves;
             long long same_col = wp | wn | wb | wr | wq | wk;
