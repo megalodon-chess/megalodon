@@ -45,6 +45,15 @@ string SearchInfo::as_string() {
 }
 
 
+vector<Position> flatten(vector<vector<Position>> vec) {
+    vector<Position> flat;
+    for (auto v: vec) {
+        flat.insert(flat.end(), v.begin(), v.end());
+    }
+    return flat;
+}
+
+
 SearchInfo search(Position pos) {
     vector<vector<vector<Position>>> tree = {{{pos}}};
     int depth = 1;
@@ -54,6 +63,7 @@ SearchInfo search(Position pos) {
         vector<vector<Position>> curr_depth;
         for (auto group: tree[depth-1]) {
             for (auto node: group) {
+            vector<Position> curr_group;
             }
         }
         depth++;
