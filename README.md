@@ -4,17 +4,32 @@ UCI chess engine.
 
 [Version 0.0.3][latest] was recently released!
 
-## To Run
+## To run with `make`
 
 1. Clone or download the repository.
-2. cd to src
+2. `cd` to `src/`
 3. Use `make` to compile
 4. Run the executable
 
 ``` bash
-cd src
+cd src/
 make
 ./Megalodon
+```
+
+## To run with `cmake`
+
+1. Clone or download the repository,
+2. `cd` to `src/`
+3. Create `build` directory
+4. `cd` to `build/`
+5. Create `Makefile`
+
+``` bash
+cd src/
+mkdir build
+cd build/
+cmake ..
 ```
 
 ## The Name
