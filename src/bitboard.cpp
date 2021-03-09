@@ -210,10 +210,10 @@ namespace Bitboard {
                     }
 
                     if (bit(knights, i)) {
-                        for (auto dir: DIR_N) {                        // Iterate through all knight moves.
+                        for (auto dir: DIR_N) {                          // Iterate through all knight moves.
                             if (num_atckers > 1) return board;
                             const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
-                            if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
+                            if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true); num_atckers++;
                         }
                     }
 
@@ -227,7 +227,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                board = set_bit(board, loc, true);
+                                board = set_bit(board, loc, true); num_atckers++;
                                 if (bit(opponent, loc)) break;
                                 if (bit(pieces, loc)) break;
                             }
@@ -244,7 +244,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                board = set_bit(board, loc, true);
+                                board = set_bit(board, loc, true); num_atckers++;
                                 if (bit(opponent, loc)) break;
                                 if (bit(pieces, loc)) break;
                             }
