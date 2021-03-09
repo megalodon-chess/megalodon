@@ -20,13 +20,11 @@ make
 ## To run with `cmake`
 
 1. Clone or download the repository,
-2. `cd` to `src/`
-3. Create `build` directory
-4. `cd` to `build/`
-5. Create `Makefile`
+2. Create `build` directory
+3. `cd` to `build/`
+4. Create `Makefile`
 
 ``` bash
-cd src/
 mkdir build
 cd build/
 cmake ..
