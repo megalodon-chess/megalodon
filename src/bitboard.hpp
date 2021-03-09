@@ -53,6 +53,9 @@ struct Position {
     float eval;
 };
 
+Position copy_position(Position);
+Move copy_move(Move);
+
 namespace Bitboard {
     // Move format: vector<char> = {start square, end square, promotion piece}
     // Promotion piece format: 0=knight, 1=bishop, 2=rook, 3=queen

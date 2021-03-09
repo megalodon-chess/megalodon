@@ -65,6 +65,15 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
 }
 
 
+Position copy_position(Position p) {
+    return Position(p.wp, p.wn, p.wb, p.wr, p.wq, p.wk, p.bp, p.bn, p.bb, p.br, p.bq, p.bk, p.turn, p.castling, p.ep, p.ep_square);
+}
+
+Move copy_move(Move m) {
+    return Move(m.from, m.to, m.is_promo, m.promo);
+}
+
+
 namespace Bitboard {
     bool bit(U64 board, int pos) {
         return ((1LL << pos) & board) != 0;
