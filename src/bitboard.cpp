@@ -191,10 +191,62 @@ namespace Bitboard {
     }
 
     U64 checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 opponent, bool side) {
+        const U64 pieces = pawns | knights | bishops | rooks | queens;
+        U64 board = EMPTY;
+        const char pawn_dir = side ? 1 : -1;
+
         for (char i = 0; i < 64; i++) {
             if (bit(king, i)) {
                 const char kx = i%8, ky = i/8;
-                // Check checks
+
+                for (char i = 0; i < 64; i++) {
+                    if (bit(pawns, i)) {
+                        const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
+                        if (0 <= y && y < 8) {
+                            if (0 <= kx-1 && kx-1 < 8) board = set_bit(board, y*8 + kx-1, true);
+                            if (0 <= kx+1 && kx+1 < 8) board = set_bit(board, y*8 + kx+1, true);
+                        }
+                    }
+
+                    if (bit(knights, i)) {
+                        for (auto dir: DIR_N) {                        // Iterate through all knight moves.
+                            const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
+                            if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
+                        }
+                    }
+
+                    if (bit(rooks, i) || bit(queens, i)) {
+                        for (auto dir: DIR_R) {
+                            char cx = kx, cy = ky;                  // Current (x, y)
+                            const char dx = dir[0], dy = dir[1];  // Delta (x, y)
+                            while (true) {
+                                cx += dx;
+                                cy += dy;
+                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                const char loc = cy*8 + cx;
+                                board = set_bit(board, loc, true);
+                                if (bit(opponent, loc)) break;
+                                if (bit(pieces, loc)) break;
+                            }
+                        }
+                    }
+
+                    if (bit(bishops, i) || bit(queens, i)) {
+                        for (auto dir: DIR_B) {
+                            char cx = kx, cy = ky;                  // Current (x, y)
+                            const char dx = dir[0], dy = dir[1];  // Delta (x, y)
+                            while (true) {
+                                cx += dx;
+                                cy += dy;
+                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                const char loc = cy*8 + cx;
+                                board = set_bit(board, loc, true);
+                                if (bit(opponent, loc)) break;
+                                if (bit(pieces, loc)) break;
+                            }
+                        }
+                    }
+                }
                 break;
             }
         }
