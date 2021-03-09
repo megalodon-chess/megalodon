@@ -260,6 +260,7 @@ namespace Bitboard {
                 break;
             }
         }
+        return board;
     }
 
     vector<Move> king_moves(U64 king, U64 attacks) {
