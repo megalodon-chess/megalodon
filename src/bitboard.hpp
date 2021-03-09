@@ -31,6 +31,16 @@ using std::string;
 
 typedef unsigned long long U64;
 
+struct Move {
+    Move();
+    Move(char, char, bool=false, char=0);
+
+    char from;
+    char to;
+    bool is_promo;
+    char promo;
+};
+
 struct Position {
     Position();
     Position(U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, bool, char, bool, char);
@@ -62,11 +72,11 @@ namespace Bitboard {
     constexpr U64 START_BQ = 576460752303423488ULL;
     constexpr U64 START_BK = 1152921504606846976ULL;
 
-    const vector<vector<int>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const vector<vector<int>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
-    const vector<vector<int>> DIR_B = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
-    const vector<vector<int>> DIR_Q = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const vector<vector<int>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+    const vector<vector<char>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    const vector<vector<char>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
+    const vector<vector<char>> DIR_B = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    const vector<vector<char>> DIR_Q = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    const vector<vector<char>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(U64, int);
     bool bit(char, int);
@@ -74,4 +84,5 @@ namespace Bitboard {
     string board_str(U64, string="X", string="-");
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
+    vector<Move> king_moves(U64, U64);
 }

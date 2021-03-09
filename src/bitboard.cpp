@@ -29,6 +29,17 @@ using std::vector;
 using std::string;
 
 
+Move::Move() {
+}
+
+Move::Move(char _from, char _to, bool _is_promo, char _promo) {
+    from = _from;
+    to = _to;
+    is_promo = _is_promo;
+    promo = _promo;
+}
+
+
 Position::Position() {
 }
 
@@ -111,7 +122,7 @@ namespace Bitboard {
             if (bit(knights, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_N) {                 // Iterate through all knight moves.
-                    int nx = x+dir[0], ny = y+dir[1];   // Position after moving.
+                    char nx = x+dir[0], ny = y+dir[1];   // Position after moving.
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
                 }
             }
@@ -119,7 +130,7 @@ namespace Bitboard {
             if (bit(kings, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_K) {
-                    int nx = x+dir[0], ny = y+dir[1];
+                    char nx = x+dir[0], ny = y+dir[1];
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
                 }
             }
@@ -160,5 +171,22 @@ namespace Bitboard {
         }
 
         return board;
+    }
+
+    vector<Move> king_moves(U64 king, U64 attacks) {
+        vector<Move> moves;
+
+        for (char i = 0; i < 64; i++) {
+            if (bit(king, i)) {
+                char x = i%8, y = i/8;
+                for (auto dir: DIR_K) {
+                    char nx = x+dir[0], ny = y+dir[1];
+                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
+                        if (((1ULL << i) & attacks) == 0) moves.push_back(Move(i, ny*8+nx));
+                    }
+                }
+                break;
+            }
+        }
     }
 }
