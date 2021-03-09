@@ -35,19 +35,7 @@ struct Position {
     Position();
     Position(U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, bool, char, bool, char);
 
-    U64 wp;
-    U64 wn;
-    U64 wb;
-    U64 wr;
-    U64 wq;
-    U64 wk;
-    U64 bp;
-    U64 bn;
-    U64 bb;
-    U64 br;
-    U64 bq;
-    U64 bk;
-
+    U64 wp, wn, wb, wr, wq, wk, bp, bn, bb, br, bq, bk;
     bool turn;
     char castling;
     bool ep;
