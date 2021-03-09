@@ -191,7 +191,13 @@ namespace Bitboard {
     }
 
     U64 checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 opponent, bool side) {
-        char 
+        for (char i = 0; i < 64; i++) {
+            if (bit(king, i)) {
+                const char kx = i%8, ky = i/8;
+                // Check checks
+                break;
+            }
+        }
     }
 
     vector<Move> king_moves(U64 king, U64 attacks) {
