@@ -253,18 +253,15 @@ namespace Bitboard {
                                 const char loc = cy*8 + cx;
                                 if (bit(same_side, loc)) {
                                     break;
-                                }
-                                else if (bit(rooks, loc)) {
+                                } else if (bit(rooks, loc)) {
                                     board = set_bit(board, loc, true);
                                     num_atckers++;
                                     break;
-                                }
-                                else if (bit(queens, loc)) {
+                                } else if (bit(queens, loc)) {
                                     board = set_bit(board, loc, true);
                                     num_atckers++;
                                     break;
-                                }
-                                else if (bit(pieces, loc)) {
+                                } else if (bit(pieces, loc)) {
                                     break;
                                 }
                             }
@@ -283,18 +280,15 @@ namespace Bitboard {
                                 const char loc = cy*8 + cx;
                                 if (bit(same_side, loc)) {
                                     break;
-                                }
-                                else if (bit(bishops, loc)) {
+                                } else if (bit(bishops, loc)) {
                                     board = set_bit(board, loc, true);
                                     num_atckers++;
                                     break;
-                                }
-                                else if (bit(queens, loc)) {
+                                } else if (bit(queens, loc)) {
                                     board = set_bit(board, loc, true);
                                     num_atckers++;
                                     break;
-                                }
-                                else if (bit(pieces, loc)) {
+                                } else if (bit(pieces, loc)) {
                                     break;
                                 }
                             }
