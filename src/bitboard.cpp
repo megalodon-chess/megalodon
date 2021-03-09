@@ -190,6 +190,10 @@ namespace Bitboard {
         return board;
     }
 
+    U64 checkers(U64, U64, U64, U64, U64, U64, bool) {
+        ;
+    }
+
     vector<Move> king_moves(U64 king, U64 attacks) {
         vector<Move> moves;
 
