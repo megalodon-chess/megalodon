@@ -190,7 +190,7 @@ namespace Bitboard {
         return board;
     }
 
-    U64 checkers(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 opponent, bool side) {
+    U64 checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 opponent, bool side) {
         
     }
 
