@@ -55,6 +55,8 @@ struct Position {
 };
 
 namespace Bitboard {
+    constexpr U64 EMPTY = 0;
+
     constexpr U64 START_WP = 65280;
     constexpr U64 START_WN = 66;
     constexpr U64 START_WB = 36;
@@ -79,4 +81,6 @@ namespace Bitboard {
     bool bit(char, int);
     U64 set_bit(U64, int, bool);
     string board_str(U64);
+
+    U64 attacked(U64, U64, U64, U64, U64, U64, bool);
 }

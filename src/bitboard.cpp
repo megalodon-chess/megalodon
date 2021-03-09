@@ -93,4 +93,22 @@ namespace Bitboard {
 
         return final;
     }
+
+    U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, bool side) {
+        U64 board = EMPTY;
+        char pawn_dir = side ? 1 : -1;
+
+        for (char i = 0; i < 64; i++) {
+            if (bit(pawns, i)) {
+                char x = i%8, y = i/8 + pawn_dir;
+                if (0 <= y && y < 8) {
+                    char row_val = y * 8;
+                    if (0 <= x-1 && x-1 < 8) board |= (row_val+x-1);
+                    if (0 <= x+1 && x+1 < 8) board |= (row_val+x+1);
+                }
+            }
+        }
+
+        return board;
+    }
 }
