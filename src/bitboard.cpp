@@ -74,6 +74,13 @@ namespace Bitboard {
         return ((1 << pos) & board) != 0;
     }
 
+    char bit_pos(U64 board, bool target) {
+        for (char i = 0; i < 64; i++) {
+            if (bit(board, i) == target) return i;
+        }
+        return 64;
+    }
+
     U64 set_bit(U64 board, int pos, bool value) {
         bool on = bit(board, pos);
         if (value && !on) {
