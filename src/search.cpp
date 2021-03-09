@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <string>
 #include "bitboard.hpp"
 #include "search.hpp"
@@ -41,4 +42,8 @@ string SearchInfo::as_string() {
     str += " " + std::to_string(score);
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     return str;
+}
+
+
+SearchInfo search(Position pos) {
 }

@@ -43,3 +43,5 @@ struct SearchInfo {
     int nps;
     int time;
 };
+
+SearchInfo search(Position);
