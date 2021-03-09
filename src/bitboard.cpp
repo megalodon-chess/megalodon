@@ -238,6 +238,7 @@ namespace Bitboard {
                                 const char loc = cy*8 + cx;
                                 if (bit(same_side, loc)) break;
                                 if (bit(rooks, loc)) board = set_bit(board, loc, true); num_atckers++; break;
+                                if (bit(queens, loc)) board = set_bit(board, loc, true); num_atckers++; break;
                                 if (bit(pieces, loc)) break;
                             }
                         }
@@ -255,6 +256,7 @@ namespace Bitboard {
                                 const char loc = cy*8 + cx;
                                 if (bit(same_side, loc)) break;
                                 if (bit(bishops, loc)) board = set_bit(board, loc, true); num_atckers++; break;
+                                if (bit(queens, loc)) board = set_bit(board, loc, true); num_atckers++; break;
                                 if (bit(pieces, loc)) break;
                             }
                         }
