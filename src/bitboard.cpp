@@ -73,14 +73,14 @@ namespace Bitboard {
         return board;
     }
 
-    string board_str(U64 board) {
+    string board_str(U64 board, string on, string off) {
         vector<string> rows;
         string final = "";
 
         for (auto y = 0; y < 8; y++) {
             string row = "";
             for (auto x = 0; x < 8; x++) {
-                row += bit(board, 8*y+x) ? "1" : ".";
+                row += bit(board, 8*y+x) ? on : off;
                 row += " ";
             }
             rows.push_back(row);

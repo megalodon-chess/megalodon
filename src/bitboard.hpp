@@ -80,7 +80,7 @@ namespace Bitboard {
     bool bit(U64, int);
     bool bit(char, int);
     U64 set_bit(U64, int, bool);
-    string board_str(U64);
+    string board_str(U64, string="X", string="-");
 
     U64 attacked(U64, U64, U64, U64, U64, U64, bool);
 }
