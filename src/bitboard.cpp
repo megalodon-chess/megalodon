@@ -254,7 +254,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(same_side, loc)) break;
-                                if ((1ULL << loc) & bishops != 0) board = set_bit(board, loc, true); num_atckers++; break;
+                                if (bit(bishops, loc)) board = set_bit(board, loc, true); num_atckers++; break;
                                 if (bit(pieces, loc)) break;
                             }
                         }
