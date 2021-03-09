@@ -39,9 +39,6 @@ void print_info() {
 
 
 int main() {
-    U64 king = 1ULL << 20;
-    cout << Bitboard::board_str(king) << endl;
-    return 0;
     print_info();
     return loop();
 }
