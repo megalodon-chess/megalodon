@@ -205,10 +205,10 @@ namespace Bitboard {
                         const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
                         if (0 <= y && y < 8) {
                             if (0 <= kx-1 && kx-1 < 8) {
-                                if ((1ULL << y*8 + kx-1) & king != 0) board = set_bit(board, y*8 + kx-1, true); num_atckers++; continue;
+                                if ((1ULL << y*8 + kx-1) & pawns != 0) board = set_bit(board, y*8 + kx-1, true); num_atckers++; continue;
                             }
                             if (0 <= kx+1 && kx+1 < 8) {
-                                if ((1ULL << y*8 + kx+1) & king != 0) board = set_bit(board, y*8 + kx+1, true); num_atckers++; continue;
+                                if ((1ULL << y*8 + kx+1) & pawns != 0) board = set_bit(board, y*8 + kx+1, true); num_atckers++; continue;
                             }
                         }
                     }
@@ -218,7 +218,7 @@ namespace Bitboard {
                             if (num_atckers > 1) return board;
                             const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                             if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
-                                if ((1ULL << ny*8 + nx) & king != 0) board = set_bit(board, ny*8 + nx, true); num_atckers++; break;
+                                if ((1ULL << ny*8 + nx) & knights != 0) board = set_bit(board, ny*8 + nx, true); num_atckers++; break;
                             }
                         }
                     }
@@ -234,7 +234,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(same_side, loc)) break;
-                                if ((1ULL << loc) & king != 0) board = set_bit(board, loc, true); num_atckers++; break;
+                                if ((1ULL << loc) & rooks != 0) board = set_bit(board, loc, true); num_atckers++; break;
                                 if (bit(pieces, loc)) break;
                             }
                         }
@@ -251,7 +251,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(same_side, loc)) break;
-                                if ((1ULL << loc) & king != 0) board = set_bit(board, loc, true); num_atckers++; break;
+                                if ((1ULL << loc) & bishops != 0) board = set_bit(board, loc, true); num_atckers++; break;
                                 if (bit(pieces, loc)) break;
                             }
                         }
