@@ -106,19 +106,25 @@ namespace Bitboard {
                     if (0 <= x-1 && x-1 < 8) board = set_bit(board, y*8 + x-1, true);
                     if (0 <= x+1 && x+1 < 8) board = set_bit(board, y*8 + x+1, true);
                 }
-            } else if (bit(knights, i)) {
+            }
+
+            else if (bit(knights, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_N) {
                     int nx = x+dir[0], ny = y+dir[1];
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
                 }
-            } else if (bit(kings, i)) {
+            }
+
+            else if (bit(kings, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_K) {
                     int nx = x+dir[0], ny = y+dir[1];
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
                 }
-            } else if (bit(rooks, i) || bit(queens, i)) {
+            }
+
+            else if (bit(rooks, i) || bit(queens, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_R) {
                     char cx = x, cy = y;
