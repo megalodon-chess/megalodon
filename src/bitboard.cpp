@@ -271,7 +271,7 @@ namespace Bitboard {
                     if (bit(bishops, i) || bit(queens, i)) {
                         for (auto dir: DIR_B) {
                             char cx = kx, cy = ky;                  // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];  // Delta (x, y)
+                            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
                             while (true) {
                                 if (num_atckers > 1) return board;
                                 cx += dx;
