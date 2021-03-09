@@ -147,8 +147,8 @@ namespace Bitboard {
             if (bit(kings, i)) {
                 const char x = i%8, y = i/8;
                 for (auto dir: DIR_K) {
-                    const char nx = x+dir[0], ny = y+dir[1];
-                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
+                    const char kx = x+dir[0], ky = y+dir[1];
+                    if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) board = set_bit(board, ky*8 + kx, true);
                 }
             }
 
@@ -191,7 +191,7 @@ namespace Bitboard {
     }
 
     U64 checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 opponent, bool side) {
-        
+        char 
     }
 
     vector<Move> king_moves(U64 king, U64 attacks) {
@@ -201,9 +201,9 @@ namespace Bitboard {
             if (bit(king, i)) {
                 const char x = i%8, y = i/8;
                 for (auto dir: DIR_K) {
-                    const char nx = x+dir[0], ny = y+dir[1];
-                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
-                        const char new_loc = ny*8 + nx;
+                    const char kx = x+dir[0], ky = y+dir[1];
+                    if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) {
+                        const char new_loc = ky*8 + kx;
                         if (((1ULL << new_loc) & attacks) == 0) moves.push_back(Move(i, new_loc));
                     }
                 }
