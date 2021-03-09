@@ -29,8 +29,6 @@ using std::endl;
 using std::vector;
 using std::string;
 
-bool in_board(vector<int>);
-
 string strip(string);
 string replace(string, string);
 string join(string, vector<string>);
