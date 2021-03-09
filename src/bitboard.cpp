@@ -105,6 +105,16 @@ namespace Bitboard {
         return repr;
     }
 
+    string move_str(Move move) {
+        string str;
+        for (auto sq: {move.from, move.to}) {
+            char x = sq%8, y = sq/8;
+            str += string(1, x+97);
+            str += std::to_string(y+1);
+        }
+        return str;
+    }
+
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         U64 board = EMPTY;
