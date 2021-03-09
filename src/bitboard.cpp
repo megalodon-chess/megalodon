@@ -108,7 +108,7 @@ namespace Bitboard {
                 }
             }
 
-            else if (bit(knights, i)) {
+            if (bit(knights, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_N) {                 // Iterate through all knight moves.
                     int nx = x+dir[0], ny = y+dir[1];   // Position after moving.
@@ -116,7 +116,7 @@ namespace Bitboard {
                 }
             }
 
-            else if (bit(kings, i)) {
+            if (bit(kings, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_K) {
                     int nx = x+dir[0], ny = y+dir[1];
@@ -124,7 +124,7 @@ namespace Bitboard {
                 }
             }
 
-            else if (bit(rooks, i) || bit(queens, i)) {
+            if (bit(rooks, i) || bit(queens, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_R) {
                     char cx = x, cy = y;            // Current (x, y)
@@ -141,7 +141,7 @@ namespace Bitboard {
                 }
             }
 
-            else if (bit(bishops, i) || bit(queens, i)) {
+            if (bit(bishops, i) || bit(queens, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_B) {
                     char cx = x, cy = y;            // Current (x, y)
