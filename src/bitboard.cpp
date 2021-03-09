@@ -231,17 +231,29 @@ namespace Bitboard {
                     if (bit(rooks, i) || bit(queens, i)) {
                         for (auto dir: DIR_R) {
                             char cx = kx, cy = ky;                  // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];  // Delta (x, y)
+                            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
                             while (true) {
                                 if (num_atckers > 1) return board;
                                 cx += dx;
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if (bit(same_side, loc)) break;
-                                if (bit(rooks, loc)) board = set_bit(board, loc, true); num_atckers++; break;
-                                if (bit(queens, loc)) board = set_bit(board, loc, true); num_atckers++; break;
-                                if (bit(pieces, loc)) break;
+                                if (bit(same_side, loc)) {
+                                    break;
+                                }
+                                else if (bit(rooks, loc)) {
+                                    board = set_bit(board, loc, true);
+                                    num_atckers++;
+                                    break;
+                                }
+                                else if (bit(queens, loc)) {
+                                    board = set_bit(board, loc, true);
+                                    num_atckers++;
+                                    break;
+                                }
+                                else if (bit(pieces, loc)) {
+                                    break;
+                                }
                             }
                         }
                     }
@@ -256,10 +268,22 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if (bit(same_side, loc)) break;
-                                if (bit(bishops, loc)) board = set_bit(board, loc, true); num_atckers++; break;
-                                if (bit(queens, loc)) board = set_bit(board, loc, true); num_atckers++; break;
-                                if (bit(pieces, loc)) break;
+                                if (bit(same_side, loc)) {
+                                    break;
+                                }
+                                else if (bit(bishops, loc)) {
+                                    board = set_bit(board, loc, true);
+                                    num_atckers++;
+                                    break;
+                                }
+                                else if (bit(queens, loc)) {
+                                    board = set_bit(board, loc, true);
+                                    num_atckers++;
+                                    break;
+                                }
+                                else if (bit(pieces, loc)) {
+                                    break;
+                                }
                             }
                         }
                     }

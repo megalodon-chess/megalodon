@@ -39,6 +39,13 @@ void print_info() {
 
 
 int main() {
+    U64 king = 1ULL << 20;
+    U64 rooks = 1ULL << 36;
+    U64 checkers = Bitboard::checkers(king, 0, 0, 0, rooks, 0, 0, true);
+    cout << Bitboard::board_str(king) << endl;
+    cout << Bitboard::board_str(rooks) << endl;
+    cout << Bitboard::board_str(checkers) << endl;
+    return 0;
     print_info();
     return loop();
 }
