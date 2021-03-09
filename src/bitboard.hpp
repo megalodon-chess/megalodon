@@ -86,6 +86,6 @@ namespace Bitboard {
     string move_str(Move);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
-    U64 checkers(U64, U64, U64, U64, U64, U64, bool);
+    U64 checkers(U64, U64, U64, U64, U64, U64, U64, bool);
     vector<Move> king_moves(U64, U64);
 }
