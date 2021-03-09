@@ -204,10 +204,12 @@ namespace Bitboard {
                     if (bit(pawns, i)) {
                         const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
                         if (0 <= y && y < 8) {
+                            if (num_atckers > 1) return board;
                             if (0 <= kx-1 && kx-1 < 8) {
                                 char pos = y*8 + kx-1;
                                 if (bit(pawns, pos)) board = set_bit(board, pos, true); num_atckers++; continue;
                             }
+                            if (num_atckers > 1) return board;
                             if (0 <= kx+1 && kx+1 < 8) {
                                 char pos = y*8 + kx+1;
                                 if (bit(pawns, pos)) board = set_bit(board, pos, true); num_atckers++; continue;
