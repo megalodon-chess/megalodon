@@ -28,3 +28,17 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+SearchInfo::SearchInfo() {
+}
+
+string SearchInfo::as_string() {
+    string str = "";
+    str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
+    str += " score ";
+    str += (is_mate_score ? "mate" : "cp");
+    str += " " + std::to_string(score);
+    str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
+    return str;
+}

@@ -29,3 +29,17 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+struct SearchInfo {
+    SearchInfo();
+    string as_string();
+
+    Move move;
+    int depth;
+    int seldepth;
+    bool is_mate_score;
+    int score;
+    int nodes;
+    int nps;
+    int time;
+};
