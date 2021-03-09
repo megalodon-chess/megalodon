@@ -46,4 +46,17 @@ string SearchInfo::as_string() {
 
 
 SearchInfo search(Position pos) {
+    vector<vector<vector<Position>>> tree = {{{pos}}};
+    int depth = 1;
+    int num_nodes = 1;
+
+    while (true) {
+        vector<vector<Position>> curr_depth;
+        for (auto group: tree[depth-1]) {
+            for (auto node: group) {
+            }
+        }
+        depth++;
+        if (depth == 4) break;
+    }
 }
