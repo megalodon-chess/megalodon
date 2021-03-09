@@ -95,6 +95,7 @@ namespace Bitboard {
     }
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
+        U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         U64 board = EMPTY;
         char pawn_dir = side ? 1 : -1;
 
@@ -116,6 +117,21 @@ namespace Bitboard {
                 for (auto dir: DIR_K) {
                     int nx = x+dir[0], ny = y+dir[1];
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
+                }
+            } else if (bit(rooks, i) || bit(queens, i)) {
+                char x = i%8, y = i/8;
+                for (auto dir: DIR_R) {
+                    char cx = x, cy = y;
+                    char dx = dir[0], dy = dir[1];
+                    while (true) {
+                        cx += dx;
+                        cy += dy;
+                        if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                        char loc = cy*8 + cx;
+                        board = set_bit(board, loc, true);
+                        if (bit(opponent, loc)) break;
+                        if (bit(pieces, loc)) break;
+                    }
                 }
             }
         }
