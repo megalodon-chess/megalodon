@@ -220,7 +220,8 @@ namespace Bitboard {
                             if (num_atckers > 1) return board;
                             const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                             if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
-                                if ((1ULL << ny*8 + nx) & knights != 0) board = set_bit(board, ny*8 + nx, true); num_atckers++; break;
+                                char pos = ny*8 + nx;   
+                                if (bit(knights, pos)) board = set_bit(board, pos, true); num_atckers++; break;
                             }
                         }
                     }
