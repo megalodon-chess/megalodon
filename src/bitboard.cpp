@@ -103,8 +103,8 @@ namespace Bitboard {
                 char x = i%8, y = i/8 + pawn_dir;
                 if (0 <= y && y < 8) {
                     char row_val = y * 8;
-                    if (0 <= x-1 && x-1 < 8) board |= (row_val+x-1);
-                    if (0 <= x+1 && x+1 < 8) board |= (row_val+x+1);
+                    if (0 <= x-1 && x-1 < 8) board = set_bit(board, row_val+x-1, true);
+                    if (0 <= x+1 && x+1 < 8) board = set_bit(board, row_val+x+1, true);
                 }
             }
         }
