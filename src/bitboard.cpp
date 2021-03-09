@@ -320,4 +320,8 @@ namespace Bitboard {
 
         return moves;
     }
+
+    vector<Move> legal_moves(Position pos) {
+        return {};
+    }
 }
