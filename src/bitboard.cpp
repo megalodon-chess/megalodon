@@ -111,6 +111,12 @@ namespace Bitboard {
                     int nx = x+dir[0], ny = y+dir[1];
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
                 }
+            } else if (bit(kings, i)) {
+                char x = i%8, y = i/8;
+                for (auto dir: DIR_K) {
+                    int nx = x+dir[0], ny = y+dir[1];
+                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
+                }
             }
         }
 
