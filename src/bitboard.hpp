@@ -50,6 +50,7 @@ struct Position {
     char castling;
     bool ep;
     char ep_square;
+    float eval;
 };
 
 namespace Bitboard {
