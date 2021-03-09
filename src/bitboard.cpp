@@ -182,11 +182,14 @@ namespace Bitboard {
                 for (auto dir: DIR_K) {
                     char nx = x+dir[0], ny = y+dir[1];
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
-                        if (((1ULL << i) & attacks) == 0) moves.push_back(Move(i, ny*8+nx));
+                        char new_loc = ny*8 + nx;
+                        if (((1ULL << new_loc) & attacks) == 0) moves.push_back(Move(i, new_loc));
                     }
                 }
                 break;
             }
         }
+
+        return moves;
     }
 }
