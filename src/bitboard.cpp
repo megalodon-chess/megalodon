@@ -75,7 +75,7 @@ namespace Bitboard {
 
     string board_str(U64 board, string on, string off) {
         vector<string> rows;
-        string final = "";
+        string repr = "";
 
         for (auto y = 0; y < 8; y++) {
             string row = "";
@@ -87,11 +87,11 @@ namespace Bitboard {
         }
 
         for (auto i = 7; i >= 0; i--) {
-            final += rows[i];
-            final += "\n";
+            repr += rows[i];
+            repr += "\n";
         }
 
-        return final;
+        return repr;
     }
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, bool side) {
