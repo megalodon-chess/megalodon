@@ -32,9 +32,8 @@ using std::string;
 Position::Position() {
 }
 
-Position::Position(long long _wp, long long _wn, long long _wb, long long _wr, long long _wq, long long _wk,
-        long long _bp, long long _bn, long long _bb, long long _br, long long _bq, long long _bk, bool _turn, char _castling,
-        bool _ep, char _ep_square) {
+Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
+        bool _turn, char _castling, bool _ep, char _ep_square) {
     wp = _wp;
     wn = _wn;
     wb = _wb;
@@ -56,7 +55,7 @@ Position::Position(long long _wp, long long _wn, long long _wb, long long _wr, l
 
 
 namespace Bitboard {
-    bool bit(long long board, int pos) {
+    bool bit(U64 board, int pos) {
         return ((1LL << pos) & board) != 0;
     }
 
@@ -64,7 +63,7 @@ namespace Bitboard {
         return ((1 << pos) & board) != 0;
     }
 
-    long long set_bit(long long board, int pos, bool value) {
+    U64 set_bit(U64 board, int pos, bool value) {
         bool on = bit(board, pos);
         if (value && !on) {
             board += (1LL << pos);
@@ -74,7 +73,7 @@ namespace Bitboard {
         return board;
     }
 
-    string board_str(long long board) {
+    string board_str(U64 board) {
         vector<string> rows;
         string final = "";
 

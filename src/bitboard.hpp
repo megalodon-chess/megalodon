@@ -29,23 +29,24 @@ using std::endl;
 using std::vector;
 using std::string;
 
+typedef unsigned long long U64;
+
 struct Position {
     Position();
-    Position(long long, long long, long long, long long, long long, long long, long long,
-        long long, long long, long long, long long, long long, bool, char, bool, char);
+    Position(U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, bool, char, bool, char);
 
-    long long wp;
-    long long wn;
-    long long wb;
-    long long wr;
-    long long wq;
-    long long wk;
-    long long bp;
-    long long bn;
-    long long bb;
-    long long br;
-    long long bq;
-    long long bk;
+    U64 wp;
+    U64 wn;
+    U64 wb;
+    U64 wr;
+    U64 wq;
+    U64 wk;
+    U64 bp;
+    U64 bn;
+    U64 bb;
+    U64 br;
+    U64 bq;
+    U64 bk;
 
     bool turn;
     char castling;
@@ -54,19 +55,19 @@ struct Position {
 };
 
 namespace Bitboard {
-    constexpr unsigned long long START_WP = 65280;
-    constexpr unsigned long long START_WN = 66;
-    constexpr unsigned long long START_WB = 36;
-    constexpr unsigned long long START_WR = 129;
-    constexpr unsigned long long START_WQ = 8;
-    constexpr unsigned long long START_WK = 16;
+    constexpr U64 START_WP = 65280;
+    constexpr U64 START_WN = 66;
+    constexpr U64 START_WB = 36;
+    constexpr U64 START_WR = 129;
+    constexpr U64 START_WQ = 8;
+    constexpr U64 START_WK = 16;
 
-    constexpr unsigned long long START_BP = 71776119061217280;
-    constexpr unsigned long long START_BN = 4755801206503243776;
-    constexpr unsigned long long START_BB = 2594073385365405696;
-    constexpr unsigned long long START_BR = 9295429630892703744;
-    constexpr unsigned long long START_BQ = 576460752303423488;
-    constexpr unsigned long long START_BK = 1152921504606846976;
+    constexpr U64 START_BP = 71776119061217280;
+    constexpr U64 START_BN = 4755801206503243776;
+    constexpr U64 START_BB = 2594073385365405696;
+    constexpr U64 START_BR = 9295429630892703744;
+    constexpr U64 START_BQ = 576460752303423488;
+    constexpr U64 START_BK = 1152921504606846976;
 
     const vector<vector<int>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<int>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
@@ -74,8 +75,8 @@ namespace Bitboard {
     const vector<vector<int>> DIR_Q = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<int>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-    bool bit(long long, int);
+    bool bit(U64, int);
     bool bit(char, int);
-    long long set_bit(long long, int, bool);
-    string board_str(long long);
+    U64 set_bit(U64, int, bool);
+    string board_str(U64);
 }
