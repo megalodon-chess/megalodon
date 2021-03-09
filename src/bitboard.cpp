@@ -193,6 +193,7 @@ namespace Bitboard {
     U64 checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
+        int num_atckers = 0;
         const char pawn_dir = side ? 1 : -1;
 
         for (char i = 0; i < 64; i++) {
@@ -203,13 +204,14 @@ namespace Bitboard {
                     if (bit(pawns, i)) {
                         const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
                         if (0 <= y && y < 8) {
-                            if (0 <= kx-1 && kx-1 < 8) board = set_bit(board, y*8 + kx-1, true);
-                            if (0 <= kx+1 && kx+1 < 8) board = set_bit(board, y*8 + kx+1, true);
+                            if (0 <= kx-1 && kx-1 < 8) board = set_bit(board, y*8 + kx-1, true); num_atckers++;
+                            if (0 <= kx+1 && kx+1 < 8) board = set_bit(board, y*8 + kx+1, true); num_atckers++;
                         }
                     }
 
                     if (bit(knights, i)) {
                         for (auto dir: DIR_N) {                        // Iterate through all knight moves.
+                            if (num_atckers > 1) return board;
                             const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                             if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
                         }
@@ -220,6 +222,7 @@ namespace Bitboard {
                             char cx = kx, cy = ky;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];  // Delta (x, y)
                             while (true) {
+                                if (num_atckers > 1) return board;
                                 cx += dx;
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
@@ -236,6 +239,7 @@ namespace Bitboard {
                             char cx = kx, cy = ky;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];  // Delta (x, y)
                             while (true) {
+                                if (num_atckers > 1) return board;
                                 cx += dx;
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
