@@ -207,12 +207,21 @@ namespace Bitboard {
                             if (num_atckers > 1) return board;
                             if (0 <= kx-1 && kx-1 < 8) {
                                 char pos = y*8 + kx-1;
-                                if (bit(pawns, pos)) board = set_bit(board, pos, true); num_atckers++; continue;
+                                if (bit(pawns, pos)) {
+                                    board = set_bit(board, pos, true);
+                                    num_atckers++;
+                                    continue;
+                                }
+
                             }
                             if (num_atckers > 1) return board;
                             if (0 <= kx+1 && kx+1 < 8) {
                                 char pos = y*8 + kx+1;
-                                if (bit(pawns, pos)) board = set_bit(board, pos, true); num_atckers++; continue;
+                                if (bit(pawns, pos)) {
+                                    board = set_bit(board, pos, true);
+                                    num_atckers++;
+                                    continue;
+                                }
                             }
                         }
                     }
@@ -223,7 +232,11 @@ namespace Bitboard {
                             const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                             if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
                                 char pos = ny*8 + nx;   
-                                if (bit(knights, pos)) board = set_bit(board, pos, true); num_atckers++; break;
+                                if (bit(knights, pos)) {
+                                    board = set_bit(board, pos, true);
+                                    num_atckers++;
+                                    break;
+                                }
                             }
                         }
                     }
