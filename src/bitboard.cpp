@@ -140,6 +140,23 @@ namespace Bitboard {
                     }
                 }
             }
+
+            else if (bit(bishops, i) || bit(queens, i)) {
+                char x = i%8, y = i/8;
+                for (auto dir: DIR_B) {
+                    char cx = x, cy = y;            // Current (x, y)
+                    char dx = dir[0], dy = dir[1];  // Delta (x, y)
+                    while (true) {
+                        cx += dx;
+                        cy += dy;
+                        if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                        char loc = cy*8 + cx;
+                        board = set_bit(board, loc, true);
+                        if (bit(opponent, loc)) break;
+                        if (bit(pieces, loc)) break;
+                    }
+                }
+            }
         }
 
         return board;
