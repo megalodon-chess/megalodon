@@ -205,12 +205,10 @@ namespace Bitboard {
                         const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
                         if (0 <= y && y < 8) {
                             if (0 <= kx-1 && kx-1 < 8) {
-                                // todo bug next line: change kx-1/kx+1 to flat form
-                                if ((1ULL << kx-1) & king != 0) board = set_bit(board, y*8 + kx-1, true); num_atckers++; continue;
+                                if ((1ULL << y*8 + kx-1) & king != 0) board = set_bit(board, y*8 + kx-1, true); num_atckers++; continue;
                             }
                             if (0 <= kx+1 && kx+1 < 8) {
-                                // todo bug next line: change kx-1/kx+1 to flat form
-                                if ((1ULL << kx+1) & king != 0) board = set_bit(board, y*8 + kx+1, true); num_atckers++; continue;
+                                if ((1ULL << y*8 + kx+1) & king != 0) board = set_bit(board, y*8 + kx+1, true); num_atckers++; continue;
                             }
                         }
                     }
@@ -220,8 +218,7 @@ namespace Bitboard {
                             if (num_atckers > 1) return board;
                             const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                             if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
-                                // todo bug next line: change nx to flat form
-                                if ((1ULL << nx) & king != 0) board = set_bit(board, ny*8 + nx, true); num_atckers++; break;
+                                if ((1ULL << ny*8 + nx) & king != 0) board = set_bit(board, ny*8 + nx, true); num_atckers++; break;
                             }
                         }
                     }
@@ -236,8 +233,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                // todo bug next line: change cx to flat form
-                                if ((1ULL << cx) & king != 0) board = set_bit(board, loc, true); num_atckers++; break;
+                                if ((1ULL << loc) & king != 0) board = set_bit(board, loc, true); num_atckers++; break;
                                 if (bit(opponent, loc)) break;
                                 if (bit(pieces, loc)) break;
                             }
@@ -254,8 +250,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                // todo bug next line: change cx to flattened form
-                                if ((1ULL << cx) & king != 0) board = set_bit(board, loc, true); num_atckers++; break;
+                                if ((1ULL << loc) & king != 0) board = set_bit(board, loc, true); num_atckers++; break;
                                 if (bit(opponent, loc)) break;
                                 if (bit(pieces, loc)) break;
                             }
