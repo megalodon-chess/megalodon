@@ -101,7 +101,7 @@ namespace Bitboard {
 
         for (char i = 0; i < 64; i++) {
             if (bit(pawns, i)) {
-                char x = i%8, y = i/8 + pawn_dir;
+                char x = i%8, y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
                 if (0 <= y && y < 8) {
                     if (0 <= x-1 && x-1 < 8) board = set_bit(board, y*8 + x-1, true);
                     if (0 <= x+1 && x+1 < 8) board = set_bit(board, y*8 + x+1, true);
@@ -110,8 +110,8 @@ namespace Bitboard {
 
             else if (bit(knights, i)) {
                 char x = i%8, y = i/8;
-                for (auto dir: DIR_N) {
-                    int nx = x+dir[0], ny = y+dir[1];
+                for (auto dir: DIR_N) {                 // Iterate through all knight moves.
+                    int nx = x+dir[0], ny = y+dir[1];   // Position after moving.
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
                 }
             }
@@ -127,8 +127,8 @@ namespace Bitboard {
             else if (bit(rooks, i) || bit(queens, i)) {
                 char x = i%8, y = i/8;
                 for (auto dir: DIR_R) {
-                    char cx = x, cy = y;
-                    char dx = dir[0], dy = dir[1];
+                    char cx = x, cy = y;            // Current (x, y)
+                    char dx = dir[0], dy = dir[1];  // Delta (x, y)
                     while (true) {
                         cx += dx;
                         cy += dy;
