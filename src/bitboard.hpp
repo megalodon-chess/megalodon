@@ -64,12 +64,12 @@ namespace Bitboard {
     constexpr U64 START_WQ = 8;
     constexpr U64 START_WK = 16;
 
-    constexpr U64 START_BP = 71776119061217280;
-    constexpr U64 START_BN = 4755801206503243776;
-    constexpr U64 START_BB = 2594073385365405696;
-    constexpr U64 START_BR = 9295429630892703744;
-    constexpr U64 START_BQ = 576460752303423488;
-    constexpr U64 START_BK = 1152921504606846976;
+    constexpr U64 START_BP = 71776119061217280ULL;
+    constexpr U64 START_BN = 4755801206503243776ULL;
+    constexpr U64 START_BB = 2594073385365405696ULL;
+    constexpr U64 START_BR = 9295429630892703744ULL;
+    constexpr U64 START_BQ = 576460752303423488ULL;
+    constexpr U64 START_BK = 1152921504606846976ULL;
 
     const vector<vector<int>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<int>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
