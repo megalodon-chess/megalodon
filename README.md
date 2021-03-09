@@ -17,13 +17,6 @@ make
 ./Megalodon
 ```
 
-If you don't have GNU make installed, run `build.sh`
-
-``` bash
-cd src
-./build.sh
-```
-
 ## The Name
 
 The name megalodon comes from an extinct species of shark that lived millions of years ago.
