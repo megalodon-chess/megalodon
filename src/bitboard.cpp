@@ -332,7 +332,7 @@ namespace Bitboard {
 
     vector<Move> legal_moves(Position pos, U64 attacks) {
         // Current pieces
-        U64 cp, cn, cb, cr, cq, ck;
+        U64 cp, cn, cb, cr, cq, ck, same_side, oppo_side;
         if (pos.turn) {
             cp = pos.wp;
             cn = pos.wn;
@@ -340,6 +340,7 @@ namespace Bitboard {
             cr = pos.wr;
             cq = pos.wq;
             ck = pos.wk;
+            oppo_side = pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
         }
         else {
             cp = pos.bp;
@@ -348,6 +349,8 @@ namespace Bitboard {
             cr = pos.br;
             cq = pos.bq;
             ck = pos.bk;
+            oppo_side = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
         }
+        same_side = cp | cn | cb | cr | cq | ck;
     }
 }
