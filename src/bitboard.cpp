@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <utility>
 #include "bitboard.hpp"
 
 using std::cin;
@@ -199,7 +200,7 @@ namespace Bitboard {
         return board;
     }
 
-    U64 checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
+    std::pair<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
         int num_atckers = 0;
@@ -213,7 +214,7 @@ namespace Bitboard {
                     if (bit(pawns, i)) {
                         const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
                         if (0 <= y && y < 8) {
-                            if (num_atckers > 1) return board;
+                            if (num_atckers > 1) return std::make_pair(board, num_atckers);
                             if (0 <= kx-1 && kx-1 < 8) {
                                 char pos = y*8 + kx-1;
                                 if (bit(pawns, pos)) {
@@ -223,7 +224,7 @@ namespace Bitboard {
                                 }
 
                             }
-                            if (num_atckers > 1) return board;
+                            if (num_atckers > 1) return std::make_pair(board, num_atckers);
                             if (0 <= kx+1 && kx+1 < 8) {
                                 char pos = y*8 + kx+1;
                                 if (bit(pawns, pos)) {
@@ -237,7 +238,7 @@ namespace Bitboard {
 
                     if (bit(knights, i)) {
                         for (auto dir: DIR_N) {                          // Iterate through all knight moves.
-                            if (num_atckers > 1) return board;
+                            if (num_atckers > 1) return std::make_pair(board, num_atckers);
                             const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                             if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
                                 char pos = ny*8 + nx;   
@@ -255,7 +256,7 @@ namespace Bitboard {
                             char cx = kx, cy = ky;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
                             while (true) {
-                                if (num_atckers > 1) return board;
+                                if (num_atckers > 1) return std::make_pair(board, num_atckers);
                                 cx += dx;
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
@@ -282,7 +283,7 @@ namespace Bitboard {
                             char cx = kx, cy = ky;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
                             while (true) {
-                                if (num_atckers > 1) return board;
+                                if (num_atckers > 1) return std::make_pair(board, num_atckers);
                                 cx += dx;
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
@@ -307,7 +308,7 @@ namespace Bitboard {
                 break;
             }
         }
-        return board;
+        return std::make_pair(board, num_atckers);
     }
 
     vector<Move> king_moves(U64 king, U64 attacks) {
@@ -364,5 +365,6 @@ namespace Bitboard {
         SAME = CP | CN | CB | CR | CQ | CK;
         U64 attacks = attacked(CP, CN, CB, CR, CQ, CK, OPPOSITE, pos.turn);
         vector<Move> moves = king_moves(CK, attacks);
+
     }
 }
