@@ -365,4 +365,7 @@ namespace Bitboard {
         U64 attacks = attacked(CP, CN, CB, CR, CQ, CK, OPPOSITE, pos.turn);
         vector<Move> moves = king_moves(CK, attacks);
     }
+
+    Position push(Position pos, Move move) {
+    }
 }
