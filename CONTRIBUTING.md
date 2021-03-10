@@ -8,6 +8,6 @@ Please use the `Bug Report` issue template.
 
 ## Feature Requests
 
-Please use the `Enhancement` issue template.
+Please use the `Feature Request` issue template.
 
 We are thankful for all contributions!
