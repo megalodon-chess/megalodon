@@ -373,7 +373,7 @@ namespace Bitboard {
         else if (num_checkers == 1) {
             // Block
             U64 block = EMPTY;
-            vector<char> dir;
+            char dx, dy;
         }
         else {
             // Decide normal moves
