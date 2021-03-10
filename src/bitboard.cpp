@@ -134,11 +134,11 @@ namespace Bitboard {
         return str;
     }
 
-    vector<char> first_bit(U64 board) {
+    std::pair<char, char> first_bit(U64 board) {
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
                 const char x = i % 8, y = i / 8;
-                return {x, y};
+                return std::pair<char, char>(x, y);
             }
         }
     }
