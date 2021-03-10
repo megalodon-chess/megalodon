@@ -6,7 +6,7 @@ UCI chess engine.
 
 [Version 0.0.3][latest] (pre-release) was recently released!
 
-## To compile with `cmake`
+## To compile with cmake
 
 1. Clone or download the repository.
 2. Create `build` directory.
