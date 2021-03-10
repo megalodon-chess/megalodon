@@ -52,6 +52,7 @@ struct Position {
     bool ep;
     char ep_square;
     float eval;
+    vector<Move> move_stack;
 };
 
 Position copy_position(Position);
