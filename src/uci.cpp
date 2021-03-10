@@ -32,6 +32,28 @@ using std::vector;
 using std::string;
 
 
+Position parse_pos(string str) {
+    vector<string> parts = split(str, " ");
+    if (parts[1] == "startpos") {
+        Position pos;
+        pos.wp = Bitboard::START_WP;
+        pos.wn = Bitboard::START_WN;
+        pos.wb = Bitboard::START_WB;
+        pos.wr = Bitboard::START_WR;
+        pos.wq = Bitboard::START_WQ;
+        pos.wk = Bitboard::START_WK;
+        pos.bp = Bitboard::START_BP;
+        pos.bn = Bitboard::START_BN;
+        pos.bb = Bitboard::START_BB;
+        pos.br = Bitboard::START_BR;
+        pos.bq = Bitboard::START_BQ;
+        pos.bk = Bitboard::START_BK;
+
+        return pos;
+    }
+}
+
+
 void chat(int movect) {
 }
 
@@ -39,6 +61,7 @@ void chat(int movect) {
 int loop() {
     string cmd;
     Options options;
+    Position pos;
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
@@ -61,7 +84,7 @@ int loop() {
         else if (cmd == "eval");
 
         else if (cmd == "ucinewgame");
-        else if (startswith(cmd, "position"));
+        else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go"));
         else if (cmd == "stop");
     }
