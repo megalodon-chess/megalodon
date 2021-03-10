@@ -331,28 +331,39 @@ namespace Bitboard {
     }
 
     vector<Move> legal_moves(Position pos, U64 attacks) {
-        // Current pieces and sides
-        U64 cp, cn, cb, cr, cq, ck, same_side, oppo_side;
+        // Current and opposite pieces and sides
+        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPOSITE;
         if (pos.turn) {
-            cp = pos.wp;
-            cn = pos.wn;
-            cb = pos.wb;
-            cr = pos.wr;
-            cq = pos.wq;
-            ck = pos.wk;
-            oppo_side = pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
+            CP = pos.wp;
+            CN = pos.wn;
+            CB = pos.wb;
+            CR = pos.wr;
+            CQ = pos.wq;
+            CK = pos.wk;
+            OP = pos.bp;
+            ON = pos.bn;
+            OB = pos.bb;
+            OR = pos.br;
+            OQ = pos.bq;
+            OK = pos.bk;
         }
         else {
-            cp = pos.bp;
-            cn = pos.bn;
-            cb = pos.bb;
-            cr = pos.br;
-            cq = pos.bq;
-            ck = pos.bk;
-            oppo_side = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+            CP = pos.bp;
+            CN = pos.bn;
+            CB = pos.bb;
+            CR = pos.br;
+            CQ = pos.bq;
+            CK = pos.bk;
+            OP = pos.wp;
+            ON = pos.wn;
+            OB = pos.wb;
+            OR = pos.wr;
+            OQ = pos.wq;
+            OK = pos.wk;
         }
-        same_side = cp | cn | cb | cr | cq | ck;
-        U64 attacks = attacked(cp, cn, cb, cr, cq, ck, oppo_side, pos.turn);
-        vector<Move> moves = king_moves(ck, attacks);
+        OPPOSITE = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+        SAME = CP | CN | CB | CR | CQ | CK;
+        U64 attacks = attacked(CP, CN, CB, CR, CQ, CK, OPPOSITE, pos.turn);
+        vector<Move> moves = king_moves(CK, attacks);
     }
 }
