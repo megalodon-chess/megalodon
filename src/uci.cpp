@@ -57,8 +57,10 @@ Position parse_pos(string str) {
 
 
 void chat(Options& options, int movect) {
+    if (!options.Chat) return;
+
     if (movect == 0) {
-        cout << GREETINGS[rand()%GREETINGS.size()];
+        cout << GREETINGS[rand()%GREETINGS.size()] << endl;
     }
 }
 
