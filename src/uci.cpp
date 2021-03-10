@@ -23,6 +23,7 @@
 #include "funcs.hpp"
 #include "bitboard.hpp"
 #include "search.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -33,6 +34,7 @@ using std::string;
 
 int loop() {
     string cmd;
+    Options options;
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
@@ -40,12 +42,16 @@ int loop() {
         if (cmd == "quit") break;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
+            cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
             vector<string> parts = split(cmd, " ");
             string name = parts[2];
             string value = parts[4];
+
+            if (name == "Chat") options.Chat = (value == "true");
+            cout << options.Chat << endl;
         }
 
         else if (cmd == "d");
