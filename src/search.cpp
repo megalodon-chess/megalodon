@@ -61,9 +61,9 @@ SearchInfo search(Position pos) {
 
     while (true) {
         vector<vector<Position>> curr_depth;
-        for (auto group: tree[depth-1]) {
-            for (auto node: group) {
-            vector<Position> curr_group;
+        for (auto node: flatten(tree[depth-1])) {
+            vector<Position> group;
+            for (auto move: Bitboard::legal_moves(node)) {
             }
         }
         depth++;
