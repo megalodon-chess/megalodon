@@ -90,6 +90,7 @@ namespace Bitboard {
     U64 set_bit(U64, int, bool);
     string board_str(U64, string="X", string="-");
     string move_str(Move);
+    vector<char> first_bit(U64);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     std::pair<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);

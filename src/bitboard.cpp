@@ -134,6 +134,10 @@ namespace Bitboard {
         return str;
     }
 
+    vector<char> first_bit(U64 board) {
+        ;
+    }
+
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         U64 board = EMPTY;
