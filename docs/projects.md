@@ -10,9 +10,9 @@ This is scheduled to be released on March 31, 2021.
 
 Target features:
 
-- [ ] ELO: 1200
-- [ ] Nodes per second: 30000
-- [ ] Bitboard move generation
-- [ ] Breadth first search
-- [ ] Minimax move picking with alpha-beta pruning
-- [ ] Prune branches which are bad
+* ELO: 1200
+* Nodes per second: 30000
+* Bitboard move generation
+* Breadth first search
+* Minimax move picking with alpha-beta pruning
+* Prune branches which are bad
