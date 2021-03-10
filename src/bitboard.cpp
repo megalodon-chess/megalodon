@@ -331,7 +331,7 @@ namespace Bitboard {
     }
 
     vector<Move> legal_moves(Position pos, U64 attacks) {
-        // Current pieces
+        // Current pieces and sides
         U64 cp, cn, cb, cr, cq, ck, same_side, oppo_side;
         if (pos.turn) {
             cp = pos.wp;
