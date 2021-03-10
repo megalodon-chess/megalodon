@@ -60,7 +60,7 @@ void chat(Options& options, int movect) {
     if (!options.Chat) return;
 
     if (movect == 0) {
-        cout << GREETINGS[rand()%GREETINGS.size()] << endl;
+        cout << "info string " << GREETINGS[rand()%GREETINGS.size()] << endl;
     }
 }
 
