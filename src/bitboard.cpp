@@ -140,8 +140,9 @@ namespace Bitboard {
         const char pawn_dir = side ? 1 : -1;
 
         for (char i = 0; i < 64; i++) {
+            const char x = i % 8, y = i / 8;
             if (bit(pawns, i)) {
-                const char x = i%8, y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
+                const char y = y + pawn_dir;  // Current (x, y) with y as after capture.
                 if (0 <= y && y < 8) {
                     if (0 <= x-1 && x-1 < 8) board = set_bit(board, y*8 + x-1, true);
                     if (0 <= x+1 && x+1 < 8) board = set_bit(board, y*8 + x+1, true);
@@ -149,7 +150,6 @@ namespace Bitboard {
             }
 
             if (bit(knights, i)) {
-                const char x = i%8, y = i/8;
                 for (auto dir: DIR_N) {                        // Iterate through all knight moves.
                     const char nx = x+dir[0], ny = y+dir[1];   // Position after moving.
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) board = set_bit(board, ny*8 + nx, true);
@@ -157,7 +157,6 @@ namespace Bitboard {
             }
 
             if (bit(kings, i)) {
-                const char x = i%8, y = i/8;
                 for (auto dir: DIR_K) {
                     const char kx = x+dir[0], ky = y+dir[1];
                     if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) board = set_bit(board, ky*8 + kx, true);
@@ -165,7 +164,6 @@ namespace Bitboard {
             }
 
             if (bit(rooks, i) || bit(queens, i)) {
-                const char x = i%8, y = i/8;
                 for (auto dir: DIR_R) {
                     char cx = x, cy = y;                  // Current (x, y)
                     const char dx = dir[0], dy = dir[1];  // Delta (x, y)
@@ -182,7 +180,6 @@ namespace Bitboard {
             }
 
             if (bit(bishops, i) || bit(queens, i)) {
-                const char x = i%8, y = i/8;
                 for (auto dir: DIR_B) {
                     char cx = x, cy = y;                  // Current (x, y)
                     const char dx = dir[0], dy = dir[1];  // Delta (x, y)
@@ -373,6 +370,7 @@ namespace Bitboard {
         else if (num_checkers == 1) {
             // Block
             U64 block = EMPTY;
+            char kx = ;
             char dx, dy;
         }
         else {
