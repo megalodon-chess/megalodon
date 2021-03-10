@@ -368,5 +368,12 @@ namespace Bitboard {
         U64 checking_pieces = checking_data.first;
         char num_checkers = checking_data.second;
         if (num_checkers > 1) return moves;
+        else if (num_checkers == 1) {
+            // Block
+            U64 block = EMPTY;
+        }
+        else {
+            // Decide normal moves
+        }
     }
 }
