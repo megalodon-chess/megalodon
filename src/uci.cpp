@@ -32,6 +32,10 @@ using std::vector;
 using std::string;
 
 
+void chat(int movect) {
+}
+
+
 int loop() {
     string cmd;
     Options options;
