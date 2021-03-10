@@ -1,20 +1,21 @@
-# Compiling Megalodon
+# Compiling Megalodon with `cmake`
 
-To compile Megalodon from it's source code, you have a few options:
+To compile Megalodon from it's source code, follow these steps:
 
-## GNU Make
+1. Clone or download the repository.
+2. Create `build` directory.
+3. `cd` to `build/`.
+4. Create `Makefile` with cmake.
+5. Run `make` to create the executable.
+6. Run the executable.
 
 ``` bash
-cd src
+git clone https://github.com/HuangPatrick16777216/megalodon.git
+mkdir build
+cd build/
+cmake ..
 make
 ./Megalodon
-```
-
-## Bash Script
-
-``` bash
-cd src
-./build.sh
 ```
 
 [Back to documentation home][home]
