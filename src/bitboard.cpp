@@ -213,107 +213,102 @@ namespace Bitboard {
         U64 board = EMPTY;
         char num_atckers = 0;
         const char pawn_dir = side ? 1 : -1;
+        const vector<char> k_pos = first_bit(king);
+        const char kx = k_pos[0], ky = k_pos[1];
 
         for (char i = 0; i < 64; i++) {
-            if (bit(king, i)) {
-                const char kx = i%8, ky = i/8;
-
-                for (char i = 0; i < 64; i++) {
-                    if (bit(pawns, i)) {
-                        const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
-                        if (0 <= y && y < 8) {
-                            if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
-                            if (0 <= kx-1 && kx-1 < 8) {
-                                char pos = y*8 + kx-1;
-                                if (bit(pawns, pos)) {
-                                    board = set_bit(board, pos, true);
-                                    num_atckers++;
-                                    continue;
-                                }
-
-                            }
-                            if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
-                            if (0 <= kx+1 && kx+1 < 8) {
-                                char pos = y*8 + kx+1;
-                                if (bit(pawns, pos)) {
-                                    board = set_bit(board, pos, true);
-                                    num_atckers++;
-                                    continue;
-                                }
-                            }
+            if (bit(pawns, i)) {
+                const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
+                if (0 <= y && y < 8) {
+                    if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
+                    if (0 <= kx-1 && kx-1 < 8) {
+                        char pos = y*8 + kx-1;
+                        if (bit(pawns, pos)) {
+                            board = set_bit(board, pos, true);
+                            num_atckers++;
+                            continue;
                         }
-                    }
 
-                    if (bit(knights, i)) {
-                        for (auto dir: DIR_N) {                          // Iterate through all knight moves.
-                            if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
-                            const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
-                            if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
-                                char pos = ny*8 + nx;   
-                                if (bit(knights, pos)) {
-                                    board = set_bit(board, pos, true);
-                                    num_atckers++;
-                                    break;
-                                }
-                            }
-                        }
                     }
-
-                    if (bit(rooks, i) || bit(queens, i)) {
-                        for (auto dir: DIR_R) {
-                            char cx = kx, cy = ky;                  // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
-                            while (true) {
-                                if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
-                                cx += dx;
-                                cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
-                                const char loc = cy*8 + cx;
-                                if (bit(same_side, loc)) {
-                                    break;
-                                } else if (bit(rooks, loc)) {
-                                    board = set_bit(board, loc, true);
-                                    num_atckers++;
-                                    break;
-                                } else if (bit(queens, loc)) {
-                                    board = set_bit(board, loc, true);
-                                    num_atckers++;
-                                    break;
-                                } else if (bit(pieces, loc)) {
-                                    break;
-                                }
-                            }
-                        }
-                    }
-
-                    if (bit(bishops, i) || bit(queens, i)) {
-                        for (auto dir: DIR_B) {
-                            char cx = kx, cy = ky;                  // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
-                            while (true) {
-                                if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
-                                cx += dx;
-                                cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
-                                const char loc = cy*8 + cx;
-                                if (bit(same_side, loc)) {
-                                    break;
-                                } else if (bit(bishops, loc)) {
-                                    board = set_bit(board, loc, true);
-                                    num_atckers++;
-                                    break;
-                                } else if (bit(queens, loc)) {
-                                    board = set_bit(board, loc, true);
-                                    num_atckers++;
-                                    break;
-                                } else if (bit(pieces, loc)) {
-                                    break;
-                                }
-                            }
+                    if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
+                    if (0 <= kx+1 && kx+1 < 8) {
+                        char pos = y*8 + kx+1;
+                        if (bit(pawns, pos)) {
+                            board = set_bit(board, pos, true);
+                            num_atckers++;
+                            continue;
                         }
                     }
                 }
-                break;
+            }
+
+            if (bit(knights, i)) {
+                for (auto dir: DIR_N) {                          // Iterate through all knight moves.
+                    if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
+                    const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
+                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
+                        char pos = ny*8 + nx;   
+                        if (bit(knights, pos)) {
+                            board = set_bit(board, pos, true);
+                            num_atckers++;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (bit(rooks, i) || bit(queens, i)) {
+                for (auto dir: DIR_R) {
+                    char cx = kx, cy = ky;                  // Current (x, y)
+                    const char dx = dir[0], dy = dir[1];    // Delta (x, y)
+                    while (true) {
+                        if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
+                        cx += dx;
+                        cy += dy;
+                        if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                        const char loc = cy*8 + cx;
+                        if (bit(same_side, loc)) {
+                            break;
+                        } else if (bit(rooks, loc)) {
+                            board = set_bit(board, loc, true);
+                            num_atckers++;
+                            break;
+                        } else if (bit(queens, loc)) {
+                            board = set_bit(board, loc, true);
+                            num_atckers++;
+                            break;
+                        } else if (bit(pieces, loc)) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (bit(bishops, i) || bit(queens, i)) {
+                for (auto dir: DIR_B) {
+                    char cx = kx, cy = ky;                  // Current (x, y)
+                    const char dx = dir[0], dy = dir[1];    // Delta (x, y)
+                    while (true) {
+                        if (num_atckers > 1) return std::pair<U64, char>(board, num_atckers);
+                        cx += dx;
+                        cy += dy;
+                        if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                        const char loc = cy*8 + cx;
+                        if (bit(same_side, loc)) {
+                            break;
+                        } else if (bit(bishops, loc)) {
+                            board = set_bit(board, loc, true);
+                            num_atckers++;
+                            break;
+                        } else if (bit(queens, loc)) {
+                            board = set_bit(board, loc, true);
+                            num_atckers++;
+                            break;
+                        } else if (bit(pieces, loc)) {
+                            break;
+                        }
+                    }
+                }
             }
         }
         return std::pair<U64, char>(board, num_atckers);
