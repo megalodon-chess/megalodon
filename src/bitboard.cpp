@@ -330,7 +330,23 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> legal_moves(Position pos) {
-        return {};
+    vector<Move> legal_moves(Position pos, U64 attacks) {
+        U64 cp, cn, cb, cr, cq, ck;
+        if (pos.turn) {
+            cp = pos.wp;
+            cn = pos.wn;
+            cb = pos.wb;
+            cr = pos.wr;
+            cq = pos.wq;
+            ck = pos.wk;
+        }
+        else {
+            cp = pos.bp;
+            cn = pos.bn;
+            cb = pos.bb;
+            cr = pos.br;
+            cq = pos.bq;
+            ck = pos.bk;
+        }
     }
 }
