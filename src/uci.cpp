@@ -31,6 +31,8 @@ using std::endl;
 using std::vector;
 using std::string;
 
+vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
+
 
 Position parse_pos(string str) {
     vector<string> parts = split(str, " ");
@@ -54,7 +56,10 @@ Position parse_pos(string str) {
 }
 
 
-void chat(int movect) {
+void chat(Options& options, int movect) {
+    if (movect == 0) {
+        cout << GREETINGS[rand()%GREETINGS.size()];
+    }
 }
 
 
@@ -85,7 +90,9 @@ int loop() {
 
         else if (cmd == "ucinewgame");
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
-        else if (startswith(cmd, "go"));
+        else if (startswith(cmd, "go")) {
+            chat(options, pos.move_stack.size());
+        }
         else if (cmd == "stop");
     }
 
