@@ -15,4 +15,4 @@ Target features:
 * Bitboard move generation
 * Breadth first search
 * Minimax move picking with alpha-beta pruning
-* Prune branches which are bad
+* Prune lowest N% branches (N defined by user option)
