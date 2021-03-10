@@ -361,10 +361,12 @@ namespace Bitboard {
             OQ = pos.wq;
             OK = pos.wk;
         }
-        OPPOSITE = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
         SAME = CP | CN | CB | CR | CQ | CK;
-        U64 attacks = attacked(CP, CN, CB, CR, CQ, CK, OPPOSITE, pos.turn);
+        OPPOSITE = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
         vector<Move> moves = king_moves(CK, attacks);
-        std::pair<U64, char> checking_pieces = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
+        std::pair<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
+        U64 checking_pieces = checking_data.first;
+        char num_checkers = checking_data.second;
+        if (num_checkers > 1) return moves;
     }
 }
