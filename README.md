@@ -35,6 +35,13 @@ make
 ./Megalodon
 ```
 
+## License
+
+Everything in the repository is licensed as GNU GPL v3 license.
+
+If you would like to use the logo, we request that you also include a message
+saying that your project isn't related to Megalodon.
+
 ## The Name
 
 The name megalodon comes from an extinct species of shark that lived millions of years ago.
