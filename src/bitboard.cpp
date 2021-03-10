@@ -353,5 +353,6 @@ namespace Bitboard {
         }
         same_side = cp | cn | cb | cr | cq | ck;
         U64 attacks = attacked(cp, cn, cb, cr, cq, ck, oppo_side, pos.turn);
+        vector<Move> moves = king_moves(ck, attacks);
     }
 }
