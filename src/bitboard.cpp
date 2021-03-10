@@ -213,8 +213,8 @@ namespace Bitboard {
         U64 board = EMPTY;
         char num_atckers = 0;
         const char pawn_dir = side ? 1 : -1;
-        const vector<char> k_pos = first_bit(king);
-        const char kx = k_pos[0], ky = k_pos[1];
+        const std::pair<char, char> k_pos = first_bit(king);
+        const char kx = k_pos.first, ky = k_pos.second;
 
         for (char i = 0; i < 64; i++) {
             if (bit(pawns, i)) {
@@ -375,7 +375,7 @@ namespace Bitboard {
             // Block
             U64 block = EMPTY;
             vector<char> k_pos = first_bit(CK);
-            const char kx = k_pos[0], ky = k_pos[1];
+            const char kx = k_pos.first, ky = k_pos.second;
             char dx, dy;
         }
         else {
