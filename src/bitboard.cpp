@@ -330,7 +330,39 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> legal_moves(Position pos) {
-        return {};
+    vector<Move> legal_moves(Position pos, U64 attacks) {
+        // Current and opposite pieces and sides
+        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPOSITE;
+        if (pos.turn) {
+            CP = pos.wp;
+            CN = pos.wn;
+            CB = pos.wb;
+            CR = pos.wr;
+            CQ = pos.wq;
+            CK = pos.wk;
+            OP = pos.bp;
+            ON = pos.bn;
+            OB = pos.bb;
+            OR = pos.br;
+            OQ = pos.bq;
+            OK = pos.bk;
+        } else {
+            CP = pos.bp;
+            CN = pos.bn;
+            CB = pos.bb;
+            CR = pos.br;
+            CQ = pos.bq;
+            CK = pos.bk;
+            OP = pos.wp;
+            ON = pos.wn;
+            OB = pos.wb;
+            OR = pos.wr;
+            OQ = pos.wq;
+            OK = pos.wk;
+        }
+        OPPOSITE = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+        SAME = CP | CN | CB | CR | CQ | CK;
+        U64 attacks = attacked(CP, CN, CB, CR, CQ, CK, OPPOSITE, pos.turn);
+        vector<Move> moves = king_moves(CK, attacks);
     }
 }
