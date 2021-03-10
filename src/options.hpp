@@ -29,3 +29,10 @@ using std::endl;
 using std::vector;
 using std::string;
 
+class Options {
+public:
+    Options();
+
+    bool Chat;
+
+};

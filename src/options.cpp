@@ -20,9 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "funcs.hpp"
-#include "bitboard.hpp"
-#include "search.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -30,3 +28,7 @@ using std::endl;
 using std::vector;
 using std::string;
 
+
+Options::Options() {
+    Chat = false;
+}
