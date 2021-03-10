@@ -47,9 +47,7 @@ string SearchInfo::as_string() {
 
 vector<Position> flatten(vector<vector<Position>> vec) {
     vector<Position> flat;
-    for (auto v: vec) {
-        flat.insert(flat.end(), v.begin(), v.end());
-    }
+    for (auto v: vec) flat.insert(flat.end(), v.begin(), v.end());
     return flat;
 }
 
