@@ -1,3 +1,5 @@
+![logo](https://raw.githubusercontent.com/HuangPatrick16777216/megalodon/main/logo/logo_widescreen_light.png)
+
 # Megalodon
 
 UCI chess engine.
