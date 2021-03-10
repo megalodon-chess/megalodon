@@ -352,5 +352,6 @@ namespace Bitboard {
             oppo_side = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
         }
         same_side = cp | cn | cb | cr | cq | ck;
+        U64 attacks = attacked(cp, cn, cb, cr, cq, ck, oppo_side, pos.turn);
     }
 }
