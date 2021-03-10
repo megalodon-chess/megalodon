@@ -27,6 +27,7 @@
 using std::cin;
 using std::cout;
 using std::endl;
+using std::pair;
 using std::vector;
 using std::string;
 
@@ -90,10 +91,10 @@ namespace Bitboard {
     U64 set_bit(U64, int, bool);
     string board_str(U64, string="X", string="-");
     string move_str(Move);
-    std::pair<char, char> first_bit(U64);
+    pair<char, char> first_bit(U64);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
-    std::pair<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);
+    pair<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);
     vector<Move> king_moves(U64, U64);
     vector<Move> legal_moves(Position);
     Position push(Position, Move);
