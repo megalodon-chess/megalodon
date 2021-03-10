@@ -374,7 +374,8 @@ namespace Bitboard {
         else if (num_checkers == 1) {
             // Block
             U64 block = EMPTY;
-            char kx = ;
+            vector<char> k_pos = first_bit(CK);
+            const char kx = k_pos[0], ky = k_pos[1];
             char dx, dy;
         }
         else {
