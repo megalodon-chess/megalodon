@@ -51,7 +51,6 @@ int loop() {
             string value = parts[4];
 
             if (name == "Chat") options.Chat = (value == "true");
-            cout << options.Chat << endl;
         }
 
         else if (cmd == "d");
