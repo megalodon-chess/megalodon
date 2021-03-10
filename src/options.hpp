@@ -30,6 +30,10 @@ using std::vector;
 using std::string;
 
 class Options {
+/*
+Chat: type=check, default=true, whether the engine should chat with you.
+*/
+
 public:
     Options();
 
