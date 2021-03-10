@@ -20,9 +20,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cmath>
 #include <utility>
 #include "bitboard.hpp"
 
+using std::abs;
 using std::cin;
 using std::cout;
 using std::endl;
@@ -371,6 +373,7 @@ namespace Bitboard {
         else if (num_checkers == 1) {
             // Block
             U64 block = EMPTY;
+            vector<char> dir;
         }
         else {
             // Decide normal moves
