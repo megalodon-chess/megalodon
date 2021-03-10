@@ -1,4 +1,4 @@
-# Compiling Megalodon with `cmake`
+# Compiling Megalodon with cmake
 
 To compile Megalodon from it's source code, follow these steps:
 
