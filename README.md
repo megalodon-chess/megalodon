@@ -35,4 +35,9 @@ saying that your project isn't related to Megalodon.
 
 The name megalodon comes from an extinct species of shark that lived millions of years ago.
 
+## Documentation
+
+For extra documentation, please read the [docs][docs].
+
+[docs]: https://huangpatrick16777216.github.io/megalodon/
 [latest]: https://github.com/HuangPatrick16777216/megalodon/releases/latest

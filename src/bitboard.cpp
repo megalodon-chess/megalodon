@@ -376,4 +376,7 @@ namespace Bitboard {
             // Decide normal moves
         }
     }
+
+    Position push(Position pos, Move move) {
+    }
 }

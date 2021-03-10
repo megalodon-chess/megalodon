@@ -23,6 +23,7 @@
 #include "funcs.hpp"
 #include "bitboard.hpp"
 #include "search.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -31,8 +32,36 @@ using std::vector;
 using std::string;
 
 
+Position parse_pos(string str) {
+    vector<string> parts = split(str, " ");
+    if (parts[1] == "startpos") {
+        Position pos;
+        pos.wp = Bitboard::START_WP;
+        pos.wn = Bitboard::START_WN;
+        pos.wb = Bitboard::START_WB;
+        pos.wr = Bitboard::START_WR;
+        pos.wq = Bitboard::START_WQ;
+        pos.wk = Bitboard::START_WK;
+        pos.bp = Bitboard::START_BP;
+        pos.bn = Bitboard::START_BN;
+        pos.bb = Bitboard::START_BB;
+        pos.br = Bitboard::START_BR;
+        pos.bq = Bitboard::START_BQ;
+        pos.bk = Bitboard::START_BK;
+
+        return pos;
+    }
+}
+
+
+void chat(int movect) {
+}
+
+
 int loop() {
     string cmd;
+    Options options;
+    Position pos;
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
@@ -40,19 +69,22 @@ int loop() {
         if (cmd == "quit") break;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
+            cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
             vector<string> parts = split(cmd, " ");
             string name = parts[2];
             string value = parts[4];
+
+            if (name == "Chat") options.Chat = (value == "true");
         }
 
         else if (cmd == "d");
         else if (cmd == "eval");
 
         else if (cmd == "ucinewgame");
-        else if (startswith(cmd, "position"));
+        else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go"));
         else if (cmd == "stop");
     }
