@@ -346,8 +346,7 @@ namespace Bitboard {
             OR = pos.br;
             OQ = pos.bq;
             OK = pos.bk;
-        }
-        else {
+        } else {
             CP = pos.bp;
             CN = pos.bn;
             CB = pos.bb;
