@@ -376,6 +376,7 @@ namespace Bitboard {
         else if (num_checkers == 1) {
             // Block
             U64 block_mask = EMPTY;
+            U64 capture_mask = checking_pieces;
             pair<char, char> k_pos = first_bit(CK);
             pair<char, char> check_pos = first_bit(checking_pieces);
             const char kx = k_pos.first, ky = k_pos.second;
