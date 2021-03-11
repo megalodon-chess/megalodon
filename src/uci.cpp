@@ -125,6 +125,12 @@ int loop() {
 
             if (name == "Chat") options.Chat = (value == "true");
         }
+        else if (startswith(cmd, "getoption")) {
+            vector<string> parts = split(cmd, " ");
+            string name = parts[2];
+
+            if (name == "Chat") cout << options.Chat << endl;
+        }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
         else if (cmd == "eval") print_eval(options, pos);
