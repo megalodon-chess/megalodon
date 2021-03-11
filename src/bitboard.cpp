@@ -161,8 +161,22 @@ namespace Bitboard {
     }
 
     string board_str(Position pos) {
-        const string row = "+---+---+---+---+---+---+---+---+";
+        const string row = " +---+---+---+---+---+---+---+---+";
         const string col = " | ";
+        string str = "";
+
+        str += row + "\n";
+        for (auto y = 7; y >= 0; y--) {
+            for (auto x = 0; x < 8; x++) {
+                int loc = 8*y + x;
+                string symbol = piece_at(pos, loc);
+                str += col;
+                str += symbol;
+            }
+            str += col + "\n" + row + "\n";
+        }
+
+        return str;
     }
 
     string move_str(Move move) {
