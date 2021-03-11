@@ -45,7 +45,7 @@ string SearchInfo::as_string() {
     return str;
 }
 
-
+/*
 SearchInfo search(Position pos) {
     vector<vector<vector<Position>>> tree = {{{pos}}};
     int depth = 1;
@@ -59,4 +59,8 @@ SearchInfo search(Position pos) {
         depth++;
         if (depth == 4) break;
     }
+}
+*/
+
+SearchInfo search(Position pos) {
 }
