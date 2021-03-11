@@ -262,20 +262,25 @@ namespace Bitboard {
                 x = 0;
             } else {
                 int loc = 8*y + x;
-                switch (ch) {
-                    case 'P': pos.wp = set_bit(pos.wp, loc, true); break;
-                    case 'N': pos.wn = set_bit(pos.wn, loc, true); break;
-                    case 'B': pos.wb = set_bit(pos.wb, loc, true); break;
-                    case 'R': pos.wr = set_bit(pos.wr, loc, true); break;
-                    case 'Q': pos.wq = set_bit(pos.wq, loc, true); break;
-                    case 'K': pos.wk = set_bit(pos.wk, loc, true); break;
-                    case 'p': pos.bp = set_bit(pos.bp, loc, true); break;
-                    case 'n': pos.bn = set_bit(pos.bn, loc, true); break;
-                    case 'b': pos.bb = set_bit(pos.bb, loc, true); break;
-                    case 'r': pos.br = set_bit(pos.br, loc, true); break;
-                    case 'q': pos.bq = set_bit(pos.bq, loc, true); break;
-                    case 'k': pos.bk = set_bit(pos.bk, loc, true); break;
+                if (48 <= ch && ch <= 57) {
+                    x += (ch-48);
+                } else {
+                    switch (ch) {
+                        case 'P': pos.wp = set_bit(pos.wp, loc, true); break;
+                        case 'N': pos.wn = set_bit(pos.wn, loc, true); break;
+                        case 'B': pos.wb = set_bit(pos.wb, loc, true); break;
+                        case 'R': pos.wr = set_bit(pos.wr, loc, true); break;
+                        case 'Q': pos.wq = set_bit(pos.wq, loc, true); break;
+                        case 'K': pos.wk = set_bit(pos.wk, loc, true); break;
+                        case 'p': pos.bp = set_bit(pos.bp, loc, true); break;
+                        case 'n': pos.bn = set_bit(pos.bn, loc, true); break;
+                        case 'b': pos.bb = set_bit(pos.bb, loc, true); break;
+                        case 'r': pos.br = set_bit(pos.br, loc, true); break;
+                        case 'q': pos.bq = set_bit(pos.bq, loc, true); break;
+                        case 'k': pos.bk = set_bit(pos.bk, loc, true); break;
+                    }
                 }
+                x++;
             }
         }
 
