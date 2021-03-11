@@ -143,6 +143,7 @@ namespace Bitboard {
                 return pair<char, char>(x, y);
             }
         }
+        return pair<char, char>(0, 8);
     }
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
@@ -214,6 +215,7 @@ namespace Bitboard {
         const pair<char, char> k_pos = first_bit(king);
         const char kx = k_pos.first, ky = k_pos.second;
         bool found = false;
+        return false;
 
         // for (auto dir: DIR_R) {
         //     char cx = kx, cy = ky;                  // Current (x, y)
@@ -436,8 +438,11 @@ namespace Bitboard {
         else {
             // Decide normal moves
         }
+        return moves;
     }
 
     Position push(Position pos, Move move) {
+        Position p;
+        return p;
     }
 }
