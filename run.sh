@@ -1,6 +1,3 @@
 #/bin/bash
 
-cd build
-cmake ..
-make
-./Megalodon
+cd build && cmake .. && make && ./Megalodon
