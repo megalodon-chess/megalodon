@@ -44,5 +44,4 @@ struct SearchInfo {
     int time;
 };
 
-vector<Position> flatten(vector<vector<Position>>);
 SearchInfo search(Position);
