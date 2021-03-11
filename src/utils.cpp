@@ -28,8 +28,3 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
-
-template <typename T>
-bool in(vector<T> vec, T val) {
-    return std::find(vec.begin(), vec.end(), val) != vec.end();
-}
