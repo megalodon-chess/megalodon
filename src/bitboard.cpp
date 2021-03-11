@@ -374,7 +374,7 @@ namespace Bitboard {
         char num_checkers = checking_data.second;
         if (num_checkers > 1) return moves;
         else if (num_checkers == 1) {
-            // Block
+            // Block and capture piece giving check to king
             U64 block_mask = EMPTY, capture_mask = checking_pieces;
             pair<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
             const char kx = k_pos.first, ky = k_pos.second, cx = check_pos.first, cy = check_pos.second;
@@ -393,6 +393,7 @@ namespace Bitboard {
                 }
             }
 
+            // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
                 U64 map = EMPTY;
             }
