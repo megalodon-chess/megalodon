@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <utility>
 #include "bitboard.hpp"
+#include "utils.hpp"
 
 using std::abs;
 using std::cin;
@@ -46,6 +47,22 @@ Move::Move(char _from, char _to, bool _is_promo, char _promo) {
 
 
 Position::Position() {
+    wp = Bitboard::EMPTY;
+    wn = Bitboard::EMPTY;
+    wb = Bitboard::EMPTY;
+    wr = Bitboard::EMPTY;
+    wq = Bitboard::EMPTY;
+    wk = Bitboard::EMPTY;
+    bp = Bitboard::EMPTY;
+    bn = Bitboard::EMPTY;
+    bb = Bitboard::EMPTY;
+    br = Bitboard::EMPTY;
+    bq = Bitboard::EMPTY;
+    bk = Bitboard::EMPTY;
+
+    turn = true;
+    castling = 0;
+    ep = false;
 }
 
 Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
@@ -232,6 +249,13 @@ namespace Bitboard {
         str += "0 1";
 
         return str;
+    }
+
+    Position parse_fen(string fen) {
+        vector<string> parts = split(fen, " ");
+        Position pos;
+
+        int x = 0, y = 7;
     }
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {

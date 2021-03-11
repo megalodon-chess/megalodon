@@ -98,6 +98,7 @@ namespace Bitboard {
     string square_str(char);
     string move_str(Move);
     string fen(Position);
+    Position parse_fen(string);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     U64 attacked(Position, bool);
