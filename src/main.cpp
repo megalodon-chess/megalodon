@@ -33,9 +33,9 @@ using std::string;
 
 void print_info() {
     cout << "Megalodon v0.1.0 - UCI chess engine" << "\n";
-    cout << "Copyright the Megalodon developers" << "\n";
+    cout << "Copyright the Megalodon developers (in AUTHORS file)" << "\n";
     cout << "https://github.com/HuangPatrick16777216/megalodon" << "\n";
-    cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << "\n" << endl;
+    cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << endl;
 }
 
 
