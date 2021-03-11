@@ -20,7 +20,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
