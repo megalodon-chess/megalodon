@@ -20,6 +20,9 @@ This is the first release of Megalodon, a UCI chess engine! It does not function
 
 Megalodon uses a minimax search with material and piece maps as evaluation.
 
+[Back to documentation home][home]
+
+[home]: https://huangpatrick16777216.github.io/megalodon/
 [v0.0.3]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.0.3
 [v0.0.2]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.0.2
 [v0.0.1]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.0.1
