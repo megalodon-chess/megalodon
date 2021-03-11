@@ -31,6 +31,9 @@ using std::endl;
 using std::vector;
 using std::string;
 
+const U64 INNER_CENTER = 103481868288ULL;
+const U64 OUTER_CENTER = 66125924401152ULL;
+
 float material(Position);
 float material_weight(int);
 
