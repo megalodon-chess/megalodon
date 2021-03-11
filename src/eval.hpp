@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 #include "bitboard.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -33,4 +34,4 @@ using std::string;
 float material(Position);
 float material_weight(int);
 
-float eval(Position);
+float eval(Options&, Position);
