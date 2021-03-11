@@ -69,11 +69,12 @@ void chat(Options& options, int movect) {
 
 void print_eval(Options& options, Position pos) {
     int movect = pos.move_stack.size();
-    U64 attacks = Bitboard::attacked(pos);
+    U64 w_attacks = Bitboard::attacked(pos, true);
+    U64 b_attacks = Bitboard::attacked(pos, false);
 
     float mat = material(pos);
     float mat_weight = material_weight(movect);
-    float cent = center(attacks);
+    float cent = center(w_attacks, b_attacks);
     float cent_weight = center_weight(movect);
 
     vector<vector<string>> evals = {
