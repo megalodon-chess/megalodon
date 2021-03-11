@@ -88,6 +88,7 @@ namespace Bitboard {
     bool bit(U64, int);
     bool bit(char, int);
     char bit_pos(U64, bool=true);
+    char num_bits(U64, bool=true);
     U64 set_bit(U64, int, bool);
     string board_str(U64, string="X", string="-");
     string move_str(Move);

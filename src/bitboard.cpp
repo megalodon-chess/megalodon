@@ -95,6 +95,14 @@ namespace Bitboard {
         return 64;
     }
 
+    char num_bits(U64 board, bool target) {
+        char count = 0;
+        for (auto i = 0; i < 64; i++) {
+            if (bit(board, i) == target) count++;
+        }
+        return count;
+    }
+
     U64 set_bit(U64 board, int pos, bool value) {
         const bool on = bit(board, pos);
         if (value && !on) {
