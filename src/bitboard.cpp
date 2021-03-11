@@ -242,7 +242,7 @@ namespace Bitboard {
         for (char i = 0; i < 64; i++) {
             const char x = i % 8, y = i / 8;
             if (bit(pawns, i)) {
-                const char y += pawn_dir;  // Current (x, y) with y as after capture.
+                const char y = y + pawn_dir;  // Current (x, y) with y as after capture.
                 if (0 <= y && y < 8) {
                     if (0 <= x-1 && x-1 < 8) board = set_bit(board, y*8 + x-1, true);
                     if (0 <= x+1 && x+1 < 8) board = set_bit(board, y*8 + x+1, true);
@@ -543,8 +543,8 @@ namespace Bitboard {
                     if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
                         const char y = kx + pos.turn ? 1 : -1;
                         if (0 <= y && y < 8) {
-                            if (0 <= kx-1 && kx-1 < 8) board = set_bit(board, y*8 + kx-1, true);
-                            if (0 <= kx+1 && kx+1 < 8) board = set_bit(board, y*8 + kx+1, true);
+                            // if (0 <= kx-1 && kx-1 < 8) board = set_bit(board, y*8 + kx-1, true);
+                            // if (0 <= kx+1 && kx+1 < 8) board = set_bit(board, y*8 + kx+1, true);
                         }
                     }
                 }
