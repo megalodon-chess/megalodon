@@ -219,8 +219,8 @@ namespace Bitboard {
         return board;
     }
 
-    U64 attacked(Position pos) {
-        if (pos.turn) {
+    U64 attacked(Position pos, bool turn) {
+        if (turn) {
             U64 opp = pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
             return attacked(pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, pos.wk, opp, true);
         } else {

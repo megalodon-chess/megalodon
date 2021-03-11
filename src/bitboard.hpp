@@ -95,7 +95,7 @@ namespace Bitboard {
     pair<char, char> first_bit(U64);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
-    U64 attacked(Position);
+    U64 attacked(Position, bool);
     bool pinned(U64, U64, U64, U64, U64, U64, U64, U64);
     pair<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);
     vector<Move> king_moves(U64, U64);
