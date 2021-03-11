@@ -220,11 +220,14 @@ namespace Bitboard {
             if (c[2]) str += "k";
             if (c[3]) str += "q";
         }
+        str += " ";
 
         if (pos.ep) {
+            str += square_str(pos.ep_square);
         } else {
-            str += " - ";
+            str += "-";
         }
+        str += " ";
 
         str += "0 1";
 
