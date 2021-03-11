@@ -230,9 +230,11 @@ namespace Bitboard {
                 if (bit(piece, loc)) found = true;
                 if (bit(same, loc)) if (found) return true;
             }
+            if (found) return false;
         }
 
         for (auto dir: DIR_B) {
+            found = false;
             char cx = kx, cy = ky;                  // Current (x, y)
             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
             while (true) {
@@ -243,6 +245,8 @@ namespace Bitboard {
                 if (bit(opposite, loc)) return found;
                 if (bit(piece, loc)) found = true;
                 if (bit(same, loc)) if (found) return true;
+            }
+            if (found) return false;
         }
         return false;
     }
