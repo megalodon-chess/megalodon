@@ -102,7 +102,7 @@ void print_eval(Options& options, Position pos) {
 int loop() {
     string cmd;
     Options options;
-    Position pos;
+    Position pos = parse_pos("position startpos");
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
