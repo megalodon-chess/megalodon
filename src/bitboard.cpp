@@ -278,6 +278,27 @@ namespace Bitboard {
                 }
             }
         }
+
+        pos.turn = (parts[1] == "w");
+
+        int castling = 0;
+        for (auto ch: parts[2]) {
+            switch (ch) {
+                case 'K': castling += 1; break;
+                case 'Q': castling += 2; break;
+                case 'k': castling += 4; break;
+                case 'q': castling += 8; break;
+            }
+        }
+        pos.castling = castling;
+
+        if (parts[3] == "-") pos.ep = false;
+        else {
+            pos.ep = true;
+            pos.ep_square = std::stoi(parts[3]);
+        }
+
+        return pos;
     }
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
