@@ -86,7 +86,7 @@ void print_eval(Options& options, Position pos) {
         if (total.size() > 8) total = total.substr(0, 8);
 
         cout << category << ": ";
-        for (auto i = 0; i < 18-category.size(); i++) cout << " ";
+        for (auto i = 0; i < 12-category.size(); i++) cout << " ";
         cout << value << " x ";
         for (auto i = 0; i < 8-value.size(); i++) cout << " ";
         cout << weight << " = ";
