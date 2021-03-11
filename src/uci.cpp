@@ -126,7 +126,7 @@ int loop() {
             if (name == "Chat") options.Chat = (value == "true");
         }
 
-        else if (cmd == "d");
+        else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
         else if (cmd == "eval") print_eval(options, pos);
 
         else if (cmd == "ucinewgame");
