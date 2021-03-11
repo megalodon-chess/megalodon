@@ -28,3 +28,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+template <typename T>
+bool in(vector<T>, T);
