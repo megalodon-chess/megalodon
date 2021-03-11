@@ -12,3 +12,8 @@ After this release, the Megalodon team will work on implementing bitboards.
 ## Megalodon 0.0.2
 
 This release includes updated searching algorithms and bug fixes.
+
+## Megalodon 0.0.1
+
+This is the first release of Megalodon, a UCI chess engine! It does not function fully yet.
+Megalodon uses a minimax search with material and piece maps as evaluation.
