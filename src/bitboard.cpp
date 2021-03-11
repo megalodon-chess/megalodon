@@ -211,6 +211,24 @@ namespace Bitboard {
             blank_count = 0;
         }
 
+        str += (pos.turn ? " w " : " b ");
+
+        vector<bool> c = {bit(pos.castling, 0), bit(pos.castling, 1), bit(pos.castling, 2), bit(pos.castling, 3)};
+        if (!(c[0] || c[1] || c[2] || c[3])) str += "-";
+        else {
+            if (c[0]) str += "K";
+            if (c[1]) str += "Q";
+            if (c[2]) str += "k";
+            if (c[3]) str += "q";
+        }
+
+        if (pos.ep) {
+        } else {
+            str += " - ";
+        }
+
+        str += "0 1";
+
         return str;
     }
 
