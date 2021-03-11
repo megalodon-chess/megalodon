@@ -375,12 +375,10 @@ namespace Bitboard {
         if (num_checkers > 1) return moves;
         else if (num_checkers == 1) {
             // Block
-            U64 block_mask = EMPTY;
-            U64 capture_mask = checking_pieces;
-            pair<char, char> k_pos = first_bit(CK);
-            pair<char, char> check_pos = first_bit(checking_pieces);
-            const char kx = k_pos.first, ky = k_pos.second;
-            const char cx = check_pos.first, cy = check_pos.second;
+            U64 block_mask = EMPTY, capture_mask = checking_pieces;
+            pair<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
+            const char kx = k_pos.first, ky = k_pos.second, cx = check_pos.first, cy = check_pos.second;
+
             char dx = abs(cx - kx), dy = abs(cy - ky);
             if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<int>({dx, dy})) != DIR_K.end())) {
                 dx = dx / abs(dx);
