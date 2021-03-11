@@ -215,9 +215,10 @@ namespace Bitboard {
         const U64 opposite = pawns | knights | bishops | rooks | queens;
         const pair<char, char> k_pos = first_bit(king);
         const char kx = k_pos.first, ky = k_pos.second;
-        bool found = false;
+        bool found;
 
         for (auto dir: DIR_R) {
+            found = false;
             char cx = kx, cy = ky;                  // Current (x, y)
             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
             while (true) {
@@ -226,11 +227,8 @@ namespace Bitboard {
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
                 if (bit(opposite, loc)) return found;
-                if (found && bit(same, loc)) return false;
-                if (bit(opposite, loc)) {
-                    if (found) return false;
-                    else found = true;
-                }
+                if (bit(piece, loc)) found = true;
+                if (bit(same, loc)) if (found) return true;
             }
         }
 
@@ -243,11 +241,8 @@ namespace Bitboard {
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
                 if (bit(opposite, loc)) return found;
-                if (found && bit(same, loc)) return false;
-                if (bit(opposite, loc)) {
-                    if (found) return false;
-                    else found = true;
-            }
+                if (bit(piece, loc)) found = true;
+                if (bit(same, loc)) if (found) return true;
         }
         return false;
     }
