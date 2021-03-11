@@ -393,9 +393,9 @@ namespace Bitboard {
                 }
             }
 
-            // for (char i = 0; i < 64; i++) {
-            //     U64 map = 
-            // }
+            for (char i = 0; i < 64; i++) {
+                U64 map = EMPTY;
+            }
         }
         else {
             // Decide normal moves
