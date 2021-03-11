@@ -69,11 +69,16 @@ void chat(Options& options, int movect) {
 
 void print_eval(Options& options, Position pos) {
     int movect = pos.move_stack.size();
+    U64 attacks = Bitboard::attacked(pos);
+
     float mat = material(pos);
     float mat_weight = material_weight(movect);
+    float cent = center(attacks);
+    float cent_weight = center_weight(movect);
 
     vector<vector<string>> evals = {
-        {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)}
+        {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)},
+        {"Center Control", to_string(cent), to_string(cent_weight), to_string(cent*cent_weight)}
     };
 
     for (auto ev: evals) {
@@ -86,16 +91,15 @@ void print_eval(Options& options, Position pos) {
         if (total.size() > 8) total = total.substr(0, 8);
 
         cout << category << ": ";
-        for (auto i = 0; i < 12-category.size(); i++) cout << " ";
+        for (auto i = 0; i < 18-category.size(); i++) cout << " ";
         cout << value << " x ";
         for (auto i = 0; i < 8-value.size(); i++) cout << " ";
         cout << weight << " = ";
         for (auto i = 0; i < 8-weight.size(); i++) cout << " ";
         cout << total;
         for (auto i = 0; i < 8-total.size(); i++) cout << " ";
+        cout << endl;
     }
-
-    cout << endl;
 }
 
 
