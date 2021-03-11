@@ -33,8 +33,13 @@ using std::string;
 
 const U64 INNER_CENTER = 103481868288ULL;
 const U64 OUTER_CENTER = 66125924401152ULL;
+const float INNER_WEIGHT = 1;
+const float OUTER_WEIGHT = 0.3;
 
 float material(Position);
 float material_weight(int);
+
+float center(Position, U64);
+float center_weight(int);
 
 float eval(Options&, Position);
