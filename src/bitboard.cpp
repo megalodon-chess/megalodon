@@ -429,12 +429,15 @@ namespace Bitboard {
         }
         SAME = CP | CN | CB | CR | CQ | CK;
         OPPOSITE = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+
         vector<Move> moves = king_moves(CK, attacks);
         pair<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
         U64 checking_pieces = checking_data.first;
         char num_checkers = checking_data.second;
-        if (num_checkers > 1) return moves;
-        else if (num_checkers == 1) {
+
+        if (num_checkers > 1) {
+            return moves;
+        } else if (num_checkers == 1) {
             // Block and capture piece giving check to king
             U64 block_mask = EMPTY, capture_mask = checking_pieces;
             pair<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
@@ -458,9 +461,8 @@ namespace Bitboard {
             for (char i = 0; i < 64; i++) {
                 U64 map = EMPTY;
             }
-        }
-        else {
-            // Decide normal moves
+        } else {
+            // todo Decide normal moves
         }
         return moves;
     }
