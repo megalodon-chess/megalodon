@@ -1,7 +1,7 @@
 //
 //  Megalodon
 //  UCI chess engine
-//  Copyright Patrick Huang and Arjun Sahlot 2021
+//  Copyright the Megalodon developers
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ using std::string;
 
 void print_info() {
     cout << "Megalodon v0.1.0 - UCI chess engine" << "\n";
-    cout << "Copyright Patrick Huang and Arjun Sahlot 2021" << "\n";
+    cout << "Copyright the Megalodon developers" << "\n";
     cout << "https://github.com/HuangPatrick16777216/megalodon" << "\n";
     cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << "\n" << endl;
 }
