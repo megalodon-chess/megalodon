@@ -61,7 +61,7 @@ Move copy_move(Move);
 
 namespace Bitboard {
     // Move format: vector<char> = {start square, end square, promotion piece}
-    // Promotion piece format: 0=knight, 1=bishop, 2=rook, 3=queen
+    // Promotion piece format: 0=none, 1=knight, 2=bishop, 3=rook, 4=queen
 
     constexpr U64 EMPTY = 0;
 
@@ -90,9 +90,11 @@ namespace Bitboard {
     char bit_pos(U64, bool=true);
     char bit_count(U64, bool=true);
     U64 set_bit(U64, int, bool);
-    string board_str(U64, string="X", string="-");
-    string move_str(Move);
     pair<char, char> first_bit(U64);
+
+    string board_str(U64, string="X", string="-");
+    string board_str(Position);
+    string move_str(Move);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     U64 attacked(Position, bool);

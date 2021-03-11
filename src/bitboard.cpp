@@ -113,6 +113,16 @@ namespace Bitboard {
         return board;
     }
 
+    pair<char, char> first_bit(U64 board) {
+        for (char i = 0; i < 64; i++) {
+            if (bit(board, i)) {
+                const char x = i % 8, y = i / 8;
+                return pair<char, char>(x, y);
+            }
+        }
+        return pair<char, char>(0, 8);
+    }
+
     string board_str(U64 board, string on, string off) {
         vector<string> rows;
         string repr = "";
@@ -134,6 +144,11 @@ namespace Bitboard {
         return repr;
     }
 
+    string board_str(Position pos) {
+        const string row = "+---+---+---+---+---+---+---+---+";
+        const string col = " | ";
+    }
+
     string move_str(Move move) {
         string str;
         for (auto sq: {move.from, move.to}) {
@@ -142,16 +157,6 @@ namespace Bitboard {
             str += std::to_string(y+1);
         }
         return str;
-    }
-
-    pair<char, char> first_bit(U64 board) {
-        for (char i = 0; i < 64; i++) {
-            if (bit(board, i)) {
-                const char x = i % 8, y = i / 8;
-                return pair<char, char>(x, y);
-            }
-        }
-        return pair<char, char>(0, 8);
     }
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
