@@ -30,6 +30,34 @@ using std::endl;
 using std::vector;
 using std::string;
 
+
+float material(Position pos) {
+    float value = 0;
+    for (auto i = 0; i < 64; i++) {
+        if (Bitboard::bit(pos.wp, i)) value += 1;
+        if (Bitboard::bit(pos.wn, i)) value += 3;
+        if (Bitboard::bit(pos.wb, i)) value += 3;
+        if (Bitboard::bit(pos.wr, i)) value += 5;
+        if (Bitboard::bit(pos.wq, i)) value += 9;
+        if (Bitboard::bit(pos.bp, i)) value -= 1;
+        if (Bitboard::bit(pos.bn, i)) value -= 3;
+        if (Bitboard::bit(pos.bb, i)) value -= 3;
+        if (Bitboard::bit(pos.br, i)) value -= 5;
+        if (Bitboard::bit(pos.bq, i)) value -= 9;
+    }
+    return value;
+}
+
+float material_weight(int movect) {
+    return 1;
+}
+
+
 float eval(Position pos) {
-    return 0;
+    int movect = pos.move_stack.size();
+
+    float mat = material(pos);
+    float mat_weight = material_weight(movect);
+
+    return mat*mat_weight;
 }

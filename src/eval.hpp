@@ -30,4 +30,7 @@ using std::endl;
 using std::vector;
 using std::string;
 
+float material(Position);
+float material_weight(int);
+
 float eval(Position);
