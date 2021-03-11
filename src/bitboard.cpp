@@ -212,39 +212,44 @@ namespace Bitboard {
     }
 
     bool pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
+        const U64 opposite = pawns | knights | bishops | rooks | queens;
         const pair<char, char> k_pos = first_bit(king);
         const char kx = k_pos.first, ky = k_pos.second;
         bool found = false;
+
+        for (auto dir: DIR_R) {
+            char cx = kx, cy = ky;                  // Current (x, y)
+            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                const char loc = cy*8 + cx;
+                if (bit(opposite, loc)) return found;
+                if (found && bit(same, loc)) return false;
+                if (bit(opposite, loc)) {
+                    if (found) return false;
+                    else found = true;
+                }
+            }
+        }
+
+        for (auto dir: DIR_B) {
+            char cx = kx, cy = ky;                  // Current (x, y)
+            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                const char loc = cy*8 + cx;
+                if (bit(opposite, loc)) return found;
+                if (found && bit(same, loc)) return false;
+                if (bit(opposite, loc)) {
+                    if (found) return false;
+                    else found = true;
+            }
+        }
         return false;
-
-        // for (auto dir: DIR_R) {
-        //     char cx = kx, cy = ky;                  // Current (x, y)
-        //     const char dx = dir[0], dy = dir[1];    // Delta (x, y)
-        //     while (true) {
-        //         cx += dx;
-        //         cy += dy;
-        //         if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
-        //         const char loc = cy*8 + cx;
-
-        //         board = set_bit(board, loc, true);
-        //         if (bit(opponent, loc)) break;
-        //         if (bit(pieces, loc)) break;
-        //     }
-        // }
-
-        // for (auto dir: DIR_B) {
-        //     char cx = kx, cy = ky;                  // Current (x, y)
-        //     const char dx = dir[0], dy = dir[1];    // Delta (x, y)
-        //     while (true) {
-        //         cx += dx;
-        //         cy += dy;
-        //         if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
-        //         const char loc = cy*8 + cx;
-        //         board = set_bit(board, loc, true);
-        //         if (bit(opponent, loc)) break;
-        //         if (bit(pieces, loc)) break;
-        //     }
-        // }
     }
 
     pair<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
