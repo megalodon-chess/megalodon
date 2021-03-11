@@ -65,12 +65,12 @@ namespace Bitboard {
 
     constexpr U64 EMPTY = 0;
 
-    constexpr U64 START_WP = 65280;
-    constexpr U64 START_WN = 66;
-    constexpr U64 START_WB = 36;
-    constexpr U64 START_WR = 129;
-    constexpr U64 START_WQ = 8;
-    constexpr U64 START_WK = 16;
+    constexpr U64 START_WP = 65280ULL;
+    constexpr U64 START_WN = 66ULL;
+    constexpr U64 START_WB = 36ULL;
+    constexpr U64 START_WR = 129ULL;
+    constexpr U64 START_WQ = 8ULL;
+    constexpr U64 START_WK = 16ULL;
 
     constexpr U64 START_BP = 71776119061217280ULL;
     constexpr U64 START_BN = 4755801206503243776ULL;
