@@ -123,6 +123,22 @@ namespace Bitboard {
         return pair<char, char>(0, 8);
     }
 
+    string piece_at(Position pos, char loc) {
+        if (bit(pos.wp, loc)) return "P";
+        else if (bit(pos.wn, loc)) return "N";
+        else if (bit(pos.wb, loc)) return "B";
+        else if (bit(pos.wr, loc)) return "R";
+        else if (bit(pos.wq, loc)) return "Q";
+        else if (bit(pos.wk, loc)) return "K";
+        else if (bit(pos.bp, loc)) return "p";
+        else if (bit(pos.bn, loc)) return "n";
+        else if (bit(pos.bb, loc)) return "b";
+        else if (bit(pos.br, loc)) return "r";
+        else if (bit(pos.bq, loc)) return "q";
+        else if (bit(pos.bk, loc)) return "k";
+        else return " ";
+    }
+
     string board_str(U64 board, string on, string off) {
         vector<string> rows;
         string repr = "";
