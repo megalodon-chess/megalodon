@@ -95,7 +95,7 @@ namespace Bitboard {
         return 64;
     }
 
-    char num_bits(U64 board, bool target) {
+    char bit_count(U64 board, bool target) {
         char count = 0;
         for (auto i = 0; i < 64; i++) {
             if (bit(board, i) == target) count++;
