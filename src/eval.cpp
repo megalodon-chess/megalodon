@@ -22,6 +22,7 @@
 #include <queue>
 #include <string>
 #include "bitboard.hpp"
+#include "options.hpp"
 #include "eval.hpp"
 
 using std::cin;
@@ -53,7 +54,7 @@ float material_weight(int movect) {
 }
 
 
-float eval(Position pos) {
+float eval(Options& options, Position pos) {
     int movect = pos.move_stack.size();
 
     float mat = material(pos);
