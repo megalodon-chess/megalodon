@@ -210,6 +210,10 @@ namespace Bitboard {
         return board;
     }
 
+    bool pinned(U64 king, U64 piece, U64 bishops, U64 rooks, U64 queens) {
+        ;
+    }
+
     pair<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
