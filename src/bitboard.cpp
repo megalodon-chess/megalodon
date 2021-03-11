@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <algorithm>
 #include <utility>
 #include "bitboard.hpp"
 
@@ -142,6 +143,7 @@ namespace Bitboard {
                 return pair<char, char>(x, y);
             }
         }
+        return pair<char, char>(0, 8);
     }
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
@@ -207,6 +209,48 @@ namespace Bitboard {
         }
 
         return board;
+    }
+
+    bool pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
+        const U64 opposite = pawns | knights | bishops | rooks | queens;
+        const pair<char, char> k_pos = first_bit(king);
+        const char kx = k_pos.first, ky = k_pos.second;
+        bool found;
+
+        for (auto dir: DIR_R) {
+            found = false;
+            char cx = kx, cy = ky;                  // Current (x, y)
+            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                const char loc = cy*8 + cx;
+                if (bit(rooks, loc) || bit(queens, loc)) return found;
+                if (bit(opposite, loc)) return false;
+                if (bit(piece, loc)) found = true;
+                if (bit(same, loc)) if (found) return true;
+            }
+            if (found) return false;
+        }
+
+        for (auto dir: DIR_B) {
+            found = false;
+            char cx = kx, cy = ky;                  // Current (x, y)
+            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                const char loc = cy*8 + cx;
+                if (bit(bishops, loc) || bit(queens, loc)) return found;
+                if (bit(opposite, loc)) return false;
+                if (bit(piece, loc)) found = true;
+                if (bit(same, loc)) if (found) return true;
+            }
+            if (found) return false;
+        }
+        return false;
     }
 
     pair<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
@@ -373,17 +417,38 @@ namespace Bitboard {
         char num_checkers = checking_data.second;
         if (num_checkers > 1) return moves;
         else if (num_checkers == 1) {
-            // Block
-            U64 block = EMPTY;
-            pair<char, char> k_pos = first_bit(CK);
-            const char kx = k_pos.first, ky = k_pos.second;
-            char dx, dy;
+            // Block and capture piece giving check to king
+            U64 block_mask = EMPTY, capture_mask = checking_pieces;
+            pair<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
+            const char kx = k_pos.first, ky = k_pos.second, cx = check_pos.first, cy = check_pos.second;
+
+            char dx = abs(cx - kx), dy = abs(cy - ky);
+            if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<int>({dx, dy})) != DIR_K.end())) {
+                dx = dx / abs(dx);
+                dy = dy / abs(dx);
+                char cx = kx, cy = ky;   // Current (x, y)
+                while (true) {
+                    cx += dx;
+                    cy += dy;
+                    const char loc = cy*8 + cx;
+                    if (!bit(checking_pieces, loc)) block_mask = set_bit(block_mask, loc, true);
+                    else break;
+                }
+            }
+
+            // Go through all pieces and check if they can capture/block
+            for (char i = 0; i < 64; i++) {
+                U64 map = EMPTY;
+            }
         }
         else {
             // Decide normal moves
         }
+        return moves;
     }
 
     Position push(Position pos, Move move) {
+        Position p;
+        return p;
     }
 }
