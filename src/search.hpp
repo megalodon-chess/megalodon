@@ -32,6 +32,7 @@ using std::string;
 
 struct SearchInfo {
     SearchInfo();
+    SearchInfo(int, int, bool, int, int, int, int);
     string as_string();
 
     Move move;

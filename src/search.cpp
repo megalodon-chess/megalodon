@@ -35,6 +35,16 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
+SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, int _score, int _nodes, int _nps, int _time) {
+    depth = _depth;
+    seldepth = _seldepth;
+    is_mate_score = _is_mate;
+    score = _score;
+    nodes = _nodes;
+    nps = _nps;
+    time = _time;
+}
+
 string SearchInfo::as_string() {
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
@@ -62,5 +72,8 @@ SearchInfo search(Position pos) {
 }
 */
 
-SearchInfo search(Position pos) {
+SearchInfo search(Position pos, int depth) {
+    if (depth == 0) {
+        return SearchInfo();
+    }
 }
