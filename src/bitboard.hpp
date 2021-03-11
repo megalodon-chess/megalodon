@@ -96,6 +96,7 @@ namespace Bitboard {
     string board_str(U64, string="X", string="-");
     string board_str(Position);
     string move_str(Move);
+    string fen(Position);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     U64 attacked(Position, bool);

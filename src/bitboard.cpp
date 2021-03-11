@@ -189,6 +189,31 @@ namespace Bitboard {
         return str;
     }
 
+    string fen(Position pos) {
+        string str = "";
+        int blank_count = 0;
+
+        for (auto y = 7; y >= 0; y--) {
+            for (auto x = 0; x < 8; x++) {
+                string piece = piece_at(pos, 8*y+x);
+                if (piece == " ") {
+                    blank_count++;
+                } else {
+                    if (blank_count > 0) {
+                        str += std::to_string(blank_count);
+                        blank_count = 0;
+                    }
+                    str += piece;
+                }
+            }
+            if (blank_count > 0) str += std::to_string(blank_count);
+            if (y != 0) str += "/";
+            blank_count = 0;
+        }
+
+        return str;
+    }
+
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         U64 board = EMPTY;
