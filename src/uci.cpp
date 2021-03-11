@@ -20,7 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "funcs.hpp"
+#include "utils.hpp"
 #include "bitboard.hpp"
 #include "search.hpp"
 #include "options.hpp"

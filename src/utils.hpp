@@ -30,5 +30,11 @@ using std::endl;
 using std::vector;
 using std::string;
 
+string strip(string);
+string replace(string, string);
+string join(string, vector<string>);
+vector<string> split(string, string="");
+bool startswith(string, string);
+bool endswith(string, string);
 
 vector<Position> flatten(vector<vector<Position>> vec);
