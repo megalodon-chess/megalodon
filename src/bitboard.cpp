@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <algorithm>
 #include <utility>
 #include "bitboard.hpp"
 
@@ -375,9 +376,24 @@ namespace Bitboard {
         else if (num_checkers == 1) {
             // Block
             U64 block = EMPTY;
+            U64 block_mask = EMPTY;
             pair<char, char> k_pos = first_bit(CK);
+            pair<char, char> check_pos = first_bit(checking_pieces);
             const char kx = k_pos.first, ky = k_pos.second;
-            char dx, dy;
+            const char cx = check_pos.first, cy = check_pos.second;
+            char dx = abs(cx - kx), dy = abs(cy - ky);
+            if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<int>({dx, dy})) != DIR_K.end())) {
+                dx = dx / abs(dx);
+                dy = dx / abs(dx);
+                char cx = kx, cy = ky;   // Current (x, y)
+                while (true) {
+                    cx += dx;
+                    cy += dy;
+                    const char loc = cy*8 + cx;
+                    if (!bit(checking_pieces, loc)) block_mask = set_bit(block_mask, loc, true);
+                    else break;
+                }
+            }
         }
         else {
             // Decide normal moves
