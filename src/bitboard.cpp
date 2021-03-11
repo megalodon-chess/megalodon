@@ -211,6 +211,16 @@ namespace Bitboard {
         return board;
     }
 
+    U64 attacked(Position pos) {
+        if (pos.turn) {
+            U64 opp = pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
+            return attacked(pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, pos.wk, opp, true);
+        } else {
+            U64 opp = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+            return attacked(pos.bp, pos.bn, pos.bb, pos.br, pos.bq, pos.bk, opp, false);
+        }
+    }
+
     bool pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
         const U64 opposite = pawns | knights | bishops | rooks | queens;
         const pair<char, char> k_pos = first_bit(king);
