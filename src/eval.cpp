@@ -54,9 +54,15 @@ float material_weight(int movect) {
 }
 
 
-float center(U64 attacks) {
-    float inner = Bitboard::bit_count(attacks&INNER_CENTER) / Bitboard::bit_count(INNER_CENTER);
-    float outer = Bitboard::bit_count(attacks&OUTER_CENTER) / Bitboard::bit_count(OUTER_CENTER);
+float center(U64 w_attacks, U64 b_attacks) {
+    float inner = 0, outer = 0;
+
+    inner += Bitboard::bit_count(w_attacks&INNER_CENTER) / Bitboard::bit_count(INNER_CENTER);
+    outer += Bitboard::bit_count(w_attacks&OUTER_CENTER) / Bitboard::bit_count(OUTER_CENTER);
+
+    inner -= Bitboard::bit_count(b_attacks&INNER_CENTER) / Bitboard::bit_count(INNER_CENTER);
+    outer -= Bitboard::bit_count(b_attacks&OUTER_CENTER) / Bitboard::bit_count(OUTER_CENTER);
+
     return inner*INNER_WEIGHT + outer*OUTER_WEIGHT;
 }
 
@@ -67,11 +73,12 @@ float center_weight(int movect) {
 
 float eval(Options& options, Position pos) {
     int movect = pos.move_stack.size();
-    U64 attacks = Bitboard::attacked(pos);
+    U64 w_attacks = Bitboard::attacked(pos, true);
+    U64 b_attacks = Bitboard::attacked(pos, false);
 
     float mat = material(pos);
     float mat_weight = material_weight(movect);
-    float cent = center(attacks);
+    float cent = center(w_attacks, b_attacks);
     float cent_weight = center_weight(movect);
 
     return mat*mat_weight;

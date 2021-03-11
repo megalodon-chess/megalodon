@@ -39,7 +39,7 @@ const float OUTER_WEIGHT = 0.3;
 float material(Position);
 float material_weight(int);
 
-float center(Position, U64);
+float center(U64, U64);
 float center_weight(int);
 
 float eval(Options&, Position);
