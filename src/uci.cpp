@@ -24,12 +24,14 @@
 #include "bitboard.hpp"
 #include "search.hpp"
 #include "options.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+using std::to_string;
 
 vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
 
@@ -65,6 +67,38 @@ void chat(Options& options, int movect) {
 }
 
 
+void print_eval(Options& options, Position pos) {
+    int movect = pos.move_stack.size();
+    float mat = material(pos);
+    float mat_weight = material_weight(movect);
+
+    vector<vector<string>> evals = {
+        {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)}
+    };
+
+    for (auto ev: evals) {
+        string category = ev[0];
+        string value = ev[1];
+        string weight = ev[2];
+        string total = ev[3];
+        if (value.size() > 8) value = value.substr(0, 8);
+        if (weight.size() > 8) weight = weight.substr(0, 8);
+        if (total.size() > 8) total = total.substr(0, 8);
+
+        cout << category << ": ";
+        for (auto i = 0; i < 18-category.size(); i++) cout << " ";
+        cout << value << " x ";
+        for (auto i = 0; i < 8-value.size(); i++) cout << " ";
+        cout << weight << " = ";
+        for (auto i = 0; i < 8-weight.size(); i++) cout << " ";
+        cout << total;
+        for (auto i = 0; i < 8-total.size(); i++) cout << " ";
+    }
+
+    cout << endl;
+}
+
+
 int loop() {
     string cmd;
     Options options;
@@ -88,7 +122,7 @@ int loop() {
         }
 
         else if (cmd == "d");
-        else if (cmd == "eval");
+        else if (cmd == "eval") print_eval(options, pos);
 
         else if (cmd == "ucinewgame");
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
