@@ -375,7 +375,6 @@ namespace Bitboard {
         if (num_checkers > 1) return moves;
         else if (num_checkers == 1) {
             // Block
-            U64 block = EMPTY;
             U64 block_mask = EMPTY;
             pair<char, char> k_pos = first_bit(CK);
             pair<char, char> check_pos = first_bit(checking_pieces);
@@ -394,6 +393,10 @@ namespace Bitboard {
                     else break;
                 }
             }
+
+            // for (char i = 0; i < 64; i++) {
+            //     U64 map = 
+            // }
         }
         else {
             // Decide normal moves
