@@ -226,7 +226,8 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
-                if (bit(opposite, loc)) return found;
+                if (bit(rooks, loc) || bit(queens, loc)) return found;
+                if (bit(opposite, loc)) return false;
                 if (bit(piece, loc)) found = true;
                 if (bit(same, loc)) if (found) return true;
             }
@@ -242,7 +243,8 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
-                if (bit(opposite, loc)) return found;
+                if (bit(bishops, loc) || bit(queens, loc)) return found;
+                if (bit(opposite, loc)) return false;
                 if (bit(piece, loc)) found = true;
                 if (bit(same, loc)) if (found) return true;
             }
