@@ -444,7 +444,7 @@ namespace Bitboard {
             const char kx = k_pos.first, ky = k_pos.second, cx = check_pos.first, cy = check_pos.second;
 
             char dx = abs(cx - kx), dy = abs(cy - ky);
-            if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<int>({dx, dy})) != DIR_K.end())) {
+            if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
                 dx = dx / abs(dx);
                 dy = dy / abs(dx);
                 char cx = kx, cy = ky;   // Current (x, y)
