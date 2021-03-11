@@ -192,6 +192,7 @@ namespace Bitboard {
             }
             str += col + "\n" + row + "\n";
         }
+        str += "\nFen: " + fen(pos) + "\n";
 
         return str;
     }
