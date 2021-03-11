@@ -540,7 +540,9 @@ namespace Bitboard {
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
                 if (bit(CP, i)) {
-
+                    if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
+                        ;
+                    }
                 }
             }
         } else {
