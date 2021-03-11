@@ -539,7 +539,9 @@ namespace Bitboard {
 
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
-                U64 map = EMPTY;
+                if (bit(CP, i)) {
+
+                }
             }
         } else {
             // todo Decide normal moves

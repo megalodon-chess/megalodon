@@ -21,6 +21,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include "bitboard.hpp"
 #include "utils.hpp"
 
 using std::cin;
@@ -28,3 +29,10 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+vector<Position> flatten(vector<vector<Position>> vec) {
+    vector<Position> flat;
+    for (auto v: vec) flat.insert(flat.end(), v.begin(), v.end());
+    return flat;
+}

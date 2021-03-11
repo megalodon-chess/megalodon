@@ -22,6 +22,7 @@
 #include <queue>
 #include <string>
 #include "bitboard.hpp"
+#include "utils.hpp"
 #include "search.hpp"
 
 using std::cin;
@@ -42,13 +43,6 @@ string SearchInfo::as_string() {
     str += " " + std::to_string(score);
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     return str;
-}
-
-
-vector<Position> flatten(vector<vector<Position>> vec) {
-    vector<Position> flat;
-    for (auto v: vec) flat.insert(flat.end(), v.begin(), v.end());
-    return flat;
 }
 
 
