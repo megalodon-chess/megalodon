@@ -179,14 +179,13 @@ namespace Bitboard {
         return str;
     }
 
+    string square_str(char sq) {
+        char x = sq%8, y = sq/8;
+        return string(1, x+97) + std::to_string(y+1);
+    }
+
     string move_str(Move move) {
-        string str;
-        for (auto sq: {move.from, move.to}) {
-            char x = sq%8, y = sq/8;
-            str += string(1, x+97);
-            str += std::to_string(y+1);
-        }
-        return str;
+        return square_str(move.from) + square_str(move.to);
     }
 
     string fen(Position pos) {
