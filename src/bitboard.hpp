@@ -60,7 +60,6 @@ Position copy_position(Position);
 Move copy_move(Move);
 
 namespace Bitboard {
-    // Move format: vector<char> = {start square, end square, promotion piece}
     // Promotion piece format: 0=none, 1=knight, 2=bishop, 3=rook, 4=queen
 
     constexpr U64 EMPTY = 0;
