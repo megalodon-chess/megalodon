@@ -740,12 +740,23 @@ namespace Bitboard {
 
         *from_board = set_bit(*from_board, move.from, false);
         if (move.is_promo) {
-            switch (move.promo) {
-                case 0: pos.wn = set_bit(pos.wn, move.to, true);
-                case 1: pos.wb = set_bit(pos.wb, move.to, true);
-                case 2: pos.wr = set_bit(pos.wr, move.to, true);
-                case 3: pos.wq = set_bit(pos.wq, move.to, true);
+            U64* promo_board = &pos.wp;
+            if (pos.turn) {
+                switch (move.promo) {
+                    case 0: promo_board = &pos.wn; break;
+                    case 1: promo_board = &pos.wb; break;
+                    case 2: promo_board = &pos.wr; break;
+                    case 3: promo_board = &pos.wq; break;
+                }
+            } else {
+                switch (move.promo) {
+                    case 0: promo_board = &pos.bn; break;
+                    case 1: promo_board = &pos.bb; break;
+                    case 2: promo_board = &pos.br; break;
+                    case 3: promo_board = &pos.bq; break;
+                }
             }
+            *promo_board = set_bit(*promo_board, move.to, true);
         } else {
             *from_board = set_bit(*from_board, move.to, true);
         }
