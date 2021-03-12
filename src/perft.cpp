@@ -32,6 +32,6 @@ using std::string;
 
 
 namespace Perft {
-    int movegen(string fen) {
+    int movegen(Position pos, int depth) {
     }
 }

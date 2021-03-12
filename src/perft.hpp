@@ -31,5 +31,5 @@ using std::vector;
 using std::string;
 
 namespace Perft {
-    int movegen(string);
+    int movegen(Position, int);
 }
