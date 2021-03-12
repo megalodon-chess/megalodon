@@ -18,7 +18,7 @@
 #
 
 #* Tests performance and accuracy in move generation.
-#* This script will communicate "go depth <depth>" to the engine,
+#* This script will communicate "perft movegen <depth>" to the engine,
 #* and the engine should output total nodes searched (not leaf nodes)
 #* in the format "info nodes <nodes>"
 
@@ -51,7 +51,7 @@ def engine_result():
 
     with open(in_path, "w") as file:
         file.write(f"position fen {FEN}\n")
-        file.write(f"go depth {DEPTH}\n")
+        file.write(f"perft movegen {DEPTH}\n")
     with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
         start = time.time()
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
