@@ -386,7 +386,7 @@ namespace Bitboard {
     }
 
     bool pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
-        const U64 opposite = pawns | knights | bishops | rooks | queens;
+        const U64 opponent = pawns | knights | bishops | rooks | queens;
         const pair<char, char> k_pos = first_bit(king);
         const char kx = k_pos.first, ky = k_pos.second;
         bool found;
@@ -401,7 +401,7 @@ namespace Bitboard {
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
                 if (bit(rooks, loc) || bit(queens, loc)) return found;
-                if (bit(opposite, loc)) return false;
+                if (bit(opponent, loc)) return false;
                 if (bit(piece, loc)) found = true;
                 if (bit(same, loc)) if (found) return true;
             }
@@ -418,7 +418,7 @@ namespace Bitboard {
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
                 if (bit(bishops, loc) || bit(queens, loc)) return found;
-                if (bit(opposite, loc)) return false;
+                if (bit(opponent, loc)) return false;
                 if (bit(piece, loc)) found = true;
                 if (bit(same, loc)) if (found) return true;
             }
@@ -554,8 +554,8 @@ namespace Bitboard {
     }
 
     vector<Move> legal_moves(Position pos, U64 attacks) {
-        // Current and opposite pieces and sides
-        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPOSITE, ALL;
+        // Current and opponent pieces and sides
+        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, opponent, ALL;
         if (pos.turn) {
             CP = pos.wp;
             CN = pos.wn;
@@ -584,8 +584,8 @@ namespace Bitboard {
             OK = pos.wk;
         }
         SAME = CP | CN | CB | CR | CQ | CK;
-        OPPOSITE = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
-        ALL = SAME | OPPOSITE;
+        opponent = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+        ALL = SAME | opponent;
 
         vector<Move> moves = king_moves(CK, attacks);
         pair<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
