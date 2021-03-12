@@ -807,6 +807,7 @@ namespace Bitboard {
     }
 
     Position push(Position pos, Move move) {
+        // todo castling ep
         U64* from_board = &pos.wp;
         if (bit(pos.wp, move.from)) from_board = &pos.wp;
         else if (bit(pos.wn, move.from)) from_board = &pos.wn;
@@ -844,6 +845,7 @@ namespace Bitboard {
             *from_board = set_bit(*from_board, move.to, true);
         }
 
+        pos.turn = !pos.turn;
         return pos;
     }
 
