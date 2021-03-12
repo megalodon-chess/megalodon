@@ -103,3 +103,8 @@ vector<Position> flatten(vector<vector<Position>> vec) {
     for (auto v: vec) flat.insert(flat.end(), v.begin(), v.end());
     return flat;
 }
+
+
+string rand_choice(vector<string> choices) {
+    return choices[rand()%choices.size()];
+}
