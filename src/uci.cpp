@@ -62,6 +62,18 @@ Position parse_pos(string str) {
         }
         return pos;
     }
+    return Position();
+}
+
+
+void legal_moves(Position pos) {
+    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, pos.turn));
+    cout << "Legal moves: " << endl;
+    if (moves.empty()) {
+        cout << "None" << endl;
+    } else {
+        for (auto m: moves) cout << Bitboard::move_str(m) << endl;
+    }
 }
 
 
@@ -151,6 +163,7 @@ int loop() {
             vector<string> parts = split(cmd, " ");
             if (parts[1] == "movegen") Perft::movegen(pos, std::stoi(parts[2]));
         }
+        else if (cmd == "legalmoves") legal_moves(pos);
 
         else if (cmd == "ucinewgame");
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
