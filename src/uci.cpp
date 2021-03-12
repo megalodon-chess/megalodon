@@ -168,6 +168,8 @@ int loop() {
         else if (cmd == "ucinewgame");
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
+            SearchInfo result = search(options, pos, 4);
+            cout << result.as_string() << endl;
             chat(options, pos.move_stack.size());
         }
         else if (cmd == "stop");
