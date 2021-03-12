@@ -30,6 +30,8 @@ using std::endl;
 using std::vector;
 using std::string;
 
+double get_time();
+
 string strip(string);
 string replace(string, string);
 string join(string, vector<string>);

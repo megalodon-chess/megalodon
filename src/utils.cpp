@@ -21,6 +21,7 @@
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <chrono>
 #include "bitboard.hpp"
 #include "utils.hpp"
 
@@ -29,6 +30,13 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+double get_time() {
+    auto now = std::chrono::system_clock::now().time_since_epoch();
+    double elapse = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+    return elapse / 1000;
+}
 
 
 string strip(string str) {
