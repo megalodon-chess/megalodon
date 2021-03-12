@@ -166,7 +166,10 @@ int loop() {
         else if (cmd == "eval") print_eval(options, pos);
         else if (startswith(cmd, "perft")) {
             vector<string> parts = split(cmd, " ");
-            if (parts[1] == "movegen") Perft::movegen(pos, std::stoi(parts[2]));
+            if (parts[1] == "movegen") {
+                int count = Perft::movegen(pos, std::stoi(parts[2]));
+                cout << "info nodes " << count << endl;
+            }
         }
         else if (cmd == "legalmoves") legal_moves(pos);
 
