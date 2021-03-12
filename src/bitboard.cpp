@@ -555,7 +555,7 @@ namespace Bitboard {
 
     vector<Move> legal_moves(Position pos, U64 attacks) {
         // Current and opposite pieces and sides
-        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPOSITE;
+        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPOSITE, ALL;
         if (pos.turn) {
             CP = pos.wp;
             CN = pos.wn;
@@ -585,6 +585,7 @@ namespace Bitboard {
         }
         SAME = CP | CN | CB | CR | CQ | CK;
         OPPOSITE = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+        ALL = SAME | OPPOSITE;
 
         vector<Move> moves = king_moves(CK, attacks);
         pair<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
@@ -642,7 +643,7 @@ namespace Bitboard {
                             const char speed = (y == (pos.turn ? 6 : 1)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
                             for (auto cy = y + 1; cy < y + speed + 1; cy++) {
                                 const char loc = cy*8 + x;
-                                if (bit(OPPOSITE | SAME, loc)) break;
+                                if (bit(ALL, loc)) break;
                                 if ((1ULL << loc) & block_mask) {
                                     moves.push_back(Move(i, loc));
                                     break;
@@ -661,7 +662,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if (bit(OPPOSITE | SAME, loc)) break;
+                                if (bit(ALL, loc)) break;
                                 if ((1ULL << loc) & mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
