@@ -310,6 +310,22 @@ namespace Bitboard {
         return pos;
     }
 
+    Move parse_uci(string uci) {
+        Move move;
+        move.from = uci[0]-97 + 8*(uci[1]-49);
+        move.to = uci[2]-97 + 8*(uci[3]-49);
+        move.is_promo = (uci.size() >= 5);
+        if (move.is_promo) {
+            switch (uci[4]) {
+                case 'N': move.promo = 0; case 'n': move.promo = 0;
+                case 'B': move.promo = 1; case 'b': move.promo = 1;
+                case 'R': move.promo = 2; case 'r': move.promo = 2;
+                case 'Q': move.promo = 3; case 'q': move.promo = 3;
+            }
+        }
+        return move;
+    }
+
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
@@ -795,7 +811,29 @@ namespace Bitboard {
     }
 
 
+    Position startpos() {
+        Position pos;
+        pos.wp = Bitboard::START_WP;
+        pos.wn = Bitboard::START_WN;
+        pos.wb = Bitboard::START_WB;
+        pos.wr = Bitboard::START_WR;
+        pos.wq = Bitboard::START_WQ;
+        pos.wk = Bitboard::START_WK;
+        pos.bp = Bitboard::START_BP;
+        pos.bn = Bitboard::START_BN;
+        pos.bb = Bitboard::START_BB;
+        pos.br = Bitboard::START_BR;
+        pos.bq = Bitboard::START_BQ;
+        pos.bk = Bitboard::START_BK;
+        pos.turn = true;
+        pos.castling = 15;
+        pos.ep = false;
+
+        return pos;
+    }
+
     Position push(Position pos, Move move) {
+        // todo castling ep
         U64* from_board = &pos.wp;
         if (bit(pos.wp, move.from)) from_board = &pos.wp;
         else if (bit(pos.wn, move.from)) from_board = &pos.wn;
@@ -833,6 +871,11 @@ namespace Bitboard {
             *from_board = set_bit(*from_board, move.to, true);
         }
 
+        pos.turn = !pos.turn;
         return pos;
+    }
+
+    Position push(Position pos, string uci) {
+        return push(pos, parse_uci(uci));
     }
 }

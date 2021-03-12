@@ -63,8 +63,8 @@ Move copy(Move);
 namespace Bitboard {
     // Promotion piece format: 0=knight, 1=bishop, 2=rook, 3=queen
 
-    constexpr U64 EMPTY = 0;
-    constexpr U64 FULL = 18446744073709551615;
+    constexpr U64 EMPTY = 0ULL;
+    constexpr U64 FULL = 18446744073709551615ULL;
 
     constexpr U64 START_WP = 65280ULL;
     constexpr U64 START_WN = 66ULL;
@@ -100,6 +100,7 @@ namespace Bitboard {
     string move_str(Move);
     string fen(Position);
     Position parse_fen(string);
+    Move parse_uci(string);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     U64 attacked(Position, bool);
@@ -108,5 +109,7 @@ namespace Bitboard {
     vector<Move> king_moves(U64, U64);
     vector<Move> legal_moves(Position, U64);
 
+    Position startpos();
     Position push(Position, Move);
+    Position push(Position, string);
 }
