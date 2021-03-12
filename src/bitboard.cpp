@@ -722,8 +722,47 @@ namespace Bitboard {
         return moves;
     }
 
+
     Position push(Position pos, Move move) {
-        Position p;
-        return p;
+        int board;
+        if (bit(pos.wp, move.from)) {
+            pos.wp = set_bit(pos.wp, move.from, false);
+            board = 0;
+        } else if (bit(pos.wn, move.from)) {
+            pos.wn = set_bit(pos.wn, move.from, false);
+            board = 1;
+        } else if (bit(pos.wb, move.from)) {
+            pos.wb = set_bit(pos.wb, move.from, false);
+            board = 2;
+        } else if (bit(pos.wr, move.from)) {
+            pos.wr = set_bit(pos.wr, move.from, false);
+            board = 3;
+        } else if (bit(pos.wq, move.from)) {
+            pos.wq = set_bit(pos.wq, move.from, false);
+            board = 4;
+        } else if (bit(pos.wk, move.from)) {
+            pos.wk = set_bit(pos.wk, move.from, false);
+            board = 5;
+        }
+
+        if (move.is_promo) {
+            switch (move.promo) {
+                case 0: pos.wn = set_bit(pos.wn, move.to, true);
+                case 1: pos.wb = set_bit(pos.wb, move.to, true);
+                case 2: pos.wr = set_bit(pos.wr, move.to, true);
+                case 3: pos.wq = set_bit(pos.wq, move.to, true);
+            }
+        } else {
+            switch (board) {
+                case 0: pos.wp = set_bit(pos.wp, move.to, true);
+                case 1: pos.wn = set_bit(pos.wn, move.to, true);
+                case 2: pos.wb = set_bit(pos.wb, move.to, true);
+                case 3: pos.wr = set_bit(pos.wr, move.to, true);
+                case 4: pos.wq = set_bit(pos.wq, move.to, true);
+                case 5: pos.wk = set_bit(pos.wk, move.to, true);
+            }
+        }
+
+        return pos;
     }
 }
