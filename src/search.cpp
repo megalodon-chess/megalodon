@@ -59,6 +59,8 @@ string SearchInfo::as_string() {
 }
 
 /*
+* Experimental search algorithm, to be completed in a later version.
+
 SearchInfo search(Position pos) {
     vector<vector<vector<Position>>> tree = {{{pos}}};
     int depth = 1;
