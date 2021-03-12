@@ -87,11 +87,11 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
 }
 
 
-Position copy_position(Position p) {
+Position copy(Position p) {
     return Position(p.wp, p.wn, p.wb, p.wr, p.wq, p.wk, p.bp, p.bn, p.bb, p.br, p.bq, p.bk, p.turn, p.castling, p.ep, p.ep_square);
 }
 
-Move copy_move(Move m) {
+Move copy(Move m) {
     return Move(m.from, m.to, m.is_promo, m.promo);
 }
 
@@ -139,6 +139,7 @@ namespace Bitboard {
         }
         return pair<char, char>(0, 8);
     }
+
 
     string piece_at(Position pos, char loc) {
         if (bit(pos.wp, loc)) return "P";
@@ -306,6 +307,7 @@ namespace Bitboard {
 
         return pos;
     }
+
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
