@@ -56,12 +56,11 @@ struct Position {
     vector<Move> move_stack;
 };
 
-Position copy_position(Position);
-Move copy_move(Move);
+Position copy(Position);
+Move copy(Move);
 
 namespace Bitboard {
-    // Move format: vector<char> = {start square, end square, promotion piece}
-    // Promotion piece format: 0=none, 1=knight, 2=bishop, 3=rook, 4=queen
+    // Promotion piece format: 0=knight, 1=bishop, 2=rook, 3=queen
 
     constexpr U64 EMPTY = 0;
 
@@ -92,12 +91,15 @@ namespace Bitboard {
     U64 set_bit(U64, int, bool);
     pair<char, char> first_bit(U64);
 
+    Position copy(Position);
+
     string piece_at(Position, char);
     string board_str(U64, string="X", string="-");
     string board_str(Position);
     string square_str(char);
     string move_str(Move);
     string fen(Position);
+    Position parse_fen(string);
 
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     U64 attacked(Position, bool);

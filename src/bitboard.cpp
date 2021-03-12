@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <utility>
 #include "bitboard.hpp"
+#include "utils.hpp"
 
 using std::abs;
 using std::cin;
@@ -46,6 +47,22 @@ Move::Move(char _from, char _to, bool _is_promo, char _promo) {
 
 
 Position::Position() {
+    wp = Bitboard::EMPTY;
+    wn = Bitboard::EMPTY;
+    wb = Bitboard::EMPTY;
+    wr = Bitboard::EMPTY;
+    wq = Bitboard::EMPTY;
+    wk = Bitboard::EMPTY;
+    bp = Bitboard::EMPTY;
+    bn = Bitboard::EMPTY;
+    bb = Bitboard::EMPTY;
+    br = Bitboard::EMPTY;
+    bq = Bitboard::EMPTY;
+    bk = Bitboard::EMPTY;
+
+    turn = true;
+    castling = 0;
+    ep = false;
 }
 
 Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
@@ -70,11 +87,11 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
 }
 
 
-Position copy_position(Position p) {
+Position copy(Position p) {
     return Position(p.wp, p.wn, p.wb, p.wr, p.wq, p.wk, p.bp, p.bn, p.bb, p.br, p.bq, p.bk, p.turn, p.castling, p.ep, p.ep_square);
 }
 
-Move copy_move(Move m) {
+Move copy(Move m) {
     return Move(m.from, m.to, m.is_promo, m.promo);
 }
 
@@ -122,6 +139,7 @@ namespace Bitboard {
         }
         return pair<char, char>(0, 8);
     }
+
 
     string piece_at(Position pos, char loc) {
         if (bit(pos.wp, loc)) return "P";
@@ -175,6 +193,7 @@ namespace Bitboard {
             }
             str += col + "\n" + row + "\n";
         }
+        str += "\nFen: " + fen(pos) + "\n";
 
         return str;
     }
@@ -233,6 +252,62 @@ namespace Bitboard {
 
         return str;
     }
+
+    Position parse_fen(string fen) {
+        vector<string> parts = split(fen, " ");
+        Position pos;
+
+        int x = 0, y = 7;
+        for (auto ch: parts[0]) {
+            if (ch == '/') {
+                y--;
+                x = 0;
+            } else {
+                int loc = 8*y + x;
+                if (48 <= ch && ch <= 57) {
+                    x += (ch-48);
+                } else {
+                    switch (ch) {
+                        case 'P': pos.wp = set_bit(pos.wp, loc, true); break;
+                        case 'N': pos.wn = set_bit(pos.wn, loc, true); break;
+                        case 'B': pos.wb = set_bit(pos.wb, loc, true); break;
+                        case 'R': pos.wr = set_bit(pos.wr, loc, true); break;
+                        case 'Q': pos.wq = set_bit(pos.wq, loc, true); break;
+                        case 'K': pos.wk = set_bit(pos.wk, loc, true); break;
+                        case 'p': pos.bp = set_bit(pos.bp, loc, true); break;
+                        case 'n': pos.bn = set_bit(pos.bn, loc, true); break;
+                        case 'b': pos.bb = set_bit(pos.bb, loc, true); break;
+                        case 'r': pos.br = set_bit(pos.br, loc, true); break;
+                        case 'q': pos.bq = set_bit(pos.bq, loc, true); break;
+                        case 'k': pos.bk = set_bit(pos.bk, loc, true); break;
+                    }
+                }
+                x++;
+            }
+        }
+
+        pos.turn = (parts[1] == "w");
+
+        int castling = 0;
+        for (auto ch: parts[2]) {
+            switch (ch) {
+                case 'K': castling += 1; break;
+                case 'Q': castling += 2; break;
+                case 'k': castling += 4; break;
+                case 'q': castling += 8; break;
+            }
+        }
+        pos.castling = castling;
+
+        if (parts[3] == "-") pos.ep = false;
+        else {
+            pos.ep = true;
+            pos.ep_square = std::stoi(parts[3]);
+        }
+
+        return pos;
+    }
+
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;

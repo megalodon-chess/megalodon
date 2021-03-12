@@ -21,9 +21,11 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <climits>
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "search.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
@@ -33,6 +35,17 @@ using std::string;
 
 
 SearchInfo::SearchInfo() {
+}
+
+SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, int _score, int _nodes, int _nps, int _time, Move _move) {
+    depth = _depth;
+    seldepth = _seldepth;
+    is_mate_score = _is_mate;
+    score = _score;
+    nodes = _nodes;
+    nps = _nps;
+    time = _time;
+    move = _move;
 }
 
 string SearchInfo::as_string() {
@@ -45,6 +58,8 @@ string SearchInfo::as_string() {
     return str;
 }
 
+/*
+* Experimental search algorithm, to be completed in a later version.
 
 SearchInfo search(Position pos) {
     vector<vector<vector<Position>>> tree = {{{pos}}};
@@ -58,5 +73,32 @@ SearchInfo search(Position pos) {
         }
         depth++;
         if (depth == 4) break;
+    }
+}
+*/
+
+SearchInfo search(Options& options, Position pos, int depth) {
+    if (depth == 0) {
+        return SearchInfo(depth, depth, false, eval(options, pos), 0, 0, 0, Move());
+    } else {
+        vector<Move> moves = Bitboard::legal_moves(pos);
+        int best_ind = 0;
+        int best_eval = pos.turn ? INT_MIN : INT_MAX;
+        Move best_move;
+
+        for (auto i = 0; i < moves.size(); i++) {
+            Position new_pos = Bitboard::copy(pos);
+            new_pos = Bitboard::push(new_pos, moves[i]);
+            SearchInfo result = search(options, new_pos, depth-1);
+
+            bool exceeds = false;
+            if (pos.turn && result.score > best_eval) exceeds = true;
+            if (!pos.turn && result.score < best_eval) exceeds = true;
+            if (exceeds) {
+                best_ind = i;
+                best_eval = result.score;
+            }
+        }
+        return SearchInfo(depth, depth, false, best_eval, 0, 0, 0, moves[best_ind]);
     }
 }
