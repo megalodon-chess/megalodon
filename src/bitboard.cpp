@@ -635,6 +635,12 @@ namespace Bitboard {
                                 }
                             }
                         }
+                        // Block
+                        const char y = i/8;
+                        const char speed = (y == (pos.turn ? 6 : 1)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                        for (auto cy = y; cy < y + speed + 1; cy++) {
+                            ;
+                        }
                     }
                 }
             }
