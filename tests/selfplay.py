@@ -26,3 +26,11 @@ import chess.pgn
 
 PARDIR = os.path.dirname(os.path.realpath(__file__))
 GAME_DIR = os.path.join(PARDIR, "games")
+
+
+def main():
+    eng1 = chess.engine.SimpleEngine.popen_uci("build/Megalodon")
+    eng2 = chess.engine.SimpleEngine.popen_uci("build/Megalodon")
+
+
+main()
