@@ -618,6 +618,7 @@ namespace Bitboard {
                 if (bit(CP, i)) {
                     if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
                         // Capture
+                        // todo en passant
                         const char x = i%8, y = i/8 + pos.turn ? 1 : -1;
                         if (0 <= y && y < 8) {
                             if (0 <= x-1 && x-1 < 8) {
