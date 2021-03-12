@@ -122,14 +122,13 @@ namespace Bitboard {
         return count;
     }
 
-    U64 set_bit(U64 board, int pos, bool value) {
+    U64 set_bit(U64& board, int pos, bool value) {
         const bool on = bit(board, pos);
         if (value && !on) {
             board += (1LL << pos);
         } else if (!value && on) {
             board -= (1LL << pos);
         }
-        return board;
     }
 
     tuple<char, char> first_bit(U64 board) {
