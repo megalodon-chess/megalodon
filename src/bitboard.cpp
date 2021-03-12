@@ -685,6 +685,23 @@ namespace Bitboard {
                                 }
                             }
                         }
+                    } else if (bit(CQ, i)) {
+                        // Capture and block
+                        for (auto dir: DIR_Q) {
+                            char cx = i%8, cy = i/8;                  // Current (x, y)
+                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                            while (true) {
+                                cx += dx;
+                                cy += dy;
+                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                const char loc = cy*8 + cx;
+                                if (bit(ALL, loc)) break;
+                                if ((1ULL << loc) & mask != EMPTY) {
+                                    moves.push_back(Move(i, loc));
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
