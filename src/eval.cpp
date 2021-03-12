@@ -81,5 +81,6 @@ float eval(Options& options, Position pos) {
     float cent = center(w_attacks, b_attacks);
     float cent_weight = center_weight(movect);
 
-    return mat*mat_weight;
+    return mat*mat_weight*options.EvalMaterial/100 +
+        cent*cent_weight*options.EvalCenter/100;
 }
