@@ -35,6 +35,8 @@ using std::string;
 using std::to_string;
 
 vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
+vector<string> WINNING = {"Looks like I'm playing well!"};
+vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!"};
 
 
 Position parse_pos(string str) {
@@ -77,12 +79,14 @@ void legal_moves(Position pos) {
 }
 
 
-void chat(Options& options, int movect) {
+void chat(Options& options, bool turn, int movect, float score, float prev_score) {
     if (!options.Chat) return;
 
-    if (movect == 0) {
-        cout << "info string " << GREETINGS[rand()%GREETINGS.size()] << endl;
-    }
+    if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
+    if (turn && score > prev_score+1.5) cout << "info string " << rand_choice(WINNING) << endl;
+    if (!turn && score < prev_score+1.5) cout << "info string " << rand_choice(WINNING) << endl;
+    if (turn && score < prev_score+1.5) cout << "info string " << rand_choice(LOSING) << endl;
+    if (!turn && score > prev_score+1.5) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
 
@@ -127,6 +131,7 @@ int loop() {
     string cmd;
     Options options;
     Position pos = parse_pos("position startpos");
+    float prev_eval = 0;
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
@@ -170,7 +175,9 @@ int loop() {
         else if (startswith(cmd, "go")) {
             SearchInfo result = search(options, pos, 4);
             cout << result.as_string() << endl;
-            chat(options, pos.move_stack.size());
+
+            chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
+            prev_eval = result.score;
         }
         else if (cmd == "stop");
     }
