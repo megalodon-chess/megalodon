@@ -71,8 +71,11 @@ def engine_result():
 
 def main():
     real = real_result(chess.Board(FEN), DEPTH)
-    print(real)
     engine, eng_time = engine_result()
+
+    print(f"Real nodes:    {real}")
+    print(f"Engine nodes:  {engine}")
+    print(f"Engine time:   {eng_time}")
 
 
 main()
