@@ -9,14 +9,16 @@ UCI chess engine.
 ## To compile with cmake
 
 1. Clone or download the repository.
-2. Create `build` directory.
-3. `cd` to `build/`.
-4. Create `Makefile` with `cmake`.
-5. Run `make` to create the executable.
-6. Run the executable.
+2. `cd` to `megalodon/`
+3. Create `build` directory.
+4. `cd` to `build/`.
+5. Create `Makefile` with `cmake`.
+6. Run `make` to create the executable.
+7. Run the executable.
 
 ``` bash
 git clone https://github.com/HuangPatrick16777216/megalodon.git
+cd megalodon/
 mkdir build
 cd build/
 cmake ..
