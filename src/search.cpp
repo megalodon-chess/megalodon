@@ -26,6 +26,7 @@
 #include "utils.hpp"
 #include "search.hpp"
 #include "eval.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -81,7 +82,8 @@ SearchInfo search(Options& options, Position pos, int depth) {
     if (depth == 0) {
         return SearchInfo(depth, depth, false, eval(options, pos), 0, 0, 0, Move());
     } else {
-        vector<Move> moves = Bitboard::legal_moves(pos);
+        U64 attacks = Bitboard::attacked(pos, pos.turn);
+        vector<Move> moves = Bitboard::legal_moves(pos, attacks);
         int best_ind = 0;
         int best_eval = pos.turn ? INT_MIN : INT_MAX;
         Move best_move;
