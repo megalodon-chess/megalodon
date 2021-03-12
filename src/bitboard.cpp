@@ -761,6 +761,19 @@ namespace Bitboard {
                                 if (bit(OPPONENT, loc)) break;
                             }
                         }
+                    } else if (bit(CR, i)) {
+                        for (auto dir: DIR_R) {
+                            char cx = i%8, cy = i/8;                  // Current (x, y)
+                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                            while (true) {
+                                cx += dx;
+                                cy += dy;
+                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                const char loc = cy*8 + cx;
+                                if ((1ULL << loc) & pin_mask != EMPTY) moves.push_back(Move(i, loc));
+                                if (bit(OPPONENT, loc)) break;
+                            }
+                        }
                     }
                 }
             }
