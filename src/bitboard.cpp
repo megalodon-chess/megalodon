@@ -63,6 +63,7 @@ Position::Position() {
     turn = true;
     castling = 0;
     ep = false;
+    ep_square = 0;
 }
 
 Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
@@ -615,7 +616,26 @@ namespace Bitboard {
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
                 if (bit(CP, i)) {
-
+                    if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
+                        // Capture
+                        const char x = i%8, y = i/8 + pos.turn ? 1 : -1;
+                        if (0 <= y && y < 8) {
+                            if (0 <= x-1 && x-1 < 8) {
+                                const char char_move = y*8 + x-1;
+                                const U64 bit_moves = 1ULL << char_move & capture_mask;
+                                for (char j = 0; j < 64; j++) {
+                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j)); 
+                                }
+                            }
+                            if (0 <= x+1 && x+1 < 8) {
+                                const char char_move = y*8 + x+1;
+                                const U64 bit_moves = 1ULL << char_move & capture_mask;
+                                for (char j = 0; j < 64; j++) {
+                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j));
+                                }
+                            }
+                        }
+                    }
                 }
             }
         } else {
