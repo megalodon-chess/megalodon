@@ -31,17 +31,15 @@ ENG_PATH = "build/Megalodon"
 DEPTH = 4
 
 
-def main():
+def engine_result():
     in_path = os.path.join(PARDIR, "in.txt")
     out_path = os.path.join(PARDIR, "out.txt")
 
     with open(in_path, "w") as file:
         file.write(f"go depth {DEPTH}\n")
-
     with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
         p.wait()
-
     with open(out_path, "r") as file:
         out = file.read()
 
@@ -51,7 +49,11 @@ def main():
             nodes = int(parts[i+1])
             break
 
-    print(nodes)
+    return nodes
+
+
+def main():
+    engine = engine_result()
 
 
 main()
