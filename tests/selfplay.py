@@ -28,6 +28,26 @@ PARDIR = os.path.dirname(os.path.realpath(__file__))
 GAME_DIR = os.path.join(PARDIR, "games")
 
 
+def save_game(board: chess.Board):
+    if len(os.listdir(GAME_DIR)) > 0:
+        num = max([int(f.split(".")[0]) for f in os.listdir(GAME_DIR)]) + 1
+    else:
+        num = 0
+    fname = os.path.join(GAME_DIR, f"{num}.pgn")
+
+    game = chess.pgn.Game()
+    game.headers["Event"] = "Megalodon self-play"
+    game.headers["Round"] = str(num)
+    game.headers["White"] = "Megalodon"
+    game.headers["Black"] = "Megalodon"
+    node = game.add_variation(board.move_stack[0])
+    for move in board.move_stack[1:]:
+        node = node.add_variation(move)
+
+    with open(fname, "w") as file:
+        print(game, file=file)
+
+
 def main():
     eng1 = chess.engine.SimpleEngine.popen_uci("build/Megalodon")
     eng2 = chess.engine.SimpleEngine.popen_uci("build/Megalodon")
@@ -39,6 +59,8 @@ def main():
             board.push(result.move)
             result = eng2.play(board, chess.engine.Limit(white_clock=10, black_clock=10))
             board.push(result.move)
+
+        save_game(board)
 
 
 main()
