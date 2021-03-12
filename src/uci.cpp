@@ -48,9 +48,15 @@ Position parse_pos(string str) {
         }
         return pos;
     } else if (parts[1] == "fen") {
-        Position pos = Bitboard::parse_fen(parts[2]);
-        if (parts.size() > 4 && parts[3] == "moves") {
-            for (auto i = 4; i < parts.size(); i++) {
+        string fen;
+        for (auto i = 2; i < 8; i++) {
+            fen += parts[i];
+            fen += " ";
+        }
+        Position pos = Bitboard::parse_fen(fen);
+
+        if (parts.size() > 9 && parts[8] == "moves") {
+            for (auto i = 9; i < parts.size(); i++) {
                 pos = Bitboard::push(pos, parts[i]);
             }
         }
