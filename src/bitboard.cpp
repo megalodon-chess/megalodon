@@ -745,6 +745,7 @@ namespace Bitboard {
                 }
             }
         } else {
+            // todo pawn moves
             for (auto i = 0; i < 64; i++) {
                 if (bit(SAME, i)) {
                     tuple<bool, U64> pin = pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME);
