@@ -310,6 +310,22 @@ namespace Bitboard {
         return pos;
     }
 
+    Move parse_uci(string uci) {
+        Move move;
+        move.from = uci[0]-97 + 8*(uci[1]-49);
+        move.to = uci[2]-97 + 8*(uci[3]-49);
+        move.is_promo = (uci.size() >= 5);
+        if (move.is_promo) {
+            switch (uci[4]) {
+                case 'N': move.promo = 0; case 'n': move.promo = 0;
+                case 'B': move.promo = 1; case 'b': move.promo = 1;
+                case 'R': move.promo = 2; case 'r': move.promo = 2;
+                case 'Q': move.promo = 3; case 'q': move.promo = 3;
+            }
+        }
+        return move;
+    }
+
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
@@ -829,5 +845,8 @@ namespace Bitboard {
         }
 
         return pos;
+    }
+
+    Position push(Position pos, string uci) {
     }
 }
