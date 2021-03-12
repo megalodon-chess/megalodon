@@ -736,7 +736,24 @@ namespace Bitboard {
             for (auto i = 0; i < 64; i++) {
                 if (bit(SAME, i)) {
                     tuple<bool, U64> pin = pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME);
+                    bool piece_pinned = get<0>(pin);
                     U64 pin_mask = get<1>(pin);
+
+                    if (bit(CN, i)) {
+                        // Knight cannot move while pinned.
+                        if (piece_pinned) {
+                            continue;
+                        } else {
+                            for (auto dir: DIR_N) {
+                                char x = i%8 + dir[0], y = i/8 + dir[1];   // Current (x, y)
+                                if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+                                const char loc = y*8 + x;
+                                if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
+                            }  
+                        }
+                    } else if (bit(CB, i)) {
+
+                    }
                 }
             }
         }
