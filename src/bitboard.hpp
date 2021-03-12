@@ -21,13 +21,14 @@
 
 #include <iostream>
 #include <vector>
-#include <utility>
+#include <tuple>
 #include <string>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::pair;
+using std::tuple;
 using std::vector;
 using std::string;
 
@@ -89,7 +90,7 @@ namespace Bitboard {
     char bit_pos(U64, bool=true);
     char bit_count(U64, bool=true);
     U64 set_bit(U64, int, bool);
-    pair<char, char> first_bit(U64);
+    tuple<char, char> first_bit(U64);
 
     string piece_at(Position, char);
     string board_str(U64, string="X", string="-");
@@ -102,7 +103,7 @@ namespace Bitboard {
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     U64 attacked(Position, bool);
     bool pinned(U64, U64, U64, U64, U64, U64, U64, U64);
-    pair<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);
+    tuple<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);
     vector<Move> king_moves(U64, U64);
     vector<Move> legal_moves(Position, U64);
 
