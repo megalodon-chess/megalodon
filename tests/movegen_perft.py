@@ -70,12 +70,15 @@ def engine_result():
 
 
 def main():
+    start = time.time()
     real = real_result(chess.Board(FEN), DEPTH)
+    elapse = time.time() - start
     engine, eng_time = engine_result()
 
-    print(f"Real nodes:    {real}")
-    print(f"Engine nodes:  {engine}")
-    print(f"Engine time:   {eng_time}")
+    print(f"Python-Chess nodes:   {real}")
+    print(f"Python-Chess time:    {elapse}")
+    print(f"Engine nodes:         {engine}")
+    print(f"Engine time:          {eng_time}")
 
 
 main()
