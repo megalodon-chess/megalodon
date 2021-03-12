@@ -848,5 +848,6 @@ namespace Bitboard {
     }
 
     Position push(Position pos, string uci) {
+        return push(pos, parse_uci(uci));
     }
 }
