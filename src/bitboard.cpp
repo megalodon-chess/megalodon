@@ -615,46 +615,45 @@ namespace Bitboard {
 
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
-                if (bit(CP, i)) {
-                    if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
-                        // Capture
-                        // todo en passant
-                        const char x = i%8;
-                        char y = i/8 + pos.turn ? 1 : -1;
-                        if (0 <= y && y < 8) {
-                            if (0 <= x-1 && x-1 < 8) {
-                                const char char_move = y*8 + x-1;
-                                const U64 bit_moves = 1ULL << char_move & capture_mask;
-                                for (char j = 0; j < 64; j++) {
-                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j)); 
+                if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
+                    if (bit(CP, i)) {
+                            // Capture
+                            // todo en passant
+                            const char x = i%8;
+                            char y = i/8 + pos.turn ? 1 : -1;
+                            if (0 <= y && y < 8) {
+                                if (0 <= x-1 && x-1 < 8) {
+                                    const char char_move = y*8 + x-1;
+                                    const U64 bit_moves = 1ULL << char_move & capture_mask;
+                                    for (char j = 0; j < 64; j++) {
+                                        if (bit(bit_moves, j)) moves.push_back(Move(i, j)); 
+                                    }
+                                }
+                                if (0 <= x+1 && x+1 < 8) {
+                                    const char char_move = y*8 + x+1;
+                                    const U64 bit_moves = 1ULL << char_move & capture_mask;
+                                    for (char j = 0; j < 64; j++) {
+                                        if (bit(bit_moves, j)) moves.push_back(Move(i, j));
+                                    }
                                 }
                             }
-                            if (0 <= x+1 && x+1 < 8) {
-                                const char char_move = y*8 + x+1;
-                                const U64 bit_moves = 1ULL << char_move & capture_mask;
-                                for (char j = 0; j < 64; j++) {
-                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j));
+                            // Block
+                            y = i/8;
+                            const char speed = (y == (pos.turn ? 6 : 1)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                            for (auto cy = y + 1; cy < y + speed + 1; cy++) {
+                                const char loc = cy*8 + x;
+                                if (bit(OPPOSITE | SAME, loc)) break;
+                                if ((1ULL << loc) & block_mask) {
+                                    moves.push_back(Move(i, loc));
+                                    break;
                                 }
                             }
                         }
-                        // Block
-                        y = i/8;
-                        const char speed = (y == (pos.turn ? 6 : 1)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
-                        for (auto cy = y + 1; cy < y + speed + 1; cy++) {
-                            const char loc = cy*8 + x;
-                            if (bit(OPPOSITE | SAME, loc)) break;
-                            if ((1ULL << loc) & block_mask) {
-                                moves.push_back(Move(i, loc));
-                                break;
-                            }
-                        }
-                    }
-                }
 
-                if (bit(CR, i)) {
-                    if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
+                    if (bit(CR, i)) {
+                        U64 mask = block_mask | capture_mask;
                         // Capture
-                        const char x = i%8, y = i/8 + pos.turn ? 1 : -1;
+                        const char x = i%8, y = i/8;
                         if (0 <= y && y < 8) {
                             if (0 <= x-1 && x-1 < 8) {
                                 const char char_move = y*8 + x-1;
