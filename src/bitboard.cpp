@@ -738,6 +738,27 @@ namespace Bitboard {
     }
 
 
+    Position startpos() {
+        Position pos;
+        pos.wp = Bitboard::START_WP;
+        pos.wn = Bitboard::START_WN;
+        pos.wb = Bitboard::START_WB;
+        pos.wr = Bitboard::START_WR;
+        pos.wq = Bitboard::START_WQ;
+        pos.wk = Bitboard::START_WK;
+        pos.bp = Bitboard::START_BP;
+        pos.bn = Bitboard::START_BN;
+        pos.bb = Bitboard::START_BB;
+        pos.br = Bitboard::START_BR;
+        pos.bq = Bitboard::START_BQ;
+        pos.bk = Bitboard::START_BK;
+        pos.turn = true;
+        pos.castling = 15;
+        pos.ep = false;
+
+        return pos;
+    }
+
     Position push(Position pos, Move move) {
         U64* from_board = &pos.wp;
         if (bit(pos.wp, move.from)) from_board = &pos.wp;

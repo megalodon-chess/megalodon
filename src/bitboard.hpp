@@ -107,5 +107,6 @@ namespace Bitboard {
     vector<Move> king_moves(U64, U64);
     vector<Move> legal_moves(Position, U64);
 
+    Position startpos();
     Position push(Position, Move);
 }
