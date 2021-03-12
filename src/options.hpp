@@ -38,5 +38,6 @@ public:
     Options();
 
     bool Chat;
-
+    int EvalMaterial;
+    int EvalCenter;
 };
