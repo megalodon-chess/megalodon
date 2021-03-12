@@ -86,9 +86,9 @@ void print_eval(Options& options, Position pos) {
     U64 b_attacks = Bitboard::attacked(pos, false);
 
     float mat = material(pos);
-    float mat_weight = material_weight(movect);
+    float mat_weight = material_weight(options, movect);
     float cent = center(w_attacks, b_attacks);
-    float cent_weight = center_weight(movect);
+    float cent_weight = center_weight(options, movect);
 
     vector<vector<string>> evals = {
         {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)},

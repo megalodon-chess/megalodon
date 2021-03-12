@@ -49,8 +49,8 @@ float material(Position pos) {
     return value;
 }
 
-float material_weight(int movect) {
-    return 1;
+float material_weight(Options& options, int movect) {
+    return (float)options.EvalMaterial / 100;
 }
 
 
@@ -66,8 +66,8 @@ float center(U64 w_attacks, U64 b_attacks) {
     return inner*INNER_WEIGHT + outer*OUTER_WEIGHT;
 }
 
-float center_weight(int movect) {
-    return 1;
+float center_weight(Options& options, int movect) {
+    return (float)options.EvalCenter / 100;
 }
 
 
@@ -77,10 +77,9 @@ float eval(Options& options, Position pos) {
     U64 b_attacks = Bitboard::attacked(pos, false);
 
     float mat = material(pos);
-    float mat_weight = material_weight(movect);
+    float mat_weight = material_weight(options, movect);
     float cent = center(w_attacks, b_attacks);
-    float cent_weight = center_weight(movect);
+    float cent_weight = center_weight(options, movect);
 
-    return mat*mat_weight*options.EvalMaterial/100 +
-        cent*cent_weight*options.EvalCenter/100;
+    return mat*mat_weight + cent*cent_weight;
 }
