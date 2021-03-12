@@ -32,12 +32,26 @@ DEPTH = 4
 
 
 def main():
-    with open(os.path.join(PARDIR, "in.txt"), "w") as file:
+    in_path = os.path.join(PARDIR, "in.txt")
+    out_path = os.path.join(PARDIR, "out.txt")
+
+    with open(in_path, "w") as file:
         file.write(f"go depth {DEPTH}\n")
 
-    with open(os.path.join(PARDIR, "in.txt"), "r") as stdin, open(os.path.join(PARDIR, "out.txt"), "w") as stdout:
+    with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
         p.wait()
+
+    with open(out_path, "r") as file:
+        out = file.read()
+
+    parts = [l for l in out.split("\n") if l.startswith("info")][0].split()
+    for i in range(len(parts)):
+        if parts[i] == "nodes":
+            nodes = int(parts[i+1])
+            break
+
+    print(nodes)
 
 
 main()
