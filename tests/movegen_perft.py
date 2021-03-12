@@ -37,7 +37,7 @@ def real_result(pos: chess.Board, depth):
     if depth == 0:
         return 1
     else:
-        count = 0
+        count = 1
         for move in pos.generate_legal_moves():
             new_pos = pos.copy(stack=False)
             new_pos.push(move)
@@ -70,7 +70,8 @@ def engine_result():
 
 
 def main():
-    real = real_result(chess.Board(FEN))
+    real = real_result(chess.Board(FEN), DEPTH)
+    print(real)
     engine, eng_time = engine_result()
 
 
