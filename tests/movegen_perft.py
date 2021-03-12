@@ -19,7 +19,8 @@
 
 # Tests performance and accuracy in move generation.
 # This script will communicate "go depth <depth>" to the engine,
-# and the engine should output total nodes searched (not leaf nodes).
+# and the engine should output total nodes searched (not leaf nodes)
+# in the format "info nodes <nodes>"
 
 import os
 import subprocess
@@ -31,7 +32,7 @@ DEPTH = 4
 
 
 def main():
-    with open(os.path.join(PARDIR, "in.txt", "w")) as file:
+    with open(os.path.join(PARDIR, "in.txt"), "w") as file:
         file.write(f"go depth {DEPTH}\n")
 
     with open(os.path.join(PARDIR, "in.txt"), "r") as stdin, open(os.path.join(PARDIR, "out.txt"), "w") as stdout:
