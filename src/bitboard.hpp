@@ -91,8 +91,6 @@ namespace Bitboard {
     U64 set_bit(U64, int, bool);
     pair<char, char> first_bit(U64);
 
-    Position copy(Position);
-
     string piece_at(Position, char);
     string board_str(U64, string="X", string="-");
     string board_str(Position);

@@ -89,7 +89,7 @@ SearchInfo search(Options& options, Position pos, int depth) {
         Move best_move;
 
         for (auto i = 0; i < moves.size(); i++) {
-            Position new_pos = Bitboard::copy(pos);
+            Position new_pos = copy(pos);
             new_pos = Bitboard::push(new_pos, moves[i]);
             SearchInfo result = search(options, new_pos, depth-1);
 
