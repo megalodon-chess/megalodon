@@ -386,7 +386,7 @@ namespace Bitboard {
         }
     }
 
-    bool pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
+    tuple<bool, U64> pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
         const U64 opponent = pawns | knights | bishops | rooks | queens;
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
@@ -401,12 +401,18 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
-                if (bit(rooks, loc) || bit(queens, loc)) return found;
-                if (bit(opponent, loc)) return false;
-                if (bit(piece, loc)) found = true;
-                if (bit(same, loc)) if (found) return true;
+                if (bit(rooks, loc) || bit(queens, loc)) {
+                    if (found) {
+                        return tuple<bool, U64>(true, EMPTY);  // return pin data
+                    } else {
+                        return tuple<bool, U64>(false, EMPTY);
+                    }
+                }
+                else if (bit(opponent, loc)) return tuple<bool, U64>(false, EMPTY);
+                else if (bit(piece, loc)) found = true;
+                else if (bit(same, loc)) return tuple<bool, U64>(false, EMPTY);
             }
-            if (found) return false;
+            if (found) return tuple<bool, U64>(false, EMPTY);
         }
 
         for (auto dir: DIR_B) {
@@ -418,14 +424,20 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
-                if (bit(bishops, loc) || bit(queens, loc)) return found;
-                if (bit(opponent, loc)) return false;
-                if (bit(piece, loc)) found = true;
-                if (bit(same, loc)) if (found) return true;
+                if (bit(rooks, loc) || bit(queens, loc)) {
+                    if (found) {
+                        return tuple<bool, U64>(true, EMPTY);  // return pin data
+                    } else {
+                        return tuple<bool, U64>(false, EMPTY);
+                    }
+                }
+                else if (bit(opponent, loc)) return tuple<bool, U64>(false, EMPTY);
+                else if (bit(piece, loc)) found = true;
+                else if (bit(same, loc)) return tuple<bool, U64>(false, EMPTY);
             }
-            if (found) return false;
+            if (found) return tuple<bool, U64>(false, EMPTY);
         }
-        return false;
+        return tuple<bool, U64>(false, EMPTY);
     }
 
     tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
@@ -618,7 +630,7 @@ namespace Bitboard {
 
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
-                if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
+                if (!get<0>(pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME))) {
                     if (bit(CP, i)) {
                         // Capture
                         // todo en passant
@@ -718,7 +730,9 @@ namespace Bitboard {
             }
         } else {
             // todo Decide normal moves
+            for (auto i = 0; i < 64; i++) {
 
+            }
         }
         return moves;
     }
