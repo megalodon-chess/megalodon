@@ -90,7 +90,7 @@ namespace Bitboard {
     bool bit(char, int);
     char bit_pos(U64, bool=true);
     char bit_count(U64, bool=true);
-    U64 set_bit(U64, int, bool);
+    U64 set_bit(U64&, int, bool);
     tuple<char, char> first_bit(U64);
 
     string piece_at(Position, char);
