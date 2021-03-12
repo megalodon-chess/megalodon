@@ -407,14 +407,14 @@ namespace Bitboard {
                     if (found) {
                         return tuple<bool, U64>(true, pin_ray);
                     } else {
-                        return tuple<bool, U64>(false, EMPTY);
+                        return tuple<bool, U64>(false, FULL);
                     }
                 }
-                else if (bit(opponent, loc)) return tuple<bool, U64>(false, EMPTY);
+                else if (bit(opponent, loc)) return tuple<bool, U64>(false, FULL);
                 else if (bit(piece, loc)) found = true;
-                else if (bit(same, loc)) return tuple<bool, U64>(false, EMPTY);
+                else if (bit(same, loc)) return tuple<bool, U64>(false, FULL);
             }
-            if (found) return tuple<bool, U64>(false, EMPTY);
+            if (found) return tuple<bool, U64>(false, FULL);
         }
 
         for (auto dir: DIR_B) {
@@ -431,16 +431,16 @@ namespace Bitboard {
                     if (found) {
                         return tuple<bool, U64>(true, pin_ray);
                     } else {
-                        return tuple<bool, U64>(false, EMPTY);
+                        return tuple<bool, U64>(false, FULL);
                     }
                 }
-                else if (bit(opponent, loc)) return tuple<bool, U64>(false, EMPTY);
+                else if (bit(opponent, loc)) return tuple<bool, U64>(false, FULL);
                 else if (bit(piece, loc)) found = true;
-                else if (bit(same, loc)) return tuple<bool, U64>(false, EMPTY);
+                else if (bit(same, loc)) return tuple<bool, U64>(false, FULL);
             }
-            if (found) return tuple<bool, U64>(false, EMPTY);
+            if (found) return tuple<bool, U64>(false, FULL);
         }
-        return tuple<bool, U64>(false, EMPTY);
+        return tuple<bool, U64>(false, FULL);
     }
 
     tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
