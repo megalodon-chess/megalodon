@@ -167,8 +167,9 @@ int loop() {
         else if (startswith(cmd, "perft")) {
             vector<string> parts = split(cmd, " ");
             if (parts[1] == "movegen") {
+                double start = get_time();
                 int count = Perft::movegen(pos, std::stoi(parts[2]));
-                cout << "info nodes " << count << endl;
+                cout << "info nodes " << count << " time " << get_time()-start << endl;
             }
         }
         else if (cmd == "legalmoves") legal_moves(pos);
