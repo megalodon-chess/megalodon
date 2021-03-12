@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 #include "bitboard.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;

@@ -91,8 +91,6 @@ namespace Bitboard {
     U64 set_bit(U64, int, bool);
     pair<char, char> first_bit(U64);
 
-    Position copy(Position);
-
     string piece_at(Position, char);
     string board_str(U64, string="X", string="-");
     string board_str(Position);
@@ -106,6 +104,6 @@ namespace Bitboard {
     bool pinned(U64, U64, U64, U64, U64, U64, U64, U64);
     pair<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);
     vector<Move> king_moves(U64, U64);
-    vector<Move> legal_moves(Position);
+    vector<Move> legal_moves(Position, U64);
     Position push(Position, Move);
 }
