@@ -614,6 +614,8 @@ namespace Bitboard {
                 }
             }
 
+            U64 mask = block_mask | capture_mask;
+
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
                 if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
@@ -652,7 +654,6 @@ namespace Bitboard {
                         }
 
                     if (bit(CR, i)) {
-                        U64 mask = block_mask | capture_mask;
                         // Capture and block
                         for (auto dir: DIR_R) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
@@ -672,7 +673,6 @@ namespace Bitboard {
                     }
 
                     if (bit(CB, i)) {
-                        U64 mask = block_mask | capture_mask;
                         // Capture and block
                         for (auto dir: DIR_B) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
