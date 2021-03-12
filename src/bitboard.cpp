@@ -614,7 +614,7 @@ namespace Bitboard {
                 }
             }
 
-            U64 mask = block_mask | capture_mask;
+            U64 full_mask = block_mask | capture_mask;
 
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
@@ -658,7 +658,7 @@ namespace Bitboard {
                             if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
                             const char loc = y*8 + x;
                             if (bit(ALL, loc)) break;
-                            if ((1ULL << loc) & mask != EMPTY) {
+                            if ((1ULL << loc) & full_mask != EMPTY) {
                                 moves.push_back(Move(i, loc));
                                 break;
                             }
@@ -674,7 +674,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & mask != EMPTY) {
+                                if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
@@ -691,7 +691,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & mask != EMPTY) {
+                                if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
@@ -708,7 +708,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & mask != EMPTY) {
+                                if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
