@@ -22,15 +22,16 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
-#include <utility>
+#include <tuple>
 #include "bitboard.hpp"
 #include "utils.hpp"
 
 using std::abs;
 using std::cin;
+using std::get;
 using std::cout;
 using std::endl;
-using std::pair;
+using std::tuple;
 using std::vector;
 using std::string;
 
@@ -131,14 +132,14 @@ namespace Bitboard {
         return board;
     }
 
-    pair<char, char> first_bit(U64 board) {
+    tuple<char, char> first_bit(U64 board) {
         for (char i = 0; i < 64; i++) {
             if (bit(board, i)) {
                 const char x = i % 8, y = i / 8;
-                return pair<char, char>(x, y);
+                return tuple<char, char>(x, y);
             }
         }
-        return pair<char, char>(0, 8);
+        return tuple<char, char>(0, 8);
     }
 
 
@@ -387,8 +388,8 @@ namespace Bitboard {
 
     bool pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
         const U64 opponent = pawns | knights | bishops | rooks | queens;
-        const pair<char, char> k_pos = first_bit(king);
-        const char kx = k_pos.first, ky = k_pos.second;
+        const tuple<char, char> k_pos = first_bit(king);
+        const char kx = get<0>(k_pos), ky = get<1>(k_pos);
         bool found;
 
         for (auto dir: DIR_R) {
@@ -427,19 +428,19 @@ namespace Bitboard {
         return false;
     }
 
-    pair<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
+    tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
         char num_atckers = 0;
         const char pawn_dir = side ? 1 : -1;
-        const pair<char, char> k_pos = first_bit(king);
-        const char kx = k_pos.first, ky = k_pos.second;
+        const tuple<char, char> k_pos = first_bit(king);
+        const char kx = get<0>(k_pos), ky = get<1>(k_pos);
 
         for (char i = 0; i < 64; i++) {
             if (bit(pawns, i)) {
                 const char y = i/8 + pawn_dir;  // Current (x, y) with y as after capture.
                 if (0 <= y && y < 8) {
-                    if (num_atckers > 1) return pair<U64, char>(board, num_atckers);
+                    if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
                     if (0 <= kx-1 && kx-1 < 8) {
                         char pos = y*8 + kx-1;
                         if (bit(pawns, pos)) {
@@ -448,7 +449,7 @@ namespace Bitboard {
                             continue;
                         }
                     }
-                    if (num_atckers > 1) return pair<U64, char>(board, num_atckers);
+                    if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
                     if (0 <= kx+1 && kx+1 < 8) {
                         char pos = y*8 + kx+1;
                         if (bit(pawns, pos)) {
@@ -462,7 +463,7 @@ namespace Bitboard {
 
             if (bit(knights, i)) {
                 for (auto dir: DIR_N) {                          // Iterate through all knight moves.
-                    if (num_atckers > 1) return pair<U64, char>(board, num_atckers);
+                    if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
                     const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
                         char pos = ny*8 + nx;   
@@ -480,7 +481,7 @@ namespace Bitboard {
                     char cx = kx, cy = ky;                  // Current (x, y)
                     const char dx = dir[0], dy = dir[1];    // Delta (x, y)
                     while (true) {
-                        if (num_atckers > 1) return pair<U64, char>(board, num_atckers);
+                        if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
                         cx += dx;
                         cy += dy;
                         if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
@@ -507,7 +508,7 @@ namespace Bitboard {
                     char cx = kx, cy = ky;                  // Current (x, y)
                     const char dx = dir[0], dy = dir[1];    // Delta (x, y)
                     while (true) {
-                        if (num_atckers > 1) return pair<U64, char>(board, num_atckers);
+                        if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
                         cx += dx;
                         cy += dy;
                         if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
@@ -529,7 +530,7 @@ namespace Bitboard {
                 }
             }
         }
-        return pair<U64, char>(board, num_atckers);
+        return tuple<U64, char>(board, num_atckers);
     }
 
     vector<Move> king_moves(U64 king, U64 attacks) {
@@ -587,17 +588,17 @@ namespace Bitboard {
         ALL = SAME | OPPONENT;
 
         vector<Move> moves = king_moves(CK, attacks);
-        pair<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
-        U64 checking_pieces = checking_data.first;
-        char num_checkers = checking_data.second;
+        tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
+        U64 checking_pieces = get<0>(checking_data);
+        char num_checkers = get<1>(checking_data);
 
         if (num_checkers > 1) {
             return moves;
         } else if (num_checkers == 1) {
             // Block and capture piece giving check to king
             U64 block_mask = EMPTY, capture_mask = checking_pieces;
-            pair<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
-            const char kx = k_pos.first, ky = k_pos.second, cx = check_pos.first, cy = check_pos.second;
+            tuple<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
+            const char kx = get<0>(k_pos), ky = get<1>(k_pos), cx = get<0>(check_pos), cy = get<1>(check_pos);
 
             char dx = abs(cx - kx), dy = abs(cy - ky);
             if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
@@ -717,6 +718,7 @@ namespace Bitboard {
             }
         } else {
             // todo Decide normal moves
+
         }
         return moves;
     }
