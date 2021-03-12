@@ -633,7 +633,7 @@ namespace Bitboard {
 
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
-                if (!get<0>(pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME))) {
+                if (bit(SAME, i) && !get<0>(pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME))) {
                     if (bit(CP, i)) {
                         // Capture
                         // todo en passant
@@ -734,7 +734,7 @@ namespace Bitboard {
         } else {
             // todo Decide normal moves
             for (auto i = 0; i < 64; i++) {
-
+                
             }
         }
         return moves;
