@@ -734,7 +734,10 @@ namespace Bitboard {
         } else {
             // todo Decide normal moves
             for (auto i = 0; i < 64; i++) {
-                
+                if (bit(SAME, i)) {
+                    tuple<bool, U64> pin = pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME);
+                    U64 pin_mask = get<1>(pin);
+                }
             }
         }
         return moves;
