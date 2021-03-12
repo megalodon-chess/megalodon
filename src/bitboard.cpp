@@ -661,7 +661,7 @@ namespace Bitboard {
                         for (auto cy = y + 1; cy < y + speed + 1; cy++) {
                             const char loc = cy*8 + x;
                             if (bit(ALL, loc)) break;
-                            else if ((1ULL << loc) & block_mask) {
+                            if ((1ULL << loc) & block_mask) {
                                 moves.push_back(Move(i, loc));
                                 break;
                             }
@@ -687,7 +687,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                else if ((1ULL << loc) & full_mask != EMPTY) {
+                                if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
@@ -703,7 +703,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                else if ((1ULL << loc) & full_mask != EMPTY) {
+                                if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
@@ -719,7 +719,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                else if ((1ULL << loc) & full_mask != EMPTY) {
+                                if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
