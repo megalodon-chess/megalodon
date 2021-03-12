@@ -282,8 +282,8 @@ namespace Bitboard {
                         case 'q': set_bit(pos.bq, loc, true); break;
                         case 'k': set_bit(pos.bk, loc, true); break;
                     }
+                    x++;
                 }
-                x++;
             }
         }
 
