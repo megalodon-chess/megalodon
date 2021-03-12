@@ -106,6 +106,6 @@ namespace Bitboard {
     bool pinned(U64, U64, U64, U64, U64, U64, U64, U64);
     pair<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, bool);
     vector<Move> king_moves(U64, U64);
-    vector<Move> legal_moves(Position);
+    vector<Move> legal_moves(Position, U64);
     Position push(Position, Move);
 }
