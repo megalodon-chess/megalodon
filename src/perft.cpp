@@ -33,5 +33,16 @@ using std::string;
 
 namespace Perft {
     int movegen(Position pos, int depth) {
+        if (depth == 0) {
+            return 1;
+        } else {
+            int count = 1;
+            for (auto move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, pos.turn))) {
+                Position new_pos = copy(pos);
+                new_pos = Bitboard::push(new_pos, move);
+                count += movegen(new_pos, depth-1);
+            }
+            return count;
+        }
     }
 }
