@@ -687,7 +687,6 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if (bit(ALL, loc)) break;
                                 else if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
@@ -704,7 +703,6 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if (bit(ALL, loc)) break;
                                 else if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
@@ -721,7 +719,6 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if (bit(ALL, loc)) break;
                                 else if ((1ULL << loc) & full_mask != EMPTY) {
                                     moves.push_back(Move(i, loc));
                                     break;
