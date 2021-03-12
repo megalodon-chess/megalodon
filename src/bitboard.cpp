@@ -653,7 +653,7 @@ namespace Bitboard {
                             }
                         }
 
-                    if (bit(CR, i)) {
+                    else if (bit(CR, i)) {
                         // Capture and block
                         for (auto dir: DIR_R) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
@@ -672,7 +672,7 @@ namespace Bitboard {
                         }
                     }
 
-                    if (bit(CB, i)) {
+                    else if (bit(CB, i)) {
                         // Capture and block
                         for (auto dir: DIR_B) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
