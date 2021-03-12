@@ -388,6 +388,7 @@ namespace Bitboard {
 
     tuple<bool, U64> pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
         const U64 opponent = pawns | knights | bishops | rooks | queens;
+        U64 pin_ray = EMPTY;
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
         bool found;
@@ -401,9 +402,10 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
+                pin_ray = set_bit(pin_ray, loc, true);
                 if (bit(rooks, loc) || bit(queens, loc)) {
                     if (found) {
-                        return tuple<bool, U64>(true, EMPTY);  // return pin data
+                        return tuple<bool, U64>(true, pin_ray);
                     } else {
                         return tuple<bool, U64>(false, EMPTY);
                     }
@@ -424,9 +426,10 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
+                pin_ray = set_bit(pin_ray, loc, true);
                 if (bit(rooks, loc) || bit(queens, loc)) {
                     if (found) {
-                        return tuple<bool, U64>(true, EMPTY);  // return pin data
+                        return tuple<bool, U64>(true, pin_ray);
                     } else {
                         return tuple<bool, U64>(false, EMPTY);
                     }
