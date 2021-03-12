@@ -541,10 +541,15 @@ namespace Bitboard {
             for (char i = 0; i < 64; i++) {
                 if (bit(CP, i)) {
                     if (!pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME)) {
-                        const char y = kx + pos.turn ? 1 : -1;
+                        const char x = i%8, y = i/8 + pos.turn ? 1 : -1;
                         if (0 <= y && y < 8) {
-                            // if (0 <= kx-1 && kx-1 < 8) board = set_bit(board, y*8 + kx-1, true);
-                            // if (0 <= kx+1 && kx+1 < 8) board = set_bit(board, y*8 + kx+1, true);
+                            if (0 <= x-1 && x-1 < 8) {
+                                const char move = 1ULL << y*8 + x+1;
+                                if (move & OPPOSITE != EMPTY) {
+                                    if (move & block_mask != EMPTY) moves.push_back(Move(i, ));
+                                }
+                            }
+                            if (0 <= x+1 && x+1 < 8) board = set_bit(board, y*8 + x+1, true);
                         }
                     }
                 }
