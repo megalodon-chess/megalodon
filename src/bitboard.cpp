@@ -447,7 +447,6 @@ namespace Bitboard {
                             num_atckers++;
                             continue;
                         }
-
                     }
                     if (num_atckers > 1) return pair<U64, char>(board, num_atckers);
                     if (0 <= kx+1 && kx+1 < 8) {
