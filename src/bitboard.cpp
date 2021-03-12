@@ -758,7 +758,7 @@ namespace Bitboard {
                         } else {
                             for (auto dir: DIR_N) {
                                 char x = i%8 + dir[0], y = i/8 + dir[1];   // Current (x, y)
-                                if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+                                if (!(0 <= x && x < 8 && 0 <= y && y < 8)) continue;
                                 const char loc = y*8 + x;
                                 if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
                             }  
@@ -772,6 +772,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
+                                if (bit(SAME, loc)) break;
                                 if ((1ULL << loc) & pin_mask != EMPTY) moves.push_back(Move(i, loc));
                                 if (bit(OPPONENT, loc)) break;
                             }
@@ -785,6 +786,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
+                                if (bit(SAME, loc)) break;
                                 if ((1ULL << loc) & pin_mask != EMPTY) moves.push_back(Move(i, loc));
                                 if (bit(OPPONENT, loc)) break;
                             }
@@ -798,6 +800,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
+                                if (bit(SAME, loc)) break;
                                 if ((1ULL << loc) & pin_mask != EMPTY) moves.push_back(Move(i, loc));
                                 if (bit(OPPONENT, loc)) break;
                             }
