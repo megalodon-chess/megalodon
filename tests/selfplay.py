@@ -32,5 +32,13 @@ def main():
     eng1 = chess.engine.SimpleEngine.popen_uci("build/Megalodon")
     eng2 = chess.engine.SimpleEngine.popen_uci("build/Megalodon")
 
+    while True:
+        board = chess.Board()
+        while not board.is_game_over():
+            result = eng1.play(board, chess.engine.Limit(white_clock=10, black_clock=10))
+            board.push(result.move)
+            result = eng2.play(board, chess.engine.Limit(white_clock=10, black_clock=10))
+            board.push(result.move)
+
 
 main()
