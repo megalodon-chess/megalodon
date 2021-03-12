@@ -30,6 +30,19 @@ import chess
 PARDIR = os.path.dirname(os.path.realpath(__file__))
 ENG_PATH = "build/Megalodon"
 DEPTH = 4
+FEN = chess.STARTING_FEN
+
+
+def real_result(pos: chess.Board, depth):
+    if depth == 0:
+        return 1
+    else:
+        count = 0
+        for move in pos.generate_legal_moves():
+            new_pos = pos.copy(stack=False)
+            new_pos.push(move)
+            count += real_result(new_pos, depth-1)
+        return count
 
 
 def engine_result():
@@ -37,6 +50,7 @@ def engine_result():
     out_path = os.path.join(PARDIR, "out.txt")
 
     with open(in_path, "w") as file:
+        file.write(f"position fen {FEN}\n")
         file.write(f"go depth {DEPTH}\n")
     with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
         start = time.time()
@@ -56,6 +70,7 @@ def engine_result():
 
 
 def main():
+    real = real_result(chess.Board(FEN))
     engine, eng_time = engine_result()
 
 
