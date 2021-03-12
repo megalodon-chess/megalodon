@@ -63,8 +63,8 @@ Move copy(Move);
 namespace Bitboard {
     // Promotion piece format: 0=knight, 1=bishop, 2=rook, 3=queen
 
-    constexpr U64 EMPTY = 0;
-    constexpr U64 FULL = 18446744073709551615;
+    constexpr U64 EMPTY = 0ULL;
+    constexpr U64 FULL = 18446744073709551615ULL;
 
     constexpr U64 START_WP = 65280ULL;
     constexpr U64 START_WN = 66ULL;
