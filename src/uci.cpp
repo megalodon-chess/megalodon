@@ -67,9 +67,7 @@ Position parse_pos(string str) {
 
 void legal_moves(Position pos) {
     vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, pos.turn));
-    for (auto m: moves) {
-        
-    }
+    for (auto m: moves) cout << Bitboard::move_str(m) << endl;
 }
 
 
