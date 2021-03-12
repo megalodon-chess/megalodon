@@ -23,6 +23,7 @@
 # in the format "info nodes <nodes>"
 
 import os
+import time
 import subprocess
 import chess
 
@@ -38,8 +39,10 @@ def engine_result():
     with open(in_path, "w") as file:
         file.write(f"go depth {DEPTH}\n")
     with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
+        start = time.time()
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
         p.wait()
+        elapse = time.time() - start
     with open(out_path, "r") as file:
         out = file.read()
 
@@ -49,11 +52,11 @@ def engine_result():
             nodes = int(parts[i+1])
             break
 
-    return nodes
+    return (nodes, elapse)
 
 
 def main():
-    engine = engine_result()
+    engine, eng_time = engine_result()
 
 
 main()
