@@ -309,6 +309,21 @@ namespace Bitboard {
         return pos;
     }
 
+    string uci(Move move) {
+        string str;
+        str += string(1, (move.from%8)+97) + string(1, (move.from/8)+49);
+        str += string(1, (move.to%8)+97) + string(1, (move.to/8)+49);
+        if (move.is_promo) {
+            switch (move.promo) {
+                case 0: str += "N"; break;
+                case 1: str += "B"; break;
+                case 2: str += "R"; break;
+                case 3: str += "Q"; break;
+            }
+        }
+        return str;
+    }
+
     Move parse_uci(string uci) {
         Move move;
         move.from = uci[0]-97 + 8*(uci[1]-49);
@@ -316,10 +331,10 @@ namespace Bitboard {
         move.is_promo = (uci.size() >= 5);
         if (move.is_promo) {
             switch (uci[4]) {
-                case 'N': move.promo = 0; case 'n': move.promo = 0;
-                case 'B': move.promo = 1; case 'b': move.promo = 1;
-                case 'R': move.promo = 2; case 'r': move.promo = 2;
-                case 'Q': move.promo = 3; case 'q': move.promo = 3;
+                case 'N': move.promo = 0; break; case 'n': move.promo = 0; break;
+                case 'B': move.promo = 1; break; case 'b': move.promo = 1; break;
+                case 'R': move.promo = 2; break; case 'r': move.promo = 2; break;
+                case 'Q': move.promo = 3; break; case 'q': move.promo = 3; break;
             }
         }
         return move;
