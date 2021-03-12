@@ -46,6 +46,7 @@ Position parse_pos(string str) {
                 pos = Bitboard::push(pos, parts[i]);
             }
         }
+        return pos;
     }
 }
 
