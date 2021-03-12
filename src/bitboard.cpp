@@ -555,7 +555,7 @@ namespace Bitboard {
 
     vector<Move> legal_moves(Position pos, U64 attacks) {
         // Current and opponent pieces and sides
-        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, opponent, ALL;
+        U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL;
         if (pos.turn) {
             CP = pos.wp;
             CN = pos.wn;
@@ -584,8 +584,8 @@ namespace Bitboard {
             OK = pos.wk;
         }
         SAME = CP | CN | CB | CR | CQ | CK;
-        opponent = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
-        ALL = SAME | opponent;
+        OPPONENT = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+        ALL = SAME | OPPONENT;
 
         vector<Move> moves = king_moves(CK, attacks);
         pair<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
