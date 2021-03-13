@@ -4,7 +4,7 @@
 
 UCI chess engine.
 
-[Version 0.1.0][latest] (pre-release) was recently released!
+[Version 0.1.0][latest] was recently released!
 
 ## To compile with cmake
 
