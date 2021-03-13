@@ -69,6 +69,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
     int num_nodes = 1;
     double start = get_time();
 
+    // Tree generation and bad branch pruning (todo)
     while (true) {
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
         cout << SearchInfo(depth, depth, false, 0, num_nodes, num_nodes/elapse, elapse*1000, Move()).as_string() << endl;
@@ -76,15 +77,14 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
 
         for (auto node: flatten(tree[depth-1])) {
             vector<Position> group;
-            U64 attacks = Bitboard::attacked(pos, !pos.turn);
+            U64 attacks = Bitboard::attacked(node, node.turn);
 
-            for (auto move: Bitboard::legal_moves(pos, attacks)) {
+            for (auto move: Bitboard::legal_moves(node, attacks)) {
                 Position new_pos = Bitboard::push(node, move);
-                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, Bitboard::attacked(pos, true), attacks);
-                else new_pos.eval = eval(options, new_pos, true, attacks, Bitboard::attacked(pos, false));
+                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, Bitboard::attacked(node, false));
+                else new_pos.eval = eval(options, new_pos, true, Bitboard::attacked(node, true), attacks);
                 group.push_back(new_pos);
             }
-
             curr_depth.push_back(group);
             num_nodes += group.size();
         }
@@ -92,6 +92,10 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
 
         depth++;
         if (depth == total_depth) break;
+    }
+
+    // Minimax and alpha-beta pruning (todo)
+    for (auto d = total_depth-1; d >= 0; d--) {
     }
 
     return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, Move());
