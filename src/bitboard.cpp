@@ -474,7 +474,7 @@ namespace Bitboard {
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
 
         // Pawns
-        const char y = ky - 1;
+        const char y = ky - pawn_dir;
         if (bit(pawns, y*8 + kx-1)) {
             num_atckers++;
             set_bit(board, y*8 + kx-1, true);
