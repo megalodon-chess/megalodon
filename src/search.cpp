@@ -79,11 +79,12 @@ SearchInfo search(Position pos) {
 */
 
 SearchInfo search(Options& options, Position pos, int depth) {
-    if (depth == 0) {
+    U64 attacks = Bitboard::attacked(pos, pos.turn);
+    vector<Move> moves = Bitboard::legal_moves(pos, attacks);
+
+    if (depth == 0 || moves.size() == 0) {
         return SearchInfo(depth, depth, false, eval(options, pos), 0, 0, 0, Move());
     } else {
-        U64 attacks = Bitboard::attacked(pos, pos.turn);
-        vector<Move> moves = Bitboard::legal_moves(pos, attacks);
         int best_ind = 0;
         int best_eval = pos.turn ? INT_MIN : INT_MAX;
         Move best_move;
