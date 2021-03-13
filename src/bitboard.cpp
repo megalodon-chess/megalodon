@@ -495,9 +495,8 @@ namespace Bitboard {
             if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
             const char loc = y*8 + x;
             if (bit(knights, loc)) {
-                num_atckers++;
                 set_bit(board, loc, true);
-                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                if (num_atckers++ > 1) return tuple<U64, char>(board, num_atckers);
                 break;
             }
         }
@@ -509,9 +508,8 @@ namespace Bitboard {
             const char loc = y*8 + x;
             if (bit(same_side, loc)) break;
             if (bit(bishops, loc) || bit(queens, loc)) {
-                num_atckers++;
                 set_bit(board, loc, true);
-                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                if (num_atckers++ > 1) return tuple<U64, char>(board, num_atckers);
                 break;
             }
             if (bit(pieces, loc)) break;
@@ -523,9 +521,8 @@ namespace Bitboard {
             const char loc = y*8 + x;
             if (bit(same_side, loc)) break;
             if (bit(rooks, loc) || bit(queens, loc)) {
-                num_atckers++;
                 set_bit(board, loc, true);
-                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                if (num_atckers++ > 1) return tuple<U64, char>(board, num_atckers);
                 break;
             }
             if (bit(pieces, loc)) break;
