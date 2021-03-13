@@ -35,7 +35,7 @@ using std::string;
 using std::to_string;
 
 vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
-vector<string> WINNING = {"Looks like I'm playing well!"};
+vector<string> WINNING = {"Looks like I'm playing well!", "Wow!"};
 vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!"};
 vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?"};
 
@@ -83,10 +83,10 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     if (!options.Chat) return;
 
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    if (turn && score > prev_score+1.5) cout << "info string " << rand_choice(WINNING) << endl;
-    if (!turn && score < prev_score+1.5) cout << "info string " << rand_choice(WINNING) << endl;
-    if (turn && score < prev_score+1.5) cout << "info string " << rand_choice(LOSING) << endl;
-    if (!turn && score > prev_score+1.5) cout << "info string " << rand_choice(LOSING) << endl;
+    if (turn && (score > prev_score+1.5)) cout << "info string " << rand_choice(WINNING) << endl;
+    if (!turn && (score < prev_score-1.5)) cout << "info string " << rand_choice(WINNING) << endl;
+    if (turn && (score < prev_score-1.5)) cout << "info string " << rand_choice(LOSING) << endl;
+    if (!turn && (score > prev_score+1.5)) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
 
@@ -180,7 +180,10 @@ int loop() {
         }
         else if (cmd == "legalmoves") legal_moves(pos);
 
-        else if (cmd == "ucinewgame");
+        else if (cmd == "ucinewgame") {
+            pos = parse_pos("position startpos");
+            prev_eval = 0;
+        }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             double start = get_time();
