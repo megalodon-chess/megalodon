@@ -80,8 +80,11 @@ def main():
 
     print(f"Python-Chess nodes:   {real}")
     print(f"Python-Chess time:    {elapse}")
+    print(f"Python-Chess NPS:     {real/elapse}")
+    print()
     print(f"Engine nodes:         {engine}")
     print(f"Engine time:          {eng_time}")
+    print(f"Engine NPS:           {engine/eng_time}")
 
 
 main()
