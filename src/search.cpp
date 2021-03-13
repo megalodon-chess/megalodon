@@ -92,7 +92,7 @@ SearchInfo search(Options& options, Position pos, int depth) {
     } else {
         int nodes = 1;
         int best_ind = 0;
-        float best_eval = pos.turn ? __FLT_MIN__ : __FLT_MAX__;
+        float best_eval = pos.turn ? -1000000 : 1000000;
 
         for (auto i = 0; i < moves.size(); i++) {
             Position new_pos = Bitboard::push(pos, moves[i]);;
@@ -100,8 +100,8 @@ SearchInfo search(Options& options, Position pos, int depth) {
             nodes += result.nodes;
 
             bool exceeds = false;
-            if (pos.turn && result.score > best_eval) exceeds = true;
-            if (!pos.turn && result.score < best_eval) exceeds = true;
+            if (pos.turn && (result.score > best_eval)) exceeds = true;
+            if (!pos.turn && (result.score < best_eval)) exceeds = true;
             if (exceeds) {
                 best_ind = i;
                 best_eval = result.score;
