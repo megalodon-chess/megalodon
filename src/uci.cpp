@@ -102,7 +102,8 @@ void print_eval(Options& options, Position pos) {
 
     vector<vector<string>> evals = {
         {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)},
-        {"Center Control", to_string(cent), to_string(cent_weight), to_string(cent*cent_weight)}
+        {"Center Control", to_string(cent), to_string(cent_weight), to_string(cent*cent_weight)},
+        {"Total", to_string(mat+cent), "N/A", to_string(mat*mat_weight+cent*cent_weight)},
     };
 
     for (auto ev: evals) {
