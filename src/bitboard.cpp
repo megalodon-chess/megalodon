@@ -824,6 +824,22 @@ namespace Bitboard {
     }
 
 
+    vector<U64*> bb_pointers(Position pos) {
+        U64* wp = &pos.wp;
+        U64* wn = &pos.wn;
+        U64* wb = &pos.wb;
+        U64* wr = &pos.wr;
+        U64* wq = &pos.wq;
+        U64* wk = &pos.wk;
+        U64* bp = &pos.bp;
+        U64* bn = &pos.bn;
+        U64* bb = &pos.bb;
+        U64* br = &pos.br;
+        U64* bq = &pos.bq;
+        U64* bk = &pos.bk;
+        return {wp, wn, wb, wr, wq, wk, bp, bn, bb, br, bq, bk};
+    }
+
     Position startpos() {
         Position pos;
         pos.wp = Bitboard::START_WP;
