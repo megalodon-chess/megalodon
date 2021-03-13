@@ -724,19 +724,21 @@ namespace Bitboard {
 
                     if (bit(CP, i)) {
                         const char x = i%8;
-                        // Sideways
+                        char y;
+
+                        // Captures
                         // todo en passant
-                        char y = i/8 + pawn_dir;
+                        y = i/8 + pawn_dir;
                         if (0 <= y && y < 8) {
                             if (0 <= x-1 && x-1 < 8) {
                                 const char char_move = y*8 + x-1;
-                                if ((1ULL << char_move) & pin_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
                                     moves.push_back(Move(i, char_move));
                                 }
                             }
                             if (0 <= x+1 && x+1 < 8) {
                                 const char char_move = y*8 + x+1;
-                                if ((1ULL << char_move) & pin_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
                                     moves.push_back(Move(i, char_move));
                                 }
                             }
