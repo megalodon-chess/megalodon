@@ -52,10 +52,12 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, int _score, int
 string SearchInfo::as_string() {
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
-    str += " score ";
+    str += " multipv 1 score ";
     str += (is_mate_score ? "mate" : "cp");
     str += " " + std::to_string(score);
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
+    str += " tbhits 0 time " + std::to_string(time);
+    str += " pv";
     return str;
 }
 
