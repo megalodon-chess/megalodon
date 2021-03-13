@@ -621,7 +621,6 @@ namespace Bitboard {
                     else break;
                 }
             }
-            cout << board_str(block_mask) << endl;
 
             U64 full_mask = block_mask | capture_mask;
 
