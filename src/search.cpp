@@ -101,15 +101,17 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
 /*
 * Pseudocode
 SearchInfo search(Options& options, Position pos, int depth) {
+    // Keep track of best stuff.
     Move bestmove = Move();
     float besteval = INT_MIN;
-    queue<Position> nodes = {pos};
+    queue<Position> nodes = {pos};  // Store to be searched nodes.
 
     while (depth != 0) {
-        node = nodes.get();
+        node = nodes.get();  // Remove node and check its moves.
         for (auto move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, pos.turn))) {
-            Position new_pos = Bitboard::push(node, move);
-            float evaluation = eval(options, new_pos, ...);
+            Position new_pos = Bitboard::push(node, move);  // New position
+            float evaluation = eval(options, new_pos, ...);  // New eval
+            // If new eval is better than the best eval, then update besteval and bestmove.
             if (evaluation > besteval) {
                 besteval = evaluation;
                 bestmove = move;
