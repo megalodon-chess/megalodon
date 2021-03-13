@@ -123,12 +123,8 @@ namespace Bitboard {
     }
 
     U64 set_bit(U64& board, int pos, bool value) {
-        const bool on = bit(board, pos);
-        if (value && !on) {
-            board += (1LL << pos);
-        } else if (!value && on) {
-            board -= (1LL << pos);
-        }
+        if (value) board |= (1ULL << pos);
+        else board &= ~(1ULL << pos);
     }
 
     tuple<char, char> first_bit(U64 board) {
@@ -852,7 +848,7 @@ namespace Bitboard {
     }
 
 
-    vector<U64*> bb_pointers(Position pos) {
+    vector<U64*> bb_pointers(Position& pos) {
         U64* wp = &pos.wp;
         U64* wn = &pos.wn;
         U64* wb = &pos.wb;
@@ -891,44 +887,36 @@ namespace Bitboard {
 
     Position push(Position pos, Move move) {
         // todo castling ep
-        U64* from_board = &pos.wp;
-        if (bit(pos.wp, move.from)) from_board = &pos.wp;
-        else if (bit(pos.wn, move.from)) from_board = &pos.wn;
-        else if (bit(pos.wb, move.from)) from_board = &pos.wb;
-        else if (bit(pos.wr, move.from)) from_board = &pos.wr;
-        else if (bit(pos.wq, move.from)) from_board = &pos.wq;
-        else if (bit(pos.wk, move.from)) from_board = &pos.wk;
-        else if (bit(pos.bp, move.from)) from_board = &pos.bp;
-        else if (bit(pos.bn, move.from)) from_board = &pos.bn;
-        else if (bit(pos.bb, move.from)) from_board = &pos.bb;
-        else if (bit(pos.br, move.from)) from_board = &pos.br;
-        else if (bit(pos.bq, move.from)) from_board = &pos.bq;
-        else if (bit(pos.bk, move.from)) from_board = &pos.bk;
+        vector<U64*> pointers = bb_pointers(pos);
+        U64* to_board = pointers[0];
 
-        set_bit(*from_board, move.from, false);
+        for (auto i = 0; i < pointers.size(); i++) {
+            U64* p = pointers[i];
+            if (bit(*p, move.from)) to_board = p;
+            set_bit(*p, move.from, false);
+            set_bit(*p, move.to, false);
+        }
         if (move.is_promo) {
-            U64* promo_board = &pos.wp;
             if (pos.turn) {
                 switch (move.promo) {
-                    case 0: promo_board = &pos.wn; break;
-                    case 1: promo_board = &pos.wb; break;
-                    case 2: promo_board = &pos.wr; break;
-                    case 3: promo_board = &pos.wq; break;
+                    case 0: to_board = &pos.wn; break;
+                    case 1: to_board = &pos.wb; break;
+                    case 2: to_board = &pos.wr; break;
+                    case 3: to_board = &pos.wq; break;
                 }
             } else {
                 switch (move.promo) {
-                    case 0: promo_board = &pos.bn; break;
-                    case 1: promo_board = &pos.bb; break;
-                    case 2: promo_board = &pos.br; break;
-                    case 3: promo_board = &pos.bq; break;
+                    case 0: to_board = &pos.bn; break;
+                    case 1: to_board = &pos.bb; break;
+                    case 2: to_board = &pos.br; break;
+                    case 3: to_board = &pos.bq; break;
                 }
             }
-            set_bit(*promo_board, move.to, true);
-        } else {
-            set_bit(*from_board, move.to, true);
         }
 
+        set_bit(*to_board, move.to, true);
         pos.turn = !pos.turn;
+
         return pos;
     }
 
