@@ -62,17 +62,34 @@ string SearchInfo::as_string() {
 }
 
 
-SearchInfo search(Options& options, Position pos, int depth) {
+SearchInfo search(Options& options, Position pos, int total_depth) {
     vector<vector<vector<Position>>> tree = {{{pos}}};
+    vector<vector<vector<float>>> evals = {{{eval(options, pos, false)}}};
     int depth = 1;
     int num_nodes = 1;
 
     while (true) {
         vector<vector<Position>> curr_depth;
+        vector<vector<float>> curr_evals;
+
         for (auto node: flatten(tree[depth-1])) {
             vector<Position> group;
+            vector<float> eval_group;
+            U64 attacks = Bitboard::attacked(pos, !pos.turn);
+
+            for (auto move: Bitboard::legal_moves(pos, attacks)) {
+                Position new_pos = Bitboard::push(node, move);
+                group.push_back(new_pos);
+                eval_group.push_back(eval(options, new_pos, false));
+            }
+
+            curr_depth.push_back(group);
+            curr_evals.push_back(eval_group);
         }
+        tree.push_back(curr_depth);
+        evals.push_back(curr_evals);
+
         depth++;
-        if (depth == 4) break;
+        if (depth == total_depth) break;
     }
 }
