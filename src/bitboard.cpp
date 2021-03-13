@@ -483,6 +483,16 @@ namespace Bitboard {
             num_atckers++;
             set_bit(board, y*8 + kx+1, true);
         }
+        // Knights
+        for (auto dir: DIR_K) {
+            const char loc = (ky+dir[1])*8 + kx+dir[0];
+            if (bit(knights, loc)) {
+                num_atckers++;
+                set_bit(board, loc, true);
+                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                break;
+            }
+        }
 
         return tuple<U64, char>(board, num_atckers);
     }
