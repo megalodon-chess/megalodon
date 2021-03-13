@@ -95,8 +95,7 @@ SearchInfo search(Options& options, Position pos, int depth) {
         float best_eval = pos.turn ? __FLT_MIN__ : __FLT_MAX__;
 
         for (auto i = 0; i < moves.size(); i++) {
-            Position new_pos = copy(pos);
-            new_pos = Bitboard::push(new_pos, moves[i]);
+            Position new_pos = Bitboard::push(pos, moves[i]);;
             SearchInfo result = search(options, new_pos, depth-1);
             nodes += result.nodes;
 
