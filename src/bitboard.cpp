@@ -606,9 +606,9 @@ namespace Bitboard {
             // Block and capture piece giving check to king
             U64 block_mask = EMPTY, capture_mask = checking_pieces;
             tuple<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
-            const char kx = get<0>(k_pos), ky = get<1>(k_pos), cx = get<0>(check_pos), cy = get<1>(check_pos);
+            const char kx = get<0>(k_pos), ky = get<1>(k_pos), check_x = get<0>(check_pos), check_y = get<1>(check_pos);
 
-            char dx = cx - kx, dy = cy - ky;
+            char dx = check_x - kx, dy = check_y - ky;
             if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
                 dx /= abs(dx);
                 dy /= abs(dy);
@@ -621,6 +621,7 @@ namespace Bitboard {
                     else break;
                 }
             }
+            cout << board_str(block_mask) << endl;
 
             U64 full_mask = block_mask | capture_mask;
 
