@@ -99,7 +99,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
 
 
 /*
-* Pesudocode
+* Pseudocode
 SearchInfo search(Options& options, Position pos, int depth) {
     Move bestmove = Move();
     float besteval = INT_MIN;
