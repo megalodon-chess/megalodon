@@ -78,11 +78,12 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         for (auto node: flatten(tree[depth-1])) {
             vector<Position> group;
             U64 attacks = Bitboard::attacked(node, node.turn);
+            U64 o_attacks = Bitboard::attacked(node, !node.turn);
 
-            for (auto move: Bitboard::legal_moves(node, attacks)) {
+            for (auto move: Bitboard::legal_moves(node, o_attacks)) {
                 Position new_pos = Bitboard::push(node, move);
-                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, Bitboard::attacked(node, false));
-                else new_pos.eval = eval(options, new_pos, true, Bitboard::attacked(node, true), attacks);
+                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks);
+                else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks);
                 group.push_back(new_pos);
             }
             curr_depth.push_back(group);
