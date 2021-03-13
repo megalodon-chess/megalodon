@@ -473,9 +473,17 @@ namespace Bitboard {
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
 
-        for (char i = 0; i < 64; i++) {
-            
+        // Pawns
+        const char y = ky - 1;
+        if (bit(pawns, y*8 + kx-1)) {
+            num_atckers++;
+            set_bit(board, y*8 + kx-1, true);
         }
+        if (bit(pawns, y*8 + kx+1)) {
+            num_atckers++;
+            set_bit(board, y*8 + kx+1, true);
+        }
+
         return tuple<U64, char>(board, num_atckers);
     }
 
