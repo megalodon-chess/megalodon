@@ -179,7 +179,10 @@ int loop() {
         else if (startswith(cmd, "go")) {
             double start = get_time();
             SearchInfo result = search(options, pos, 6);
-            result.time = 1000 * (get_time() - start);
+            double elapse = get_time() - start;
+            result.time = 1000 * (elapse);
+            result.nps = result.nodes / (elapse);
+
             cout << result.as_string() << endl;
             cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
