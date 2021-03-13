@@ -74,10 +74,15 @@ float center_weight(Options& options, int movect) {
 float eval(Options& options, Position pos, U64 w_attacks, U64 b_attacks) {
     int movect = pos.move_stack.size();
 
-    float mat = material(pos);
+    float mat;
     float mat_weight = material_weight(options, movect);
-    float cent = center(w_attacks, b_attacks);
+    if (mat_weight == 0) mat = 0;
+    else mat = material(pos);
+
+    float cent;
     float cent_weight = center_weight(options, movect);
+    if (cent_weight == 0) cent = 0;
+    else cent = center(w_attacks, b_attacks);
 
     return mat*mat_weight + cent*cent_weight;
 }
