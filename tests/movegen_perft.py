@@ -66,6 +66,9 @@ def engine_result():
             nodes = int(parts[i+1])
             break
 
+    os.remove(in_path)
+    os.remove(out_path)
+
     return (nodes, elapse)
 
 
