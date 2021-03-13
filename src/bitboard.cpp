@@ -505,6 +505,7 @@ namespace Bitboard {
                 num_atckers++;
                 set_bit(board, loc, true);
                 if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                break;
             }
             if (bit(pieces, loc)) break;
         }
@@ -518,6 +519,7 @@ namespace Bitboard {
                 num_atckers++;
                 set_bit(board, loc, true);
                 if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                break;
             }
             if (bit(pieces, loc)) break;
         }
