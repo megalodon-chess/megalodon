@@ -505,7 +505,6 @@ namespace Bitboard {
             const char x = kx, y = ky;
             while (true) {
                 if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
-                cout << +x << +y << endl;
                 const char loc = y*8 + x;
                 if (bit(same_side, loc)) break;
                 if (bit(bishops, loc) || bit(queens, loc)) {
