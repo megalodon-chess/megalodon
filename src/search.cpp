@@ -81,6 +81,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
                 Position new_pos = Bitboard::push(node, move);
                 group.push_back(new_pos);
                 eval_group.push_back(eval(options, new_pos, false));
+                num_nodes++;
             }
 
             curr_depth.push_back(group);
@@ -92,4 +93,6 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         depth++;
         if (depth == total_depth) break;
     }
+
+    return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, Move());
 }
