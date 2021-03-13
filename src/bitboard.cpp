@@ -205,7 +205,18 @@ namespace Bitboard {
     }
 
     string move_str(Move move) {
-        return square_str(move.from) + square_str(move.to);
+        string str;
+        str += square_str(move.from);
+        str += square_str(move.to);
+        if (move.is_promo) {
+            switch (move.promo) {
+                case 0: str += "N"; break;
+                case 1: str += "B"; break;
+                case 2: str += "R"; break;
+                case 3: str += "Q"; break;
+            }
+        }
+        return str;
     }
 
     string fen(Position pos) {
@@ -307,21 +318,6 @@ namespace Bitboard {
         }
 
         return pos;
-    }
-
-    string uci(Move move) {
-        string str;
-        str += string(1, (move.from%8)+97) + string(1, (move.from/8)+49);
-        str += string(1, (move.to%8)+97) + string(1, (move.to/8)+49);
-        if (move.is_promo) {
-            switch (move.promo) {
-                case 0: str += "N"; break;
-                case 1: str += "B"; break;
-                case 2: str += "R"; break;
-                case 3: str += "Q"; break;
-            }
-        }
-        return str;
     }
 
     Move parse_uci(string uci) {

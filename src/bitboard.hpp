@@ -99,7 +99,6 @@ namespace Bitboard {
     string square_str(char);
     string move_str(Move);
     string fen(Position);
-    string uci(Move);
     Position parse_fen(string);
     Move parse_uci(string);
 
