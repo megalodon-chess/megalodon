@@ -101,7 +101,8 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
             for (auto& node: group) {
                 float best_eval = node.turn ? -1000000 : 1000000;
 
-                for (auto branch: tree[d+1][nodect]) {
+                vector<Position> branches = tree[d+1][nodect];
+                for (auto branch: branches) {
                     bool exceeds = false;
                     if (node.turn && (branch.eval > best_eval)) exceeds = true;
                     if (!node.turn && (branch.eval < best_eval)) exceeds = true;
@@ -116,7 +117,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
     }
     float best_eval = pos.turn ? -1000000 : 1000000;
     Move best_move;
-    for (auto branch: flatten(tree[0])) {
+    for (auto branch: flatten(tree[1])) {
         bool exceeds = false;
         if (pos.turn && (branch.eval > best_eval)) exceeds = true;
         if (!pos.turn && (branch.eval < best_eval)) exceeds = true;
