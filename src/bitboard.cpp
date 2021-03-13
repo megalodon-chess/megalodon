@@ -871,6 +871,7 @@ namespace Bitboard {
 
         set_bit(*to_board, move.to, true);
         pos.turn = !pos.turn;
+        pos.move_stack.push_back(move);
 
         return pos;
     }
