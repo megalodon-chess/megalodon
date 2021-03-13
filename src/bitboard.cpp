@@ -625,9 +625,9 @@ namespace Bitboard {
         ALL = SAME | OPPONENT;
 
         vector<Move> moves = king_moves(CK, attacks);
-        tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
-        U64 checking_pieces = get<0>(checking_data);
-        char num_checkers = get<1>(checking_data);
+        const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
+        const U64 checking_pieces = get<0>(checking_data);
+        const char num_checkers = get<1>(checking_data);
 
         if (num_checkers > 1) {
             return moves;
@@ -751,14 +751,15 @@ namespace Bitboard {
                 }
             }
         } else {
-            // todo pawn moves
             for (auto i = 0; i < 64; i++) {
                 if (bit(SAME, i)) {
                     tuple<bool, U64> pin = pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME);
                     bool piece_pinned = get<0>(pin);
                     U64 pin_mask = get<1>(pin);
 
-                    if (bit(CN, i)) {
+                    if (bit(CP, i)) {
+                        
+                    } else if (bit(CN, i)) {
                         // Knight cannot move while pinned.
                         if (piece_pinned) {
                             continue;
