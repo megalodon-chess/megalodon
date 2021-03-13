@@ -107,7 +107,7 @@ SearchInfo minimax(vector<vector<vector<Position>>>& tree, int total_depth) {
 
 SearchInfo search(Options& options, Position pos, int total_depth) {
     pos.eval = eval(options, pos, false);
-    vector<vector<vector<Position>>> tree = {{{pos}}};
+    Tree* tree = new Tree({{{pos}}});
     SearchInfo result;
     int depth = 1;
     int num_nodes = 1;
@@ -118,7 +118,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
         vector<vector<Position>> curr_depth;
 
-        for (auto node: flatten(tree[depth-1])) {
+        for (auto node: flatten((*tree)[depth-1])) {
             vector<Position> group;
             U64 attacks = Bitboard::attacked(node, node.turn);
             U64 o_attacks = Bitboard::attacked(node, !node.turn);
@@ -134,14 +134,15 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
             curr_depth.push_back(group);
             num_nodes += group.size();
         }
-        tree.push_back(curr_depth);
+        (*tree).push_back(curr_depth);
 
-        if (depth >= 3) result = minimax(tree, depth);
+        if (depth >= 3) result = minimax(*tree, depth);
         cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
         depth++;
         if (depth == total_depth) break;
     }
 
-    result = minimax(tree, total_depth);
+    result = minimax(*tree, total_depth);
+    delete tree;
     return SearchInfo(depth, depth, false, result.score, num_nodes, 0, 0, result.move);
 }

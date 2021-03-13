@@ -31,6 +31,8 @@ using std::endl;
 using std::vector;
 using std::string;
 
+typedef vector<vector<vector<Position>>> Tree;
+
 struct SearchInfo {
     SearchInfo();
     SearchInfo(int, int, bool, int, int, int, int, Move);
