@@ -85,8 +85,9 @@ SearchInfo search(Options& options, Position pos, int depth) {
     vector<Move> moves = Bitboard::legal_moves(pos, attacks);
 
     if (depth == 0 || moves.size() == 0) {
-        return SearchInfo(depth, depth, false, eval(options, pos), 0, 0, 0, Move());
+        return SearchInfo(depth, depth, false, eval(options, pos), 1, 0, 0, Move());
     } else {
+        int nodes = 1;
         int best_ind = 0;
         int best_eval = pos.turn ? INT_MIN : INT_MAX;
         Move best_move;
@@ -95,6 +96,7 @@ SearchInfo search(Options& options, Position pos, int depth) {
             Position new_pos = copy(pos);
             new_pos = Bitboard::push(new_pos, moves[i]);
             SearchInfo result = search(options, new_pos, depth-1);
+            nodes += result.nodes;
 
             bool exceeds = false;
             if (pos.turn && result.score > best_eval) exceeds = true;
@@ -104,6 +106,6 @@ SearchInfo search(Options& options, Position pos, int depth) {
                 best_eval = result.score;
             }
         }
-        return SearchInfo(depth, depth, false, best_eval, 0, 0, 0, moves[best_ind]);
+        return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
     }
 }
