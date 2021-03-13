@@ -475,13 +475,17 @@ namespace Bitboard {
 
         // Pawns
         const char y = ky - pawn_dir;
-        if (bit(pawns, y*8 + kx-1)) {
-            num_atckers++;
-            set_bit(board, y*8 + kx-1, true);
+        if (!(0 <= kx-1 && kx-1 < 8 && 0 <= y && y < 8)) {
+            if (bit(pawns, y*8 + kx-1)) {
+                num_atckers++;
+                set_bit(board, y*8 + kx-1, true);
+            }
         }
-        if (bit(pawns, y*8 + kx+1)) {
-            num_atckers++;
-            set_bit(board, y*8 + kx+1, true);
+        if (!(0 <= kx+1 && kx+1 < 8 && 0 <= y && y < 8)) {
+            if (bit(pawns, y*8 + kx+1)) {
+                num_atckers++;
+                set_bit(board, y*8 + kx+1, true);
+            }
         }
         // Knights
         for (auto dir: DIR_N) {
@@ -499,6 +503,7 @@ namespace Bitboard {
         for (auto dir: DIR_B) {
             const char x = kx + dir[0], y = ky + dir[1];
             if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+            cout << +x << +y << endl;
             const char loc = y*8 + x;
             if (bit(same_side, loc)) break;
             if (bit(bishops, loc) || bit(queens, loc)) {
