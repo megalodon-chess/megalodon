@@ -506,6 +506,19 @@ namespace Bitboard {
             }
             if (bit(pieces, loc)) break;
         }
+        // Rooks and part queens
+        for (auto dir: DIR_R) {
+            const char x = kx + dir[0], y = ky + dir[1];
+            if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+            const char loc = y*8 + x;
+            if (bit(same_side, loc)) break;
+            if (bit(rooks, loc) || bit(queens, loc)) {
+                num_atckers++;
+                set_bit(board, loc, true);
+                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+            }
+            if (bit(pieces, loc)) break;
+        }
 
         return tuple<U64, char>(board, num_atckers);
     }
