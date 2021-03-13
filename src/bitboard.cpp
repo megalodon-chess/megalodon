@@ -503,7 +503,7 @@ namespace Bitboard {
                     if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
                     const char nx = kx+dir[0], ny = ky+dir[1];   // Position after moving.
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) {
-                        char pos = ny*8 + nx;   
+                        char pos = ny*8 + nx;
                         if (bit(knights, pos)) {
                             set_bit(board, pos, true);
                             num_atckers++;
@@ -818,7 +818,7 @@ namespace Bitboard {
                                 if (!(0 <= x && x < 8 && 0 <= y && y < 8)) continue;
                                 const char loc = y*8 + x;
                                 if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
-                            }  
+                            }
                         }
                     } else if (bit(CB, i)) {
                         for (auto dir: DIR_B) {
