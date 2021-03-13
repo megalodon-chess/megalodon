@@ -476,15 +476,17 @@ namespace Bitboard {
         // Pawns
         const char y = ky - pawn_dir;
         if (!(0 <= kx-1 && kx-1 < 8 && 0 <= y && y < 8)) {
-            if (bit(pawns, y*8 + kx-1)) {
+            const char loc = y*8 + kx-1;
+            if (bit(pawns, loc)) {
                 num_atckers++;
-                set_bit(board, y*8 + kx-1, true);
+                set_bit(board, loc, true);
             }
         }
         if (!(0 <= kx+1 && kx+1 < 8 && 0 <= y && y < 8)) {
-            if (bit(pawns, y*8 + kx+1)) {
+            const char loc = y*8 + kx+1;
+            if (bit(pawns, loc)) {
                 num_atckers++;
-                set_bit(board, y*8 + kx+1, true);
+                set_bit(board, loc, true);
             }
         }
         // Knights
