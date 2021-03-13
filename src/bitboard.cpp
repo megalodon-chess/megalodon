@@ -608,10 +608,10 @@ namespace Bitboard {
             tuple<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
             const char kx = get<0>(k_pos), ky = get<1>(k_pos), cx = get<0>(check_pos), cy = get<1>(check_pos);
 
-            char dx = abs(cx - kx), dy = abs(cy - ky);
+            char dx = cx - kx, dy = cy - ky;
             if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
-                dx = dx / abs(dx);
-                dy = dy / abs(dx);
+                dx /= abs(dx);
+                dy /= abs(dy);
                 char cx = kx, cy = ky;   // Current (x, y)
                 while (true) {
                     cx += dx;
