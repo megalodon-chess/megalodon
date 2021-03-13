@@ -177,7 +177,9 @@ int loop() {
         else if (cmd == "ucinewgame");
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
+            double start = get_time();
             SearchInfo result = search(options, pos, 6);
+            result.time = 1000 * (get_time() - start);
             cout << result.as_string() << endl;
             cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
