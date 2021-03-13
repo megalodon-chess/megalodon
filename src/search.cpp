@@ -61,10 +61,8 @@ string SearchInfo::as_string() {
     return str;
 }
 
-/*
-* Experimental search algorithm, to be completed in a later version.
 
-SearchInfo search(Position pos) {
+SearchInfo search(Options& options, Position pos, int depth) {
     vector<vector<vector<Position>>> tree = {{{pos}}};
     int depth = 1;
     int num_nodes = 1;
@@ -76,37 +74,5 @@ SearchInfo search(Position pos) {
         }
         depth++;
         if (depth == 4) break;
-    }
-}
-*/
-
-SearchInfo search(Options& options, Position pos, int depth) {
-    U64 attacks = Bitboard::attacked(pos, pos.turn);
-    vector<Move> moves = Bitboard::legal_moves(pos, attacks);
-
-    if (depth == 0 || moves.size() == 0) {
-        float score;
-        if (pos.turn) score = eval(options, pos, attacks, Bitboard::attacked(pos, false));
-        else score = eval(options, pos, Bitboard::attacked(pos, true), attacks);
-        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
-    } else {
-        int nodes = 1;
-        int best_ind = 0;
-        float best_eval = pos.turn ? -1000000 : 1000000;
-
-        for (auto i = 0; i < moves.size(); i++) {
-            Position new_pos = Bitboard::push(pos, moves[i]);;
-            SearchInfo result = search(options, new_pos, depth-1);
-            nodes += result.nodes;
-
-            bool exceeds = false;
-            if (pos.turn && (result.score > best_eval)) exceeds = true;
-            if (!pos.turn && (result.score < best_eval)) exceeds = true;
-            if (exceeds) {
-                best_ind = i;
-                best_eval = result.score;
-            }
-        }
-        return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
     }
 }
