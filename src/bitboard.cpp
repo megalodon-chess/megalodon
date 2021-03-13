@@ -621,7 +621,7 @@ namespace Bitboard {
             OK = pos.wk;
         }
         SAME = CP | CN | CB | CR | CQ | CK;
-        OPPONENT = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
+        OPPONENT = OP | ON | OB | OR | OQ | OK;
         ALL = SAME | OPPONENT;
 
         vector<Move> moves = king_moves(CK, attacks);
