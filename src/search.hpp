@@ -39,7 +39,7 @@ struct SearchInfo {
     int depth;
     int seldepth;
     bool is_mate_score;
-    int score;
+    float score;
     int nodes;
     int nps;
     int time;

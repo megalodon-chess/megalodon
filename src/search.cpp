@@ -54,7 +54,7 @@ string SearchInfo::as_string() {
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
     str += " multipv 1 score ";
     str += (is_mate_score ? "mate" : "cp");
-    str += " " + std::to_string(score);
+    str += " " + std::to_string((is_mate_score ? (int)score : (int)(100*score)));
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     str += " tbhits 0 time " + std::to_string(time);
     str += " pv";
@@ -89,7 +89,7 @@ SearchInfo search(Options& options, Position pos, int depth) {
     } else {
         int nodes = 1;
         int best_ind = 0;
-        int best_eval = pos.turn ? INT_MIN : INT_MAX;
+        float best_eval = pos.turn ? __FLT_MIN__ : __FLT_MAX__;
         Move best_move;
 
         for (auto i = 0; i < moves.size(); i++) {
