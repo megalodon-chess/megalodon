@@ -77,7 +77,8 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
 
             for (auto move: Bitboard::legal_moves(pos, attacks)) {
                 Position new_pos = Bitboard::push(node, move);
-                new_pos.eval = eval(options, new_pos, false);
+                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, Bitboard::attacked(pos, true), attacks);
+                else new_pos.eval = eval(options, new_pos, true, attacks, Bitboard::attacked(pos, false));
                 group.push_back(new_pos);
             }
 
