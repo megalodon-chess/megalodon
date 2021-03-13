@@ -96,3 +96,27 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
 
     return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, Move());
 }
+
+
+/*
+* Pesudocode
+SearchInfo search(Options& options, Position pos, int depth) {
+    Move bestmove = Move();
+    float besteval = INT_MIN;
+    queue<Position> nodes = {pos};
+
+    while (depth != 0) {
+        node = nodes.get();
+        for (auto move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, pos.turn))) {
+            Position new_pos = Bitboard::push(node, move);
+            float evaluation = eval(options, new_pos, ...);
+            if (evaluation > besteval) {
+                besteval = evaluation;
+                bestmove = move;
+            }
+        }
+        depth--;
+    }
+    return SearchInfo(...);
+}
+*/
