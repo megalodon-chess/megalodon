@@ -2,6 +2,16 @@
 
 This page contains release info.
 
+## [Megalodon 0.1.1][v0.1.1]
+
+This version features a new search algorithm, which is non-recursive and Breadth First.
+
+It searches at an amazing 200,000 NPS, with a hard-coded depth of 5.
+
+The move generation algorithm was also improved, but fails on some positions.
+If Megalodon thinks for a long time (more than 45 seconds) without moving, it is likely that the
+program has crashed.
+
 ## [Megalodon 0.1.0][v0.1.0]
 
 A few hours of working after v0.1.0-alpha, v0.1.0 is out!
@@ -42,6 +52,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://huangpatrick16777216.github.io/megalodon/
+[v0.1.1]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.0
 [v0.1.0-alpha]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.0-alpha
 [v0.0.3]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.0.3
