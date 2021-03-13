@@ -628,6 +628,7 @@ namespace Bitboard {
         const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
+        const char pawn_dir = pos.turn ? 1 : -1;
 
         if (num_checkers > 1) {
             return moves;
@@ -660,20 +661,18 @@ namespace Bitboard {
                         // Capture
                         // todo en passant
                         const char x = i%8;
-                        char y = i/8 + pos.turn ? 1 : -1;
+                        char y = i/8 + pawn_dir;
                         if (0 <= y && y < 8) {
                             if (0 <= x-1 && x-1 < 8) {
                                 const char char_move = y*8 + x-1;
-                                const U64 bit_moves = (1ULL << char_move) & capture_mask;
-                                for (char j = 0; j < 64; j++) {
-                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j)); 
+                                if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
                                 }
                             }
                             if (0 <= x+1 && x+1 < 8) {
                                 const char char_move = y*8 + x+1;
-                                const U64 bit_moves = (1ULL << char_move) & capture_mask;
-                                for (char j = 0; j < 64; j++) {
-                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j));
+                                if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
                                 }
                             }
                         }
@@ -758,7 +757,35 @@ namespace Bitboard {
                     U64 pin_mask = get<1>(pin);
 
                     if (bit(CP, i)) {
-                        
+                        const char x = i%8;
+                        // Sideways
+                        // todo en passant
+                        char y = i/8 + pawn_dir;
+                        if (0 <= y && y < 8) {
+                            if (0 <= x-1 && x-1 < 8) {
+                                const char char_move = y*8 + x-1;
+                                if ((1ULL << char_move) & pin_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
+                                }
+                            }
+                            if (0 <= x+1 && x+1 < 8) {
+                                const char char_move = y*8 + x+1;
+                                if ((1ULL << char_move) & pin_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
+                                }
+                            }
+                        }
+                        // Forward
+                        y = i/8;
+                        const char speed = (y == (pos.turn ? 6 : 1)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                        for (auto cy = y + 1; cy < y + speed + 1; cy++) {
+                            const char loc = cy*8 + x;
+                            if (bit(ALL, loc)) break;
+                            if ((1ULL << loc) & pin_mask) {
+                                moves.push_back(Move(i, loc));
+                                break;
+                            }
+                        }
                     } else if (bit(CN, i)) {
                         // Knight cannot move while pinned.
                         if (piece_pinned) {
