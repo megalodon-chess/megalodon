@@ -45,4 +45,3 @@ float center(U64, U64);
 float center_weight(Options&, int);
 
 float eval(Options&, Position, bool, U64=0, U64=0);
-float eval(Options&, Position);

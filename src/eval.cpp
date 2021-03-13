@@ -75,7 +75,11 @@ float eval(Options& options, Position pos) {
     return eval(options, pos, Bitboard::attacked(pos, true), Bitboard::attacked(pos, false));
 }
 
-float eval(Options& options, Position pos, U64 w_attacks, U64 b_attacks) {
+float eval(Options& options, Position pos, bool attacks, U64 w_attacks, U64 b_attacks) {
+    if (!attacks) {
+        w_attacks = Bitboard::attacked(pos, true);
+        b_attacks = Bitboard::attacked(pos, false);
+    }
     int movect = pos.move_stack.size();
 
     float mat;
