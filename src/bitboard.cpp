@@ -504,7 +504,6 @@ namespace Bitboard {
         for (auto dir: DIR_B) {
             const char x = kx + dir[0], y = ky + dir[1];
             if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
-            cout << +x << +y << endl;
             const char loc = y*8 + x;
             if (bit(same_side, loc)) break;
             if (bit(bishops, loc) || bit(queens, loc)) {
