@@ -502,8 +502,10 @@ namespace Bitboard {
         }
         // Bishops and part queens
         for (auto dir: DIR_B) {
-            const char x = kx, y = ky;
+            char x = kx, y = ky;
             while (true) {
+                x += dir[0];
+                y += dir[1];
                 if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
                 const char loc = y*8 + x;
                 if (bit(same_side, loc)) break;
