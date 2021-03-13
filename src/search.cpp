@@ -108,6 +108,7 @@ SearchInfo minimax(vector<vector<vector<Position>>>& tree, int total_depth) {
 SearchInfo search(Options& options, Position pos, int total_depth) {
     pos.eval = eval(options, pos, false);
     vector<vector<vector<Position>>> tree = {{{pos}}};
+    SearchInfo result;
     int depth = 1;
     int num_nodes = 1;
     double start = get_time();
@@ -115,7 +116,6 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
     // Tree generation and bad branch pruning (todo)
     while (true) {
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
-        cout << SearchInfo(depth, depth, false, 0, num_nodes, num_nodes/elapse, elapse*1000, Move()).as_string() << endl;
         vector<vector<Position>> curr_depth;
 
         for (auto node: flatten(tree[depth-1])) {
@@ -136,11 +136,12 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         }
         tree.push_back(curr_depth);
 
+        if (depth >= 3) result = minimax(tree, depth);
+        cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
         depth++;
         if (depth == total_depth) break;
     }
 
-    SearchInfo result = minimax(tree, total_depth);
-
+    result = minimax(tree, total_depth);
     return SearchInfo(depth, depth, false, result.score, num_nodes, 0, 0, result.move);
 }
