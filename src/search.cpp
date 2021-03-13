@@ -116,7 +116,7 @@ SearchInfo search(Options& options, Position pos, int depth) {
                 besteval = evaluation;
                 bestmove = move;
             }
-            nodes.put(new_pos);
+            nodes.put(new_pos);  // Put newly discovered node in to be searched.
         }
         depth--;
     }
