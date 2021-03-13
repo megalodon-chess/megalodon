@@ -746,19 +746,13 @@ namespace Bitboard {
                             for (auto cy = y + 1; cy < y + speed + 1; cy++) {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & pin_mask) {
-                                    moves.push_back(Move(i, loc));
-                                    break;
-                                }
+                                if ((1ULL << loc) & pin_mask) moves.push_back(Move(i, loc));
                             }
                         } else {
                             for (auto cy = y - 1; cy > y - speed - 1; cy--) {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & pin_mask) {
-                                    moves.push_back(Move(i, loc));
-                                    break;
-                                }
+                                if ((1ULL << loc) & pin_mask) moves.push_back(Move(i, loc));
                             }
                         }
                     } else if (bit(CN, i)) {
