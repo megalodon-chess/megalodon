@@ -669,16 +669,14 @@ namespace Bitboard {
                         if (0 <= y && y < 8) {
                             if (0 <= x-1 && x-1 < 8) {
                                 const char char_move = y*8 + x-1;
-                                const U64 bit_moves = (1ULL << char_move) & capture_mask;
-                                for (char j = 0; j < 64; j++) {
-                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j)); 
+                                if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
                                 }
                             }
                             if (0 <= x+1 && x+1 < 8) {
                                 const char char_move = y*8 + x+1;
-                                const U64 bit_moves = (1ULL << char_move) & capture_mask;
-                                for (char j = 0; j < 64; j++) {
-                                    if (bit(bit_moves, j)) moves.push_back(Move(i, j));
+                                if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
                                 }
                             }
                         }
@@ -765,6 +763,7 @@ namespace Bitboard {
                     if (bit(CP, i)) {
                         const char x = i%8;
                         // Sideways
+                        // todo en passant
                         char y = i/8 + pawn_dir;
                         if (0 <= y && y < 8) {
                             if (0 <= x-1 && x-1 < 8) {
