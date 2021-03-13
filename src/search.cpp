@@ -127,5 +127,5 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         }
     }
 
-    return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, best_move);
+    return SearchInfo(depth, depth, false, best_eval, num_nodes, 0, 0, best_move);
 }
