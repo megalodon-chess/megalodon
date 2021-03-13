@@ -62,6 +62,49 @@ string SearchInfo::as_string() {
 }
 
 
+SearchInfo minimax(vector<vector<vector<Position>>>& tree, int total_depth) {
+    // Assigns evaluations based on minimax and returns best move from root.
+    // todo alpha beta pruning
+
+    for (auto d = total_depth-2; d >= 1; d--) {
+        int nodect = 0;
+        for (auto& group: tree[d]) {
+            for (auto& node: group) {
+                float best_eval = node.turn ? -1000000 : 1000000;
+
+                vector<Position> branches = tree[d+1][nodect];
+                if (branches.size() == 0) continue;
+                for (auto branch: branches) {
+                    bool exceeds = false;
+                    if (node.turn && (branch.eval > best_eval)) exceeds = true;
+                    if (!node.turn && (branch.eval < best_eval)) exceeds = true;
+                    if (exceeds) {
+                        best_eval = branch.eval;
+                    }
+                }
+                node.eval = best_eval;
+                nodect++;
+            }
+        }
+    }
+
+    Position pos = tree[0][0][0];
+    float best_eval = pos.turn ? -1000000 : 1000000;
+    Move best_move;
+    for (auto branch: flatten(tree[1])) {
+        bool exceeds = false;
+        if (pos.turn && (branch.eval > best_eval)) exceeds = true;
+        if (!pos.turn && (branch.eval < best_eval)) exceeds = true;
+        if (exceeds) {
+            best_eval = branch.eval;
+            best_move = branch.move_stack[branch.move_stack.size()-1];
+        }
+    }
+
+    return SearchInfo(0, 0, false, best_eval, 0, 0, 0, best_move);
+}
+
+
 SearchInfo search(Options& options, Position pos, int total_depth) {
     pos.eval = eval(options, pos, false);
     vector<vector<vector<Position>>> tree = {{{pos}}};
@@ -97,41 +140,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         if (depth == total_depth) break;
     }
 
-    // Minimax and alpha-beta pruning (todo)
-    float white_best = -1000000;
-    float black_best = 1000000;
-    for (auto d = total_depth-2; d >= 1; d--) {
-        int nodect = 0;
-        for (auto& group: tree[d]) {
-            for (auto& node: group) {
-                float best_eval = node.turn ? -1000000 : 1000000;
+    SearchInfo result = minimax(tree, total_depth);
 
-                vector<Position> branches = tree[d+1][nodect];
-                if (branches.size() == 0) continue;
-                for (auto branch: branches) {
-                    bool exceeds = false;
-                    if (node.turn && (branch.eval > best_eval)) exceeds = true;
-                    if (!node.turn && (branch.eval < best_eval)) exceeds = true;
-                    if (exceeds) {
-                        best_eval = branch.eval;
-                    }
-                }
-                node.eval = best_eval;
-                nodect++;
-            }
-        }
-    }
-    float best_eval = pos.turn ? -1000000 : 1000000;
-    Move best_move;
-    for (auto branch: flatten(tree[1])) {
-        bool exceeds = false;
-        if (pos.turn && (branch.eval > best_eval)) exceeds = true;
-        if (!pos.turn && (branch.eval < best_eval)) exceeds = true;
-        if (exceeds) {
-            best_eval = branch.eval;
-            best_move = branch.move_stack[branch.move_stack.size()-1];
-        }
-    }
-
-    return SearchInfo(depth, depth, false, best_eval, num_nodes, 0, 0, best_move);
+    return SearchInfo(depth, depth, false, result.score, num_nodes, 0, 0, result.move);
 }
