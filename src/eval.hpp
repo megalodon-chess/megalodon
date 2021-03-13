@@ -42,4 +42,4 @@ float material_weight(Options&, int);
 float center(U64, U64);
 float center_weight(Options&, int);
 
-float eval(Options&, Position);
+float eval(Options&, Position, U64, U64);
