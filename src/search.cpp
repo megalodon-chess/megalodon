@@ -106,7 +106,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
                     if (node.turn && (branch.eval > best_eval)) exceeds = true;
                     if (!node.turn && (branch.eval < best_eval)) exceeds = true;
                     if (exceeds) {
-                        best_eval = node.eval;
+                        best_eval = branch.eval;
                     }
                 }
                 node.eval = best_eval;
@@ -114,6 +114,17 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
             }
         }
     }
+    float best_eval = pos.turn ? -1000000 : 1000000;
+    Move best_move;
+    for (auto branch: flatten(tree[0])) {
+        bool exceeds = false;
+        if (pos.turn && (branch.eval > best_eval)) exceeds = true;
+        if (!pos.turn && (branch.eval < best_eval)) exceeds = true;
+        if (exceeds) {
+            best_eval = branch.eval;
+            best_move = branch.move_stack[branch.move_stack.size()-1];
+        }
+    }
 
-    return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, Move());
+    return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, best_move);
 }
