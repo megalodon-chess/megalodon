@@ -820,7 +820,7 @@ namespace Bitboard {
     }
 
 
-    vector<U64*> bb_pointers(Position pos) {
+    vector<U64*> bb_pointers(Position& pos) {
         U64* wp = &pos.wp;
         U64* wn = &pos.wn;
         U64* wb = &pos.wb;
@@ -860,6 +860,36 @@ namespace Bitboard {
     Position push(Position pos, Move move) {
         // todo castling ep
         vector<U64*> pointers = bb_pointers(pos);
+        U64* to_board = pointers[0];
+
+        for (auto i = 0; i < pointers.size(); i++) {
+            U64* p = pointers[i];
+            if (bit(*p, move.from)) to_board = p;
+            set_bit(*p, move.from, false);
+            set_bit(*p, move.to, false);
+        }
+        if (move.is_promo) {
+            if (pos.turn) {
+                switch (move.promo) {
+                    case 0: to_board = &pos.wn; break;
+                    case 1: to_board = &pos.wb; break;
+                    case 2: to_board = &pos.wr; break;
+                    case 3: to_board = &pos.wq; break;
+                }
+            } else {
+                switch (move.promo) {
+                    case 0: to_board = &pos.bn; break;
+                    case 1: to_board = &pos.bb; break;
+                    case 2: to_board = &pos.br; break;
+                    case 3: to_board = &pos.bq; break;
+                }
+            }
+        }
+
+        set_bit(*to_board, move.to, true);
+        pos.turn = !pos.turn;
+
+        return pos;
     }
 
     Position push(Position pos, string uci) {
