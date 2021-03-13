@@ -85,7 +85,10 @@ SearchInfo search(Options& options, Position pos, int depth) {
     vector<Move> moves = Bitboard::legal_moves(pos, attacks);
 
     if (depth == 0 || moves.size() == 0) {
-        return SearchInfo(depth, depth, false, eval(options, pos), 1, 0, 0, Move());
+        float score;
+        if (pos.turn) score = eval(options, pos, attacks, Bitboard::attacked(pos, false));
+        else score = eval(options, pos, Bitboard::attacked(pos, true), attacks);
+        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
     } else {
         int nodes = 1;
         int best_ind = 0;
