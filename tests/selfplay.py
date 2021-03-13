@@ -17,7 +17,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-# Makes Megalodon play against itself repeatedly.
+#  Makes Megalodon play against itself repeatedly.
+#  Saves games to ./games/*.pgn
 
 import os
 import chess
