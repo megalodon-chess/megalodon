@@ -678,7 +678,7 @@ namespace Bitboard {
                         }
                         // Block
                         y = i/8;
-                        const char speed = (y == (pos.turn ? 6 : 1)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                        const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
                         for (auto cy = y + 1; cy < y + speed + 1; cy++) {
                             const char loc = cy*8 + x;
                             if (bit(ALL, loc)) break;
@@ -777,7 +777,7 @@ namespace Bitboard {
                         }
                         // Forward
                         y = i/8;
-                        const char speed = (y == (pos.turn ? 6 : 1)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                        const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
                         for (auto cy = y + 1; cy < y + speed + 1; cy++) {
                             const char loc = cy*8 + x;
                             if (bit(ALL, loc)) break;
