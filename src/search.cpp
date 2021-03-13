@@ -97,7 +97,9 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         if (depth == total_depth) break;
     }
 
-    // Minimax and alpha-beta pruning (todo)
+    // Minimax and alpha-beta pruning
+    float white_best = -1000000;
+    float black_best = 1000000;
     for (auto d = total_depth-2; d >= 1; d--) {
         int nodect = 0;
         for (auto& group: tree[d]) {
@@ -105,6 +107,7 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
                 float best_eval = node.turn ? -1000000 : 1000000;
 
                 vector<Position> branches = tree[d+1][nodect];
+                if (branches.size() == 0) continue;
                 for (auto branch: branches) {
                     bool exceeds = false;
                     if (node.turn && (branch.eval > best_eval)) exceeds = true;
