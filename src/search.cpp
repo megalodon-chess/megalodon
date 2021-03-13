@@ -95,7 +95,24 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
     }
 
     // Minimax and alpha-beta pruning (todo)
-    for (auto d = total_depth-1; d >= 0; d--) {
+    for (auto d = total_depth-2; d >= 1; d--) {
+        int nodect = 0;
+        for (auto& group: tree[d]) {
+            for (auto& node: group) {
+                float best_eval = node.turn ? -1000000 : 1000000;
+
+                for (auto branch: tree[d+1][nodect]) {
+                    bool exceeds = false;
+                    if (node.turn && (branch.eval > best_eval)) exceeds = true;
+                    if (!node.turn && (branch.eval < best_eval)) exceeds = true;
+                    if (exceeds) {
+                        best_eval = node.eval;
+                    }
+                }
+                node.eval = best_eval;
+                nodect++;
+            }
+        }
     }
 
     return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, Move());
