@@ -485,7 +485,9 @@ namespace Bitboard {
         }
         // Knights
         for (auto dir: DIR_N) {
-            const char loc = (ky+dir[1])*8 + kx+dir[0];
+            const char x = kx + dir[0], y = ky + dir[1];
+            if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+            const char loc = y*8 + x;
             if (bit(knights, loc)) {
                 num_atckers++;
                 set_bit(board, loc, true);
