@@ -4,7 +4,7 @@ This page contains release info.
 
 ## [Megalodon 0.1.0 Alpha][v0.1.0-alpha]
 
-This is a pre-release to Megalodon 0.1.0, which features fully working bitboards!
+This is a pre-release to Megalodon 0.1.0, which will feature fully working bitboards!
 
 This version does not function fully, and will likely generate illegal moves.
 
