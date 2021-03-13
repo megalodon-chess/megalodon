@@ -67,8 +67,11 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
     vector<vector<vector<Position>>> tree = {{{pos}}};
     int depth = 1;
     int num_nodes = 1;
+    double start = get_time();
 
     while (true) {
+        double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
+        cout << SearchInfo(depth, depth, false, 0, num_nodes, num_nodes/elapse, elapse*1000, Move()).as_string() << endl;
         vector<vector<Position>> curr_depth;
 
         for (auto node: flatten(tree[depth-1])) {
