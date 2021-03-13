@@ -103,9 +103,14 @@ void print_eval(Options& options, Position pos) {
     vector<vector<string>> evals = {
         {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)},
         {"Center Control", to_string(cent), to_string(cent_weight), to_string(cent*cent_weight)},
-        {"Total", to_string(mat+cent), "N/A", to_string(mat*mat_weight+cent*cent_weight)},
     };
 
+    vector<string> total = {"Total", "0", "N/A", "0"};
+    for (auto ev: evals) {
+        total[1] = std::to_string(std::stof(total[1]) + std::stof(ev[3]));
+        total[3] = std::to_string(std::stof(total[3]) + std::stof(ev[3]));
+    }
+    evals.push_back(total);
     for (auto ev: evals) {
         string category = ev[0];
         string value = ev[1];
