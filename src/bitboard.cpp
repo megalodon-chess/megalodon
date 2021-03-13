@@ -756,7 +756,7 @@ namespace Bitboard {
                             }
                         }
                     } else if (bit(CN, i)) {
-                        // Knight cannot move while pinned.
+                        // Knights cannot move while pinned.
                         if (piece_pinned) {
                             continue;
                         } else {
@@ -767,7 +767,7 @@ namespace Bitboard {
                                 if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
                             }
                         }
-                    } else if (bit(CB, i)) {
+                    } else if (bit(CB, i) || bit(CQ, i)) {
                         for (auto dir: DIR_B) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
@@ -777,11 +777,11 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(SAME, loc)) break;
-                                if ((1ULL << loc) & pin_mask != EMPTY) moves.push_back(Move(i, loc));
+                                if (((1ULL << loc) & pin_mask) != EMPTY) moves.push_back(Move(i, loc));
                                 if (bit(OPPONENT, loc)) break;
                             }
                         }
-                    } else if (bit(CR, i)) {
+                    } else if (bit(CR, i) || bit(CQ, i)) {
                         for (auto dir: DIR_R) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
@@ -791,21 +791,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(SAME, loc)) break;
-                                if ((1ULL << loc) & pin_mask != EMPTY) moves.push_back(Move(i, loc));
-                                if (bit(OPPONENT, loc)) break;
-                            }
-                        }
-                    } else if (bit(CQ, i)) {
-                        for (auto dir: DIR_Q) {
-                            char cx = i%8, cy = i/8;                  // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
-                                const char loc = cy*8 + cx;
-                                if (bit(SAME, loc)) break;
-                                if ((1ULL << loc) & pin_mask != EMPTY) moves.push_back(Move(i, loc));
+                                if (((1ULL << loc) & pin_mask) != EMPTY) moves.push_back(Move(i, loc));
                                 if (bit(OPPONENT, loc)) break;
                             }
                         }
