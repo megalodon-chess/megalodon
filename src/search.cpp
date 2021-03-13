@@ -90,7 +90,6 @@ SearchInfo search(Options& options, Position pos, int depth) {
         int nodes = 1;
         int best_ind = 0;
         float best_eval = pos.turn ? __FLT_MIN__ : __FLT_MAX__;
-        Move best_move;
 
         for (auto i = 0; i < moves.size(); i++) {
             Position new_pos = copy(pos);
