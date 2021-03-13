@@ -82,8 +82,10 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
 
             for (auto move: Bitboard::legal_moves(node, o_attacks)) {
                 Position new_pos = Bitboard::push(node, move);
-                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks);
-                else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks);
+                if (depth == total_depth-1) {   // Remove this condition when doing pruning
+                    if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks);
+                    else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks);
+                }
                 group.push_back(new_pos);
             }
             curr_depth.push_back(group);
