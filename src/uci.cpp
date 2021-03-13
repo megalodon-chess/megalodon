@@ -178,7 +178,7 @@ int loop() {
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             double start = get_time();
-            SearchInfo result = search(options, pos, 7);
+            SearchInfo result = search(options, pos, 6);
             double elapse = get_time() - start;
             result.time = 1000 * (elapse);
             result.nps = result.nodes / (elapse);
