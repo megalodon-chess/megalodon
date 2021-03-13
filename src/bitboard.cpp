@@ -524,6 +524,7 @@ namespace Bitboard {
     }
 
     vector<Move> king_moves(U64 king, U64 attacks) {
+        // Pass in attacks from opponent.
         vector<Move> moves;
 
         for (char i = 0; i < 64; i++) {
@@ -544,6 +545,7 @@ namespace Bitboard {
     }
 
     vector<Move> legal_moves(Position pos, U64 attacks) {
+        // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL;
         if (pos.turn) {
