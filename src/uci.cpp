@@ -184,6 +184,7 @@ int loop() {
             prev_eval = result.score;
         }
         else if (cmd == "stop");
+        else cout << "Unknown command: " << cmd << endl;
     }
 
     return 0;
