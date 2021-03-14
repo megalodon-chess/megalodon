@@ -529,12 +529,12 @@ namespace Bitboard {
         vector<Move> moves;
         tuple<char, char> k_pos = first_bit(king);
 
-        const char x = get<0>(k_pos)%8, y = get<1>(k_pos)/8;
+        const char kx = get<0>(k_pos), ky = get<1>(k_pos);
         for (auto dir: DIR_K) {
-            const char kx = x+dir[0], ky = y+dir[1];
-            if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) {
-                const char loc = ky*8 + kx;
-                if (!bit(attacks, loc) && !bit(same, loc)) moves.push_back(Move(y*8 + x, loc));
+            const char x = kx+dir[0], y = ky+dir[1];
+            if (0 <= x && x < 8 && 0 <= y && y < 8) {
+                const char loc = y*8 + x;
+                if (!bit(attacks, loc) && !bit(same, loc)) moves.push_back(Move(ky*8 + kx, loc));
             }
         }
 
