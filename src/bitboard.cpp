@@ -527,7 +527,6 @@ namespace Bitboard {
     vector<Move> king_moves(U64 king, U64 same, U64 attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
-
         tuple<char, char> k_pos = first_bit(king);
 
         const char x = get<0>(k_pos)%8, y = get<1>(k_pos)/8;
