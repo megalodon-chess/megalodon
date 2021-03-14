@@ -50,5 +50,8 @@ struct SearchInfo {
     Move move;
 };
 
+float moves_left(Options&, Position);
+float move_time(Options&, float, float);
+
 SearchInfo bfs(Options&, Position, int);
 SearchInfo dfs(Options&, Position, int);

@@ -63,6 +63,20 @@ string SearchInfo::as_string() {
 }
 
 
+float moves_left(Options& options, Position pos) {
+    float mat_left = 1.6 * (material(pos)-7);
+    float abs_left = 65 - pos.move_stack.size();
+    if (abs_left < 0) abs_left = 0;
+    if (mat_left < 0) mat_left = 0;
+    float final_left = (mat_left+abs_left) / 2;
+    if (final_left < 1) final_left = 1;
+    return final_left;
+}
+
+float move_time(Options& options, float time, float inc) {
+}
+
+
 SearchInfo bfs_minimax(Pos3D& tree, int total_depth) {
     // Assigns evaluations based on minimax and returns best move from root.
     // todo alpha beta pruning
