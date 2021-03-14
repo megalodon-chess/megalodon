@@ -636,7 +636,7 @@ namespace Bitboard {
                             for (auto cy = y + 1; cy < y + speed + 1; cy++) {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & block_mask) {
+                                if (bit(block_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
@@ -645,7 +645,7 @@ namespace Bitboard {
                             for (auto cy = y - 1; cy > y - speed - 1; cy--) {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & block_mask) {
+                                if (bit(block_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
