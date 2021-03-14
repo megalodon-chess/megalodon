@@ -181,26 +181,24 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
-            cout << "bestmove " + Bitboard::move_str(moves[rand()%moves.size()]) << endl;
-            // double start = get_time();
-            // SearchInfo result;
-            // if (options.SearchAlg == "BFS") result = bfs(options, pos, 5);
-            // else if (options.SearchAlg == "DFS") result = dfs(options, pos, 4);
-            // else {
-            //     cout << "info string Invalid search algorithm." << endl;
-            //     return 1;
-            // }
-            // double elapse = get_time() - start;
+            double start = get_time();
+            SearchInfo result;
+            if (options.SearchAlg == "BFS") result = bfs(options, pos, 5);
+            else if (options.SearchAlg == "DFS") result = dfs(options, pos, 4);
+            else {
+                cout << "info string Invalid search algorithm." << endl;
+                return 1;
+            }
+            double elapse = get_time() - start;
 
-            // result.time = 1000 * (elapse);
-            // result.nps = result.nodes / (elapse);
-            // if (!pos.turn) result.score *= -1;
-            // cout << result.as_string() << endl;
-            // cout << "bestmove " << Bitboard::move_str(result.move) << endl;
+            result.time = 1000 * (elapse);
+            result.nps = result.nodes / (elapse);
+            if (!pos.turn) result.score *= -1;
+            cout << result.as_string() << endl;
+            cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
-            // chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
-            // prev_eval = result.score;
+            chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
+            prev_eval = result.score;
         }
         else if (cmd == "stop");
         else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
