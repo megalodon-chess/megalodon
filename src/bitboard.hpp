@@ -54,6 +54,8 @@ struct Position {
     char castling;
     bool ep;
     char ep_square;
+
+    bool active;
     float eval;
     vector<Move> move_stack;
 };
