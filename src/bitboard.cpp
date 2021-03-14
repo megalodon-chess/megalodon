@@ -647,10 +647,11 @@ namespace Bitboard {
                         }
                     } else if (bit(CN, i)) {
                         // Capture and block
+                        char x = i%8, y = i/8;
                         for (auto dir: DIR_N) {
-                            char x = i%8 + dir[0], y = i/8 + dir[1];   // Current (x, y)
-                            if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
-                            const char loc = y*8 + x;
+                            char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
+                            if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                            const char loc = cy*8 + cx;
                             if ((1ULL << loc) & full_mask != EMPTY) {
                                 moves.push_back(Move(i, loc));
                                 break;
