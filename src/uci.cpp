@@ -193,6 +193,7 @@ int loop() {
 
             result.time = 1000 * (elapse);
             result.nps = result.nodes / (elapse);
+            if (!pos.turn) result.score *= -1;
             cout << result.as_string() << endl;
             cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
