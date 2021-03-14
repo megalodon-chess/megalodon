@@ -445,7 +445,7 @@ namespace Bitboard {
         return tuple<bool, U64>(false, FULL);
     }
 
-    tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
+    tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, U64 attackers, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
@@ -572,7 +572,7 @@ namespace Bitboard {
         ALL = SAME | OPPONENT;
 
         vector<Move> moves = king_moves(CK, SAME, attacks);
-        const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
+        const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
         const char pawn_dir = pos.turn ? 1 : -1;
