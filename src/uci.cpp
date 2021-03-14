@@ -147,6 +147,7 @@ int loop() {
         else if (cmd == "uci") {
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalCenter type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name SearchAlg type string default BFS" << "\n";
             cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
         }
@@ -157,15 +158,9 @@ int loop() {
 
             if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalCenter") options.EvalCenter = std::stoi(value);
+            else if (name == "SearchAlg") options.SearchAlg = value;
             else if (name == "Chat") options.Chat = (value == "true");
-        }
-        else if (startswith(cmd, "getoption")) {
-            vector<string> parts = split(cmd, " ");
-            string name = parts[2];
-
-            if (name == "EvalMaterial") cout << options.EvalMaterial << endl;
-            else if (name == "EvalCenter") cout << options.EvalCenter << endl;
-            else if (name == "Chat") cout << options.Chat << endl;
+            else cout << "Unknown option: " << name << endl;
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
