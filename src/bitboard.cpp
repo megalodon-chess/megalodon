@@ -99,10 +99,7 @@ namespace Bitboard {
     }
 
     char bit_pos(U64 board, bool target) {
-        for (char i = 0; i < 64; i++) {
-            if (bit(board, i) == target) return i;
-        }
-        return 64;
+        return log2(board & -board);
     }
 
     char popcnt(U64 num) {
