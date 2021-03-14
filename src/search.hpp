@@ -50,6 +50,7 @@ struct SearchInfo {
     Move move;
 };
 
+float total_mat(Position);
 float moves_left(Options&, Position);
 float move_time(Options&, float, float);
 

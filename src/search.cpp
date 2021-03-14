@@ -63,13 +63,32 @@ string SearchInfo::as_string() {
 }
 
 
+float total_mat(Position pos) {
+    float value = 0;
+    for (auto i = 0; i < 64; i++) {
+        if (Bitboard::bit(pos.wp, i)) value += 1;
+        else if (Bitboard::bit(pos.wn, i)) value += 3;
+        else if (Bitboard::bit(pos.wb, i)) value += 3;
+        else if (Bitboard::bit(pos.wr, i)) value += 5;
+        else if (Bitboard::bit(pos.wq, i)) value += 9;
+        else if (Bitboard::bit(pos.bp, i)) value += 1;
+        else if (Bitboard::bit(pos.bn, i)) value += 3;
+        else if (Bitboard::bit(pos.bb, i)) value += 3;
+        else if (Bitboard::bit(pos.br, i)) value += 5;
+        else if (Bitboard::bit(pos.bq, i)) value += 9;
+    }
+    return value;
+}
+
 float moves_left(Options& options, Position pos) {
-    float mat_left = 1.6 * (material(pos)-7);
+    float mat_left = 0.9 * (total_mat(pos)-7);
     float abs_left = 65 - pos.move_stack.size();
     if (abs_left < 0) abs_left = 0;
     if (mat_left < 0) mat_left = 0;
+
     float final_left = (mat_left+abs_left) / 2;
     if (final_left < 1) final_left = 1;
+
     return final_left;
 }
 
