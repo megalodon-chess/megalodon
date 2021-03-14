@@ -43,5 +43,6 @@ public:
     int EvalMaterial;
     int EvalCenter;
     string SearchAlg;
+    int SearchDepth;
     bool Chat;
 };
