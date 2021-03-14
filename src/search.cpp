@@ -62,7 +62,7 @@ string SearchInfo::as_string() {
 }
 
 
-SearchInfo minimax(vector<vector<vector<Position>>>& tree, int total_depth) {
+SearchInfo minimax(vector<vector<Pos1D>>& tree, int total_depth) {
     // Assigns evaluations based on minimax and returns best move from root.
     // todo alpha beta pruning
 
@@ -72,7 +72,7 @@ SearchInfo minimax(vector<vector<vector<Position>>>& tree, int total_depth) {
             for (auto& node: group) {
                 float best_eval = node.turn ? -1000000 : 1000000;
 
-                vector<Position> branches = tree[d+1][nodect];
+                Pos1D branches = tree[d+1][nodect];
                 if (branches.size() == 0) continue;
                 for (auto branch: branches) {
                     bool exceeds = false;
@@ -107,7 +107,7 @@ SearchInfo minimax(vector<vector<vector<Position>>>& tree, int total_depth) {
 
 SearchInfo search(Options& options, Position pos, int total_depth) {
     pos.eval = eval(options, pos, false);
-    Tree* tree = new Tree({{{pos}}});
+    Pos3D* tree = new Pos3D({{{pos}}});
     SearchInfo result;
     int depth = 1;
     int num_nodes = 1;
@@ -116,10 +116,10 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
     // Tree generation and bad branch pruning (todo)
     while (true) {
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
-        vector<vector<Position>> curr_depth;
+        Pos2D* curr_depth = new Pos2D;
 
         for (auto node: flatten((*tree)[depth-1])) {
-            vector<Position> group;
+            Pos1D* group = new Pos1D;
             U64 attacks = Bitboard::attacked(node, node.turn);
             U64 o_attacks = Bitboard::attacked(node, !node.turn);
 
@@ -129,12 +129,14 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
                     if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks);
                     else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks);
                 }
-                group.push_back(new_pos);
+                (*group).push_back(new_pos);
             }
-            curr_depth.push_back(group);
-            num_nodes += group.size();
+            (*curr_depth).push_back(*group);
+            num_nodes += (*group).size();
+            delete group;
         }
-        (*tree).push_back(curr_depth);
+        (*tree).push_back(*curr_depth);
+        delete curr_depth;
 
         if (depth >= 3) result = minimax(*tree, depth);
         cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;

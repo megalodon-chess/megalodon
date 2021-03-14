@@ -31,7 +31,9 @@ using std::endl;
 using std::vector;
 using std::string;
 
-typedef vector<vector<vector<Position>>> Tree;
+typedef vector<vector<vector<Position>>> Pos3D;
+typedef vector<vector<Position>> Pos2D;
+typedef vector<Position> Pos1D;
 
 struct SearchInfo {
     SearchInfo();
