@@ -83,10 +83,10 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     if (!options.Chat) return;
 
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    if (turn && (score > prev_score+1.5)) cout << "info string " << rand_choice(WINNING) << endl;
-    if (!turn && (score < prev_score-1.5)) cout << "info string " << rand_choice(WINNING) << endl;
-    if (turn && (score < prev_score-1.5)) cout << "info string " << rand_choice(LOSING) << endl;
-    if (!turn && (score > prev_score+1.5)) cout << "info string " << rand_choice(LOSING) << endl;
+    if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+    if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
 
@@ -191,13 +191,14 @@ int loop() {
             }
             double elapse = get_time() - start;
 
+            float score = result.score;
             result.time = 1000 * (elapse);
             result.nps = result.nodes / (elapse);
             if (!pos.turn) result.score *= -1;
             cout << result.as_string() << endl;
             cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
-            chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
+            chat(options, pos.turn, pos.move_stack.size(), score, prev_eval);
             prev_eval = result.score;
         }
         else if (cmd == "stop");
