@@ -98,7 +98,8 @@ namespace Bitboard {
     bool bit(U64, int);
     bool bit(char, int);
     char popcnt(U64);
-    U64 set_bit(U64&, int, bool);
+    void set_bit(U64&, int);
+    void unset_bit(U64&, int);
     tuple<char, char> first_bit(U64);
 
     string piece_at(Position, char);

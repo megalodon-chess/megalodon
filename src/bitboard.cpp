@@ -108,9 +108,12 @@ namespace Bitboard {
         return count;
     }
 
-    U64 set_bit(U64& board, int pos, bool value) {
-        if (value) board |= (1ULL << pos);
-        else board &= ~(1ULL << pos);
+    void set_bit(U64& board, int pos) {
+        board |= (1ULL << pos);
+    }
+
+    void unset_bit(U64& board, int pos) {
+        board &= ~(1ULL << pos);
     }
 
     tuple<char, char> first_bit(U64 board) {
@@ -257,18 +260,18 @@ namespace Bitboard {
                     x += (ch-48);
                 } else {
                     switch (ch) {
-                        case 'P': set_bit(pos.wp, loc, true); break;
-                        case 'N': set_bit(pos.wn, loc, true); break;
-                        case 'B': set_bit(pos.wb, loc, true); break;
-                        case 'R': set_bit(pos.wr, loc, true); break;
-                        case 'Q': set_bit(pos.wq, loc, true); break;
-                        case 'K': set_bit(pos.wk, loc, true); break;
-                        case 'p': set_bit(pos.bp, loc, true); break;
-                        case 'n': set_bit(pos.bn, loc, true); break;
-                        case 'b': set_bit(pos.bb, loc, true); break;
-                        case 'r': set_bit(pos.br, loc, true); break;
-                        case 'q': set_bit(pos.bq, loc, true); break;
-                        case 'k': set_bit(pos.bk, loc, true); break;
+                        case 'P': set_bit(pos.wp, loc); break;
+                        case 'N': set_bit(pos.wn, loc); break;
+                        case 'B': set_bit(pos.wb, loc); break;
+                        case 'R': set_bit(pos.wr, loc); break;
+                        case 'Q': set_bit(pos.wq, loc); break;
+                        case 'K': set_bit(pos.wk, loc); break;
+                        case 'p': set_bit(pos.bp, loc); break;
+                        case 'n': set_bit(pos.bn, loc); break;
+                        case 'b': set_bit(pos.bb, loc); break;
+                        case 'r': set_bit(pos.br, loc); break;
+                        case 'q': set_bit(pos.bq, loc); break;
+                        case 'k': set_bit(pos.bk, loc); break;
                     }
                     x++;
                 }
@@ -324,22 +327,22 @@ namespace Bitboard {
             if (bit(pawns, i)) {
                 const char ny = y + pawn_dir;  // Current (x, y) with y as after capture.
                 if (0 <= ny && ny < 8) {
-                    if (0 <= x-1 && x-1 < 8) set_bit(board, ny*8 + x-1, true);
-                    if (0 <= x+1 && x+1 < 8) set_bit(board, ny*8 + x+1, true);
+                    if (0 <= x-1 && x-1 < 8) set_bit(board, ny*8 + x-1);
+                    if (0 <= x+1 && x+1 < 8) set_bit(board, ny*8 + x+1);
                 }
             }
 
             if (bit(knights, i)) {
                 for (auto dir: DIR_N) {                        // Iterate through all knight moves.
                     const char nx = x+dir[0], ny = y+dir[1];   // Position after moving.
-                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) set_bit(board, ny*8 + nx, true);
+                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) set_bit(board, ny*8 + nx);
                 }
             }
 
             if (bit(kings, i)) {
                 for (auto dir: DIR_K) {
                     const char kx = x+dir[0], ky = y+dir[1];
-                    if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) set_bit(board, ky*8 + kx, true);
+                    if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) set_bit(board, ky*8 + kx);
                 }
             }
 
@@ -352,7 +355,7 @@ namespace Bitboard {
                         cy += dy;
                         if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                         const char loc = cy*8 + cx;
-                        set_bit(board, loc, true);
+                        set_bit(board, loc);
                         if (bit(opponent, loc)) break;
                         if (bit(pieces, loc)) break;
                     }
@@ -368,7 +371,7 @@ namespace Bitboard {
                         cy += dy;
                         if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                         const char loc = cy*8 + cx;
-                        set_bit(board, loc, true);
+                        set_bit(board, loc);
                         if (bit(opponent, loc)) break;
                         if (bit(pieces, loc)) break;
                     }
@@ -405,7 +408,7 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
-                set_bit(pin_ray, loc, true);
+                set_bit(pin_ray, loc);
                 if (bit(rooks, loc) || bit(queens, loc)) {
                     if (found) {
                         return tuple<bool, U64>(true, pin_ray);
@@ -429,7 +432,7 @@ namespace Bitboard {
                 cy += dy;
                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
-                set_bit(pin_ray, loc, true);
+                set_bit(pin_ray, loc);
                 if (bit(rooks, loc) || bit(queens, loc)) {
                     if (found) {
                         return tuple<bool, U64>(true, pin_ray);
@@ -458,11 +461,11 @@ namespace Bitboard {
         const char y = ky - pawn_dir;
         if (bit(pawns, y*8 + kx-1)) {
             num_atckers++;
-            set_bit(board, y*8 + kx-1, true);
+            set_bit(board, y*8 + kx-1);
         }
         if (bit(pawns, y*8 + kx+1)) {
             num_atckers++;
-            set_bit(board, y*8 + kx+1, true);
+            set_bit(board, y*8 + kx+1);
         }
         // Knights
         for (auto dir: DIR_N) {
@@ -471,7 +474,7 @@ namespace Bitboard {
             const char loc = y*8 + x;
             if (bit(knights, loc)) {
                 num_atckers++;
-                set_bit(board, loc, true);
+                set_bit(board, loc);
                 if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
                 break;
             }
@@ -484,7 +487,7 @@ namespace Bitboard {
             if (bit(same_side, loc)) break;
             if (bit(bishops, loc) || bit(queens, loc)) {
                 num_atckers++;
-                set_bit(board, loc, true);
+                set_bit(board, loc);
                 if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
             }
             if (bit(pieces, loc)) break;
@@ -497,7 +500,7 @@ namespace Bitboard {
             if (bit(same_side, loc)) break;
             if (bit(rooks, loc) || bit(queens, loc)) {
                 num_atckers++;
-                set_bit(board, loc, true);
+                set_bit(board, loc);
                 if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
             }
             if (bit(pieces, loc)) break;
@@ -585,7 +588,7 @@ namespace Bitboard {
                     cx += dx;
                     cy += dy;
                     const char loc = cy*8 + cx;
-                    if (!bit(checking_pieces, loc)) set_bit(block_mask, loc, true);
+                    if (!bit(checking_pieces, loc)) set_bit(block_mask, loc);
                     else break;
                 }
             }
@@ -835,8 +838,8 @@ namespace Bitboard {
         for (auto i = 0; i < pointers.size(); i++) {
             U64* p = pointers[i];
             if (bit(*p, move.from)) to_board = p;
-            set_bit(*p, move.from, false);
-            set_bit(*p, move.to, false);
+            unset_bit(*p, move.from);
+            unset_bit(*p, move.to);
         }
         if (move.is_promo) {
             if (pos.turn) {
@@ -856,7 +859,7 @@ namespace Bitboard {
             }
         }
 
-        set_bit(*to_board, move.to, true);
+        set_bit(*to_board, move.to);
         pos.turn = !pos.turn;
         pos.move_stack.push_back(move);
 
