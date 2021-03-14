@@ -592,8 +592,8 @@ namespace Bitboard {
 
             char dx = check_x - kx, dy = check_y - ky;
             if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
-                if (dx) dx /= abs(dx);
-                if (dy) dy /= abs(dy);
+                if (dx != 0) dx /= abs(dx);
+                if (dy != 0) dy /= abs(dy);
                 char cx = kx, cy = ky;   // Current (x, y)
                 while (true) {
                     cx += dx;
