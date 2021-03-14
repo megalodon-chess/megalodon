@@ -153,7 +153,7 @@ void bfs_rec_remove(Pos3D& tree, int depth, int ind) {
     for (auto& group: tree[depth]) {
         int new_ind = curr_ind + group.size();
         if (ind > curr_ind && ind < new_ind) {
-            group.erase(group.begin() + ind - curr_ind);
+            group[ind-curr_ind].active = false;
             if (depth+1 < tree.size()) {
                 for (auto i = 0; i < ind + tree[depth+1][ind].size(); i++) {
                     bfs_rec_remove(tree, depth+1, i);
@@ -190,6 +190,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
     SearchInfo result;
     int depth = 1;
     int num_nodes = 1;
+    int next_print = 0;
     double start = get_time();
 
     // Tree generation and bad branch pruning (todo)
@@ -197,6 +198,8 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
         Pos2D* curr_depth = new Pos2D;
 
         for (auto node: flatten((*tree)[depth-1])) {
+            if (!node.active) continue;
+
             Pos1D* group = new Pos1D;
             U64 attacks = Bitboard::attacked(node, node.turn);
             U64 o_attacks = Bitboard::attacked(node, !node.turn);
@@ -210,6 +213,12 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
             (*curr_depth).push_back(*group);
             num_nodes += (*group).size();
             delete group;
+
+            if (num_nodes > next_print) {
+                double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
+                cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
+                next_print += options.InfoInc * 1000;
+            }
         }
         (*tree).push_back(*curr_depth);
         delete curr_depth;
@@ -220,6 +229,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
         //}
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
         cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
+
         depth++;
         if (depth == total_depth) break;
     }
