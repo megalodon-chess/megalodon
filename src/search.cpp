@@ -22,6 +22,7 @@
 #include <queue>
 #include <string>
 #include <climits>
+#include <algorithm>
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "search.hpp"
@@ -62,7 +63,7 @@ string SearchInfo::as_string() {
 }
 
 
-SearchInfo minimax(vector<vector<Pos1D>>& tree, int total_depth) {
+SearchInfo minimax(Pos3D& tree, int total_depth) {
     // Assigns evaluations based on minimax and returns best move from root.
     // todo alpha beta pruning
 
@@ -104,6 +105,25 @@ SearchInfo minimax(vector<vector<Pos1D>>& tree, int total_depth) {
     return SearchInfo(0, 0, false, best_eval, 0, 0, 0, best_move);
 }
 
+void prune(Pos3D& tree, int depth) {
+    Pos1D nodes = flatten(tree[depth]);
+    if (nodes.size() < 15) return;
+
+    vector<float> evals;
+    bool turn = tree[0][0][0].turn;
+    for (auto node: nodes) evals.push_back(node.eval);
+    std::sort(evals.begin(), evals.end());
+
+    int threshold = turn ? evals.size()*0.75 : evals.size()*0.25;
+    for (auto i = 0; i < nodes.size(); i++) {
+        Position node = nodes[i];
+        bool prune = false;
+        if (turn && (node.eval < evals[threshold])) prune = true;
+        if (!turn && (node.eval > evals[threshold])) prune = true;
+        if (prune) {
+        }
+    }
+}
 
 SearchInfo search(Options& options, Position pos, int total_depth) {
     pos.eval = eval(options, pos, false);
@@ -135,7 +155,10 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         (*tree).push_back(*curr_depth);
         delete curr_depth;
 
-        //if (depth >= 3) result = minimax(*tree, depth);
+        if (depth >= 3) {
+            result = minimax(*tree, depth);
+            prune(*tree, depth-2);
+        }
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
         cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
         depth++;
