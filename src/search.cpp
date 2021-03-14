@@ -105,6 +105,10 @@ SearchInfo minimax(Pos3D& tree, int total_depth) {
     return SearchInfo(0, 0, false, best_eval, 0, 0, 0, best_move);
 }
 
+void rec_remove(Pos3D& tree, int depth, int ind) {
+    // Removes target node and all its children.
+}
+
 void prune(Pos3D& tree, int depth) {
     Pos1D nodes = flatten(tree[depth]);
     if (nodes.size() < 15) return;
