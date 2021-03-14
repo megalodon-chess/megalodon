@@ -25,6 +25,7 @@
 #include <tuple>
 #include "bitboard.hpp"
 #include "utils.hpp"
+#include "options.hpp"
 
 using std::abs;
 using std::cin;
@@ -88,16 +89,6 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
     ep_square = _ep_square;
 }
 
-
-Position copy(Position p) {
-    return Position(p.wp, p.wn, p.wb, p.wr, p.wq, p.wk, p.bp, p.bn, p.bb, p.br, p.bq, p.bk, p.turn, p.castling, p.ep, p.ep_square);
-}
-
-Move copy(Move m) {
-    return Move(m.from, m.to, m.is_promo, m.promo);
-}
-
-
 namespace Bitboard {
     bool bit(U64 board, int pos) {
         return ((1LL << pos) & board) != 0;
@@ -114,11 +105,13 @@ namespace Bitboard {
         return 64;
     }
 
-    char bit_count(U64 board, bool target) {
+    char popcnt(U64 num) {
+        U64 mask = 256ULL;
         char count = 0;
-        for (auto i = 0; i < 64; i++) {
-            if (bit(board, i) == target) count++;
-        }
+        count += popcnt_tbl[num&mask];
+        count += popcnt_tbl[(num>>8)&mask];
+        count += popcnt_tbl[(num>>16)&mask];
+        count += popcnt_tbl[(num>>24)&mask];
         return count;
     }
 
