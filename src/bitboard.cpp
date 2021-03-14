@@ -449,13 +449,15 @@ namespace Bitboard {
         return tuple<bool, U64>(false, FULL);
     }
 
-    tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
-        const U64 pieces = pawns | knights | bishops | rooks | queens;
+    tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, U64 attackers, bool side) {
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
-        const char pawn_dir = side ? -1 : 1;
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
+        if (!bit(attackers, ky*8+kx)) return tuple<U64, char>(board, atk_cnt);
+
+        const U64 pieces = pawns | knights | bishops | rooks | queens;
+        const char pawn_dir = side ? -1 : 1;
 
         // Pawns
         const char y = ky - pawn_dir;
@@ -533,7 +535,7 @@ namespace Bitboard {
             const char kx = x+dir[0], ky = y+dir[1];
             if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) {
                 const char loc = ky*8 + kx;
-                if (((1ULL << loc) & attacks) == 0 && !bit(same, loc)) moves.push_back(Move(y*8 + x, loc));
+                if (((1ULL << loc) & attacks) == EMPTY && !bit(same, loc)) moves.push_back(Move(y*8 + x, loc));
             }
         }
 
@@ -576,7 +578,7 @@ namespace Bitboard {
         ALL = SAME | OPPONENT;
 
         vector<Move> moves = king_moves(CK, SAME, attacks);
-        const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, pos.turn);
+        const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
         const char pawn_dir = pos.turn ? 1 : -1;
@@ -651,16 +653,17 @@ namespace Bitboard {
                         }
                     } else if (bit(CN, i)) {
                         // Capture and block
+                        char x = i%8, y = i/8;
                         for (auto dir: DIR_N) {
-                            char x = i%8 + dir[0], y = i/8 + dir[1];   // Current (x, y)
-                            if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
-                            const char loc = y*8 + x;
-                            if ((1ULL << loc) & full_mask != EMPTY) {
+                            char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
+                            if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                            const char loc = cy*8 + cx;
+                            if (bit(full_mask, loc)) {
                                 moves.push_back(Move(i, loc));
                                 break;
                             }
                         }
-                    } else if (bit(CB, i)) {
+                    } else if (bit(CB, i) || bit(CQ, i)) {
                         // Capture and block
                         for (auto dir: DIR_B) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
@@ -670,13 +673,15 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if ((1ULL << loc) & full_mask != EMPTY) {
+                                if (bit(SAME, loc)) break;
+                                if (bit(full_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
+                                if (bit(OPPONENT, loc)) break;
                             }
                         }
-                    } else if (bit(CR, i)) {
+                    } else if (bit(CR, i) || bit(CQ, i)) {
                         // Capture and block
                         for (auto dir: DIR_R) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
@@ -686,26 +691,12 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if ((1ULL << loc) & full_mask != EMPTY) {
+                                if (bit(SAME, loc)) break;
+                                if (bit(full_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
-                            }
-                        }
-                    } else if (bit(CQ, i)) {
-                        // Capture and block
-                        for (auto dir: DIR_Q) {
-                            char cx = i%8, cy = i/8;                  // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
-                                const char loc = cy*8 + cx;
-                                if ((1ULL << loc) & full_mask != EMPTY) {
-                                    moves.push_back(Move(i, loc));
-                                    break;
-                                }
+                                if (bit(OPPONENT, loc)) break;
                             }
                         }
                     }
