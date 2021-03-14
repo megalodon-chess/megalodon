@@ -35,7 +35,7 @@ using std::string;
 using std::to_string;
 
 vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
-vector<string> WINNING = {"Looks like I'm playing well!"};
+vector<string> WINNING = {"Looks like I'm playing well!", "Wow!"};
 vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!"};
 vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?"};
 
@@ -83,10 +83,10 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     if (!options.Chat) return;
 
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    if (turn && score > prev_score+1.5) cout << "info string " << rand_choice(WINNING) << endl;
-    if (!turn && score < prev_score+1.5) cout << "info string " << rand_choice(WINNING) << endl;
-    if (turn && score < prev_score+1.5) cout << "info string " << rand_choice(LOSING) << endl;
-    if (!turn && score > prev_score+1.5) cout << "info string " << rand_choice(LOSING) << endl;
+    if (turn && (score > prev_score+1.5)) cout << "info string " << rand_choice(WINNING) << endl;
+    if (!turn && (score < prev_score-1.5)) cout << "info string " << rand_choice(WINNING) << endl;
+    if (turn && (score < prev_score-1.5)) cout << "info string " << rand_choice(LOSING) << endl;
+    if (!turn && (score > prev_score+1.5)) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
 
@@ -147,6 +147,7 @@ int loop() {
         else if (cmd == "uci") {
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalCenter type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name SearchAlg type string default BFS" << "\n";
             cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
         }
@@ -157,15 +158,9 @@ int loop() {
 
             if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalCenter") options.EvalCenter = std::stoi(value);
+            else if (name == "SearchAlg") options.SearchAlg = value;
             else if (name == "Chat") options.Chat = (value == "true");
-        }
-        else if (startswith(cmd, "getoption")) {
-            vector<string> parts = split(cmd, " ");
-            string name = parts[2];
-
-            if (name == "EvalMaterial") cout << options.EvalMaterial << endl;
-            else if (name == "EvalCenter") cout << options.EvalCenter << endl;
-            else if (name == "Chat") cout << options.Chat << endl;
+            else cout << "Unknown option: " << name << endl;
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
@@ -180,15 +175,25 @@ int loop() {
         }
         else if (cmd == "legalmoves") legal_moves(pos);
 
-        else if (cmd == "ucinewgame");
+        else if (cmd == "ucinewgame") {
+            pos = parse_pos("position startpos");
+            prev_eval = 0;
+        }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             double start = get_time();
-            SearchInfo result = search(options, pos, 5);
+            SearchInfo result;
+            if (options.SearchAlg == "BFS") result = bfs(options, pos, 5);
+            else if (options.SearchAlg == "DFS") result = dfs(options, pos, 4);
+            else {
+                cout << "info string Invalid search algorithm." << endl;
+                return 1;
+            }
             double elapse = get_time() - start;
+
             result.time = 1000 * (elapse);
             result.nps = result.nodes / (elapse);
-
+            if (!pos.turn) result.score *= -1;
             cout << result.as_string() << endl;
             cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
@@ -196,7 +201,7 @@ int loop() {
             prev_eval = result.score;
         }
         else if (cmd == "stop");
-        else cout << "Unknown command: " << cmd << endl;
+        else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
     }
 
     return 0;

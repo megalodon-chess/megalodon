@@ -57,11 +57,11 @@ float material_weight(Options& options, int movect) {
 float center(U64 w_attacks, U64 b_attacks) {
     float inner = 0, outer = 0;
 
-    inner += (float)Bitboard::bit_count(w_attacks&INNER_CENTER) / INNER_COUNT;
-    outer += (float)Bitboard::bit_count(w_attacks&OUTER_CENTER) / OUTER_COUNT;
+    inner += (float)Bitboard::popcnt(w_attacks&INNER_CENTER) / INNER_COUNT;
+    outer += (float)Bitboard::popcnt(w_attacks&OUTER_CENTER) / OUTER_COUNT;
 
-    inner -= (float)Bitboard::bit_count(b_attacks&INNER_CENTER) / INNER_COUNT;
-    outer -= (float)Bitboard::bit_count(b_attacks&OUTER_CENTER) / OUTER_COUNT;
+    inner -= (float)Bitboard::popcnt(b_attacks&INNER_CENTER) / INNER_COUNT;
+    outer -= (float)Bitboard::popcnt(b_attacks&OUTER_CENTER) / OUTER_COUNT;
 
     return inner*INNER_WEIGHT + outer*OUTER_WEIGHT;
 }

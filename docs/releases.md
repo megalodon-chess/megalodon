@@ -2,6 +2,16 @@
 
 This page contains release info.
 
+## [Megalodon 0.1.2][v0.1.2]
+
+Bit processing instructions were greatly optimized in this release.
+
+The NPS increased from 200k to 240K.
+
+This release also includes the Depth First Search algorithm used in versions preceding v0.1.0.
+You can choose what search algorithm (BFS or DFS) to use.
+The engine defaults to BFS, which is much faster.
+
 ## [Megalodon 0.1.1][v0.1.1]
 
 This version features a new search algorithm, which is non-recursive and Breadth First.
@@ -52,6 +62,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://huangpatrick16777216.github.io/megalodon/
+[v0.1.2]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.1
 [v0.1.1]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.0
 [v0.1.0-alpha]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.0-alpha

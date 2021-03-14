@@ -22,6 +22,7 @@
 #include <queue>
 #include <string>
 #include <climits>
+#include <algorithm>
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "search.hpp"
@@ -57,52 +58,23 @@ string SearchInfo::as_string() {
     str += " " + std::to_string((is_mate_score ? (int)score : (int)(100*score)));
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     str += " tbhits 0 time " + std::to_string(time);
-    str += " pv";
+    str += " pv " + Bitboard::move_str(move);
     return str;
 }
 
 
-SearchInfo search(Options& options, Position pos, int total_depth) {
-    pos.eval = eval(options, pos, false);
-    vector<vector<vector<Position>>> tree = {{{pos}}};
-    int depth = 1;
-    int num_nodes = 1;
-    double start = get_time();
+SearchInfo bfs_minimax(Pos3D& tree, int total_depth) {
+    // Assigns evaluations based on minimax and returns best move from root.
+    // todo alpha beta pruning
 
-    // Tree generation and bad branch pruning (todo)
-    while (true) {
-        double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
-        cout << SearchInfo(depth, depth, false, 0, num_nodes, num_nodes/elapse, elapse*1000, Move()).as_string() << endl;
-        vector<vector<Position>> curr_depth;
-
-        for (auto node: flatten(tree[depth-1])) {
-            vector<Position> group;
-            U64 attacks = Bitboard::attacked(node, node.turn);
-            U64 o_attacks = Bitboard::attacked(node, !node.turn);
-
-            for (auto move: Bitboard::legal_moves(node, o_attacks)) {
-                Position new_pos = Bitboard::push(node, move);
-                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks);
-                else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks);
-                group.push_back(new_pos);
-            }
-            curr_depth.push_back(group);
-            num_nodes += group.size();
-        }
-        tree.push_back(curr_depth);
-
-        depth++;
-        if (depth == total_depth) break;
-    }
-
-    // Minimax and alpha-beta pruning (todo)
     for (auto d = total_depth-2; d >= 1; d--) {
         int nodect = 0;
         for (auto& group: tree[d]) {
             for (auto& node: group) {
                 float best_eval = node.turn ? -1000000 : 1000000;
 
-                vector<Position> branches = tree[d+1][nodect];
+                Pos1D branches = tree[d+1][nodect];
+                if (branches.size() == 0) continue;
                 for (auto branch: branches) {
                     bool exceeds = false;
                     if (node.turn && (branch.eval > best_eval)) exceeds = true;
@@ -116,6 +88,8 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
             }
         }
     }
+
+    Position pos = tree[0][0][0];
     float best_eval = pos.turn ? -1000000 : 1000000;
     Move best_move;
     for (auto branch: flatten(tree[1])) {
@@ -128,5 +102,106 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         }
     }
 
-    return SearchInfo(depth, depth, false, best_eval, num_nodes, 0, 0, best_move);
+    return SearchInfo(0, 0, false, best_eval, 0, 0, 0, best_move);
+}
+
+void bfs_rec_remove(Pos3D& tree, int depth, int ind) {
+    // Removes target node and all its children.
+}
+
+void bfs_prune(Pos3D& tree, int depth) {
+    Pos1D nodes = flatten(tree[depth]);
+    if (nodes.size() < 15) return;
+
+    vector<float> evals;
+    bool turn = tree[0][0][0].turn;
+    for (auto node: nodes) evals.push_back(node.eval);
+    std::sort(evals.begin(), evals.end());
+
+    int threshold = turn ? evals.size()*0.75 : evals.size()*0.25;
+    for (auto i = 0; i < nodes.size(); i++) {
+        Position node = nodes[i];
+        bool prune_curr = false;
+        if (turn && (node.eval < evals[threshold])) prune_curr = true;
+        if (!turn && (node.eval > evals[threshold])) prune_curr = true;
+        if (prune_curr) bfs_rec_remove(tree, depth, i);
+    }
+}
+
+SearchInfo bfs(Options& options, Position pos, int total_depth) {
+    pos.eval = eval(options, pos, false);
+    Pos3D* tree = new Pos3D({{{pos}}});
+    SearchInfo result;
+    int depth = 1;
+    int num_nodes = 1;
+    double start = get_time();
+
+    // Tree generation and bad branch pruning (todo)
+    while (true) {
+        Pos2D* curr_depth = new Pos2D;
+
+        for (auto node: flatten((*tree)[depth-1])) {
+            Pos1D* group = new Pos1D;
+            U64 attacks = Bitboard::attacked(node, node.turn);
+            U64 o_attacks = Bitboard::attacked(node, !node.turn);
+
+            for (auto move: Bitboard::legal_moves(node, o_attacks)) {
+                Position new_pos = Bitboard::push(node, move);
+                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks);
+                else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks);
+                (*group).push_back(new_pos);
+            }
+            (*curr_depth).push_back(*group);
+            num_nodes += (*group).size();
+            delete group;
+        }
+        (*tree).push_back(*curr_depth);
+        delete curr_depth;
+
+        //if (depth >= 3) {
+        //    result = minimax(*tree, depth);
+        //    bfs_prune(*tree, depth-2);
+        //}
+        double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
+        cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
+        depth++;
+        if (depth == total_depth) break;
+    }
+
+    result = bfs_minimax(*tree, total_depth);
+    delete tree;
+    return SearchInfo(depth, depth, false, result.score, num_nodes, 0, 0, result.move);
+}
+
+
+SearchInfo dfs(Options& options, Position pos, int depth) {
+    U64 attacks = Bitboard::attacked(pos, pos.turn);
+    U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+    vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+
+    if (depth == 0 || moves.size() == 0) {
+        float score;
+        if (pos.turn) score = eval(options, pos, true, attacks, o_attacks);
+        else score = eval(options, pos, true, o_attacks, attacks);
+        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
+    } else {
+        int nodes = 1;
+        int best_ind = 0;
+        float best_eval = pos.turn ? -1000000 : 1000000;
+
+        for (auto i = 0; i < moves.size(); i++) {
+            Position new_pos = Bitboard::push(pos, moves[i]);;
+            SearchInfo result = dfs(options, new_pos, depth-1);
+            nodes += result.nodes;
+
+            bool exceeds = false;
+            if (pos.turn && (result.score > best_eval)) exceeds = true;
+            if (!pos.turn && (result.score < best_eval)) exceeds = true;
+            if (exceeds) {
+                best_ind = i;
+                best_eval = result.score;
+            }
+        }
+        return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
+    }
 }

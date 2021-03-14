@@ -33,10 +33,10 @@ using std::string;
 
 const U64 INNER_CENTER = 103481868288ULL;
 const U64 OUTER_CENTER = 66125924401152ULL;
-const float INNER_COUNT = Bitboard::bit_count(INNER_CENTER);
-const float OUTER_COUNT = Bitboard::bit_count(OUTER_CENTER);
-const float INNER_WEIGHT = 1.5;
-const float OUTER_WEIGHT = 0.7;
+const float INNER_COUNT = Bitboard::popcnt(INNER_CENTER);
+const float OUTER_COUNT = Bitboard::popcnt(OUTER_CENTER);
+const float INNER_WEIGHT = 1.0;
+const float OUTER_WEIGHT = 0.4;
 
 float material(Position);
 float material_weight(Options&, int);

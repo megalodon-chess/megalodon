@@ -38,8 +38,7 @@ namespace Perft {
         } else {
             int count = 1;
             for (auto move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))) {
-                Position new_pos = copy(pos);
-                new_pos = Bitboard::push(new_pos, move);
+                Position new_pos = Bitboard::push(pos, move);
                 count += movegen(new_pos, depth-1);
             }
             return count;
