@@ -576,7 +576,6 @@ namespace Bitboard {
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
         const char pawn_dir = pos.turn ? 1 : -1;
-        cout << board_str(checking_pieces) << endl;
 
         if (num_checkers > 1) {
             return moves;
