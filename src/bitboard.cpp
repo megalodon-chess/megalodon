@@ -98,10 +98,6 @@ namespace Bitboard {
         return ((1 << pos) & board) != 0;
     }
 
-    char bit_pos(U64 board, bool target) {
-        return log2(board & -board);
-    }
-
     char popcnt(U64 num) {
         U64 mask = 255ULL;
         char count = 0;
@@ -118,13 +114,8 @@ namespace Bitboard {
     }
 
     tuple<char, char> first_bit(U64 board) {
-        for (char i = 0; i < 64; i++) {
-            if (bit(board, i)) {
-                const char x = i % 8, y = i / 8;
-                return tuple<char, char>(x, y);
-            }
-        }
-        return tuple<char, char>(0, 8);
+        char pos = log2(board & -board);
+        return tuple<char, char>(pos%8, pos/8);
     }
 
 
