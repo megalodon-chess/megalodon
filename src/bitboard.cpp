@@ -294,7 +294,7 @@ namespace Bitboard {
         if (parts[3] == "-") pos.ep = false;
         else {
             pos.ep = true;
-            pos.ep_square = std::stoi(parts[3]);
+            pos.ep_square = std::stoi(string(1, parts[3][1]))*8 + (parts[3][0] - 97);
         }
 
         return pos;
