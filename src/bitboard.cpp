@@ -652,7 +652,7 @@ namespace Bitboard {
                             char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
                             if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                             const char loc = cy*8 + cx;
-                            if ((1ULL << loc) & full_mask != EMPTY) {
+                            if (bit(full_mask, loc)) {
                                 moves.push_back(Move(i, loc));
                                 break;
                             }
@@ -667,7 +667,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if ((1ULL << loc) & full_mask != EMPTY) {
+                                if (bit(full_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
@@ -683,7 +683,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if ((1ULL << loc) & full_mask != EMPTY) {
+                                if (bit(full_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
@@ -699,7 +699,7 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
-                                if ((1ULL << loc) & full_mask != EMPTY) {
+                                if (bit(full_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
