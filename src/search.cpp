@@ -174,7 +174,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
 }
 
 
-SearchInfo search(Options& options, Position pos, int depth) {
+SearchInfo dfs(Options& options, Position pos, int depth) {
     U64 attacks = Bitboard::attacked(pos, pos.turn);
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
@@ -191,7 +191,7 @@ SearchInfo search(Options& options, Position pos, int depth) {
 
         for (auto i = 0; i < moves.size(); i++) {
             Position new_pos = Bitboard::push(pos, moves[i]);;
-            SearchInfo result = search(options, new_pos, depth-1);
+            SearchInfo result = dfs(options, new_pos, depth-1);
             nodes += result.nodes;
 
             bool exceeds = false;
