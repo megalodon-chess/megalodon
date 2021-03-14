@@ -529,7 +529,7 @@ namespace Bitboard {
             const char kx = x+dir[0], ky = y+dir[1];
             if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) {
                 const char loc = ky*8 + kx;
-                if (((1ULL << loc) & attacks) == 0 && !bit(same, loc)) moves.push_back(Move(y*8 + x, loc));
+                if (((1ULL << loc) & attacks) == EMPTY && !bit(same, loc)) moves.push_back(Move(y*8 + x, loc));
             }
         }
 
