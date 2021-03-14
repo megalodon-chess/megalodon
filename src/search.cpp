@@ -112,7 +112,7 @@ void bfs_rec_remove(Pos3D& tree, int depth, int ind) {
         int new_ind = curr_ind + group.size();
         if (ind > curr_ind && ind < new_ind) {
             group.erase(group.begin() + ind - curr_ind);
-            if (tree.size() >= depth + 1) {
+            if (depth+1 < tree.size()) {
                 for (auto i = 0; i < ind + tree[depth+1][ind].size(); i++) {
                     bfs_rec_remove(tree, depth+1, i);
                 }
@@ -143,7 +143,7 @@ void bfs_prune(Pos3D& tree, int depth) {
 }
 
 SearchInfo bfs(Options& options, Position pos, int total_depth) {
-    pos.eval = eval(options, pos, false);
+    pos.eval = eval(options, pos, false, 0, 0);
     Pos3D* tree = new Pos3D({{{pos}}});
     SearchInfo result;
     int depth = 1;
@@ -173,7 +173,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
         delete curr_depth;
 
         //if (depth >= 3) {
-        //    result = minimax(*tree, depth);
+        //    result = bfs_minimax(*tree, depth);
         //    bfs_prune(*tree, depth-2);
         //}
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
