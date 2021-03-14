@@ -106,7 +106,7 @@ namespace Bitboard {
     }
 
     char popcnt(U64 num) {
-        U64 mask = 256ULL;
+        U64 mask = 255ULL;
         char count = 0;
         count += popcnt_tbl[num&mask];
         count += popcnt_tbl[(num>>8)&mask];
