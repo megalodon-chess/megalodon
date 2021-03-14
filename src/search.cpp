@@ -124,8 +124,7 @@ void prune(Pos3D& tree, int depth) {
         bool prune = false;
         if (turn && (node.eval < evals[threshold])) prune = true;
         if (!turn && (node.eval > evals[threshold])) prune = true;
-        if (prune) {
-        }
+        if (prune) rec_remove(tree, depth, i);
     }
 }
 
