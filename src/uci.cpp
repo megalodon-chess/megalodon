@@ -182,11 +182,16 @@ int loop() {
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             double start = get_time();
-            SearchInfo result = search(options, pos, 5);
+            SearchInfo result;
+            if (options.SearchAlg == "BFS") result = bfs(options, pos, 5);
+            else {
+                cout << "info string Invalid search algorithm." << endl;
+                return 1;
+            }
             double elapse = get_time() - start;
+
             result.time = 1000 * (elapse);
             result.nps = result.nodes / (elapse);
-
             cout << result.as_string() << endl;
             cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
