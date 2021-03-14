@@ -51,3 +51,4 @@ struct SearchInfo {
 };
 
 SearchInfo bfs(Options&, Position, int);
+SearchInfo dfs(Options&, Position, int);
