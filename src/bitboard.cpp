@@ -455,7 +455,6 @@ namespace Bitboard {
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
         if (!bit(attackers, ky*8+kx)) return tuple<U64, char>(board, atk_cnt);
-
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         const char pawn_dir = side ? -1 : 1;
 
@@ -591,9 +590,9 @@ namespace Bitboard {
             const char kx = get<0>(k_pos), ky = get<1>(k_pos), check_x = get<0>(check_pos), check_y = get<1>(check_pos);
 
             char dx = check_x - kx, dy = check_y - ky;
-            if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
-                if (dx != 0) dx /= abs(dx);
-                if (dy != 0) dy /= abs(dy);
+            if (std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end()) {
+                if (dx) dx /= abs(dx);
+                if (dy) dy /= abs(dy);
                 char cx = kx, cy = ky;   // Current (x, y)
                 while (true) {
                     cx += dx;
@@ -615,16 +614,12 @@ namespace Bitboard {
                         const char x = i%8;
                         char y = i/8 + pawn_dir;
                         if (0 <= y && y < 8) {
-                            if (0 <= x-1 && x-1 < 8) {
-                                const char char_move = y*8 + x-1;
-                                if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
-                                    moves.push_back(Move(i, char_move));
-                                }
-                            }
-                            if (0 <= x+1 && x+1 < 8) {
-                                const char char_move = y*8 + x+1;
-                                if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
-                                    moves.push_back(Move(i, char_move));
+                            for (auto offset: {x-1, x+1}) {
+                                if (0 <= offset && offset < 8) {
+                                    const char char_move = y*8 + offset;
+                                    if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                        moves.push_back(Move(i, char_move));
+                                    }
                                 }
                             }
                         }
