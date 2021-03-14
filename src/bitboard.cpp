@@ -770,7 +770,6 @@ namespace Bitboard {
                         }
                     }
                     if (bit(CR, i) || bit(CQ, i)) {
-                        cout << square_str(i) << endl;
                         for (auto dir: DIR_R) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
