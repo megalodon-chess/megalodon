@@ -32,12 +32,16 @@ using std::string;
 class Options {
 /*
 Chat: type=check, default=true, whether the engine should chat with you.
+EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
+EvalCenter: type=spin, default=100, min=0, max=1000, weight (percent) of center control eval.
+SearchAlg: type=string, default=BFS, search algorithm.
 */
 
 public:
     Options();
 
-    bool Chat;
     int EvalMaterial;
     int EvalCenter;
+    string SearchAlg;
+    bool Chat;
 };
