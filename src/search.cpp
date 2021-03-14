@@ -99,7 +99,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
     float time_left = time + inc*moves;
     float mat = eval(options, pos, false, 0, 0);
     if (!pos.turn) mat *= -1;
-    float mat_offset = mat * -1;
+    float mat_offset = mat * -0.3;
 
     return (time_left/moves) + mat_offset;
 }
