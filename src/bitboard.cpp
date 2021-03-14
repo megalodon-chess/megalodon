@@ -455,7 +455,6 @@ namespace Bitboard {
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
         if (!bit(attackers, ky*8+kx)) return tuple<U64, char>(board, atk_cnt);
-
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         const char pawn_dir = side ? -1 : 1;
 
@@ -591,7 +590,7 @@ namespace Bitboard {
             const char kx = get<0>(k_pos), ky = get<1>(k_pos), check_x = get<0>(check_pos), check_y = get<1>(check_pos);
 
             char dx = check_x - kx, dy = check_y - ky;
-            if (!(std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
+            if ((std::find(DIR_K.begin(), DIR_K.end(), vector<char>({dx, dy})) != DIR_K.end())) {
                 if (dx) dx /= abs(dx);
                 if (dy) dy /= abs(dy);
                 char cx = kx, cy = ky;   // Current (x, y)
