@@ -182,25 +182,25 @@ int loop() {
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             vector<string> parts = split(cmd, " ");
-            int mode;
+            int mode = 0;
             int depth;
             float wtime, btime, winc, binc;
             for (auto i = 0; i < parts.size(); i++) {
                 if (parts[i] == "depth") {
-                    mode = 0;
+                    mode = 1;
                     depth = std::stoi(parts[i+1]);
                     break;
                 } else if (parts[i] == "wtime") {
-                    mode = 1;
+                    mode = 2;
                     wtime = std::stoi(parts[i+1]);
                 } else if (parts[i] == "btime") {
-                    mode = 1;
+                    mode = 2;
                     btime = std::stoi(parts[i+1]);
                 } else if (parts[i] == "winc") {
-                    mode = 1;
+                    mode = 2;
                     winc = std::stoi(parts[i+1]);
                 } else if (parts[i] == "binc") {
-                    mode = 1;
+                    mode = 2;
                     binc = std::stoi(parts[i+1]);
                 }
             }
