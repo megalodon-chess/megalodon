@@ -153,7 +153,7 @@ void bfs_rec_remove(Pos3D& tree, int depth, int ind) {
     for (auto& group: tree[depth]) {
         int new_ind = curr_ind + group.size();
         if (ind > curr_ind && ind < new_ind) {
-            group.erase(group.begin() + ind - curr_ind);
+            group[ind-curr_ind].active = false;
             if (depth+1 < tree.size()) {
                 for (auto i = 0; i < ind + tree[depth+1][ind].size(); i++) {
                     bfs_rec_remove(tree, depth+1, i);
@@ -197,6 +197,8 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
         Pos2D* curr_depth = new Pos2D;
 
         for (auto node: flatten((*tree)[depth-1])) {
+            if (!node.active) continue;
+
             Pos1D* group = new Pos1D;
             U64 attacks = Bitboard::attacked(node, node.turn);
             U64 o_attacks = Bitboard::attacked(node, !node.turn);
