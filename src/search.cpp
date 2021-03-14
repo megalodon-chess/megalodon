@@ -81,6 +81,7 @@ float total_mat(Position pos) {
 }
 
 float moves_left(Options& options, Position pos) {
+    // Estimates moves left based on material and move stack.
     float mat_left = 0.9 * (total_mat(pos)-7);
     float abs_left = 65 - pos.move_stack.size();
     if (abs_left < 0) abs_left = 0;
@@ -93,9 +94,10 @@ float moves_left(Options& options, Position pos) {
 }
 
 float move_time(Options& options, Position pos, float time, float inc) {
+    // Calculates move time based on moves left and game evaluation.
     float moves = moves_left(options, pos);
     float time_left = time + inc*moves;
-    float mat = material(pos);
+    float mat = eval(options, pos, false, 0, 0);
     if (!pos.turn) mat *= -1;
     float mat_offset = mat * -1;
 
