@@ -703,10 +703,12 @@ namespace Bitboard {
                                 cy += dy;
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
+                                if (bit(SAME, loc)) break;
                                 if (bit(full_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
                                 }
+                                if (bit(OPPONENT, loc)) break;
                             }
                         }
                     }
