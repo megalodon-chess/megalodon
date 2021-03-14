@@ -528,8 +528,8 @@ namespace Bitboard {
                 for (auto dir: DIR_K) {
                     const char kx = x+dir[0], ky = y+dir[1];
                     if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) {
-                        const char new_loc = ky*8 + kx;
-                        if (((1ULL << new_loc) & attacks) == 0 && !bit(same, new_loc)) moves.push_back(Move(i, new_loc));
+                        const char loc = ky*8 + kx;
+                        if (((1ULL << loc) & attacks) == 0 && !bit(same, loc)) moves.push_back(Move(i, loc));
                     }
                 }
                 break;
