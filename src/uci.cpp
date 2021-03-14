@@ -35,9 +35,9 @@ using std::string;
 using std::to_string;
 
 vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
-vector<string> WINNING = {"Looks like I'm playing well!", "Wow!"};
-vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!"};
-vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?"};
+vector<string> WINNING = {"Looks like I'm playing well!", "Wow!", "This is great!"};
+vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!", "Great job!"};
+vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
 Position parse_pos(string str) {
