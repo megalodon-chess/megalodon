@@ -107,6 +107,20 @@ SearchInfo bfs_minimax(Pos3D& tree, int total_depth) {
 
 void bfs_rec_remove(Pos3D& tree, int depth, int ind) {
     // Removes target node and all its children.
+    int curr_ind = 0;
+    for (auto& group: tree[depth]) {
+        int new_ind = curr_ind + group.size();
+        if (ind > curr_ind && ind < new_ind) {
+            group.erase(group.begin() + ind - curr_ind);
+            if (tree.size() >= depth + 1) {
+                for (auto i = 0; i < ind + tree[depth+1][ind].size(); i++) {
+                    bfs_rec_remove(tree, depth+1, i);
+                }
+            }
+            break;
+        }
+        curr_ind = new_ind;
+    }
 }
 
 void bfs_prune(Pos3D& tree, int depth) {
