@@ -449,20 +449,20 @@ namespace Bitboard {
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
-        const char pawn_dir = side ? 1 : -1;
+        const char pawn_dir = side ? -1 : 1;
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
 
         // Pawns
         const char y = ky - pawn_dir;
-        if (!(0 <= kx-1 && kx-1 < 8 && 0 <= y && y < 8)) {
+        if (0 <= kx-1 && kx-1 < 8 && 0 <= y && y < 8) {
             const char loc = y*8 + kx-1;
             if (bit(pawns, loc)) {
                 atk_cnt++;
                 set_bit(board, loc);
             }
         }
-        if (!(0 <= kx+1 && kx+1 < 8 && 0 <= y && y < 8)) {
+        if (0 <= kx+1 && kx+1 < 8 && 0 <= y && y < 8) {
             const char loc = y*8 + kx+1;
             if (bit(pawns, loc)) {
                 atk_cnt++;
@@ -579,6 +579,7 @@ namespace Bitboard {
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
         const char pawn_dir = pos.turn ? 1 : -1;
+        cout << board_str(checking_pieces) << endl;
 
         if (num_checkers > 1) {
             return moves;
