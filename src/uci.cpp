@@ -74,7 +74,8 @@ void legal_moves(Position pos) {
     if (moves.empty()) {
         cout << "None" << endl;
     } else {
-        for (auto m: moves) cout << Bitboard::move_str(m) << endl;
+        for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
+        cout << "Total " << moves.size() << endl;
     }
 }
 
