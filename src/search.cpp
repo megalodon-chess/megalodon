@@ -92,7 +92,14 @@ float moves_left(Options& options, Position pos) {
     return final_left;
 }
 
-float move_time(Options& options, float time, float inc) {
+float move_time(Options& options, Position pos, float time, float inc) {
+    float moves = moves_left(options, pos);
+    float time_left = time + inc*moves;
+    float mat = material(pos);
+    if (!pos.turn) mat *= -1;
+    float mat_offset = mat * -1;
+
+    return (time_left/moves) + mat_offset;
 }
 
 

@@ -52,7 +52,7 @@ struct SearchInfo {
 
 float total_mat(Position);
 float moves_left(Options&, Position);
-float move_time(Options&, float, float);
+float move_time(Options&, Position, float, float);
 
 SearchInfo bfs(Options&, Position, int);
 SearchInfo dfs(Options&, Position, int);
