@@ -34,5 +34,6 @@ Options::Options() {
     EvalCenter = 100;
     SearchAlg = "BFS";
     SearchDepth = 5;
+    InfoInc = 250;
     Chat = false;
 }

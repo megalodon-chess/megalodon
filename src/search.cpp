@@ -190,6 +190,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
     SearchInfo result;
     int depth = 1;
     int num_nodes = 1;
+    int next_print = 0;
     double start = get_time();
 
     // Tree generation and bad branch pruning (todo)
@@ -212,6 +213,12 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
             (*curr_depth).push_back(*group);
             num_nodes += (*group).size();
             delete group;
+
+            if (num_nodes > next_print) {
+                double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
+                cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
+                next_print += options.InfoInc * 1000;
+            }
         }
         (*tree).push_back(*curr_depth);
         delete curr_depth;
@@ -222,6 +229,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
         //}
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
         cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
+
         depth++;
         if (depth == total_depth) break;
     }
