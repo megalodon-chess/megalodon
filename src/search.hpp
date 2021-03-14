@@ -50,4 +50,4 @@ struct SearchInfo {
     Move move;
 };
 
-SearchInfo search(Options&, Position, int);
+SearchInfo bfs(Options&, Position, int);

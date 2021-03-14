@@ -63,7 +63,7 @@ string SearchInfo::as_string() {
 }
 
 
-SearchInfo minimax(Pos3D& tree, int total_depth) {
+SearchInfo bfs_minimax(Pos3D& tree, int total_depth) {
     // Assigns evaluations based on minimax and returns best move from root.
     // todo alpha beta pruning
 
@@ -105,11 +105,11 @@ SearchInfo minimax(Pos3D& tree, int total_depth) {
     return SearchInfo(0, 0, false, best_eval, 0, 0, 0, best_move);
 }
 
-void rec_remove(Pos3D& tree, int depth, int ind) {
+void bfs_rec_remove(Pos3D& tree, int depth, int ind) {
     // Removes target node and all its children.
 }
 
-void prune(Pos3D& tree, int depth) {
+void bfs_prune(Pos3D& tree, int depth) {
     Pos1D nodes = flatten(tree[depth]);
     if (nodes.size() < 15) return;
 
@@ -121,14 +121,14 @@ void prune(Pos3D& tree, int depth) {
     int threshold = turn ? evals.size()*0.75 : evals.size()*0.25;
     for (auto i = 0; i < nodes.size(); i++) {
         Position node = nodes[i];
-        bool prune = false;
-        if (turn && (node.eval < evals[threshold])) prune = true;
-        if (!turn && (node.eval > evals[threshold])) prune = true;
-        if (prune) rec_remove(tree, depth, i);
+        bool prune_curr = false;
+        if (turn && (node.eval < evals[threshold])) prune_curr = true;
+        if (!turn && (node.eval > evals[threshold])) prune_curr = true;
+        if (prune_curr) bfs_rec_remove(tree, depth, i);
     }
 }
 
-SearchInfo search(Options& options, Position pos, int total_depth) {
+SearchInfo bfs(Options& options, Position pos, int total_depth) {
     pos.eval = eval(options, pos, false);
     Pos3D* tree = new Pos3D({{{pos}}});
     SearchInfo result;
@@ -158,17 +158,17 @@ SearchInfo search(Options& options, Position pos, int total_depth) {
         (*tree).push_back(*curr_depth);
         delete curr_depth;
 
-        if (depth >= 3) {
-            result = minimax(*tree, depth);
-            prune(*tree, depth-2);
-        }
+        //if (depth >= 3) {
+        //    result = minimax(*tree, depth);
+        //    bfs_prune(*tree, depth-2);
+        //}
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
         cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
         depth++;
         if (depth == total_depth) break;
     }
 
-    result = minimax(*tree, total_depth);
+    result = bfs_minimax(*tree, total_depth);
     delete tree;
     return SearchInfo(depth, depth, false, result.score, num_nodes, 0, 0, result.move);
 }
