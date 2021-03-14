@@ -184,6 +184,7 @@ int loop() {
             double start = get_time();
             SearchInfo result;
             if (options.SearchAlg == "BFS") result = bfs(options, pos, 5);
+            else if (options.SearchAlg == "DFS") result = dfs(options, pos, 4);
             else {
                 cout << "info string Invalid search algorithm." << endl;
                 return 1;
