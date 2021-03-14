@@ -70,7 +70,7 @@ Position parse_pos(string str) {
 
 
 void legal_moves(Position pos) {
-    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, pos.turn));
+    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     if (moves.empty()) {
         cout << "None" << endl;
     } else {
