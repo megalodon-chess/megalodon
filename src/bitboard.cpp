@@ -446,12 +446,14 @@ namespace Bitboard {
     }
 
     tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, U64 attackers, bool side) {
-        const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
-        const char pawn_dir = side ? -1 : 1;
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
+        if (!bit(attackers, ky*8+kx)) return tuple<U64, char>(board, atk_cnt);
+
+        const U64 pieces = pawns | knights | bishops | rooks | queens;
+        const char pawn_dir = side ? -1 : 1;
 
         // Pawns
         const char y = ky - pawn_dir;
