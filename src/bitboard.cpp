@@ -91,11 +91,11 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
 
 namespace Bitboard {
     bool bit(U64 board, int pos) {
-        return ((1LL << pos) & board) != 0;
+        return ((1ULL << pos) & board) != 0;
     }
 
     bool bit(char board, int pos) {
-        return ((1 << pos) & board) != 0;
+        return ((1ULL << pos) & board) != 0;
     }
 
     char popcnt(U64 num) {
@@ -319,11 +319,11 @@ namespace Bitboard {
 
     U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
-        U64 board = EMPTY;
         const char pawn_dir = side ? 1 : -1;
+        U64 board = EMPTY;
 
         for (char i = 0; i < 64; i++) {
-            const char x = i % 8, y = i / 8;
+            const char x = i%8, y = i/8;
             if (bit(pawns, i)) {
                 const char ny = y + pawn_dir;  // Current (x, y) with y as after capture.
                 if (0 <= ny && ny < 8) {
@@ -331,21 +331,18 @@ namespace Bitboard {
                     if (0 <= x+1 && x+1 < 8) set_bit(board, ny*8 + x+1);
                 }
             }
-
             if (bit(knights, i)) {
                 for (auto dir: DIR_N) {                        // Iterate through all knight moves.
                     const char nx = x+dir[0], ny = y+dir[1];   // Position after moving.
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) set_bit(board, ny*8 + nx);
                 }
             }
-
             if (bit(kings, i)) {
                 for (auto dir: DIR_K) {
                     const char kx = x+dir[0], ky = y+dir[1];
                     if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) set_bit(board, ky*8 + kx);
                 }
             }
-
             if (bit(rooks, i) || bit(queens, i)) {
                 for (auto dir: DIR_R) {
                     char cx = x, cy = y;                  // Current (x, y)
@@ -361,7 +358,6 @@ namespace Bitboard {
                     }
                 }
             }
-
             if (bit(bishops, i) || bit(queens, i)) {
                 for (auto dir: DIR_B) {
                     char cx = x, cy = y;                  // Current (x, y)
@@ -394,9 +390,9 @@ namespace Bitboard {
 
     tuple<bool, U64> pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
         const U64 opponent = pawns | knights | bishops | rooks | queens;
-        U64 pin_ray = EMPTY;
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
+        U64 pin_ray = EMPTY;
         bool found;
 
         for (auto dir: DIR_R) {
@@ -452,7 +448,7 @@ namespace Bitboard {
     tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, bool side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         U64 board = EMPTY;
-        char num_atckers = 0;
+        char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
         const char pawn_dir = side ? 1 : -1;
         const tuple<char, char> k_pos = first_bit(king);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
@@ -460,11 +456,11 @@ namespace Bitboard {
         // Pawns
         const char y = ky - pawn_dir;
         if (bit(pawns, y*8 + kx-1)) {
-            num_atckers++;
+            atk_cnt++;
             set_bit(board, y*8 + kx-1);
         }
         if (bit(pawns, y*8 + kx+1)) {
-            num_atckers++;
+            atk_cnt++;
             set_bit(board, y*8 + kx+1);
         }
         // Knights
@@ -473,9 +469,9 @@ namespace Bitboard {
             if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
             const char loc = y*8 + x;
             if (bit(knights, loc)) {
-                num_atckers++;
+                atk_cnt++;
                 set_bit(board, loc);
-                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                if (atk_cnt > 1) return tuple<U64, char>(board, atk_cnt);
                 break;
             }
         }
@@ -486,9 +482,9 @@ namespace Bitboard {
             const char loc = y*8 + x;
             if (bit(same_side, loc)) break;
             if (bit(bishops, loc) || bit(queens, loc)) {
-                num_atckers++;
+                atk_cnt++;
                 set_bit(board, loc);
-                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                if (atk_cnt > 1) return tuple<U64, char>(board, atk_cnt);
             }
             if (bit(pieces, loc)) break;
         }
@@ -499,14 +495,14 @@ namespace Bitboard {
             const char loc = y*8 + x;
             if (bit(same_side, loc)) break;
             if (bit(rooks, loc) || bit(queens, loc)) {
-                num_atckers++;
+                atk_cnt++;
                 set_bit(board, loc);
-                if (num_atckers > 1) return tuple<U64, char>(board, num_atckers);
+                if (atk_cnt > 1) return tuple<U64, char>(board, atk_cnt);
             }
             if (bit(pieces, loc)) break;
         }
 
-        return tuple<U64, char>(board, num_atckers);
+        return tuple<U64, char>(board, atk_cnt);
     }
 
     vector<Move> king_moves(U64 king, U64 attacks) {
