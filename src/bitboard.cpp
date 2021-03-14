@@ -745,7 +745,8 @@ namespace Bitboard {
                                 if ((1ULL << loc) & pin_mask) moves.push_back(Move(i, loc));
                             }
                         }
-                    } else if (bit(CN, i)) {
+                    }
+                    if (bit(CN, i)) {
                         // Knights cannot move while pinned.
                         if (piece_pinned) {
                             continue;
@@ -757,7 +758,8 @@ namespace Bitboard {
                                 if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
                             }
                         }
-                    } else if (bit(CB, i) || bit(CQ, i)) {
+                    }
+                    if (bit(CB, i) || bit(CQ, i)) {
                         for (auto dir: DIR_B) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
@@ -771,7 +773,9 @@ namespace Bitboard {
                                 if (bit(OPPONENT, loc)) break;
                             }
                         }
-                    } else if (bit(CR, i) || bit(CQ, i)) {
+                    }
+                    if (bit(CR, i) || bit(CQ, i)) {
+                        cout << square_str(i) << endl;
                         for (auto dir: DIR_R) {
                             char cx = i%8, cy = i/8;                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
