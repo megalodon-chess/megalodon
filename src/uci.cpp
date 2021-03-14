@@ -181,6 +181,34 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
+            vector<string> parts = split(cmd, " ");
+            int mode;
+            int depth;
+            float wtime, btime, winc, binc;
+            for (auto i = 0; i < parts.size(); i++) {
+                if (parts[i] == "depth") {
+                    mode = 0;
+                    depth = std::stoi(parts[i+1]);
+                    break;
+                } else if (parts[i] == "wtime") {
+                    mode = 1;
+                    wtime = std::stoi(parts[i+1]);
+                } else if (parts[i] == "btime") {
+                    mode = 1;
+                    btime = std::stoi(parts[i+1]);
+                } else if (parts[i] == "winc") {
+                    mode = 1;
+                    winc = std::stoi(parts[i+1]);
+                } else if (parts[i] == "binc") {
+                    mode = 1;
+                    binc = std::stoi(parts[i+1]);
+                }
+            }
+            wtime /= 1000;
+            btime /= 1000;
+            winc /= 1000;
+            binc /= 1000;
+
             double start = get_time();
             SearchInfo result;
             if (options.SearchAlg == "BFS") result = bfs(options, pos, 5);
