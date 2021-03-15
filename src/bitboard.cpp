@@ -547,10 +547,10 @@ namespace Bitboard {
             }
         } else {
             if (bit(pos.castling, 2)) {
-                
+                if (!bit(all, 61) && !bit(all, 62)) moves.push_back(Move(ky*8 + kx, 62));
             }
             if (bit(pos.castling, 3)) {
-
+                if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) moves.push_back(Move(ky*8 + kx, 58));
             }
         }
 
