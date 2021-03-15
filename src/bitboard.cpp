@@ -523,7 +523,7 @@ namespace Bitboard {
         return tuple<U64, char>(board, atk_cnt);
     }
 
-    vector<Move> king_moves(Position pos) {
+    vector<Move> king_moves(Position pos, U64 attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
         tuple<char, char> k_pos = first_bit(king);
