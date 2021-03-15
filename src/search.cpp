@@ -251,24 +251,23 @@ SearchInfo dfs(Options& options, Position pos, int depth) {
         if (pos.turn) score = eval(options, pos, true, attacks, o_attacks, (moves.size() != 0));
         else score = eval(options, pos, true, o_attacks, attacks, (moves.size() != 0));
         return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
-    } else {
-        int nodes = 1;
-        int best_ind = 0;
-        float best_eval = pos.turn ? -1000000 : 1000000;
-
-        for (auto i = 0; i < moves.size(); i++) {
-            Position new_pos = Bitboard::push(pos, moves[i]);;
-            SearchInfo result = dfs(options, new_pos, depth-1);
-            nodes += result.nodes;
-
-            bool exceeds = false;
-            if (pos.turn && (result.score > best_eval)) exceeds = true;
-            if (!pos.turn && (result.score < best_eval)) exceeds = true;
-            if (exceeds) {
-                best_ind = i;
-                best_eval = result.score;
-            }
-        }
-        return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
     }
+    int nodes = 1;
+    int best_ind = 0;
+    float best_eval = pos.turn ? -1000000 : 1000000;
+
+    for (auto i = 0; i < moves.size(); i++) {
+        Position new_pos = Bitboard::push(pos, moves[i]);;
+        SearchInfo result = dfs(options, new_pos, depth-1);
+        nodes += result.nodes;
+
+        bool exceeds = false;
+        if (pos.turn && (result.score > best_eval)) exceeds = true;
+        if (!pos.turn && (result.score < best_eval)) exceeds = true;
+        if (exceeds) {
+            best_ind = i;
+            best_eval = result.score;
+        }
+    }
+    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
 }
