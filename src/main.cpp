@@ -32,7 +32,7 @@ using std::string;
 
 
 void print_info() {
-    cout << "Megalodon v0.1.2 - UCI chess engine" << "\n";
+    cout << "Megalodon v0.1.3 - UCI chess engine" << "\n";
     cout << "Copyright the Megalodon developers (in AUTHORS file)" << "\n";
     cout << "https://github.com/HuangPatrick16777216/megalodon" << "\n";
     cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << endl;

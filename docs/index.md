@@ -4,7 +4,7 @@
 
 UCI chess engine
 
-[Version 0.1.2][latest] was recently released!
+[Version 0.1.3][latest] was recently released!
 
 ## Table of Contents
 
