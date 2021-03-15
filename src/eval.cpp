@@ -24,6 +24,7 @@
 #include "bitboard.hpp"
 #include "options.hpp"
 #include "eval.hpp"
+#include "search.hpp"
 
 using std::cin;
 using std::cout;
@@ -78,8 +79,8 @@ float eval(Options& options, Position pos, bool precomp, U64 w_attacks, U64 b_at
     }
 
     if (!moves_exist) {
-        if (pos.turn) return -1000000;
-        else return 1000000;
+        if (pos.turn) return MIN;
+        else return MAX;
     }
 
     int movect = pos.move_stack.size();

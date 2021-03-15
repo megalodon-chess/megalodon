@@ -113,7 +113,7 @@ SearchInfo bfs_minimax(Pos3D& tree, int total_depth) {
         int nodect = 0;
         for (auto& group: tree[d]) {
             for (auto& node: group) {
-                float best_eval = node.turn ? -1000000 : 1000000;
+                float best_eval = node.turn ? MIN : MAX;
 
                 Pos1D branches = tree[d+1][nodect];
                 if (branches.size() == 0) continue;
@@ -132,7 +132,7 @@ SearchInfo bfs_minimax(Pos3D& tree, int total_depth) {
     }
 
     Position pos = tree[0][0][0];
-    float best_eval = pos.turn ? -1000000 : 1000000;
+    float best_eval = pos.turn ? MIN : MAX;
     Move best_move;
     for (auto branch: flatten(tree[1])) {
         bool exceeds = false;
@@ -231,8 +231,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
         double elapse = get_time() - start + 0.001;  // Add 0.001 to prevent divide by 0.
         cout << SearchInfo(depth, depth, false, result.score, num_nodes, num_nodes/elapse, elapse*1000, result.move).as_string() << endl;
 
-        depth++;
-        if (depth == total_depth) break;
+        if (depth++ == total_depth) break;
     }
 
     result = bfs_minimax(*tree, total_depth);
@@ -254,7 +253,7 @@ SearchInfo dfs(Options& options, Position pos, int depth, float alpha, float bet
     }
     int nodes = 1;
     int best_ind = 0;
-    float best_eval = pos.turn ? -1000000 : 1000000;
+    float best_eval = pos.turn ? MIN : MAX;
 
     for (auto i = 0; i < moves.size(); i++) {
         Position new_pos = Bitboard::push(pos, moves[i]);;

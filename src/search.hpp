@@ -50,9 +50,12 @@ struct SearchInfo {
     Move move;
 };
 
+constexpr int MAX = 1000000;
+constexpr int MIN = -1000000;
+
 float total_mat(Position);
 float moves_left(Options&, Position);
 float move_time(Options&, Position, float, float);
 
 SearchInfo bfs(Options&, Position, int);
-SearchInfo dfs(Options&, Position, int, float=-1000000, float=1000000);
+SearchInfo dfs(Options&, Position, int, float=MIN, float=MAX);

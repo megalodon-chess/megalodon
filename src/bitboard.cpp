@@ -523,17 +523,35 @@ namespace Bitboard {
         return tuple<U64, char>(board, atk_cnt);
     }
 
-    vector<Move> king_moves(U64 king, U64 same, U64 attacks) {
+    vector<Move> king_moves(Position pos, U64 same, U64 all, U64 attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
-        tuple<char, char> k_pos = first_bit(king);
-
+        tuple<char, char> k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
         const char kx = get<0>(k_pos), ky = get<1>(k_pos);
+        const char start = ky*8 + kx;
+
         for (auto dir: DIR_K) {
             const char x = kx+dir[0], y = ky+dir[1];
             if (0 <= x && x < 8 && 0 <= y && y < 8) {
                 const char loc = y*8 + x;
-                if (!bit(attacks, loc) && !bit(same, loc)) moves.push_back(Move(ky*8 + kx, loc));
+                if (!bit(attacks, loc) && !bit(same, loc)) moves.push_back(Move(start, loc));
+            }
+        }
+
+        // Castling
+        if (pos.turn) {
+            if (bit(pos.castling, 0)) {
+                if (!bit(all, 5) && !bit(all, 6)) moves.push_back(Move(start, 6));
+            }
+            if (bit(pos.castling, 1)) {
+                if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) moves.push_back(Move(start, 2));
+            }
+        } else {
+            if (bit(pos.castling, 2)) {
+                if (!bit(all, 61) && !bit(all, 62)) moves.push_back(Move(start, 62));
+            }
+            if (bit(pos.castling, 3)) {
+                if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) moves.push_back(Move(start, 58));
             }
         }
 
@@ -575,7 +593,7 @@ namespace Bitboard {
         OPPONENT = OP | ON | OB | OR | OQ | OK;
         ALL = SAME | OPPONENT;
 
-        vector<Move> moves = king_moves(CK, SAME, attacks);
+        vector<Move> moves = king_moves(pos, SAME, ALL, attacks);
         const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
