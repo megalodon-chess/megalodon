@@ -50,10 +50,8 @@ struct SearchInfo {
     Move move;
 };
 
-constexpr int MAX_INT = 1000000;
-constexpr float MAX_FLOAT = 1000000;
-constexpr int MIN_INT = -1000000;
-constexpr float MIN_FLOAT = -1000000;
+constexpr int MAX = 1000000;
+constexpr int MIN = -1000000;
 
 float total_mat(Position);
 float moves_left(Options&, Position);
