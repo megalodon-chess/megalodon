@@ -635,13 +635,18 @@ namespace Bitboard {
                             }
                         }
                         // Capture
-                        // todo en passant
+                        U64 new_capture = capture_mask;
+                        if (pos.ep) {
+                            if (pos.turn) {
+                                if (y == 4 && bit(OP, 32 + pos.ep_square%8)) set_bit(new_capture, 24 + pos.ep_square%8);
+                            }
+                        }
                         y += pawn_dir;
                         if (0 <= y && y < 8) {
                             for (auto offset: {x-1, x+1}) {
                                 if (0 <= offset && offset < 8) {
                                     const char char_move = y*8 + offset;
-                                    if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                    if ((1ULL << char_move) & new_capture != EMPTY && bit(OPPONENT, char_move)) {
                                         moves.push_back(Move(i, char_move));
                                     }
                                 }
