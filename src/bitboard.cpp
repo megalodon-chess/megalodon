@@ -120,6 +120,14 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
+    void set_bit(char& board, int pos) {
+        board |= (1ULL << pos);
+    }
+
+    void unset_bit(char& board, int pos) {
+        board &= ~(1ULL << pos);
+    }
+
     tuple<char, char> first_bit(U64 board) {
         char pos = log2(board & -board);
         return tuple<char, char>(pos%8, pos/8);
