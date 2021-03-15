@@ -741,16 +741,12 @@ namespace Bitboard {
                         // todo en passant
                         y += pawn_dir;
                         if (0 <= y && y < 8) {
-                            if (0 <= x-1 && x-1 < 8) {
-                                const char char_move = y*8 + x-1;
-                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
-                                    moves.push_back(Move(i, char_move));
-                                }
-                            }
-                            if (0 <= x+1 && x+1 < 8) {
-                                const char char_move = y*8 + x+1;
-                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
-                                    moves.push_back(Move(i, char_move));
+                            for (auto offset: {x-1, x+1}) {
+                                if (0 <= offset && offset < 8) {
+                                    const char char_move = y*8 + offset;
+                                    if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
+                                        moves.push_back(Move(i, char_move));
+                                    }
                                 }
                             }
                         }
