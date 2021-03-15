@@ -646,7 +646,6 @@ namespace Bitboard {
                                 end = 2;
                             }
                             if (y == start && bit(OP, start*8 + ep_x)) set_bit(new_capture, end*8 + ep_x);
-                            }
                         }
                         y += pawn_dir;
                         if (0 <= y && y < 8) {
