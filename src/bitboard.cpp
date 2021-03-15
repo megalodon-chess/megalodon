@@ -523,7 +523,7 @@ namespace Bitboard {
         return tuple<U64, char>(board, atk_cnt);
     }
 
-    vector<Move> king_moves(Position pos, U64 same, U64 attacks) {
+    vector<Move> king_moves(Position pos, U64 same, U64 all, U64 attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
         tuple<char, char> k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
@@ -540,7 +540,7 @@ namespace Bitboard {
         // Castling
         if (pos.turn) {
             if (bit(pos.castling, 0)) {
-                
+
             }
             if (bit(pos.castling, 1)) {
                 
@@ -550,7 +550,7 @@ namespace Bitboard {
                 
             }
             if (bit(pos.castling, 3)) {
-                
+
             }
         }
 
@@ -592,7 +592,7 @@ namespace Bitboard {
         OPPONENT = OP | ON | OB | OR | OQ | OK;
         ALL = SAME | OPPONENT;
 
-        vector<Move> moves = king_moves(pos, SAME, attacks);
+        vector<Move> moves = king_moves(pos, SAME, ALL, attacks);
         const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
