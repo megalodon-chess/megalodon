@@ -241,7 +241,7 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
 }
 
 
-SearchInfo dfs(Options& options, Position pos, int depth) {
+SearchInfo dfs(Options& options, Position pos, int depth, float alpha, float beta) {
     U64 attacks = Bitboard::attacked(pos, pos.turn);
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
@@ -258,15 +258,24 @@ SearchInfo dfs(Options& options, Position pos, int depth) {
 
     for (auto i = 0; i < moves.size(); i++) {
         Position new_pos = Bitboard::push(pos, moves[i]);;
-        SearchInfo result = dfs(options, new_pos, depth-1);
+        SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta);
         nodes += result.nodes;
 
         bool exceeds = false;
-        if (pos.turn && (result.score > best_eval)) exceeds = true;
-        if (!pos.turn && (result.score < best_eval)) exceeds = true;
-        if (exceeds) {
-            best_ind = i;
-            best_eval = result.score;
+        if (pos.turn) {
+            if (result.score > best_eval) {
+                best_ind = i;
+                best_eval = result.score;
+            }
+            if (result.score > alpha) alpha = result.score;
+            if (beta <= alpha) break;
+        } else {
+            if (result.score < best_eval) {
+                best_ind = i;
+                best_eval = result.score;
+            }
+            if (result.score < beta) beta = result.score;
+            if (beta <= alpha) break;
         }
     }
     return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
