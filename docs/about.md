@@ -22,4 +22,4 @@ Megalodon's team contains of three students and one consultant.
 
 [Back to documentation home][home]
 
-[home]: https://huangpatrick16777216.github.io/megalodon/
+[home]: https://megalodon-chess.github.io/megalodon/

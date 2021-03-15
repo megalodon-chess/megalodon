@@ -26,4 +26,4 @@ This is scheduled to be released on March 31, 2021.
 
 [Back to documentation home][home]
 
-[home]: https://huangpatrick16777216.github.io/megalodon/
+[home]: https://megalodon-chess.github.io/megalodon/

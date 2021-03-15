@@ -14,4 +14,4 @@ Please use the `Feature Request` issue template.
 
 We are thankful for all contributions!
 
-[projects]: https://huangpatrick16777216.github.io/megalodon/projects
+[projects]: https://megalodon-chess.github.io/megalodon/projects

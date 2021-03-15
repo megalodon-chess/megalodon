@@ -13,6 +13,6 @@ Then, add Megalodon as an engine in the GUI, and you are ready to play it!
 
 [Back to documentation home][home]
 
-[home]: https://huangpatrick16777216.github.io/megalodon/
-[latest]: https://github.com/HuangPatrick16777216/megalodon/releases/latest
-[quickstart]: https://huangpatrick16777216.github.io/megalodon/quick-start
+[home]: https://megalodon-chess.github.io/megalodon/
+[latest]: https://github.com/megalodon-chess/megalodon/releases/latest
+[quickstart]: https://megalodon-chess.github.io/megalodon/quick-start

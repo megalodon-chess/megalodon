@@ -19,5 +19,5 @@ setoption name EvalCenter value 250
 
 [Back to documentation home][home]
 
-[home]: https://huangpatrick16777216.github.io/megalodon/
-[blog]: https://huangpatrick16777216.github.io/megalodon/blog
+[home]: https://megalodon-chess.github.io/megalodon/
+[blog]: https://megalodon-chess.github.io/megalodon/blog

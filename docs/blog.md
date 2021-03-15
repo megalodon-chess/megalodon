@@ -6,5 +6,5 @@ Latest posts about Megalodon
 
 [Back to documentation home][home]
 
-[home]: https://huangpatrick16777216.github.io/megalodon/
-[3-12-2021-evalweights]: https://huangpatrick16777216.github.io/megalodon/blog/3-12-2021-evalweights
+[home]: https://megalodon-chess.github.io/megalodon/
+[3-12-2021-evalweights]: https://megalodon-chess.github.io/megalodon/blog/3-12-2021-evalweights

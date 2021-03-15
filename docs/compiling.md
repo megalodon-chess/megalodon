@@ -10,7 +10,7 @@ To compile Megalodon from it's source code, follow these steps:
 6. Run the executable.
 
 ``` bash
-git clone https://github.com/HuangPatrick16777216/megalodon.git
+git clone https://github.com/megalodon-chess/megalodon.git
 mkdir build
 cd build/
 cmake ..
@@ -20,4 +20,4 @@ make
 
 [Back to documentation home][home]
 
-[home]: https://huangpatrick16777216.github.io/megalodon/
+[home]: https://megalodon-chess.github.io/megalodon/

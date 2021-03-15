@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/HuangPatrick16777216/megalodon/main/logo/logo_widescreen_light.png)
+![logo](https://raw.githubusercontent.com/megalodon-chess/megalodon/main/logo/logo_widescreen_light.png)
 
 # Megalodon
 
@@ -17,7 +17,7 @@ UCI chess engine.
 7. Run the executable.
 
 ``` bash
-git clone https://github.com/HuangPatrick16777216/megalodon.git
+git clone https://github.com/megalodon-chess/megalodon.git
 cd megalodon/
 mkdir build
 cd build/
@@ -41,5 +41,5 @@ The name megalodon comes from a species of shark that lived millions of years ag
 
 For extra documentation, please read the [docs][docs].
 
-[docs]: https://huangpatrick16777216.github.io/megalodon/
-[latest]: https://github.com/HuangPatrick16777216/megalodon/releases/latest
+[docs]: https://megalodon-chess.github.io/megalodon/
+[latest]: https://github.com/megalodon-chess/megalodon/releases/latest
