@@ -708,23 +708,6 @@ namespace Bitboard {
                         const char x = i%8;
                         char y;
 
-                        // Captures
-                        // todo en passant
-                        y = i/8 + pawn_dir;
-                        if (0 <= y && y < 8) {
-                            if (0 <= x-1 && x-1 < 8) {
-                                const char char_move = y*8 + x-1;
-                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
-                                    moves.push_back(Move(i, char_move));
-                                }
-                            }
-                            if (0 <= x+1 && x+1 < 8) {
-                                const char char_move = y*8 + x+1;
-                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
-                                    moves.push_back(Move(i, char_move));
-                                }
-                            }
-                        }
                         // Forward
                         y = i/8;
                         const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
@@ -739,6 +722,23 @@ namespace Bitboard {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
                                 if ((1ULL << loc) & pin_mask) moves.push_back(Move(i, loc));
+                            }
+                        }
+                        // Captures
+                        // todo en passant
+                        y += pawn_dir;
+                        if (0 <= y && y < 8) {
+                            if (0 <= x-1 && x-1 < 8) {
+                                const char char_move = y*8 + x-1;
+                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
+                                }
+                            }
+                            if (0 <= x+1 && x+1 < 8) {
+                                const char char_move = y*8 + x+1;
+                                if ((((1ULL << char_move) & pin_mask) != EMPTY) && bit(OPPONENT, char_move)) {
+                                    moves.push_back(Move(i, char_move));
+                                }
                             }
                         }
                     } else if (bit(CN, i)) {
