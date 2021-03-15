@@ -609,20 +609,9 @@ namespace Bitboard {
             for (char i = 0; i < 64; i++) {
                 if (bit(SAME, i) && !get<0>(pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME))) {
                     if (bit(CP, i)) {
-                        // Capture
-                        // todo en passant
                         const char x = i%8;
-                        char y = i/8 + pawn_dir;
-                        if (0 <= y && y < 8) {
-                            for (auto offset: {x-1, x+1}) {
-                                if (0 <= offset && offset < 8) {
-                                    const char char_move = y*8 + offset;
-                                    if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
-                                        moves.push_back(Move(i, char_move));
-                                    }
-                                }
-                            }
-                        }
+                        char y;
+
                         // Block
                         y = i/8;
                         const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
@@ -642,6 +631,19 @@ namespace Bitboard {
                                 if (bit(block_mask, loc)) {
                                     moves.push_back(Move(i, loc));
                                     break;
+                                }
+                            }
+                        }
+                        // Capture
+                        // todo en passant
+                        y += pawn_dir;
+                        if (0 <= y && y < 8) {
+                            for (auto offset: {x-1, x+1}) {
+                                if (0 <= offset && offset < 8) {
+                                    const char char_move = y*8 + offset;
+                                    if ((1ULL << char_move) & capture_mask != EMPTY && bit(OPPONENT, char_move)) {
+                                        moves.push_back(Move(i, char_move));
+                                    }
                                 }
                             }
                         }
