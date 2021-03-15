@@ -2,6 +2,13 @@
 
 This page contains release info.
 
+## [Megalodon 0.1.3][v0.1.3]
+
+There are many move generation bug fixes in this release,
+and the engine has almost perfect move generation.
+
+It now also evaluates mate, but there are still some bugs.
+
 ## [Megalodon 0.1.2][v0.1.2]
 
 Bit processing instructions were greatly optimized in this release.
@@ -62,7 +69,8 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://huangpatrick16777216.github.io/megalodon/
-[v0.1.2]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.1
+[v0.1.3]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.3
+[v0.1.2]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.2
 [v0.1.1]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.1
 [v0.1.0]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.0
 [v0.1.0-alpha]: https://github.com/HuangPatrick16777216/megalodon/releases/tag/v0.1.0-alpha
