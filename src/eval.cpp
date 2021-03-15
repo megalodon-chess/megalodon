@@ -71,11 +71,17 @@ float center_weight(Options& options, int movect) {
 }
 
 
-float eval(Options& options, Position pos, bool attacks, U64 w_attacks, U64 b_attacks) {
-    if (!attacks) {
+float eval(Options& options, Position pos, bool precomp, U64 w_attacks, U64 b_attacks, bool moves_exist) {
+    if (!precomp) {
         w_attacks = Bitboard::attacked(pos, true);
         b_attacks = Bitboard::attacked(pos, false);
     }
+
+    if (!moves_exist) {
+        if (pos.turn) return -1000000;
+        else return 1000000;
+    }
+
     int movect = pos.move_stack.size();
 
     float mat;

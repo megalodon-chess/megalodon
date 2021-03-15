@@ -97,7 +97,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
     // Calculates move time based on moves left and game evaluation.
     float moves = moves_left(options, pos);
     float time_left = time + inc*moves;
-    float mat = eval(options, pos, false, 0, 0);
+    float mat = eval(options, pos, false, 0, 0, false);
     if (!pos.turn) mat *= -1;
     float mat_offset = mat * -0.3;
 
@@ -185,7 +185,7 @@ void bfs_prune(Pos3D& tree, int depth) {
 }
 
 SearchInfo bfs(Options& options, Position pos, int total_depth) {
-    pos.eval = eval(options, pos, false, 0, 0);
+    pos.eval = eval(options, pos, false, 0, 0, {});
     Pos3D* tree = new Pos3D({{{pos}}});
     SearchInfo result;
     int depth = 1;
@@ -204,10 +204,11 @@ SearchInfo bfs(Options& options, Position pos, int total_depth) {
             U64 attacks = Bitboard::attacked(node, node.turn);
             U64 o_attacks = Bitboard::attacked(node, !node.turn);
 
-            for (auto move: Bitboard::legal_moves(node, o_attacks)) {
+            vector<Move> moves = Bitboard::legal_moves(node, o_attacks);
+            for (auto move: moves) {
                 Position new_pos = Bitboard::push(node, move);
-                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks);
-                else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks);
+                if (new_pos.turn) new_pos.eval = eval(options, new_pos, true, attacks, o_attacks, (moves.size() != 0));
+                else new_pos.eval = eval(options, new_pos, true, o_attacks, attacks, (moves.size() != 0));
                 (*group).push_back(new_pos);
             }
             (*curr_depth).push_back(*group);
@@ -247,8 +248,8 @@ SearchInfo dfs(Options& options, Position pos, int depth) {
 
     if (depth == 0 || moves.size() == 0) {
         float score;
-        if (pos.turn) score = eval(options, pos, true, attacks, o_attacks);
-        else score = eval(options, pos, true, o_attacks, attacks);
+        if (pos.turn) score = eval(options, pos, true, attacks, o_attacks, (moves.size() != 0));
+        else score = eval(options, pos, true, o_attacks, attacks, (moves.size() != 0));
         return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
     } else {
         int nodes = 1;
