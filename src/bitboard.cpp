@@ -652,7 +652,7 @@ namespace Bitboard {
                             for (auto offset: {x-1, x+1}) {
                                 if (0 <= offset && offset < 8) {
                                     const char char_move = y*8 + offset;
-                                    if ((1ULL << char_move) & new_capture != EMPTY && bit(OPPONENT, char_move)) {
+                                    if ((1ULL << char_move) & new_capture != EMPTY && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
                                         moves.push_back(Move(i, char_move));
                                     }
                                 }
