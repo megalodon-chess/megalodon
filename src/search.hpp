@@ -55,4 +55,4 @@ float moves_left(Options&, Position);
 float move_time(Options&, Position, float, float);
 
 SearchInfo bfs(Options&, Position, int);
-SearchInfo dfs(Options&, Position, int, float, float);
+SearchInfo dfs(Options&, Position, int, float=-1000000, float=1000000);
