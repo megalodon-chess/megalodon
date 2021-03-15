@@ -640,7 +640,7 @@ namespace Bitboard {
                             char ep_x = pos.ep_square % 8;
                             if (pos.turn) {
                                 // loc is y*8 + x, 4*8 + ep_x
-                                if (y == 4 && bit(OP, 32 + ep_x)) set_bit(new_capture, 24 + ep_x);
+                                if (y == 4 && bit(OP, 32 + ep_x)) set_bit(new_capture, 40 + ep_x);
                             } else {
                                 // loc is y*8 + x, 3*8 + ep_x
                                 if (y == 3 && bit(OP, 24 + ep_x)) set_bit(new_capture, 16 + ep_x);
