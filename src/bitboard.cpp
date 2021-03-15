@@ -839,10 +839,15 @@ namespace Bitboard {
         // todo castling ep
         vector<U64*> pointers = bb_pointers(pos);
         U64* to_board = pointers[0];
+        bool is_king = false;
 
+        // Find to_board and set bits.
         for (auto i = 0; i < pointers.size(); i++) {
             U64* p = pointers[i];
-            if (bit(*p, move.from)) to_board = p;
+            if (bit(*p, move.from)) {
+                to_board = p;
+                if ((i == 5) || (i == 11)) is_king = true;
+            }
             unset_bit(*p, move.from);
             unset_bit(*p, move.to);
         }
@@ -863,10 +868,22 @@ namespace Bitboard {
                 }
             }
         }
-
         set_bit(*to_board, move.to);
         pos.turn = !pos.turn;
         pos.move_stack.push_back(move);
+
+        // Castling
+        if (is_king && (abs(move.to-move.from) == 2)) {
+            const char x = (move.to > move.from) ? 7 : 0;
+            const char new_x = (move.to > move.from) ? 5 : 3;
+            if (move.from < 8) {
+                unset_bit(*pointers[3], x);
+                set_bit(*pointers[3], new_x);
+            } else {
+                unset_bit(*pointers[9], x+56);
+                set_bit(*pointers[9], new_x+56);
+            }
+        }
 
         return pos;
     }
