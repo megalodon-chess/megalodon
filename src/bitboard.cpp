@@ -637,9 +637,10 @@ namespace Bitboard {
                         // Capture
                         U64 new_capture = capture_mask;
                         if (pos.ep) {
+                            char ep_x = pos.ep_square % 8;
                             if (pos.turn) {
                                 // loc is y*8 + x, 4*8 + x of ep_square
-                                if (y == 4 && bit(OP, 32 + pos.ep_square%8)) set_bit(new_capture, 24 + pos.ep_square%8);
+                                if (y == 4 && bit(OP, 32 + ep_x)) set_bit(new_capture, 24 + ep_x);
                             }
                         }
                         y += pawn_dir;
