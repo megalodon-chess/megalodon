@@ -22,7 +22,8 @@ This is scheduled to be released on March 31, 2021.
 * v0.1.0: Working move generation and DFS minimax.
 * v0.1.x: Move generation optimization.
 * v0.2.x: BFS move search with alpha-beta and bad branch pruning.
-* v0.3.x: Evaluation improvements
+* v0.3.x: Evaluation improvements.
+* v0.4.x: Final optimizations and prepare v1.0.0 release.
 
 [Back to documentation home][home]
 
