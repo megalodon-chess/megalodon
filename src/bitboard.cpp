@@ -540,10 +540,10 @@ namespace Bitboard {
         // Castling
         if (pos.turn) {
             if (bit(pos.castling, 0)) {
-
+                if (!bit(all, 5) && !bit(all, 6)) moves.push_back(Move(ky*8 + kx, 6));
             }
             if (bit(pos.castling, 1)) {
-                
+                if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) moves.push_back(Move(ky*8 + kx, 2));
             }
         } else {
             if (bit(pos.castling, 2)) {
