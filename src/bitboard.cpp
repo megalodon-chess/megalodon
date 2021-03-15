@@ -575,7 +575,7 @@ namespace Bitboard {
         OPPONENT = OP | ON | OB | OR | OQ | OK;
         ALL = SAME | OPPONENT;
 
-        vector<Move> moves = king_moves(CK, SAME, attacks);
+        vector<Move> moves = king_moves(CK, SAME, attacks, pos.turn);
         const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
