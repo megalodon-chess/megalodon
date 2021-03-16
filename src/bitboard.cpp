@@ -911,17 +911,7 @@ namespace Bitboard {
         vector<U64*> pointers = bb_pointers(pos);
         U64* to_board = pointers[0];
         bool is_king = false;
-
-        // ep
-        if (pos.turn) {
-            if (bit(pos.wp, move.from) && (abs(move.to - move.from) == 16)) {
-                pos.ep_square = move.to - 8;
-            }
-        } else {
-            if (bit(pos.bp, move.from) && (abs(move.to - move.from) == 16)) {
-                pos.ep_square = move.to + 8;
-            }
-        }
+        bool is_pawn = false;
 
         // Find to_board and set bits.
         for (auto i = 0; i < pointers.size(); i++) {
@@ -929,6 +919,7 @@ namespace Bitboard {
             if (bit(*p, move.from)) {
                 to_board = p;
                 if ((i == 5) || (i == 11)) is_king = true;
+                if ((i == 0) || (i == 6)) is_pawn = true;
             }
             unset_bit(*p, move.from);
             unset_bit(*p, move.to);
