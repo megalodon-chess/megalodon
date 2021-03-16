@@ -144,9 +144,9 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
-    tuple<char, char> first_bit(U64 board) {
+    Location first_bit(U64 board) {
         char pos = log2(board & -board);
-        return tuple<char, char>(pos%8, pos/8);
+        return Location(pos%8, pos/8);
     }
 
 
@@ -418,8 +418,8 @@ namespace Bitboard {
 
     tuple<bool, U64> pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
         const U64 opponent = pawns | knights | bishops | rooks | queens;
-        const tuple<char, char> k_pos = first_bit(king);
-        const char kx = get<0>(k_pos), ky = get<1>(k_pos);
+        const Location k_pos = first_bit(king);
+        const char kx = k_pos.x, ky = k_pos.y;
         U64 pin_ray = EMPTY;
         bool found;
 
@@ -476,8 +476,8 @@ namespace Bitboard {
     tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, U64 attackers, bool side) {
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
-        const tuple<char, char> k_pos = first_bit(king);
-        const char kx = get<0>(k_pos), ky = get<1>(k_pos);
+        const Location k_pos = first_bit(king);
+        const char kx = k_pos.x, ky = k_pos.y;
         if (!bit(attackers, ky*8+kx)) return tuple<U64, char>(board, atk_cnt);
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         const char pawn_dir = side ? -1 : 1;
@@ -550,8 +550,8 @@ namespace Bitboard {
     vector<Move> king_moves(Position pos, U64 same, U64 all, U64 attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
-        tuple<char, char> k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
-        const char kx = get<0>(k_pos), ky = get<1>(k_pos);
+        Location k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
+        const char kx = k_pos.x, ky = k_pos.y;
         const char start = ky*8 + kx;
 
         for (auto dir: DIR_K) {
@@ -628,8 +628,8 @@ namespace Bitboard {
         } else if (num_checkers == 1) {
             // Block and capture piece giving check to king
             U64 block_mask = EMPTY, capture_mask = checking_pieces;
-            tuple<char, char> k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
-            const char kx = get<0>(k_pos), ky = get<1>(k_pos), check_x = get<0>(check_pos), check_y = get<1>(check_pos);
+            Location k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
+            const char kx = k_pos.x, ky = k_pos.y, check_x = check_pos.x, check_y = check_pos.y;
 
             char dx = check_x - kx, dy = check_y - ky;
             if (!(std::find(DIR_N.begin(), DIR_N.end(), vector<char>({dx, dy})) != DIR_N.end())) {

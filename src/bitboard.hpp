@@ -112,7 +112,7 @@ namespace Bitboard {
     void unset_bit(U64&, int);
     void set_bit(char&, int);
     void unset_bit(char&, int);
-    tuple<char, char> first_bit(U64);
+    Location first_bit(U64);
 
     string piece_at(Position, char);
     string board_str(U64, string="X", string="-");
