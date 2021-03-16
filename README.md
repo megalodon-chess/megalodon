@@ -27,7 +27,7 @@ cd megalodon/
 3. Create `build` directory.
 4. `cd` to `build/`
 5. Create `Makefile` with `cmake`
-6. Run `make` to create the executable.
+6. Use `make -j` to create the executable with all cores.
 7. Run the executable.
 
 ``` bash
@@ -36,7 +36,7 @@ cd megalodon/
 mkdir build
 cd build/
 cmake ..
-make
+make -j
 ./Megalodon
 ```
 
