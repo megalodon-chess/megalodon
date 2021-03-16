@@ -914,8 +914,14 @@ namespace Bitboard {
         bool is_king = false;
 
         // ep
-        if (bit(pos.turn ? pos.wp : pos.bp, move.from) && (abs(move.to - move.from) == 16)) {
-            
+        if (pos.turn) {
+            if (bit(pos.wp, move.from) && (abs(move.to - move.from) == 16)) {
+                pos.ep_square = move.to - 8;
+            }
+        } else {
+            if (bit(pos.bp, move.from) && (abs(move.to - move.from) == 16)) {
+                pos.ep_square = move.to + 8;
+            }
         }
 
         // Find to_board and set bits.
