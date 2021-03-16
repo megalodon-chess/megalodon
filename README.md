@@ -10,7 +10,8 @@ UCI chess engine.
 
 1. Clone or download the repository.
 2. `cd` to `megalodon/`
-3. Run `build.sh`
+4. Run `build.sh`
+5. Run the executable inside `build/`
 
 ```bash
 git clone https://github.com/megalodon-chess/megalodon.git
