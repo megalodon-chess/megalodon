@@ -913,6 +913,11 @@ namespace Bitboard {
         U64* to_board = pointers[0];
         bool is_king = false;
 
+        // ep
+        if (bit(pos.turn ? pos.wp : pos.bp, move.from) && (abs(move.to - move.from) == 16)) {
+            
+        }
+
         // Find to_board and set bits.
         for (auto i = 0; i < pointers.size(); i++) {
             U64* p = pointers[i];
