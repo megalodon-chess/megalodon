@@ -93,6 +93,18 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
     active = true;
 }
 
+
+Location::Location() {
+    x = 0;
+    y = 0;
+}
+
+Location::Location(char _x, char _y) {
+    x = _x;
+    y = _y;
+}
+
+
 namespace Bitboard {
     bool bit(U64 board, int pos) {
         return ((1ULL << pos) & board) != 0;
