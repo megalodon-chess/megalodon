@@ -31,10 +31,6 @@ using std::endl;
 using std::vector;
 using std::string;
 
-typedef vector<vector<vector<Position>>> Pos3D;
-typedef vector<vector<Position>> Pos2D;
-typedef vector<Position> Pos1D;
-
 struct SearchInfo {
     SearchInfo();
     SearchInfo(int, int, bool, int, int, int, int, Move);
@@ -56,6 +52,3 @@ constexpr int MIN = -1000000;
 float total_mat(Position);
 float moves_left(Options&, Position);
 float move_time(Options&, Position, float, float);
-
-SearchInfo bfs(Options&, Position, int);
-SearchInfo dfs(Options&, Position, int, float=MIN, float=MAX);
