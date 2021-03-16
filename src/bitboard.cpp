@@ -664,7 +664,7 @@ namespace Bitboard {
                                 if (bit(block_mask, loc)) {
                                     if (cy == 0) {
                                         // Promotion
-                                        for (auto p: {'N', 'B', 'R', 'Q'}) {
+                                        for (auto p: {'n', 'b', 'r', 'q'}) {
                                             moves.push_back(Move(i, loc, true, p));
                                         }
                                     } else {
