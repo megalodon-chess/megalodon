@@ -38,6 +38,16 @@ make
 ./Megalodon
 ```
 
+## To compile and run
+1. Clone or download the repository.
+2. `cd` to `megalodon/`
+3. Run `run.sh`
+```bash
+git clone https://github.com/megalodon-chess/megalodon.git
+cd megalodon/
+./run.sh
+```
+
 ## License
 
 Everything in the repository is licensed as GNU GPL v3 license.
