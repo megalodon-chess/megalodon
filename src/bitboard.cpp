@@ -109,6 +109,10 @@ namespace Bitboard {
         count += popcnt_tbl[(num>>8)&mask];
         count += popcnt_tbl[(num>>16)&mask];
         count += popcnt_tbl[(num>>24)&mask];
+        count += popcnt_tbl[(num>>32)&mask];
+        count += popcnt_tbl[(num>>40)&mask];
+        count += popcnt_tbl[(num>>48)&mask];
+        count += popcnt_tbl[(num>>56)&mask];
         return count;
     }
 
