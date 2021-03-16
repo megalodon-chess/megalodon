@@ -23,6 +23,7 @@
 #  in the format "info nodes <nodes>"
 
 import os
+import sys
 import time
 import subprocess
 import chess
@@ -32,6 +33,13 @@ ENG_PATH = "build/Megalodon"
 DEPTH = 4
 FEN = chess.STARTING_FEN
 
+if len(sys.argv) > 1:
+    if sys.argv[1].isnumeric():
+        DEPTH = int(sys.argv[1])
+    else:
+        print(f"Invalid depth: {sys.argv[1]}")
+
+print(f"Using depth {DEPTH}")
 
 def real_result(pos: chess.Board, depth):
     if depth == 0:
