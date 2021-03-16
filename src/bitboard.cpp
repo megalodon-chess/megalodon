@@ -942,8 +942,6 @@ namespace Bitboard {
             }
         }
         set_bit(*to_board, move.to);
-        pos.turn = !pos.turn;
-        pos.move_stack.push_back(move);
 
         // Castling
         if (is_king && (abs(move.to-move.from) == 2)) {
@@ -975,6 +973,28 @@ namespace Bitboard {
             }
         }
 
+        // En passant
+        pos.ep = false;
+        if (is_pawn) {
+            if (move.to > move.from) {
+                if ((move.to-move.from) == 16) {
+                    pos.ep = true;
+                    pos.ep_square = move.from + 8;
+                } else if (((move.to-move.from) == 7) || ((move.to-move.from) == 9)) {
+                    unset_bit(pos.bp, move.to-8);
+                }
+            } else {
+                if ((move.from-move.to) == 16) {
+                    pos.ep = true;
+                    pos.ep_square = move.from - 8;
+                } else if (((move.from-move.to) == 7) || ((move.from-move.to) == 9)) {
+                    unset_bit(pos.wp, move.to+8);
+                }
+            }
+        }
+
+        pos.turn = !pos.turn;
+        pos.move_stack.push_back(move);
         return pos;
     }
 
