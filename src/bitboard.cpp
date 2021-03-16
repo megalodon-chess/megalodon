@@ -144,6 +144,13 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
+    bool contains(vector<vector<char>> sequence, vector<char> target) {
+        for (auto i: sequence) {
+            if (i == target) return true;
+        }
+        return false;
+    }
+
     Location first_bit(U64 board) {
         char pos = log2(board & -board);
         return Location(pos%8, pos/8);
@@ -632,7 +639,7 @@ namespace Bitboard {
             const char kx = k_pos.x, ky = k_pos.y, check_x = check_pos.x, check_y = check_pos.y;
 
             char dx = check_x - kx, dy = check_y - ky;
-            if (!(std::find(DIR_N.begin(), DIR_N.end(), vector<char>({dx, dy})) != DIR_N.end())) {
+            if (!contains(DIR_N, vector<char>({dx, dy}))) {
                 if (dx) dx /= abs(dx);
                 if (dy) dy /= abs(dy);
                 char cx = kx, cy = ky;   // Current (x, y)
