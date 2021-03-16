@@ -908,7 +908,6 @@ namespace Bitboard {
     }
 
     Position push(Position pos, Move move) {
-        // todo castling ep
         vector<U64*> pointers = bb_pointers(pos);
         U64* to_board = pointers[0];
         bool is_king = false;
