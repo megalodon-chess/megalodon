@@ -646,7 +646,14 @@ namespace Bitboard {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
                                 if (bit(block_mask, loc)) {
-                                    moves.push_back(Move(i, loc));
+                                    if (cy == 7) {
+                                        // Promotion
+                                        for (auto p: {'N', 'B', 'R', 'Q'}) {
+                                            moves.push_back(Move(i, loc, true, p));
+                                        }
+                                    } else {
+                                        moves.push_back(Move(i, loc));
+                                    }
                                     break;
                                 }
                             }
