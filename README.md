@@ -15,6 +15,7 @@ UCI chess engine.
 git clone https://github.com/megalodon-chess/megalodon.git
 cd megalodon/
 ./build.sh
+./build/Megalodon
 ```
 
 ## To compile manually
