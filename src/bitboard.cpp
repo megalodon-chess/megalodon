@@ -640,8 +640,8 @@ namespace Bitboard {
 
             char dx = check_x - kx, dy = check_y - ky;
             if (!contains(DIR_N, vector<char>({dx, dy}))) {
-                if (dx) dx /= abs(dx);
-                if (dy) dy /= abs(dy);
+                dx /= abs(dx);
+                dy /= abs(dy);
                 char cx = kx, cy = ky;   // Current (x, y)
                 while (true) {
                     cx += dx;
