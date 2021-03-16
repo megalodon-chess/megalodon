@@ -157,8 +157,6 @@ int loop() {
 
             if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalCenter") options.EvalCenter = std::stoi(value);
-            else if (name == "SearchAlg") options.SearchAlg = value;
-            else if (name == "SearchDepth") options.SearchDepth = std::stoi(value);
             else if (name == "InfoInc") options.InfoInc = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
@@ -212,12 +210,6 @@ int loop() {
 
             double start = get_time();
             SearchInfo result;
-            if (options.SearchAlg == "BFS") result = bfs(options, pos, options.SearchDepth);
-            else if (options.SearchAlg == "DFS") result = dfs(options, pos, options.SearchDepth);
-            else {
-                cout << "info string Invalid search algorithm." << endl;
-                return 1;
-            }
             double elapse = get_time() - start;
 
             float score = result.score;

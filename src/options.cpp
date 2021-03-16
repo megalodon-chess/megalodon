@@ -32,8 +32,6 @@ using std::string;
 Options::Options() {
     EvalMaterial = 100;
     EvalCenter = 100;
-    SearchAlg = "BFS";
-    SearchDepth = 5;
     InfoInc = 250;
     Chat = false;
 }
