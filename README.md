@@ -6,7 +6,18 @@ UCI chess engine.
 
 [Version 0.1.3][latest] was recently released!
 
-## To compile with cmake
+## To compile with script
+
+1. Clone or download the repository.
+2. `cd` to `megalodon/`
+3. Run `build.sh`
+```bash
+git clone https://github.com/megalodon-chess/megalodon.git
+cd megalodon/
+./build.sh
+```
+
+## To compile manually
 
 1. Clone or download the repository.
 2. `cd` to `megalodon/`
