@@ -790,7 +790,16 @@ namespace Bitboard {
                             for (auto cy = y - 1; cy > y - speed - 1; cy--) {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & pin_mask) moves.push_back(Move(i, loc));
+                                if ((1ULL << loc) & pin_mask) {
+                                    if (cy == 7) {
+                                        // Promotion
+                                        for (char p: {0, 1, 2, 3}) {
+                                            moves.push_back(Move(i, loc, true, p));
+                                        }
+                                    } else {
+                                        moves.push_back(Move(i, loc));
+                                    }
+                                }
                             }
                         }
                         // Captures
