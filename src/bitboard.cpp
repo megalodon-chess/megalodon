@@ -648,7 +648,7 @@ namespace Bitboard {
                                 if (bit(block_mask, loc)) {
                                     if (cy == 7) {
                                         // Promotion
-                                        for (auto p: {'N', 'B', 'R', 'Q'}) {
+                                        for (char p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, loc, true, p));
                                         }
                                     } else {
@@ -664,7 +664,7 @@ namespace Bitboard {
                                 if (bit(block_mask, loc)) {
                                     if (cy == 0) {
                                         // Promotion
-                                        for (auto p: {'n', 'b', 'r', 'q'}) {
+                                        for (char p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, loc, true, p));
                                         }
                                     } else {
@@ -695,7 +695,7 @@ namespace Bitboard {
                                     const char char_move = y*8 + offset;
                                     if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
                                         if (promo) {
-                                            for (auto p: {'n', 'b', 'r', 'q'}) {
+                                            for (char p: {0, 1, 2, 3}) {
                                                 moves.push_back(Move(i, char_move, true, p));
                                             }
                                         } else {
