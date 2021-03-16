@@ -24,8 +24,8 @@ cd megalodon/
 1. Clone or download the repository.
 2. `cd` to `megalodon/`
 3. Create `build` directory.
-4. `cd` to `build/`.
-5. Create `Makefile` with `cmake`.
+4. `cd` to `build/`
+5. Create `Makefile` with `cmake`
 6. Run `make` to create the executable.
 7. Run the executable.
 
