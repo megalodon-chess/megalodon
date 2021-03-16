@@ -11,6 +11,7 @@ UCI chess engine.
 1. Clone or download the repository.
 2. `cd` to `megalodon/`
 3. Run `build.sh`
+
 ```bash
 git clone https://github.com/megalodon-chess/megalodon.git
 cd megalodon/
@@ -42,6 +43,7 @@ make
 1. Clone or download the repository.
 2. `cd` to `megalodon/`
 3. Run `run.sh`
+
 ```bash
 git clone https://github.com/megalodon-chess/megalodon.git
 cd megalodon/
