@@ -159,15 +159,22 @@ int loop() {
             winc /= 1000;
             binc /= 1000;
 
-            double max_time;
-            if (mode == 1) max_time = 100000;
-            else {
-                if (pos.turn) max_time = move_time(options, pos, wtime, winc);
-                else max_time = move_time(options, pos, btime, binc);
+            if (mode == 0) {
+                depth = 5;
+            } else if (mode == 2) {
+                double time;
+                if (pos.turn) time = move_time(options, pos, wtime, winc);
+                else time = move_time(options, pos, btime, binc);
+                cout << "t" << time << endl;
+
+                if (10 <= time) depth = 5;
+                else if (1 <= time && time < 30) depth = 4;
+                else depth = 3;
             }
+            cout << depth << endl;
 
             double start = get_time();
-            SearchInfo result = search(options, pos, MIN, MAX, true, 5, max_time);
+            SearchInfo result = search(options, pos, MIN, MAX, true, depth, 0);
             double elapse = get_time() - start;
 
             float score = result.score;
