@@ -117,7 +117,9 @@ def main():
             print(real[i], end=" ")
             cprint(engine[i], "red")
 
-        if errors := len_engine - len(tuple(correct)):
+        errors = len_engine - len(tuple(correct))
+
+        if errors:
             cprint(f"{errors} errors were found...", "red")
         else:
             cprint("No errors found!", "green")
