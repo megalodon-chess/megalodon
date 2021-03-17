@@ -55,23 +55,6 @@ float material_weight(Options& options, int movect) {
 }
 
 
-float center(U64 w_attacks, U64 b_attacks) {
-    float inner = 0, outer = 0;
-
-    inner += (float)Bitboard::popcnt(w_attacks&INNER_CENTER) / INNER_COUNT;
-    outer += (float)Bitboard::popcnt(w_attacks&OUTER_CENTER) / OUTER_COUNT;
-
-    inner -= (float)Bitboard::popcnt(b_attacks&INNER_CENTER) / INNER_COUNT;
-    outer -= (float)Bitboard::popcnt(b_attacks&OUTER_CENTER) / OUTER_COUNT;
-
-    return inner*INNER_WEIGHT + outer*OUTER_WEIGHT;
-}
-
-float center_weight(Options& options, int movect) {
-    return (float)options.EvalCenter / 100;
-}
-
-
 float eval(Options& options, Position pos, bool precomp, U64 w_attacks, U64 b_attacks, bool moves_exist) {
     if (!precomp) {
         w_attacks = Bitboard::attacked(pos, true);
@@ -90,10 +73,5 @@ float eval(Options& options, Position pos, bool precomp, U64 w_attacks, U64 b_at
     if (mat_weight == 0) mat = 0;
     else mat = material(pos);
 
-    float cent;
-    float cent_weight = center_weight(options, movect);
-    if (cent_weight == 0) cent = 0;
-    else cent = center(w_attacks, b_attacks);
-
-    return mat*mat_weight + cent*cent_weight;
+    return mat*mat_weight;
 }

@@ -31,17 +31,7 @@ using std::endl;
 using std::vector;
 using std::string;
 
-const U64 INNER_CENTER = 103481868288ULL;
-const U64 OUTER_CENTER = 66125924401152ULL;
-const float INNER_COUNT = Bitboard::popcnt(INNER_CENTER);
-const float OUTER_COUNT = Bitboard::popcnt(OUTER_CENTER);
-const float INNER_WEIGHT = 0.65;
-const float OUTER_WEIGHT = 0.2;
-
 float material(Position);
 float material_weight(Options&, int);
-
-float center(U64, U64);
-float center_weight(Options&, int);
 
 float eval(Options&, Position, bool, U64, U64, bool);
