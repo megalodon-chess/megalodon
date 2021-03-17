@@ -94,12 +94,9 @@ void print_eval(Options& options, Position pos) {
 
     float mat = material(pos);
     float mat_weight = material_weight(options, movect);
-    float cent = center(w_attacks, b_attacks);
-    float cent_weight = center_weight(options, movect);
 
     vector<vector<string>> evals = {
         {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)},
-        {"Center Control", to_string(cent), to_string(cent_weight), to_string(cent*cent_weight)},
     };
 
     vector<string> total = {"Total", "0", "N/A", "0"};
