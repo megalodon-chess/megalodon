@@ -90,18 +90,32 @@ def main():
         cprint(", ".join(real), "red")
 
     elif len_real < len_engine:
-        for move in real:
+        correct = filter(lambda x: x in real, engine)
+        for move in correct:
             print(move, end=" ")
-            cprint(move, "green" if move in engine else "red")
+            cprint(move, "green")
+            real.remove(move)
             engine.remove(move)
+
+        for i in range(len(real)):
+            print(real[i], end=" ")
+            cprint(engine[i], "red")
+            engine.pop(i)
 
         print("Extra moves found: ", end="")
         cprint(", ".join(engine), "red")
 
     else:
-        for move in real:
+        correct = filter(lambda x: x in real, engine)
+        for move in correct:
             print(move, end=" ")
             cprint(move, "green")
+            real.remove(move)
+            engine.remove(move)
+
+        for i in range(len(real)):
+            print(real[i], end=" ")
+            cprint(engine[i], "red")
 
         cprint("All moves successfully found!", "green")
 
