@@ -87,7 +87,7 @@ def main():
             print(move, end=" ")
             cprint(move, "green" if move in engine else "red")
             engine.remove(move)
-        
+
         print("Extra moves found: ", end="")
         cprint(", ".join(engine), "red")
 
@@ -95,7 +95,7 @@ def main():
         for move in real:
             print(move, end=" ")
             cprint(move, "green")
-        
+
         cprint("All moves successfully found!", "green")
 
 
