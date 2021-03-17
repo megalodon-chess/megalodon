@@ -49,7 +49,13 @@ def engine_result():
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
         p.wait()
     with open(out_path, "r") as file:
-        moves = file.read().split("\n")[1:]
+        out = file.read().split("\n")
+        for i, text in enumerate(out):
+            if text.isdigit():
+                moves = out[i+1:-1]
+                break
+        else:
+            moves = []
 
     os.remove(in_path)
     os.remove(out_path)
@@ -63,8 +69,60 @@ def main():
     real = real_result(chess.Board(FEN))
     len_real = len(real)
 
-    cprint(f"Number of engine moves: {len_engine}", "green" if len_engine == len_real else "red")
-    print(f"Number of real moves: {len_real}")
+    print(f"Number of engine moves: ", end="")
+    cprint(len_engine, "green" if len_engine == len_real else "red")
+    print(f"Number of real moves:   {len_real}")
+
+    if len_real > len_engine:
+        correct = filter(lambda x: x in real, engine)
+        for move in correct:
+            print(move, end=" ")
+            cprint(move, "green")
+            real.remove(move)
+            engine.remove(move)
+
+        for i in range(len(engine)):
+            print(real[i], end=" ")
+            cprint(engine[i], "red")
+            real.pop(i)
+
+        print("Moves not found: ", end="")
+        cprint(", ".join(real), "red")
+
+    elif len_real < len_engine:
+        correct = filter(lambda x: x in real, engine)
+        for move in correct:
+            print(move, end=" ")
+            cprint(move, "green")
+            real.remove(move)
+            engine.remove(move)
+
+        for i in range(len(real)):
+            print(real[i], end=" ")
+            cprint(engine[i], "red")
+            engine.pop(i)
+
+        print("Extra moves found: ", end="")
+        cprint(", ".join(engine), "red")
+
+    else:
+        correct = [x for x in engine if x in real]
+        for move in correct:
+            print(move, end=" ")
+            cprint(move, "green")
+            real.remove(move)
+            engine.remove(move)
+
+        for i in range(len(real)):
+            print(real[i], end=" ")
+            cprint(engine[i], "red")
+
+        errors = len_engine - len(correct)
+
+        if errors:
+            cprint(f"{errors} errors were found...", "red")
+        else:
+            cprint("No errors found!", "green")
 
 
 main()
