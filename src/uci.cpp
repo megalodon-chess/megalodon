@@ -131,49 +131,47 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
-            cout << "bestmove " + Bitboard::move_str(moves[rand() % moves.size()]) << endl;
-            // vector<string> parts = split(cmd, " ");
-            // int mode = 0;
-            // int depth;
-            // float wtime, btime, winc, binc;
-            // for (auto i = 0; i < parts.size(); i++) {
-            //     if (parts[i] == "depth") {
-            //         mode = 1;
-            //         depth = std::stoi(parts[i+1]);
-            //         break;
-            //     } else if (parts[i] == "wtime") {
-            //         mode = 2;
-            //         wtime = std::stoi(parts[i+1]);
-            //     } else if (parts[i] == "btime") {
-            //         mode = 2;
-            //         btime = std::stoi(parts[i+1]);
-            //     } else if (parts[i] == "winc") {
-            //         mode = 2;
-            //         winc = std::stoi(parts[i+1]);
-            //     } else if (parts[i] == "binc") {
-            //         mode = 2;
-            //         binc = std::stoi(parts[i+1]);
-            //     }
-            // }
-            // wtime /= 1000;
-            // btime /= 1000;
-            // winc /= 1000;
-            // binc /= 1000;
+            vector<string> parts = split(cmd, " ");
+            int mode = 0;
+            int depth;
+            float wtime, btime, winc, binc;
+            for (auto i = 0; i < parts.size(); i++) {
+                if (parts[i] == "depth") {
+                    mode = 1;
+                    depth = std::stoi(parts[i+1]);
+                    break;
+                } else if (parts[i] == "wtime") {
+                    mode = 2;
+                    wtime = std::stoi(parts[i+1]);
+                } else if (parts[i] == "btime") {
+                    mode = 2;
+                    btime = std::stoi(parts[i+1]);
+                } else if (parts[i] == "winc") {
+                    mode = 2;
+                    winc = std::stoi(parts[i+1]);
+                } else if (parts[i] == "binc") {
+                    mode = 2;
+                    binc = std::stoi(parts[i+1]);
+                }
+            }
+            wtime /= 1000;
+            btime /= 1000;
+            winc /= 1000;
+            binc /= 1000;
 
-            // double start = get_time();
-            // SearchInfo result = search(options, pos, 5, MIN, MAX);
-            // double elapse = get_time() - start;
+            double start = get_time();
+            SearchInfo result = search(options, pos, 5, MIN, MAX);
+            double elapse = get_time() - start;
 
-            // float score = result.score;
-            // result.time = 1000 * (elapse);
-            // result.nps = result.nodes / (elapse);
-            // if (!pos.turn) result.score *= -1;
-            // cout << result.as_string() << endl;
-            // cout << "bestmove " << Bitboard::move_str(result.move) << endl;
+            float score = result.score;
+            result.time = 1000 * (elapse);
+            result.nps = result.nodes / (elapse);
+            if (!pos.turn) result.score *= -1;
+            cout << result.as_string() << endl;
+            cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
-            // chat(options, pos.turn, pos.move_stack.size(), score, prev_eval);
-            // prev_eval = result.score;
+            chat(options, pos.turn, pos.move_stack.size(), score, prev_eval);
+            prev_eval = result.score;
         }
         else if (cmd == "stop");
         else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
