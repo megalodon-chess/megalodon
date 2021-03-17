@@ -35,5 +35,6 @@ float material(Position);
 float total_mat(Position);
 
 float king(Options&, char, Location, U64, U64);
+float pawns(Options&, U64, bool);
 
 float eval(Options&, Position, bool);
