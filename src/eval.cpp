@@ -50,10 +50,6 @@ float material(Position pos) {
     return value;
 }
 
-float material_weight(Options& options, int movect) {
-    return (float)options.EvalMaterial / 100;
-}
-
 
 float eval(Options& options, Position pos, bool moves_exist) {
     if (!moves_exist) {
@@ -63,10 +59,7 @@ float eval(Options& options, Position pos, bool moves_exist) {
 
     int movect = pos.move_stack.size();
 
-    float mat;
-    float mat_weight = material_weight(options, movect);
-    if (mat_weight == 0) mat = 0;
-    else mat = material(pos);
+    float mat = material(pos);
 
-    return mat*mat_weight;
+    return mat;
 }
