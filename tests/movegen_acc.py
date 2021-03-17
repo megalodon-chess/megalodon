@@ -29,6 +29,7 @@ import subprocess
 import chess
 
 PARDIR = os.path.dirname(os.path.realpath(__file__))
+ENG_PATH = "build/Megalodon"
 FEN = input("Testing FEN: ")
 
 
@@ -42,25 +43,17 @@ def engine_result():
 
     with open(in_path, "w") as file:
         file.write(f"position fen {FEN}\n")
-        file.write(f"perft movegen {DEPTH}\n")
+        file.write(f"legalmoves\n")
     with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
-        start = time.time()
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
         p.wait()
-        elapse = time.time() - start
     with open(out_path, "r") as file:
-        out = file.read()
-
-    parts = [l for l in out.split("\n") if l.startswith("info")][0].split()
-    for i in range(len(parts)):
-        if parts[i] == "nodes":
-            nodes = int(parts[i+1])
-            break
+        moves = file.read().split("\n")[1:]
 
     os.remove(in_path)
     os.remove(out_path)
 
-    return (nodes, elapse)
+    return moves
 
 
 def main():
