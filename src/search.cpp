@@ -120,7 +120,7 @@ SearchInfo search(Options& options, Position pos, int depth, float alpha, float 
     float best_eval = pos.turn ? MIN : MAX;
 
     for (auto i = 0; i < moves.size(); i++) {
-        Position new_pos = Bitboard::push(pos, moves[i]);;
+        Position new_pos = Bitboard::push(pos, moves[i]);
         SearchInfo result = search(options, new_pos, depth-1, alpha, beta);
         nodes += result.nodes;
 
