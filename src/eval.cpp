@@ -52,8 +52,7 @@ float material(Position pos, int movect) {
 
 
 float one_pawn(vector<char> pos) {
-    char x = pos[0];
-    char y = pos[1];
+    const char x = pos[0], y = pos[1];
 
     float score;
     if (x == 0) score = PAWN_C1[y];
