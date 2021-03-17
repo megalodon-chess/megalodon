@@ -52,7 +52,7 @@ def engine_result():
         out = file.read().split("\n")
         for i, text in enumerate(out):
             if text.isdigit():
-                moves = out[i+1:-1]
+                moves = map(lambda x: x.lower(), out[i+1:-1])
                 break
         else:
             moves = []
