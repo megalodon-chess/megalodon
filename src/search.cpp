@@ -117,7 +117,7 @@ SearchInfo search(Options& options, Position pos, int depth, float alpha, float 
     }
     int nodes = 1;
     int best_ind = 0;
-    float best_eval = pos.turn ? -1000000 : 1000000;
+    float best_eval = pos.turn ? MIN : MAX;
 
     for (auto i = 0; i < moves.size(); i++) {
         Position new_pos = Bitboard::push(pos, moves[i]);;
