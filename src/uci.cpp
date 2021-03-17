@@ -140,10 +140,6 @@ int loop() {
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalCenter type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name SearchAlg type string default BFS" << "\n";
-            cout << "option name SearchDepth type spin default 5 min 3 max 8" << "\n";
-            cout << "option name InfoInc type spin default 250 min 50 max 1500" << "\n";
             cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
         }
@@ -153,8 +149,6 @@ int loop() {
             string value = parts[4];
 
             if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
-            else if (name == "EvalCenter") options.EvalCenter = std::stoi(value);
-            else if (name == "InfoInc") options.InfoInc = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
         }
