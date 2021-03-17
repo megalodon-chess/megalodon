@@ -31,15 +31,4 @@ using std::endl;
 using std::vector;
 using std::string;
 
-const vector<float> PAWN_C1 = {0,  1,    0.4,  0,    0,    0,    0,  0};
-const vector<float> PAWN_C2 = {0,  1,    0.1,  0,    0,    0,    0,  0};
-const vector<float> PAWN_C3 = {0,  0.8,  0.6,  0.3,  0,    0,    0,  0};
-const vector<float> PAWN_C4 = {0,  0.3,  0.8,  1.5,  1.4,  0.5,  0,  0};
-const vector<float> PAWN_C5 = {0,  0.3,  0.8,  1.5,  1.4,  0.5,  0,  0};
-const vector<float> PAWN_C6 = {0,  0.8,  0.6,  0.3,  0,    0,    0,  0};
-const vector<float> PAWN_C7 = {0,  1,    0.1,  0,    0,    0,    0,  0};
-const vector<float> PAWN_C8 = {0,  1,    0.4,  0,    0,    0,    0,  0};
-
-float material(Position, int);
-float pawn(Position, int);
 float eval(Options&, Position, bool);
