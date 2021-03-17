@@ -32,8 +32,6 @@ using std::string;
 class Options {
 /*
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
-EvalCenter: type=spin, default=100, min=0, max=1000, weight (percent) of center control eval.
-InfoInc: type=spin, default=250, min=50, max=1500, increment (knodes) between info prints.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
 
@@ -41,7 +39,5 @@ public:
     Options();
 
     int EvalMaterial;
-    int EvalCenter;
-    int InfoInc;
     bool Chat;
 };
