@@ -26,6 +26,7 @@ import os
 import sys
 import time
 import subprocess
+from termcolor import cprint
 import chess
 
 PARDIR = os.path.dirname(os.path.realpath(__file__))
@@ -57,18 +58,13 @@ def engine_result():
 
 
 def main():
-    start = time.time()
-    real = real_result(chess.Board(FEN), DEPTH)
-    elapse = time.time() - start
-    engine, eng_time = engine_result()
+    engine = engine_result()
+    len_engine = len(engine)
+    real = real_result(chess.Board(FEN))
+    len_real = len(real)
 
-    print(f"Python-Chess nodes:   {real}")
-    print(f"Python-Chess time:    {elapse}")
-    print(f"Python-Chess NPS:     {real/elapse}")
-    print()
-    print(f"Engine nodes:         {engine}")
-    print(f"Engine time:          {eng_time}")
-    print(f"Engine NPS:           {engine/eng_time}")
+    cprint(f"Number of engine moves: {len_engine}", "green" if len_engine == len_real else "red")
+    print(f"Number of real moves: {len_real}")
 
 
 main()
