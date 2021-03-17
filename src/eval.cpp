@@ -69,8 +69,6 @@ float total_mat(Position pos) {
 
 
 float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
-    cout << +stage << endl;
-    cout << +kpos.x << " " << +kpos.y << endl;
     if (stage == 2) {
         return 0;
     } else {
@@ -78,7 +76,11 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
         if (kpos.y <= 3) rank_eval = 0.6 * (3-kpos.y);
         else rank_eval = 0.6 * (kpos.y-4);
 
-        return rank_eval;
+        float col_eval;
+        if (kpos.x <= 3) col_eval = 0.35 * (3-kpos.x);
+        else col_eval = 0.35 * (kpos.x-4);
+
+        return rank_eval+col_eval;
     }
 }
 
