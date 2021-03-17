@@ -118,6 +118,7 @@ namespace Bitboard {
     Location first_bit(U64);
 
     string piece_at(Position, char);
+    U64 color(Position, bool);
     string board_str(U64, string="X", string="-");
     string board_str(Position);
     string square_str(char);

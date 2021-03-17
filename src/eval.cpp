@@ -50,6 +50,38 @@ float material(Position pos) {
     return value;
 }
 
+float total_mat(Position pos) {
+    float value = 0;
+    for (auto i = 0; i < 64; i++) {
+        if      (Bitboard::bit(pos.wp, i)) value += 1;
+        else if (Bitboard::bit(pos.wn, i)) value += 3;
+        else if (Bitboard::bit(pos.wb, i)) value += 3;
+        else if (Bitboard::bit(pos.wr, i)) value += 5;
+        else if (Bitboard::bit(pos.wq, i)) value += 9;
+        else if (Bitboard::bit(pos.bp, i)) value += 1;
+        else if (Bitboard::bit(pos.bn, i)) value += 3;
+        else if (Bitboard::bit(pos.bb, i)) value += 3;
+        else if (Bitboard::bit(pos.br, i)) value += 5;
+        else if (Bitboard::bit(pos.bq, i)) value += 9;
+    }
+    return value;
+}
+
+
+float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
+    cout << +stage << endl;
+    cout << +kpos.x << " " << +kpos.y << endl;
+    if (stage == 2) {
+        return 0;
+    } else {
+        float rank_eval;
+        if (kpos.y <= 3) rank_eval = 0.6 * (3-kpos.y);
+        else rank_eval = 0.6 * (kpos.y-4);
+
+        return rank_eval;
+    }
+}
+
 
 float eval(Options& options, Position pos, bool moves_exist) {
     if (!moves_exist) {
@@ -58,12 +90,15 @@ float eval(Options& options, Position pos, bool moves_exist) {
     }
 
     const int movect = pos.move_stack.size();
-    const float mat = material(pos);
-
-    int stage;  // 0 = opening, 1 = middlegame, 2 = endgame
-    if (mat > 68) stage = 0;
-    else if (20 < mat && mat <= 68) stage = 1;
+    const float total = total_mat(pos);
+    char stage;  // 0 = opening, 1 = middlegame, 2 = endgame
+    if (total > 68) stage = 0;
+    else if (20 < total && total <= 68) stage = 1;
     else stage = 2;
 
-    return mat;
+    const float mat = material(pos);
+    const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
+    const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
+
+    return mat + (wking-bking);
 }
