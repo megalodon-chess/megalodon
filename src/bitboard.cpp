@@ -67,6 +67,7 @@ Position::Position() {
     ep = false;
     ep_square = 0;
 
+    traversed = false;
     pruned = false;
 }
 
@@ -90,6 +91,7 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
     ep = _ep;
     ep_square = _ep_square;
 
+    traversed = false;
     pruned = false;
 }
 
