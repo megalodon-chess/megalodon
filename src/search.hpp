@@ -52,3 +52,5 @@ constexpr int MIN = -1000000;
 float total_mat(Position);
 float moves_left(Options&, Position);
 float move_time(Options&, Position, float, float);
+
+SearchInfo search(Options&, Position, int);

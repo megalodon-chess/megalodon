@@ -103,3 +103,31 @@ float move_time(Options& options, Position pos, float time, float inc) {
 
     return (time_left/moves) + mat_offset;
 }
+
+
+void traverse(Options& options, Position& pos) {
+    if (!pos.traversed) {
+        U64 s_attacks = Bitboard::attacked(pos, pos.turn);
+        U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+
+        pos.eval = eval(options, pos, true, s_attacks, o_attacks, (moves.size() != 0));
+        for (auto move: moves) {
+            Position new_pos = pos;
+            new_pos = Bitboard::push(new_pos, move);
+            pos.branches.push_back(&new_pos);
+        }
+        pos.traversed = true;
+    } else {
+        for (auto p: pos.branches) {
+            traverse(options, *p);
+        }
+    }
+}
+
+SearchInfo search(Options& options, Position pos, int total_depth) {
+    int depth = 0;
+    while (depth < total_depth) {
+        traverse(options, pos);
+    }
+}
