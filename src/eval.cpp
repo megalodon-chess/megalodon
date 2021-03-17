@@ -33,7 +33,7 @@ using std::vector;
 using std::string;
 
 
-float material(Position pos) {
+float material(Position pos, int movect) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
         if (Bitboard::bit(pos.wp, i)) value += 1;
@@ -51,6 +51,36 @@ float material(Position pos) {
 }
 
 
+float one_pawn(vector<char> pos) {
+    char x = pos[0];
+    char y = pos[1];
+
+    if (y == 0) return PAWN_R1[x];
+    if (y == 1) return PAWN_R2[x];
+    if (y == 2) return PAWN_R3[x];
+    if (y == 3) return PAWN_R4[x];
+    if (y == 4) return PAWN_R5[x];
+    if (y == 5) return PAWN_R6[x];
+    if (y == 6) return PAWN_R7[x];
+    if (y == 7) return PAWN_R8[x];
+}
+
+float pawns(Position pos, int movect) {
+    vector<vector<char>> wpawns;
+    vector<vector<char>> bpawns;
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(pos.wp, i)) wpawns.push_back({(char)(i%8), (char)(i/8)});
+        if (Bitboard::bit(pos.bp, i)) bpawns.push_back({(char)(i%8), (char)(7-i/8)});
+    }
+
+    int score;
+    for (auto p: wpawns) score += one_pawn(p);
+    for (auto p: wpawns) score -= one_pawn(p);
+
+    return score / (wpawns.size()+bpawns.size());
+}
+
+
 float eval(Options& options, Position pos, bool moves_exist) {
     if (!moves_exist) {
         if (pos.turn) return MIN;
@@ -58,8 +88,6 @@ float eval(Options& options, Position pos, bool moves_exist) {
     }
 
     int movect = pos.move_stack.size();
-
-    float mat = material(pos);
-
+    float mat = material(pos, movect);
     return mat;
 }
