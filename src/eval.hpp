@@ -32,6 +32,7 @@ using std::vector;
 using std::string;
 
 float material(Position);
-float material_weight(Options&, int);
+
+float pawn(Position);
 
 float eval(Options&, Position, bool);

@@ -87,46 +87,6 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
 }
 
 
-void print_eval(Options& options, Position pos) {
-    int movect = pos.move_stack.size();
-    U64 w_attacks = Bitboard::attacked(pos, true);
-    U64 b_attacks = Bitboard::attacked(pos, false);
-
-    float mat = material(pos);
-    float mat_weight = material_weight(options, movect);
-
-    vector<vector<string>> evals = {
-        {"Material", to_string(mat), to_string(mat_weight), to_string(mat*mat_weight)},
-    };
-
-    vector<string> total = {"Total", "0", "N/A", "0"};
-    for (auto ev: evals) {
-        total[1] = std::to_string(std::stof(total[1]) + std::stof(ev[3]));
-        total[3] = std::to_string(std::stof(total[3]) + std::stof(ev[3]));
-    }
-    evals.push_back(total);
-    for (auto ev: evals) {
-        string category = ev[0];
-        string value = ev[1];
-        string weight = ev[2];
-        string total = ev[3];
-        if (value.size() > 8) value = value.substr(0, 8);
-        if (weight.size() > 8) weight = weight.substr(0, 8);
-        if (total.size() > 8) total = total.substr(0, 8);
-
-        cout << category << ": ";
-        for (auto i = 0; i < 18-category.size(); i++) cout << " ";
-        cout << value << " x ";
-        for (auto i = 0; i < 8-value.size(); i++) cout << " ";
-        cout << weight << " = ";
-        for (auto i = 0; i < 8-weight.size(); i++) cout << " ";
-        cout << total;
-        for (auto i = 0; i < 8-total.size(); i++) cout << " ";
-        cout << endl;
-    }
-}
-
-
 int loop() {
     string cmd;
     Options options;
@@ -154,7 +114,7 @@ int loop() {
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
-        else if (cmd == "eval") print_eval(options, pos);
+        else if (cmd == "eval");
         else if (startswith(cmd, "perft")) {
             vector<string> parts = split(cmd, " ");
             if (parts[1] == "movegen") {
