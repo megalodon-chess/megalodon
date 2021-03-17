@@ -117,7 +117,10 @@ def main():
             print(real[i], end=" ")
             cprint(engine[i], "red")
 
-        cprint("All moves successfully found!", "green")
+        if errors := len(engine) - len(correct):
+            cprint(f"{errors} errors were found...", "red")
+        else:
+            cprint("No errors found!", "green")
 
 
 main()
