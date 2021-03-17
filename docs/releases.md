@@ -7,7 +7,7 @@ This page contains release info.
 This release features alpha-beta pruning minimax, and new evaluation functions.
 
 In this release, the engine evaluates material, king, and pawns.
-It plays at an estimated 800 ELO.
+Although currently it can only play as white, it plays at an estimated 800 ELO.
 
 In the opening, the engine plays random moves, but in the middle game,
 it can see simple tactics.
