@@ -62,7 +62,7 @@ float one_pawn(vector<char> pos) {
     if (y == 4) return PAWN_R5[x];
     if (y == 5) return PAWN_R6[x];
     if (y == 6) return PAWN_R7[x];
-    if (y == 7) return PAWN_R8[x];
+    return PAWN_R8[x];
 }
 
 float pawns(Position pos, int movect) {
