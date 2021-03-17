@@ -106,7 +106,7 @@ def main():
         cprint(", ".join(engine), "red")
 
     else:
-        correct = filter(lambda x: x in real, engine)
+        correct = [x for x in engine if x in real]
         for move in correct:
             print(move, end=" ")
             cprint(move, "green")
@@ -117,7 +117,7 @@ def main():
             print(real[i], end=" ")
             cprint(engine[i], "red")
 
-        errors = len_engine - len(tuple(correct))
+        errors = len_engine - len(correct)
 
         if errors:
             cprint(f"{errors} errors were found...", "red")
