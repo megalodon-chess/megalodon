@@ -104,6 +104,26 @@ float pawns(Options& options, U64 pawns, bool side) {
     return score;
 }
 
+float knights(Options& options, U64 knights) {
+    char count = 0;
+    float score = 0;
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(knights, i)) {
+            const char x = i%8, y = i/8;
+            float horiz, vert;
+            if (x <= 3) horiz = x / 2.1;
+            else horiz = (7-x) / 2.1;
+            if (y <= 3) vert = y / 2.1;
+            else vert = (7-y) / 2.1;
+            score += horiz * vert;
+            count++;
+        }
+    }
+    if (count != 0) score /= count;
+
+    return score;
+}
+
 
 float eval(Options& options, Position pos, bool moves_exist) {
     if (!moves_exist) {
@@ -123,6 +143,8 @@ float eval(Options& options, Position pos, bool moves_exist) {
     const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
     const float wpawn = pawns(options, pos.wp, true);
     const float bpawn = pawns(options, pos.bp, false);
+    const float wknight = knights(options, pos.wn);
+    const float bknight = knights(options, pos.bn);
 
-    return mat + (wking-bking) + (wpawn-bpawn);
+    return mat + (wking-bking) + (wpawn-bpawn) + (wknight-bknight);
 }
