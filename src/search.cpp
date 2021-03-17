@@ -97,7 +97,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
     // Calculates move time based on moves left and game evaluation.
     float moves = moves_left(options, pos);
     float time_left = time + inc*moves;
-    float mat = eval(options, pos, false, 0, 0, false);
+    float mat = eval(options, pos, false);
     if (!pos.turn) mat *= -1;
     float mat_offset = mat * -0.3;
 
@@ -106,14 +106,13 @@ float move_time(Options& options, Position pos, float time, float inc) {
 
 
 SearchInfo search(Options& options, Position pos, int depth, float alpha, float beta) {
-    U64 attacks = Bitboard::attacked(pos, pos.turn);
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
     if (depth == 0 || moves.size() == 0) {
         float score;
-        if (pos.turn) score = eval(options, pos, true, attacks, o_attacks, (moves.size() != 0));
-        else score = eval(options, pos, true, o_attacks, attacks, (moves.size() != 0));
+        if (pos.turn) score = eval(options, pos, (moves.size() != 0));
+        else score = eval(options, pos, (moves.size() != 0));
         return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
     }
     int nodes = 1;

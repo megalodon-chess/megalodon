@@ -55,12 +55,7 @@ float material_weight(Options& options, int movect) {
 }
 
 
-float eval(Options& options, Position pos, bool precomp, U64 w_attacks, U64 b_attacks, bool moves_exist) {
-    if (!precomp) {
-        w_attacks = Bitboard::attacked(pos, true);
-        b_attacks = Bitboard::attacked(pos, false);
-    }
-
+float eval(Options& options, Position pos, bool moves_exist) {
     if (!moves_exist) {
         if (pos.turn) return MIN;
         else return MAX;

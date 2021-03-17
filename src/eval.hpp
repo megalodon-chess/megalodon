@@ -34,4 +34,4 @@ using std::string;
 float material(Position);
 float material_weight(Options&, int);
 
-float eval(Options&, Position, bool, U64, U64, bool);
+float eval(Options&, Position, bool);
