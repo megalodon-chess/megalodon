@@ -515,7 +515,7 @@ namespace Bitboard {
         // Knights
         for (auto dir: DIR_N) {
             const char x = kx + dir[0], y = ky + dir[1];
-            if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+            if (!(0 <= x && x < 8 && 0 <= y && y < 8)) continue;
             const char loc = y*8 + x;
             if (bit(knights, loc)) {
                 set_bit(board, loc);
