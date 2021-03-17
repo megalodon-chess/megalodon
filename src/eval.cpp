@@ -60,5 +60,10 @@ float eval(Options& options, Position pos, bool moves_exist) {
     int movect = pos.move_stack.size();
     float mat = material(pos);
 
+    int stage;  // 0 = opening, 1 = middlegame, 2 = endgame
+    if (mat > 68) stage = 0;
+    else if (20 < mat && mat <= 68) stage = 1;
+    else stage = 2;
+
     return mat;
 }
