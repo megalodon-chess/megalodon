@@ -105,29 +105,42 @@ float move_time(Options& options, Position pos, float time, float inc) {
 }
 
 
-void traverse(Options& options, Position& pos) {
-    if (!pos.traversed) {
-        U64 s_attacks = Bitboard::attacked(pos, pos.turn);
-        U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+SearchInfo search(Options& options, Position pos, int depth, float alpha, float beta) {
+    U64 attacks = Bitboard::attacked(pos, pos.turn);
+    U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+    vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-        pos.eval = eval(options, pos, true, s_attacks, o_attacks, (moves.size() != 0));
-        for (auto move: moves) {
-            Position new_pos = pos;
-            new_pos = Bitboard::push(new_pos, move);
-            pos.branches.push_back(&new_pos);
-        }
-        pos.traversed = true;
-    } else {
-        for (auto p: pos.branches) {
-            traverse(options, *p);
+    if (depth == 0 || moves.size() == 0) {
+        float score;
+        if (pos.turn) score = eval(options, pos, true, attacks, o_attacks, (moves.size() != 0));
+        else score = eval(options, pos, true, o_attacks, attacks, (moves.size() != 0));
+        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
+    }
+    int nodes = 1;
+    int best_ind = 0;
+    float best_eval = pos.turn ? -1000000 : 1000000;
+
+    for (auto i = 0; i < moves.size(); i++) {
+        Position new_pos = Bitboard::push(pos, moves[i]);;
+        SearchInfo result = search(options, new_pos, depth-1, alpha, beta);
+        nodes += result.nodes;
+
+        bool exceeds = false;
+        if (pos.turn) {
+            if (result.score > best_eval) {
+                best_ind = i;
+                best_eval = result.score;
+            }
+            if (result.score > alpha) alpha = result.score;
+            if (beta <= alpha) break;
+        } else {
+            if (result.score < best_eval) {
+                best_ind = i;
+                best_eval = result.score;
+            }
+            if (result.score < beta) beta = result.score;
+            if (beta <= alpha) break;
         }
     }
-}
-
-SearchInfo search(Options& options, Position pos, int total_depth) {
-    int depth = 0;
-    while (depth < total_depth) {
-        traverse(options, pos);
-    }
+    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
 }
