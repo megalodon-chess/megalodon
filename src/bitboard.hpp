@@ -55,9 +55,10 @@ struct Position {
     bool ep;
     char ep_square;
 
-    bool active;
+    bool pruned;
     float eval;
     vector<Move> move_stack;
+    vector<Position*> branches;
 };
 
 struct Location {
