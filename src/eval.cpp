@@ -33,6 +33,10 @@ using std::vector;
 using std::string;
 
 
+float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
+}
+
+
 float material(Position pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
@@ -60,10 +64,13 @@ float eval(Options& options, Position pos, bool moves_exist) {
     const int movect = pos.move_stack.size();
     const float mat = material(pos);
 
-    int stage;  // 0 = opening, 1 = middlegame, 2 = endgame
+    char stage;  // 0 = opening, 1 = middlegame, 2 = endgame
     if (mat > 68) stage = 0;
     else if (20 < mat && mat <= 68) stage = 1;
     else stage = 2;
 
-    return mat;
+    const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
+    const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
+
+    return mat + (wking-bking);
 }
