@@ -69,6 +69,7 @@ float total_mat(Position pos) {
 
 
 float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
+    // todo pawn shield
     if (stage == 2) {
         return 0;
     } else {
@@ -82,6 +83,28 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
 
         return rank_eval+col_eval;
     }
+}
+
+float pawns(Options& options, U64 pawns, bool side) {
+    vector<char> file_count = {0, 0, 0, 0, 0, 0, 0, 0};
+    float score = 0;
+    char num = 0;
+
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(pawns, i)) {
+            const char x = i%8, y = (side ? i/8 : 7-(i/8));
+            file_count[x]++;
+            num++;
+            score += 0.1 * y;
+        }
+    }
+    score /= num;
+
+    for (auto cnt: file_count) {
+        if (cnt >= 2) score -= 0.15*cnt;
+    }
+
+    return score;
 }
 
 
@@ -101,6 +124,8 @@ float eval(Options& options, Position pos, bool moves_exist) {
     const float mat = material(pos);
     const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
     const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
+    const float wpawn = pawns(options, pos.wp, true);
+    const float bpawn = pawns(options, pos.bp, true);
 
-    return mat + (wking-bking);
+    return mat + (wking-bking) + (wpawn-bpawn);
 }
