@@ -73,8 +73,8 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
         return 0;
     } else {
         float rank_eval;
-        if (kpos.y <= 3) rank_eval = 0.6 * (3-kpos.y);
-        else rank_eval = 0.6 * (kpos.y-4);
+        if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
+        else rank_eval = 0.7 * (kpos.y-4);
 
         float col_eval;
         if (kpos.x <= 3) col_eval = 0.35 * (3-kpos.x);
