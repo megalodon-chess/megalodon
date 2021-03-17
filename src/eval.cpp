@@ -125,6 +125,37 @@ float knights(Options& options, U64 knights) {
 }
 
 
+float center_control(Options& options, Position pos) {
+    float inner = 0;
+    inner += Bitboard::popcnt(pos.wp & INNER_CENTER) * 1.5;
+    inner += Bitboard::popcnt(pos.wn & INNER_CENTER) * 1.2;
+    inner += Bitboard::popcnt(pos.wb & INNER_CENTER);
+    inner += Bitboard::popcnt(pos.wr & INNER_CENTER) * 0.8;
+    inner += Bitboard::popcnt(pos.wq & INNER_CENTER);
+    inner -= Bitboard::popcnt(pos.bp & INNER_CENTER) * 1.5;
+    inner -= Bitboard::popcnt(pos.bn & INNER_CENTER) * 1.2;
+    inner -= Bitboard::popcnt(pos.bb & INNER_CENTER);
+    inner -= Bitboard::popcnt(pos.br & INNER_CENTER) * 0.8;
+    inner -= Bitboard::popcnt(pos.bq & INNER_CENTER);
+    inner /= INNER_COUNT;
+
+    float outer = 0;
+    outer += Bitboard::popcnt(pos.wp & OUTER_CENTER) * 1.5;
+    outer += Bitboard::popcnt(pos.wn & OUTER_CENTER) * 1.2;
+    outer += Bitboard::popcnt(pos.wb & OUTER_CENTER);
+    outer += Bitboard::popcnt(pos.wr & OUTER_CENTER) * 0.8;
+    outer += Bitboard::popcnt(pos.wq & OUTER_CENTER);
+    outer -= Bitboard::popcnt(pos.bp & OUTER_CENTER) * 1.5;
+    outer -= Bitboard::popcnt(pos.bn & OUTER_CENTER) * 1.2;
+    outer -= Bitboard::popcnt(pos.bb & OUTER_CENTER);
+    outer -= Bitboard::popcnt(pos.br & OUTER_CENTER) * 0.8;
+    outer -= Bitboard::popcnt(pos.bq & OUTER_CENTER);
+    outer /= OUTER_COUNT;
+
+    return inner + outer/2;
+}
+
+
 float eval(Options& options, Position pos, bool moves_exist) {
     if (!moves_exist) {
         if (pos.turn) return MIN;
@@ -146,5 +177,7 @@ float eval(Options& options, Position pos, bool moves_exist) {
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
 
-    return mat + (wking-bking) + (wpawn-bpawn) + (wknight-bknight);
+    const float cent = center_control(options, pos);
+
+    return mat + cent + (wking-bking) + (wpawn-bpawn) + (wknight-bknight);
 }
