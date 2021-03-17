@@ -49,7 +49,13 @@ def engine_result():
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
         p.wait()
     with open(out_path, "r") as file:
-        moves = file.read().split("\n")[1:]
+        out = file.read().split("\n")
+        for i, text in enumerate(out):
+            if text.isdigit():
+                moves = out[i+1:]
+                break
+        else:
+            moves = []
 
     os.remove(in_path)
     os.remove(out_path)
@@ -66,6 +72,16 @@ def main():
     print(f"Number of engine moves: ", end="")
     cprint(len_engine, "green" if len_engine == len_real else "red")
     print(f"Number of real moves:   {len_real}")
+
+    if len_real > len_engine:
+        for move in engine:
+            if move in real:
+                cprint(move, "green")
+
+    elif len_real < len_engine:
+        pass
+    else:
+        pass
 
 
 main()
