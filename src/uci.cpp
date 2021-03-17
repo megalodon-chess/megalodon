@@ -171,7 +171,6 @@ int loop() {
                 else if (1 <= time && time < 30) depth = 4;
                 else depth = 3;
             }
-            cout << depth << endl;
 
             double start = get_time();
             SearchInfo result = search(options, pos, MIN, MAX, true, depth, 0);
