@@ -55,14 +55,17 @@ float one_pawn(vector<char> pos) {
     char x = pos[0];
     char y = pos[1];
 
-    if (y == 0) return PAWN_R1[x];
-    if (y == 1) return PAWN_R2[x];
-    if (y == 2) return PAWN_R3[x];
-    if (y == 3) return PAWN_R4[x];
-    if (y == 4) return PAWN_R5[x];
-    if (y == 5) return PAWN_R6[x];
-    if (y == 6) return PAWN_R7[x];
-    return PAWN_R8[x];
+    float score;
+    if (x == 0) score = PAWN_C1[y];
+    if (x == 1) score = PAWN_C2[y];
+    if (x == 2) score = PAWN_C3[y];
+    if (x == 3) score = PAWN_C4[y];
+    if (x == 4) score = PAWN_C5[y];
+    if (x == 5) score = PAWN_C6[y];
+    if (x == 6) score = PAWN_C7[y];
+    if (x == 7) score = PAWN_C8[y];
+
+    return score;
 }
 
 float pawns(Position pos, int movect) {
@@ -73,9 +76,9 @@ float pawns(Position pos, int movect) {
         if (Bitboard::bit(pos.bp, i)) bpawns.push_back({(char)(i%8), (char)(7-i/8)});
     }
 
-    int score;
+    float score = 0;
     for (auto p: wpawns) score += one_pawn(p);
-    for (auto p: wpawns) score -= one_pawn(p);
+    for (auto p: bpawns) score -= one_pawn(p);
 
     return score / (wpawns.size()+bpawns.size());
 }
@@ -89,5 +92,6 @@ float eval(Options& options, Position pos, bool moves_exist) {
 
     int movect = pos.move_stack.size();
     float mat = material(pos, movect);
-    return mat;
+    float pwn = pawns(pos, movect);
+    return mat + pwn;
 }
