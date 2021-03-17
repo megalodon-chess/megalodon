@@ -8,6 +8,8 @@ You will need a separate chess GUI program. Some common ones are listed below:
 * Arena Chess
 * Lucas Chess
 
+The Megalodon Developers are working on another chess GUI, [Hammerhead][hammerhead], but as of now it is not functional.
+
 Download the [latest][latest] Megalodon version and a chess GUI.
 Then, add Megalodon as an engine in the GUI, and you are ready to play it!
 
@@ -16,3 +18,4 @@ Then, add Megalodon as an engine in the GUI, and you are ready to play it!
 [home]: https://megalodon-chess.github.io/megalodon/
 [latest]: https://github.com/megalodon-chess/megalodon/releases/latest
 [quickstart]: https://megalodon-chess.github.io/megalodon/quick-start
+[hammerhead]: https://github.com/megalodon-chess/hammerhead/
