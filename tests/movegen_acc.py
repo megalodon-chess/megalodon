@@ -63,8 +63,9 @@ def main():
     real = real_result(chess.Board(FEN))
     len_real = len(real)
 
-    cprint(f"Number of engine moves: {len_engine}", "green" if len_engine == len_real else "red")
-    print(f"Number of real moves: {len_real}")
+    print(f"Number of engine moves: ", end="")
+    cprint(len_engine, "green" if len_engine == len_real else "red")
+    print(f"Number of real moves:   {len_real}")
 
 
 main()
