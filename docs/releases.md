@@ -2,6 +2,16 @@
 
 This page contains release info.
 
+## [Megalodon 0.2.0][v0.2.0]
+
+This release features alpha-beta pruning minimax, and new evaluation functions.
+
+In this release, the engine evaluates material, king, and pawns.
+It plays at an estimated 800 ELO.
+
+In the opening, the engine plays random moves, but in the middle game,
+it can see simple tactics.
+
 ## [Megalodon 0.1.3][v0.1.3]
 
 There are many move generation bug fixes in this release,
@@ -69,6 +79,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.2.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.0
 [v0.1.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.1.3
 [v0.1.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.1.2
 [v0.1.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.1.1
