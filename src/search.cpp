@@ -92,9 +92,7 @@ SearchInfo search(Options& options, Position pos, int depth, float alpha, float 
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
     if (depth == 0 || moves.size() == 0) {
-        float score;
-        if (pos.turn) score = eval(options, pos, (moves.size() != 0));
-        else score = eval(options, pos, (moves.size() != 0));
+        float score = eval(options, pos, (moves.size() != 0));
         return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
     }
     int nodes = 1;
