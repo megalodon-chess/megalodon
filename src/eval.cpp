@@ -98,11 +98,8 @@ float pawns(Options& options, U64 pawns, bool side) {
             score += 0.1 * y;
         }
     }
-    score /= num;
-
-    for (auto cnt: file_count) {
-        if (cnt >= 2) score -= 0.15*cnt;
-    }
+    if (num != 0) score /= num;
+    for (auto cnt: file_count) if (cnt >= 2) score -= 0.15*(cnt-1);
 
     return score;
 }
@@ -125,7 +122,7 @@ float eval(Options& options, Position pos, bool moves_exist) {
     const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
     const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
     const float wpawn = pawns(options, pos.wp, true);
-    const float bpawn = pawns(options, pos.bp, true);
+    const float bpawn = pawns(options, pos.bp, false);
 
     return mat + (wking-bking) + (wpawn-bpawn);
 }
