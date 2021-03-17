@@ -209,7 +209,7 @@ int loop() {
             binc /= 1000;
 
             double start = get_time();
-            SearchInfo result = search(options, pos, 3);
+            SearchInfo result = search(options, pos, 3, MIN, MAX);
             double elapse = get_time() - start;
 
             float score = result.score;
