@@ -31,6 +31,9 @@ using std::endl;
 using std::vector;
 using std::string;
 
-float king(Options&, char, Location, U64, U64);
 float material(Position);
+float total_mat(Position);
+
+float king(Options&, char, Location, U64, U64);
+
 float eval(Options&, Position, bool);
