@@ -126,33 +126,40 @@ float knights(Options& options, U64 knights) {
 
 
 float center_control(Options& options, Position pos) {
-    float inner = 0;
-    inner += Bitboard::popcnt(pos.wp & INNER_CENTER) * 1.5;
-    inner += Bitboard::popcnt(pos.wn & INNER_CENTER) * 1.2;
-    inner += Bitboard::popcnt(pos.wb & INNER_CENTER);
-    inner += Bitboard::popcnt(pos.wr & INNER_CENTER) * 0.8;
-    inner += Bitboard::popcnt(pos.wq & INNER_CENTER);
-    inner -= Bitboard::popcnt(pos.bp & INNER_CENTER) * 1.5;
-    inner -= Bitboard::popcnt(pos.bn & INNER_CENTER) * 1.2;
-    inner -= Bitboard::popcnt(pos.bb & INNER_CENTER);
-    inner -= Bitboard::popcnt(pos.br & INNER_CENTER) * 0.8;
-    inner -= Bitboard::popcnt(pos.bq & INNER_CENTER);
-    inner /= INNER_COUNT;
+    float inner_pop = 0;
+    inner_pop += Bitboard::popcnt(pos.wp & INNER_CENTER) * 1.5;
+    inner_pop += Bitboard::popcnt(pos.wn & INNER_CENTER) * 1.2;
+    inner_pop += Bitboard::popcnt(pos.wb & INNER_CENTER);
+    inner_pop += Bitboard::popcnt(pos.wr & INNER_CENTER) * 0.8;
+    inner_pop += Bitboard::popcnt(pos.wq & INNER_CENTER);
+    inner_pop -= Bitboard::popcnt(pos.bp & INNER_CENTER) * 1.5;
+    inner_pop -= Bitboard::popcnt(pos.bn & INNER_CENTER) * 1.2;
+    inner_pop -= Bitboard::popcnt(pos.bb & INNER_CENTER);
+    inner_pop -= Bitboard::popcnt(pos.br & INNER_CENTER) * 0.8;
+    inner_pop -= Bitboard::popcnt(pos.bq & INNER_CENTER);
+    inner_pop /= INNER_COUNT;
 
-    float outer = 0;
-    outer += Bitboard::popcnt(pos.wp & OUTER_CENTER) * 1.5;
-    outer += Bitboard::popcnt(pos.wn & OUTER_CENTER) * 1.2;
-    outer += Bitboard::popcnt(pos.wb & OUTER_CENTER);
-    outer += Bitboard::popcnt(pos.wr & OUTER_CENTER) * 0.8;
-    outer += Bitboard::popcnt(pos.wq & OUTER_CENTER);
-    outer -= Bitboard::popcnt(pos.bp & OUTER_CENTER) * 1.5;
-    outer -= Bitboard::popcnt(pos.bn & OUTER_CENTER) * 1.2;
-    outer -= Bitboard::popcnt(pos.bb & OUTER_CENTER);
-    outer -= Bitboard::popcnt(pos.br & OUTER_CENTER) * 0.8;
-    outer -= Bitboard::popcnt(pos.bq & OUTER_CENTER);
-    outer /= OUTER_COUNT;
+    float outer_pop = 0;
+    outer_pop += Bitboard::popcnt(pos.wp & OUTER_CENTER) * 1.5;
+    outer_pop += Bitboard::popcnt(pos.wn & OUTER_CENTER) * 1.2;
+    outer_pop += Bitboard::popcnt(pos.wb & OUTER_CENTER);
+    outer_pop += Bitboard::popcnt(pos.wr & OUTER_CENTER) * 0.8;
+    outer_pop += Bitboard::popcnt(pos.wq & OUTER_CENTER);
+    outer_pop -= Bitboard::popcnt(pos.bp & OUTER_CENTER) * 1.5;
+    outer_pop -= Bitboard::popcnt(pos.bn & OUTER_CENTER) * 1.2;
+    outer_pop -= Bitboard::popcnt(pos.bb & OUTER_CENTER);
+    outer_pop -= Bitboard::popcnt(pos.br & OUTER_CENTER) * 0.8;
+    outer_pop -= Bitboard::popcnt(pos.bq & OUTER_CENTER);
+    outer_pop /= OUTER_COUNT;
 
-    return inner + outer/2;
+    U64 w_attacks = Bitboard::attacked(pos, true);
+    U64 b_attacks = Bitboard::attacked(pos, false);
+    float inner_attack = Bitboard::popcnt(w_attacks&INNER_CENTER) - Bitboard::popcnt(b_attacks&INNER_CENTER);
+    float outer_attack = Bitboard::popcnt(w_attacks&OUTER_CENTER) - Bitboard::popcnt(b_attacks&OUTER_CENTER);
+    inner_attack /= INNER_COUNT;
+    outer_attack /= OUTER_COUNT;
+
+    return inner_pop/1.5 + outer_pop/2 + inner_attack + outer_attack/1.6;
 }
 
 
