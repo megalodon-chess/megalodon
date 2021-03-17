@@ -36,7 +36,7 @@ using std::string;
 float material(Position pos, int movect) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if (Bitboard::bit(pos.wp, i)) value += 1;
+        if      (Bitboard::bit(pos.wp, i)) value += 1;
         else if (Bitboard::bit(pos.wn, i)) value += 3;
         else if (Bitboard::bit(pos.wb, i)) value += 3;
         else if (Bitboard::bit(pos.wr, i)) value += 5;
