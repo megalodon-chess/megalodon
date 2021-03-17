@@ -192,5 +192,5 @@ float eval(Options& options, Position pos, bool moves_exist) {
 
     const float cent = center_control(options, pos);
 
-    return mat + 1.2*cent + 0.9*(wking-bking) + 0.8*(wpawn-bpawn) + 0.9*(wknight-bknight);
+    return mat + cent + 0.9*(wking-bking) + (wpawn-bpawn) + 0.9*(wknight-bknight);
 }
