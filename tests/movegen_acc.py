@@ -92,7 +92,11 @@ def main():
         cprint(", ".join(engine), "red")
 
     else:
-        pass
+        for move in real:
+            print(move, end=" ")
+            cprint(move, "green")
+        
+        cprint("All moves successfully found!", "green")
 
 
 main()
