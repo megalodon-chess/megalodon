@@ -79,11 +79,12 @@ float move_time(Options& options, Position pos, float time, float inc) {
     // Calculates move time based on moves left and game evaluation.
     float moves = moves_left(options, pos);
     float time_left = time + inc*moves;
-    float mat = eval(options, pos, false);
-    if (!pos.turn) mat *= -1;
-    float mat_offset = mat * -0.3;
+    return time_left / moves;
+    //float mat = eval(options, pos, false);
+    //if (!pos.turn) mat *= -1;
+    //float mat_offset = mat * -0.3;
 
-    return (time_left/moves) + mat_offset;
+    //return (time_left/moves) + mat_offset;
 }
 
 
