@@ -232,10 +232,10 @@ namespace Bitboard {
         str += square_str(move.to);
         if (move.is_promo) {
             switch (move.promo) {
-                case 0: str += "N"; break;
-                case 1: str += "B"; break;
-                case 2: str += "R"; break;
-                case 3: str += "Q"; break;
+                case 0: str += "n"; break;
+                case 1: str += "b"; break;
+                case 2: str += "r"; break;
+                case 3: str += "q"; break;
             }
         }
         return str;
