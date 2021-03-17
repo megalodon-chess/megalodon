@@ -95,11 +95,11 @@ float pawns(Options& options, U64 pawns, bool side) {
             const char x = i%8, y = (side ? i/8 : 7-(i/8));
             file_count[x]++;
             num++;
-            score += 0.1 * y;
+            score += 0.45 * y;
         }
     }
     if (num != 0) score /= num;
-    for (auto cnt: file_count) if (cnt >= 2) score -= 0.15*(cnt-1);
+    for (auto cnt: file_count) if (cnt >= 2) score -= 0.08*(cnt-1);
 
     return score;
 }
