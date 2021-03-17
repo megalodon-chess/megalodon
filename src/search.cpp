@@ -88,7 +88,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
 }
 
 
-SearchInfo search(Options& options, Position pos, int depth, float alpha, float beta) {
+SearchInfo search(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
@@ -102,7 +102,7 @@ SearchInfo search(Options& options, Position pos, int depth, float alpha, float 
 
     for (auto i = 0; i < moves.size(); i++) {
         Position new_pos = Bitboard::push(pos, moves[i]);
-        SearchInfo result = search(options, new_pos, depth-1, alpha, beta);
+        SearchInfo result = search(options, new_pos, alpha, beta, false, depth-1, max_time);
         nodes += result.nodes;
 
         if (pos.turn) {

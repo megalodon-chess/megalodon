@@ -159,8 +159,15 @@ int loop() {
             winc /= 1000;
             binc /= 1000;
 
+            double max_time;
+            if (mode == 1) max_time = 100000;
+            else {
+                if (pos.turn) max_time = move_time(options, pos, wtime, winc);
+                else max_time = move_time(options, pos, btime, binc);
+            }
+
             double start = get_time();
-            SearchInfo result = search(options, pos, 5, MIN, MAX);
+            SearchInfo result = search(options, pos, MIN, MAX, true, 5, max_time);
             double elapse = get_time() - start;
 
             float score = result.score;
