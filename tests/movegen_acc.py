@@ -75,11 +75,18 @@ def main():
 
     if len_real > len_engine:
         for move in engine:
-            if move in real:
-                cprint(move, "green")
+            print(move, end=" ")
+            cprint(move, "green" if move in real else "red")
+            real.remove(move)
+
+        print("Moves not found: ", end="")
+        cprint(", ".join(real), "red")
 
     elif len_real < len_engine:
-        pass
+        for move in real:
+            print(move, end=" ")
+            cprint(move, "green" if move in engine else "red")
+
     else:
         pass
 
