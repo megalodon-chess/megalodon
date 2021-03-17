@@ -124,7 +124,6 @@ SearchInfo search(Options& options, Position pos, int depth, float alpha, float 
         SearchInfo result = search(options, new_pos, depth-1, alpha, beta);
         nodes += result.nodes;
 
-        bool exceeds = false;
         if (pos.turn) {
             if (result.score > best_eval) {
                 best_ind = i;
