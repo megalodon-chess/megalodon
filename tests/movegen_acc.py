@@ -73,8 +73,8 @@ def main():
     cprint(len_engine, "green" if len_engine == len_real else "red")
     print(f"Number of real moves:   {len_real}")
 
+    correct = [x for x in engine if x in real]
     if len_real > len_engine:
-        correct = filter(lambda x: x in real, engine)
         for move in correct:
             print(move, end=" ")
             cprint(move, "green")
@@ -90,7 +90,6 @@ def main():
         cprint(", ".join(real), "red")
 
     elif len_real < len_engine:
-        correct = filter(lambda x: x in real, engine)
         for move in correct:
             print(move, end=" ")
             cprint(move, "green")
@@ -106,7 +105,6 @@ def main():
         cprint(", ".join(engine), "red")
 
     else:
-        correct = [x for x in engine if x in real]
         for move in correct:
             print(move, end=" ")
             cprint(move, "green")

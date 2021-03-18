@@ -648,8 +648,8 @@ namespace Bitboard {
                     cx += dx;
                     cy += dy;
                     const char loc = cy*8 + cx;
-                    if (!bit(checking_pieces, loc)) set_bit(block_mask, loc);
-                    else break;
+                    if (bit(checking_pieces, loc)) break;
+                    set_bit(block_mask, loc);
                 }
             }
 
@@ -730,16 +730,12 @@ namespace Bitboard {
                             }
                         }
                     } else if (bit(CN, i)) {
-                        // Capture and block
                         char x = i%8, y = i/8;
                         for (auto dir: DIR_N) {
                             char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
-                            if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                            if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) continue;
                             const char loc = cy*8 + cx;
-                            if (bit(full_mask, loc)) {
-                                moves.push_back(Move(i, loc));
-                                break;
-                            }
+                            if (bit(full_mask, loc)) moves.push_back(Move(i, loc));
                         }
                     } else if (bit(CB, i) || bit(CQ, i)) {
                         // Capture and block

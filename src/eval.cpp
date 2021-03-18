@@ -21,6 +21,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <cmath>
 #include "bitboard.hpp"
 #include "options.hpp"
 #include "eval.hpp"
@@ -33,21 +34,22 @@ using std::vector;
 using std::string;
 
 using Bitboard::popcnt;
+using Bitboard::bit;
 
 
 float material(Position pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if      (Bitboard::bit(pos.wp, i)) value += 1;
-        else if (Bitboard::bit(pos.wn, i)) value += 3;
-        else if (Bitboard::bit(pos.wb, i)) value += 3;
-        else if (Bitboard::bit(pos.wr, i)) value += 5;
-        else if (Bitboard::bit(pos.wq, i)) value += 9;
-        else if (Bitboard::bit(pos.bp, i)) value -= 1;
-        else if (Bitboard::bit(pos.bn, i)) value -= 3;
-        else if (Bitboard::bit(pos.bb, i)) value -= 3;
-        else if (Bitboard::bit(pos.br, i)) value -= 5;
-        else if (Bitboard::bit(pos.bq, i)) value -= 9;
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value -= 1;
+        else if (bit(pos.bn, i)) value -= 3;
+        else if (bit(pos.bb, i)) value -= 3;
+        else if (bit(pos.br, i)) value -= 5;
+        else if (bit(pos.bq, i)) value -= 9;
     }
     return value;
 }
@@ -55,16 +57,16 @@ float material(Position pos) {
 float total_mat(Position pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if      (Bitboard::bit(pos.wp, i)) value += 1;
-        else if (Bitboard::bit(pos.wn, i)) value += 3;
-        else if (Bitboard::bit(pos.wb, i)) value += 3;
-        else if (Bitboard::bit(pos.wr, i)) value += 5;
-        else if (Bitboard::bit(pos.wq, i)) value += 9;
-        else if (Bitboard::bit(pos.bp, i)) value += 1;
-        else if (Bitboard::bit(pos.bn, i)) value += 3;
-        else if (Bitboard::bit(pos.bb, i)) value += 3;
-        else if (Bitboard::bit(pos.br, i)) value += 5;
-        else if (Bitboard::bit(pos.bq, i)) value += 9;
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value += 1;
+        else if (bit(pos.bn, i)) value += 3;
+        else if (bit(pos.bb, i)) value += 3;
+        else if (bit(pos.br, i)) value += 5;
+        else if (bit(pos.bq, i)) value += 9;
     }
     return value;
 }
@@ -72,19 +74,18 @@ float total_mat(Position pos) {
 
 float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     // todo pawn shield
-    if (stage == 2) {
-        return 0;
-    } else {
-        float rank_eval;
-        if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
-        else rank_eval = 0.7 * (kpos.y-4);
+    if (stage == 2) return 0;
 
-        float col_eval;
-        if (kpos.x <= 3) col_eval = 0.35 * (3-kpos.x);
-        else col_eval = 0.35 * (kpos.x-4);
+    float rank_eval;
+    // todo only works for white
+    if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
+    else rank_eval = 0.7 * (kpos.y-4);
 
-        return rank_eval+col_eval;
-    }
+    float col_eval;
+    if (kpos.x <= 3) col_eval = 0.35 * (3-kpos.x);
+    else col_eval = 0.35 * (kpos.x-4);
+
+    return rank_eval+col_eval;
 }
 
 float pawns(Options& options, U64 pawns, bool side) {
@@ -93,7 +94,7 @@ float pawns(Options& options, U64 pawns, bool side) {
     char num = 0;
 
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(pawns, i)) {
+        if (bit(pawns, i)) {
             const char x = i%8, y = (side ? i/8 : 7-(i/8));
             file_count[x]++;
             num++;
@@ -110,7 +111,7 @@ float knights(Options& options, U64 knights) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(knights, i)) {
+        if (bit(knights, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
             if (x <= 3) horiz = x / 2.1;
@@ -124,6 +125,24 @@ float knights(Options& options, U64 knights) {
     if (count != 0) score /= count;
 
     return score;
+}
+
+float rooks(Options& options, U64 rooks) {
+    float score = 0;
+    vector<char> files(8, 0), ranks(8, 0);
+    for (char i = 0; i < 64; i++) {
+        if (bit(rooks, i)) {
+            const char x = i%8, y = i/8;
+            files[x]++;
+            ranks[y]++;
+        }
+    }
+    for (auto i = 0; i < 8; i++) {
+        // Need to check if not 0 because 0^2 = 1
+        if (files[i] != 0) score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
+        if (ranks[i] != 0) score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
+        // todo add more score when rook in middle files or when rook on good ranks (7, 1)
+    }
 }
 
 
