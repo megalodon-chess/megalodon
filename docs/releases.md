@@ -8,6 +8,8 @@ This release contains many bug fixes and evaluation improvements.
 
 Now, Megalodon plays developing moves in the opening, and the developers estimate it plays at 900 ELO.
 
+The NPS has dropped to 27000, but this will be improved in v0.3.x
+
 ## [Megalodon 0.2.0][v0.2.0]
 
 This release features alpha-beta pruning minimax, and new evaluation functions.
