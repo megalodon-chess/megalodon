@@ -171,7 +171,7 @@ int loop() {
                 else time = move_time(options, pos, btime, binc);
 
                 if (10 <= time) depth = 5;
-                else if (1 <= time && time < 10) depth = 4;
+                else if (3 <= time && time < 10) depth = 4;
                 else depth = 3;
             }
             if (total < 20) depth++;
