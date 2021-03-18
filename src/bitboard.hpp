@@ -98,6 +98,9 @@ namespace Bitboard {
     constexpr U64 START_BQ = 576460752303423488ULL;
     constexpr U64 START_BK = 1152921504606846976ULL;
 
+    constexpr U64 CASTLING_WK = 432345564227567616ULL;
+    constexpr U64 CASTLING_WQ = 8070450532247928832ULL;
+
     const vector<vector<char>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<char>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
     const vector<vector<char>> DIR_B = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};

@@ -574,13 +574,11 @@ namespace Bitboard {
         if (pos.turn) {
             if (bit(pos.castling, 0)) {
                 if (!bit(all, 5) && !bit(all, 6)) {
-                    constexpr U64 mask = 432345564227567616ULL;
                     moves.push_back(Move(start, 6));
                 }
             }
             if (bit(pos.castling, 1)) {
                 if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) {
-                    constexpr U64 mask = 8070450532247928832ULL;
                     moves.push_back(Move(start, 2));
                 }
             }
