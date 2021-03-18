@@ -139,10 +139,16 @@ float rooks(Options& options, U64 rooks) {
     }
     for (auto i = 0; i < 8; i++) {
         // Need to check if not 0 because 0^2 = 1
-        if (files[i] != 0) score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
-        if (ranks[i] != 0) score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
-        // todo add more score when rook in middle files or when rook on good ranks (7, 1)
+        if (files[i] != 0) {
+            score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
+            score += 4 - abs(i - 3.5);         // 4 - Distance from center file
+        }
+        if (ranks[i] != 0) {
+            score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
+            if (i == 1 || i == 7) score += 1.5;
+        }
     }
+    return score;
 }
 
 
@@ -201,8 +207,10 @@ float eval(Options& options, Position pos, bool moves_exist, int depth) {
     const float bpawn = pawns(options, pos.bp, false);
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
+    const float wrook = rooks(options, pos.wr);
+    const float brook = rooks(options, pos.br);
 
     const float cent = center_control(options, pos, stage);
 
-    return mat + 0.35*cent + 0.75*(wking-bking) + (wpawn-bpawn) + 0.6*(wknight-bknight);
+    return mat + 0.35*cent + 0.75*(wking-bking) + (wpawn-bpawn) + 0.6*(wknight-bknight) + 0.3*(wrook-brook);
 }
