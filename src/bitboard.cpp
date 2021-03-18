@@ -573,17 +573,29 @@ namespace Bitboard {
         // Castling
         if (pos.turn) {
             if (bit(pos.castling, 0)) {
-                if (!bit(all, 5) && !bit(all, 6)) moves.push_back(Move(start, 6));
+                if (!bit(all, 5) && !bit(all, 6)) {
+                    constexpr U64 mask = 432345564227567616ULL;
+                    moves.push_back(Move(start, 6));
+                }
             }
             if (bit(pos.castling, 1)) {
-                if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) moves.push_back(Move(start, 2));
+                if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) {
+                    constexpr U64 mask = 8070450532247928832ULL;
+                    moves.push_back(Move(start, 2));
+                }
             }
         } else {
             if (bit(pos.castling, 2)) {
-                if (!bit(all, 61) && !bit(all, 62)) moves.push_back(Move(start, 62));
+                if (!bit(all, 61) && !bit(all, 62)) {
+                    U64 mask;
+                    moves.push_back(Move(start, 62));
+                }
             }
             if (bit(pos.castling, 3)) {
-                if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) moves.push_back(Move(start, 58));
+                if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
+                    U64 mask;
+                    moves.push_back(Move(start, 58));
+                }
             }
         }
 
