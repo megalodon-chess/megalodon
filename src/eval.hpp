@@ -31,10 +31,10 @@ using std::endl;
 using std::vector;
 using std::string;
 
-constexpr U64 INNER_CENTER = 103481868288ULL;
-constexpr U64 OUTER_CENTER = 66125924401152ULL;
-const float INNER_COUNT = Bitboard::popcnt(INNER_CENTER);
-const float OUTER_COUNT = Bitboard::popcnt(OUTER_CENTER);
+constexpr U64 IN_CENT = 103481868288ULL;
+constexpr U64 OUT_CENT = 66125924401152ULL;
+const float IN_CNT = Bitboard::popcnt(IN_CENT);
+const float OUT_CNT = Bitboard::popcnt(OUT_CENT);
 
 float material(Position);
 float total_mat(Position);

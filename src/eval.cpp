@@ -32,6 +32,8 @@ using std::endl;
 using std::vector;
 using std::string;
 
+using Bitboard::popcnt;
+
 
 float material(Position pos) {
     float value = 0;
@@ -126,46 +128,19 @@ float knights(Options& options, U64 knights) {
 
 
 float center_control(Options& options, Position pos) {
-    float inner_pop = 0;
-    float inner_pop_wp = 0;
-    float inner_pop_bp = 0;
-    inner_pop_wp += Bitboard::popcnt(pos.wp & INNER_CENTER) * 1.5;
-    inner_pop += Bitboard::popcnt(pos.wn & INNER_CENTER) * 1.2;
-    inner_pop += Bitboard::popcnt(pos.wb & INNER_CENTER);
-    inner_pop += Bitboard::popcnt(pos.wr & INNER_CENTER) * 0.8;
-    inner_pop += Bitboard::popcnt(pos.wq & INNER_CENTER);
-    inner_pop_bp -= Bitboard::popcnt(pos.bp & INNER_CENTER) * 1.5;
-    inner_pop -= Bitboard::popcnt(pos.bn & INNER_CENTER) * 1.2;
-    inner_pop -= Bitboard::popcnt(pos.bb & INNER_CENTER);
-    inner_pop -= Bitboard::popcnt(pos.br & INNER_CENTER) * 0.8;
-    inner_pop -= Bitboard::popcnt(pos.bq & INNER_CENTER);
-    inner_pop /= INNER_COUNT;
-    if (inner_pop_wp == 0) inner_pop -= 1;
-    if (inner_pop_bp == 0) inner_pop += 1;
-    inner_pop += inner_pop_wp;
-    inner_pop += inner_pop_bp;
+    float w_inneratt = popcnt(Bitboard::attacked(pos, true)&IN_CENT);
+    float b_inneratt = popcnt(Bitboard::attacked(pos, false)&IN_CENT);
+    float w_innerpop = popcnt(pos.wn&IN_CENT) + popcnt(pos.wb&IN_CENT) + popcnt(pos.wr&IN_CENT) + popcnt(pos.wq&IN_CENT);
+    float b_innerpop = popcnt(pos.bn&IN_CENT) + popcnt(pos.bb&IN_CENT) + popcnt(pos.br&IN_CENT) + popcnt(pos.bq&IN_CENT);
+    float wp_innerpop = popcnt(pos.wp&IN_CENT);
+    float bp_innerpop = popcnt(pos.bp&IN_CENT);
 
-    float outer_pop = 0;
-    outer_pop += Bitboard::popcnt(pos.wp & OUTER_CENTER) * 1.5;
-    outer_pop += Bitboard::popcnt(pos.wn & OUTER_CENTER) * 1.2;
-    outer_pop += Bitboard::popcnt(pos.wb & OUTER_CENTER);
-    outer_pop += Bitboard::popcnt(pos.wr & OUTER_CENTER) * 0.8;
-    outer_pop += Bitboard::popcnt(pos.wq & OUTER_CENTER);
-    outer_pop -= Bitboard::popcnt(pos.bp & OUTER_CENTER) * 1.5;
-    outer_pop -= Bitboard::popcnt(pos.bn & OUTER_CENTER) * 1.2;
-    outer_pop -= Bitboard::popcnt(pos.bb & OUTER_CENTER);
-    outer_pop -= Bitboard::popcnt(pos.br & OUTER_CENTER) * 0.8;
-    outer_pop -= Bitboard::popcnt(pos.bq & OUTER_CENTER);
-    outer_pop /= OUTER_COUNT;
-
-    U64 w_attacks = Bitboard::attacked(pos, true);
-    U64 b_attacks = Bitboard::attacked(pos, false);
-    float inner_attack = Bitboard::popcnt(w_attacks&INNER_CENTER) - Bitboard::popcnt(b_attacks&INNER_CENTER);
-    float outer_attack = Bitboard::popcnt(w_attacks&OUTER_CENTER) - Bitboard::popcnt(b_attacks&OUTER_CENTER);
-    inner_attack /= INNER_COUNT;
-    outer_attack /= OUTER_COUNT;
-
-    return inner_pop/1.5 + outer_pop/2 + inner_attack + outer_attack/1.6;
+    float w_outeratt = popcnt(Bitboard::attacked(pos, true)&OUT_CENT);
+    float b_outeratt = popcnt(Bitboard::attacked(pos, false)&OUT_CENT);
+    float w_outerpop = popcnt(pos.wn&OUT_CENT) + popcnt(pos.wb&OUT_CENT) + popcnt(pos.wr&OUT_CENT) + popcnt(pos.wq&OUT_CENT);
+    float b_outerpop = popcnt(pos.bn&OUT_CENT) + popcnt(pos.bb&OUT_CENT) + popcnt(pos.br&OUT_CENT) + popcnt(pos.bq&OUT_CENT);
+    float wp_outerpop = popcnt(pos.wp&OUT_CENT);
+    float bp_outerpop = popcnt(pos.bp&OUT_CENT);
 }
 
 
@@ -193,5 +168,5 @@ float eval(Options& options, Position pos, bool moves_exist, int depth) {
 
     const float cent = center_control(options, pos);
 
-    return mat + cent + 0.9*(wking-bking) + (wpawn-bpawn) + 0.9*(wknight-bknight);
+    return mat + 0.3*cent + 0.9*(wking-bking) + 0.75*(wpawn-bpawn) + 0.9*(wknight-bknight);
 }
