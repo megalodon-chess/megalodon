@@ -165,8 +165,8 @@ int loop() {
                 if (pos.turn) time = move_time(options, pos, wtime, winc);
                 else time = move_time(options, pos, btime, binc);
 
-                if (15 <= time) depth = 5;
-                else if (1 <= time && time < 15) depth = 4;
+                if (10 <= time) depth = 5;
+                else if (1 <= time && time < 10) depth = 4;
                 else depth = 3;
             }
             if (total < 20) depth++;
