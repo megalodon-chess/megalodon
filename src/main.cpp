@@ -20,8 +20,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "utils.hpp"
-#include "bitboard.hpp"
 #include "uci.hpp"
 
 using std::cin;
