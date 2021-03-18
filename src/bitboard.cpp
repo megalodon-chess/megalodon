@@ -585,7 +585,7 @@ namespace Bitboard {
         } else {
             if (bit(pos.castling, 2)) {
                 if (!bit(all, 61) && !bit(all, 62)) {
-                    if ((CASTLING_BK) & attacks) == EMPTY) moves.push_back(Move(start, 62));
+                    if ((CASTLING_BK & attacks) == EMPTY) moves.push_back(Move(start, 62));
                 }
             }
             if (bit(pos.castling, 3)) {
