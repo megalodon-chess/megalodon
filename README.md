@@ -4,6 +4,8 @@
 
 UCI chess engine.
 
+Play against Megalodon on [Lichess][lichess]!
+
 [Version 0.2.0][latest] was recently released!
 
 ## To compile with script
@@ -66,5 +68,6 @@ The name megalodon comes from a species of shark that lived millions of years ag
 
 For extra documentation, please read the [docs][docs].
 
+[lichess]: https://lichess.org/@/megalodon-chess
 [docs]: https://megalodon-chess.github.io/megalodon/
 [latest]: https://github.com/megalodon-chess/megalodon/releases/latest
