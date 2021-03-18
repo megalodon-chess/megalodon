@@ -189,7 +189,11 @@ float center_control(Options& options, Position pos, int stage) {
 float eval(Options& options, Position pos, bool moves_exist, int depth) {
     if (!moves_exist) {
         // Increment value by depth to encourage sooner mate.
-        if (pos.turn) return MIN+depth;
+        if (pos.turn) {
+            U64 same = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq; 
+            if (std::get<0>(Bitboard::checkers(pos.wk, pos.bp, pos.bn, pos.bb, pos.br, pos.bq, same, true)) != Bitboard::EMPTY) return MIN+depth;
+            return 0;
+        }
         else return MAX-depth;
     }
 
