@@ -139,9 +139,13 @@ float rooks(Options& options, U64 rooks) {
     }
     for (auto i = 0; i < 8; i++) {
         // Need to check if not 0 because 0^2 = 1
-        if (files[i] != 0) score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
-        if (ranks[i] != 0) score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
-        // todo add more score when rook in middle files or when rook on good ranks (7, 1)
+        if (files[i] != 0) {
+            score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
+            score += 4 - abs(i - 3.5);    
+        }
+        if (ranks[i] != 0) {
+            score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
+        }
     }
     return score;
 }
