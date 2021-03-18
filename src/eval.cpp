@@ -135,12 +135,12 @@ float center_control(Options& options, Position pos, int stage) {
     float wp_innerpop = popcnt(pos.wp&IN_CENT);
     float bp_innerpop = popcnt(pos.bp&IN_CENT);
 
-    float w_outeratt = popcnt(Bitboard::attacked(pos, true)&OUT_CENT);
-    float b_outeratt = popcnt(Bitboard::attacked(pos, false)&OUT_CENT);
-    float w_outerpop = popcnt(pos.wn&OUT_CENT) + popcnt(pos.wb&OUT_CENT) + popcnt(pos.wr&OUT_CENT) + popcnt(pos.wq&OUT_CENT);
-    float b_outerpop = popcnt(pos.bn&OUT_CENT) + popcnt(pos.bb&OUT_CENT) + popcnt(pos.br&OUT_CENT) + popcnt(pos.bq&OUT_CENT);
-    float wp_outerpop = popcnt(pos.wp&OUT_CENT);
-    float bp_outerpop = popcnt(pos.bp&OUT_CENT);
+    // float w_outeratt = popcnt(Bitboard::attacked(pos, true)&OUT_CENT);
+    // float b_outeratt = popcnt(Bitboard::attacked(pos, false)&OUT_CENT);
+    // float w_outerpop = popcnt(pos.wn&OUT_CENT) + popcnt(pos.wb&OUT_CENT) + popcnt(pos.wr&OUT_CENT) + popcnt(pos.wq&OUT_CENT);
+    // float b_outerpop = popcnt(pos.bn&OUT_CENT) + popcnt(pos.bb&OUT_CENT) + popcnt(pos.br&OUT_CENT) + popcnt(pos.bq&OUT_CENT);
+    // float wp_outerpop = popcnt(pos.wp&OUT_CENT);
+    // float bp_outerpop = popcnt(pos.bp&OUT_CENT);
 
     float score = 0;
     score += w_inneratt / IN_CNT * 1.3;
@@ -150,12 +150,12 @@ float center_control(Options& options, Position pos, int stage) {
     score -= bp_innerpop / IN_CNT * 1.5;
     if (bp_innerpop != 0 || stage != 0) score -= b_innerpop / IN_CNT * 1.3;
 
-    score += w_outeratt / OUT_CNT * 0.6;
-    score -= b_outeratt / OUT_CNT * 0.6;
-    score += wp_outerpop / OUT_CNT * 0.8;
-    score += w_outerpop / OUT_CNT * 0.6;
-    score -= bp_outerpop / OUT_CNT * 0.8;
-    score -= b_outerpop / OUT_CNT * 0.6;
+    // score += w_outeratt / OUT_CNT * 0.6;
+    // score -= b_outeratt / OUT_CNT * 0.6;
+    // score += wp_outerpop / OUT_CNT * 0.8;
+    // score += w_outerpop / OUT_CNT * 0.6;
+    // score -= bp_outerpop / OUT_CNT * 0.8;
+    // score -= b_outerpop / OUT_CNT * 0.6;
 
     return score;
 }
