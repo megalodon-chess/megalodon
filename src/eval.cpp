@@ -124,6 +124,17 @@ float knights(Options& options, U64 knights) {
     return score;
 }
 
+float rooks(Options& options, U64 rooks) {
+    vector<char> files(8, 0), ranks(8, 0);
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(rooks, i)) {
+            const char x = i%8, y = i/8;
+            files[x]++;
+            ranks[y]++;
+        }
+    }
+}
+
 
 float center_control(Options& options, Position pos, int stage) {
     float w_inneratt = popcnt(Bitboard::attacked(pos, true)&IN_CENT);
