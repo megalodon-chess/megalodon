@@ -97,6 +97,11 @@ int loop() {
         cmd = strip(cmd);
 
         if (cmd == "quit") break;
+        else if (cmd == "clear") { // [27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74]
+            string str;
+            for (char i: {27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74}) str += string(1, i);
+            cout << str << std::flush;
+        }
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
