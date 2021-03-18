@@ -223,5 +223,12 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
 
     const float cent = center_control(options, pos, stage);
 
-    return mat + 0.35*cent + 0.75*(wking-bking) + (wpawn-bpawn) + 0.6*(wknight-bknight) + 0.3*(wrook-brook);
+    return (
+        options.EvalMaterial * 1 *    mat +
+        options.EvalCenter *   0.2 *  cent +
+        options.EvalKing *     0.75 * (wking-bking) +
+        options.EvalPawn *     1 *    (wpawn-bpawn) +
+        options.EvalKnight *   0.6 *  (wknight-bknight) +
+        options.EvalRook *     0.3 *  (wrook-brook)
+    );
 }
