@@ -105,7 +105,12 @@ int loop() {
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name Chat type check default false" << "\n";
+            cout << "option name EvalCenter type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalKing type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalPawn type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalKnight type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalRook type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
@@ -114,6 +119,11 @@ int loop() {
             string value = parts[4];
 
             if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
+            else if (name == "EvalCenter") options.EvalCenter = std::stoi(value);
+            else if (name == "EvalKing") options.EvalKing = std::stoi(value);
+            else if (name == "EvalPawn") options.EvalPawn = std::stoi(value);
+            else if (name == "EvalKnight") options.EvalKnight = std::stoi(value);
+            else if (name == "EvalRook") options.EvalRook = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
         }
