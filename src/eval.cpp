@@ -195,7 +195,12 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
             if (checks != Bitboard::EMPTY) return MIN+depth;
             return 0;
         }
-        else return MAX-depth;
+        else {
+            U64 same = pos.bp | pos.bn | pos.bb | pos.br | pos.bq; 
+            U64 checks = std::get<0>(Bitboard::checkers(pos.bk, pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, same, attackers, false));
+            if (checks != Bitboard::EMPTY) return MAX-depth;
+            return 0;
+        }
     }
 
     const int movect = pos.move_stack.size();
