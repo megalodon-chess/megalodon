@@ -77,6 +77,7 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     if (stage == 2) return 0;
 
     float rank_eval;
+    // todo only works for white
     if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
     else rank_eval = 0.7 * (kpos.y-4);
 
