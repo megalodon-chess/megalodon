@@ -46,8 +46,8 @@ struct SearchInfo {
     Move move;
 };
 
-constexpr float MAX = 1000000.0;
-constexpr float MIN = -1000000.0;
+constexpr float MAX = 1000000;
+constexpr float MIN = -1000000;
 
 float moves_left(Options&, Position);
 float move_time(Options&, Position, float, float);
