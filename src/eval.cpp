@@ -143,6 +143,7 @@ float rooks(Options& options, U64 rooks) {
         if (ranks[i] != 0) score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
         // todo add more score when rook in middle files or when rook on good ranks (7, 1)
     }
+    return score;
 }
 
 
