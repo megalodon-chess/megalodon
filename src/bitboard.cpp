@@ -590,7 +590,7 @@ namespace Bitboard {
             }
             if (bit(pos.castling, 3)) {
                 if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
-                    moves.push_back(Move(start, 58));
+                    if ((CASTLING_BQ & attacks) == EMPTY) moves.push_back(Move(start, 58));
                 }
             }
         }
