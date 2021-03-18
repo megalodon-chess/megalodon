@@ -648,10 +648,11 @@ namespace Bitboard {
                     cx += dx;
                     cy += dy;
                     const char loc = cy*8 + cx;
-                    if (!bit(checking_pieces, loc)) set_bit(block_mask, loc);
-                    else break;
+                    if (bit(checking_pieces, loc)) break;
+                    set_bit(block_mask, loc);
                 }
             }
+            cout << board_str(block_mask) << endl;
 
             U64 full_mask = block_mask | capture_mask;
 
