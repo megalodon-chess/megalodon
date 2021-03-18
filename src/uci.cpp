@@ -119,7 +119,7 @@ int loop() {
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
-        else if (cmd == "eval") cout << eval(options, pos, true, 0) << endl;
+        else if (cmd == "eval") cout << eval(options, pos, true, 0, Bitboard::attacked(pos, !pos.turn)) << endl;
         else if (startswith(cmd, "perft")) {
             vector<string> parts = split(cmd, " ");
             if (parts[1] == "movegen") {
