@@ -144,18 +144,18 @@ float center_control(Options& options, Position pos, int stage) {
 
     float score = 0;
     score += w_inneratt / IN_CNT * 1.7;
-    score += b_inneratt / IN_CNT * 1.7;
+    score -= b_inneratt / IN_CNT * 1.7;
     score += wp_innerpop / IN_CNT * 1.5;
     if (wp_innerpop != 0 || stage != 0) score += w_innerpop / IN_CNT * 1.3;
     score -= bp_innerpop / IN_CNT * 1.5;
     if (bp_innerpop != 0 || stage != 0) score -= b_innerpop / IN_CNT * 1.3;
 
     score += w_outeratt / OUT_CNT * 0.8;
-    score += b_outeratt / OUT_CNT * 0.8;
+    score -= b_outeratt / OUT_CNT * 0.8;
     score += wp_outerpop / OUT_CNT * 0.7;
-    if (wp_outerpop != 0 || stage != 0) score += w_outerpop / OUT_CNT * 0.6;
+    score += w_outerpop / OUT_CNT * 0.6;
     score -= bp_outerpop / OUT_CNT * 0.7;
-    if (bp_outerpop != 0 || stage != 0) score -= b_outerpop / OUT_CNT * 0.6;
+    score -= b_outerpop / OUT_CNT * 0.6;
 
     return score;
 }
@@ -184,7 +184,6 @@ float eval(Options& options, Position pos, bool moves_exist, int depth) {
     const float bknight = knights(options, pos.bn);
 
     const float cent = center_control(options, pos, stage);
-    cout << "c: " << cent;
 
-    return mat + cent + 0.9*(wking-bking) + 0.75*(wpawn-bpawn) + 0.9*(wknight-bknight);
+    return mat + cent + 0.75*(wking-bking) + 0.75*(wpawn-bpawn) + 0.8*(wknight-bknight);
 }
