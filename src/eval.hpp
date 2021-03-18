@@ -43,6 +43,6 @@ float king(Options&, char, Location, U64, U64);
 float pawns(Options&, U64, bool);
 float knights(Options&, U64);
 
-float center_control(Options&, Position);
+float center_control(Options&, Position, int);
 
 float eval(Options&, Position, bool, int);
