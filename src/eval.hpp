@@ -45,4 +45,4 @@ float knights(Options&, U64);
 
 float center_control(Options&, Position);
 
-float eval(Options&, Position, bool);
+float eval(Options&, Position, bool, int);

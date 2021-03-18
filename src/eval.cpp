@@ -169,10 +169,11 @@ float center_control(Options& options, Position pos) {
 }
 
 
-float eval(Options& options, Position pos, bool moves_exist) {
+float eval(Options& options, Position pos, bool moves_exist, int depth) {
     if (!moves_exist) {
-        if (pos.turn) return MIN;
-        else return MAX;
+        // Increment value by depth to encourage sooner mate.
+        if (pos.turn) return MIN+depth;
+        else return MAX-depth;
     }
 
     const int movect = pos.move_stack.size();
