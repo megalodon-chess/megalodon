@@ -140,8 +140,8 @@ float rooks(Options& options, U64 rooks) {
     }
 
     for (auto i = 0; i < 8; i++) {
-        if (files[i] >= 2) score += 0.5 * files[i];
-        if (ranks[i] >= 2) score += 0.5 * ranks[i];
+        if (files[i] > 1) score += 0.5 * files[i];
+        if (ranks[i] > 1) score += 0.5 * ranks[i];
     }
 
     return score;
