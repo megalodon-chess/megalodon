@@ -735,10 +735,7 @@ namespace Bitboard {
                             char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
                             if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) continue;
                             const char loc = cy*8 + cx;
-                            if (bit(full_mask, loc)) {
-                                moves.push_back(Move(i, loc));
-                                break;
-                            }
+                            if (bit(full_mask, loc)) moves.push_back(Move(i, loc));
                         }
                     } else if (bit(CB, i) || bit(CQ, i)) {
                         // Capture and block
