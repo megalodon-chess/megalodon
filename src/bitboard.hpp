@@ -55,8 +55,6 @@ struct Position {
     bool ep;
     char ep_square;
 
-    bool traversed;
-    bool pruned;
     float eval;
     vector<Move> move_stack;
 };
