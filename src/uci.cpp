@@ -97,7 +97,7 @@ int loop() {
         cmd = strip(cmd);
 
         if (cmd == "quit") break;
-        else if (cmd == "clear") { // [27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74]
+        else if (cmd == "clear") {
             string str;
             for (char i: {27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74}) str += string(1, i);
             cout << str << std::flush;
