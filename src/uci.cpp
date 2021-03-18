@@ -132,8 +132,7 @@ int loop() {
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             vector<string> parts = split(cmd, " ");
-            int mode = 0;
-            int depth;
+            int mode = 0, depth, total = total_mat(pos);
             float wtime, btime, winc, binc;
             for (auto i = 0; i < parts.size(); i++) {
                 if (parts[i] == "depth") {
@@ -171,6 +170,8 @@ int loop() {
                 else if (1 <= time && time < 30) depth = 4;
                 else depth = 3;
             }
+            if (total < 20) depth++;
+            if (total < 8) depth++;
 
             double start = get_time();
             SearchInfo result = search(options, pos, MIN, MAX, true, depth, 0);
