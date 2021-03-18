@@ -73,19 +73,20 @@ float total_mat(Position pos) {
 
 
 float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
-    // todo pawn shield
-    if (stage == 2) return 0;
+    if (stage == 2) {
+        return 0;  // todo
+    } else {
+        float rank_eval;
+        if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
+        else rank_eval = 0.7 * (kpos.y-4);
 
-    float rank_eval;
-    // todo only works for white
-    if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
-    else rank_eval = 0.7 * (kpos.y-4);
+        float col_eval;
+        if (kpos.x <= 3) col_eval = 0.35 * (3-kpos.x);
+        else col_eval = 0.35 * (kpos.x-4);
+        // todo pawn shield
 
-    float col_eval;
-    if (kpos.x <= 3) col_eval = 0.35 * (3-kpos.x);
-    else col_eval = 0.35 * (kpos.x-4);
-
-    return rank_eval+col_eval;
+        return rank_eval+col_eval;
+    }
 }
 
 float pawns(Options& options, U64 pawns, bool side) {
