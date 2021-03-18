@@ -126,6 +126,7 @@ float knights(Options& options, U64 knights) {
 }
 
 float rooks(Options& options, U64 rooks) {
+    float score = 0;
     vector<char> files(8, 0), ranks(8, 0);
     for (char i = 0; i < 64; i++) {
         if (bit(rooks, i)) {
@@ -133,6 +134,8 @@ float rooks(Options& options, U64 rooks) {
             files[x]++;
             ranks[y]++;
         }
+    }
+    for (auto file: files) {
     }
 }
 
