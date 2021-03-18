@@ -145,6 +145,7 @@ float rooks(Options& options, U64 rooks) {
         }
         if (ranks[i] != 0) {
             score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
+            if (i == 1 || i == 7) score += 1.5;
         }
     }
     return score;
