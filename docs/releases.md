@@ -2,6 +2,12 @@
 
 This page contains release info.
 
+## [Megalodon 0.2.1][v0.2.1]
+
+This release contains many bug fixes and evaluation improvements.
+
+Now, Megalodon plays developing moves in the opening, and the developers estimate it plays at 900 ELO.
+
 ## [Megalodon 0.2.0][v0.2.0]
 
 This release features alpha-beta pruning minimax, and new evaluation functions.
@@ -79,6 +85,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.2.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.0
 [v0.1.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.1.3
 [v0.1.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.1.2
