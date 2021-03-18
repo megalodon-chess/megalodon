@@ -39,7 +39,7 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, int _score, int _nodes, int _nps, int _time, Move _move) {
+SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps, int _time, Move _move) {
     depth = _depth;
     seldepth = _seldepth;
     is_mate_score = _is_mate;

@@ -33,7 +33,7 @@ using std::string;
 
 struct SearchInfo {
     SearchInfo();
-    SearchInfo(int, int, bool, int, int, int, int, Move);
+    SearchInfo(int, int, bool, float, int, int, int, Move);
     string as_string();
 
     int depth;
