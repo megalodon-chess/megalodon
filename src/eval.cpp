@@ -138,6 +138,7 @@ float rooks(Options& options, U64 rooks) {
     }
     for (auto i = 0; i < 8; i++) {
         score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
+        // todo add more score when rook in middle files
     }
 }
 
