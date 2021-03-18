@@ -167,7 +167,7 @@ int loop() {
                 cout << "t" << time << endl;
 
                 if (10 <= time) depth = 5;
-                else if (1 <= time && time < 30) depth = 4;
+                else if (3.5 <= time && time < 10) depth = 4;
                 else depth = 3;
             }
             if (total < 20) depth++;
