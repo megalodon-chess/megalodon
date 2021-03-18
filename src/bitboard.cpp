@@ -585,13 +585,11 @@ namespace Bitboard {
         } else {
             if (bit(pos.castling, 2)) {
                 if (!bit(all, 61) && !bit(all, 62)) {
-                    U64 mask;
                     moves.push_back(Move(start, 62));
                 }
             }
             if (bit(pos.castling, 3)) {
                 if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
-                    U64 mask;
                     moves.push_back(Move(start, 58));
                 }
             }
