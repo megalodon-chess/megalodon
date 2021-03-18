@@ -102,7 +102,7 @@ float pawns(Options& options, U64 pawns, bool side) {
         }
     }
     if (num != 0) score /= num;
-    for (auto cnt: file_count) if (cnt >= 2) score -= 0.08*(cnt-1);
+    for (auto cnt: file_count) if (cnt > 1) score -= 0.08*(cnt-1);
 
     return score;
 }
