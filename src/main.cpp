@@ -40,5 +40,9 @@ void print_info() {
 int main() {
     srand(time(NULL));
     print_info();
+    cout << Bitboard::board_str(Bitboard::CASTLING_WK) << endl;
+    cout << Bitboard::board_str(Bitboard::CASTLING_WQ) << endl;
+    cout << Bitboard::board_str(Bitboard::CASTLING_BK) << endl;
+    cout << Bitboard::board_str(Bitboard::CASTLING_BQ) << endl;
     return loop();
 }
