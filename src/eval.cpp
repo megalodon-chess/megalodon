@@ -21,6 +21,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <cmath>
 #include "bitboard.hpp"
 #include "options.hpp"
 #include "eval.hpp"
