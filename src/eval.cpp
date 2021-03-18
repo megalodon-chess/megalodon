@@ -185,5 +185,5 @@ float eval(Options& options, Position pos, bool moves_exist, int depth) {
 
     const float cent = center_control(options, pos, stage);
 
-    return mat + cent + 0.75*(wking-bking) + 0.8*(wpawn-bpawn) + 0.6*(wknight-bknight);
+    return mat + 0.8*cent + 0.75*(wking-bking) + (wpawn-bpawn) + 0.6*(wknight-bknight);
 }
