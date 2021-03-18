@@ -164,7 +164,6 @@ int loop() {
                 double time;
                 if (pos.turn) time = move_time(options, pos, wtime, winc);
                 else time = move_time(options, pos, btime, binc);
-                cout << "t" << time << endl;
 
                 if (10 <= time) depth = 5;
                 else if (3.5 <= time && time < 10) depth = 4;

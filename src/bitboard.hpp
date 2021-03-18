@@ -59,7 +59,6 @@ struct Position {
     bool pruned;
     float eval;
     vector<Move> move_stack;
-    vector<Position*> branches;
 };
 
 struct Location {
