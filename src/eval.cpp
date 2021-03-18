@@ -136,8 +136,8 @@ float rooks(Options& options, U64 rooks) {
             ranks[y]++;
         }
     }
-    for (auto file: files) {
-        score += std::pow(file, 2)/2;  // ((Number of rooks on file)^2)/2
+    for (auto i = 0; i < 8; i++) {
+        score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
     }
 }
 
