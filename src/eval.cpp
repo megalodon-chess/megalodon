@@ -137,7 +137,7 @@ float rooks(Options& options, U64 rooks) {
         }
     }
     for (auto file: files) {
-        score += std::pow(file, 2)/2;
+        score += std::pow(file, 2)/2;  // ((Number of rooks on file)^2)/2
     }
 }
 
