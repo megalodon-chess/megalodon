@@ -207,8 +207,10 @@ float eval(Options& options, Position pos, bool moves_exist, int depth) {
     const float bpawn = pawns(options, pos.bp, false);
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
+    const float wrook = rooks(options, pos.wr);
+    const float brook = rooks(options, pos.br);
 
     const float cent = center_control(options, pos, stage);
 
-    return mat + 0.35*cent + 0.75*(wking-bking) + (wpawn-bpawn) + 0.6*(wknight-bknight);
+    return mat + 0.35*cent + 0.75*(wking-bking) + (wpawn-bpawn) + 0.6*(wknight-bknight) + 0.6*(wrook-brook);
 }
