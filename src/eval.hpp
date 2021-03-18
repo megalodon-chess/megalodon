@@ -46,4 +46,4 @@ float rooks(Options&, U64);
 
 float center_control(Options&, Position, int);
 
-float eval(Options&, Position, bool, int);
+float eval(Options&, Position, bool, int, U64);

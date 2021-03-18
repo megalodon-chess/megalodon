@@ -186,11 +186,21 @@ float center_control(Options& options, Position pos, int stage) {
 }
 
 
-float eval(Options& options, Position pos, bool moves_exist, int depth) {
+float eval(Options& options, Position pos, bool moves_exist, int depth, U64 attackers) {
     if (!moves_exist) {
         // Increment value by depth to encourage sooner mate.
-        if (pos.turn) return MIN+depth;
-        else return MAX-depth;
+        if (pos.turn) {
+            U64 same = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq; 
+            U64 checks = std::get<0>(Bitboard::checkers(pos.wk, pos.bp, pos.bn, pos.bb, pos.br, pos.bq, same, attackers, true));
+            if (checks != Bitboard::EMPTY) return MIN+depth;
+            return 0;
+        }
+        else {
+            U64 same = pos.bp | pos.bn | pos.bb | pos.br | pos.bq; 
+            U64 checks = std::get<0>(Bitboard::checkers(pos.bk, pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, same, attackers, false));
+            if (checks != Bitboard::EMPTY) return MAX-depth;
+            return 0;
+        }
     }
 
     const int movect = pos.move_stack.size();
