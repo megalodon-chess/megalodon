@@ -283,7 +283,7 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
     return (
         bias +
         options.EvalMaterial/100 * 1 *    mat +
-        options.EvalCenter/100 *   0.15 * cent +
+        options.EvalCenter/100 *   0.05 * cent +
         options.EvalKing/100 *     0.3 *  (wking-bking) +
         options.EvalPawn/100 *     1 *    (wpawn-bpawn) +
         options.EvalKnight/100 *   0.15 * (wknight-bknight) +
