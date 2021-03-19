@@ -852,9 +852,8 @@ namespace Bitboard {
                         }
                     } else if (bit(CN, i)) {
                         // Knights cannot move while pinned.
-                        if (piece_pinned) {
-                            continue;
-                        } else {
+                        if (piece_pinned) continue;
+                        else {
                             for (auto dir: DIR_N) {
                                 char x = i%8 + dir[0], y = i/8 + dir[1];   // Current (x, y)
                                 if (!(0 <= x && x < 8 && 0 <= y && y < 8)) continue;
