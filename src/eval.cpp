@@ -157,7 +157,11 @@ float queens(Options& options, U64 queens) {
     float score = 0;
 
     for (auto i = 0; i < 64; i++) {
-        if (bit(queens, i));
+        if (bit(queens, i)) {
+            const char x = i%8, y = i/8;
+            score += 4 - abs(x - 3.5);
+            score += 4 - abs(y - 3.5);
+        }
     }
 
     return score;
