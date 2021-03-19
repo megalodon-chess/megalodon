@@ -273,11 +273,11 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
 
     return (
         options.EvalMaterial/100 * 1 *    mat +
-        options.EvalCenter/100 *   0.2 *  cent +
-        options.EvalKing/100 *     0.75 * (wking-bking) +
+        options.EvalCenter/100 *   0.1 *  cent +
+        options.EvalKing/100 *     0.6 *  (wking-bking) +
         options.EvalPawn/100 *     1 *    (wpawn-bpawn) +
         options.EvalKnight/100 *   0.6 *  (wknight-bknight) +
-        options.EvalRook/100 *     0.25 * (wrook-brook) + 
+        options.EvalRook/100 *     0.2 *  (wrook-brook) + 
         options.EvalQueen/100 *    0.3 *  (wqueen-bqueen)
     );
 }
