@@ -153,8 +153,12 @@ float rooks(Options& options, U64 rooks) {
     return score;
 }
 
-float queens(Options& options, U64 rooks) {
+float queens(Options& options, U64 queens) {
     float score = 0;
+
+    for (auto i = 0; i < 64; i++) {
+        if (bit(queens, i));
+    }
 
     return score;
 }
