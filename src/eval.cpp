@@ -160,7 +160,7 @@ float rooks(Options& options, U64 rooks) {
         }
         if (ranks[i] != 0) {
             score += std::pow(ranks[i], 2)/2;    // ((Number of rooks on rank)^2)/2
-            if (i == 1 || i == 6) score += 1.5;  // Good if on rank 2 or 7
+            if (i == 1 || i == 6) score += 1;  // Good if on rank 2 or 7
         }
     }
 
@@ -257,6 +257,6 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
         options.EvalKing/100 *     0.75 * (wking-bking) +
         options.EvalPawn/100 *     1 *    (wpawn-bpawn) +
         options.EvalKnight/100 *   0.6 *  (wknight-bknight) +
-        options.EvalRook/100 *     0.3 *  (wrook-brook)
+        options.EvalRook/100 *     0.25 *  (wrook-brook)
     );
 }
