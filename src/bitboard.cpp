@@ -442,6 +442,7 @@ namespace Bitboard {
                 cx += dx;
                 cy += dy;
                 const char loc = cy*8 + cx;
+                set_bit(pin_ray, loc);
                 if (bit(piece, loc)) found = true;
                 else if (bit(rooks, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
                 else if (bit(all, loc)) break;
