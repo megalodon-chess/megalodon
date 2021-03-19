@@ -74,7 +74,7 @@ float total_mat(Position pos) {
 
 float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     if (stage == 2) {
-        return 0;  // todo
+        return 8 - abs(kpos.x - 3.5) - abs(kpos.y - 3.5);
     } else {
         float rank_eval;
         if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
