@@ -160,6 +160,7 @@ float rooks(Options& options, U64 rooks) {
         if (files[i] >= 2) score += 0.5 * files[i];
         if (ranks[i] >= 2) score += 0.5 * ranks[i];
     }
+    score /= 2;
 
     // Rooks better in center file.
     float center = 0;
@@ -171,8 +172,9 @@ float rooks(Options& options, U64 rooks) {
             count += files[i];
         }
     }
+    if (count > 0) center /= count;
 
-    return score + center/count;
+    return score + center;
 }
 
 float queens(Options& options, U64 queens) {
@@ -193,8 +195,9 @@ float queens(Options& options, U64 queens) {
             count++;
         }
     }
+    if (count > 0) score /= count;
 
-    return score / count;
+    return score;
 }
 
 
