@@ -129,10 +129,12 @@ float knights(Options& options, U64 knights) {
         if (bit(knights, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
+
             if (x <= 3) horiz = x / 2.1;
             else horiz = (7-x) / 2.1;
             if (y <= 3) vert = y / 2.1;
             else vert = (7-y) / 2.1;
+
             score += horiz * vert;
             count++;
         }
@@ -158,30 +160,41 @@ float rooks(Options& options, U64 rooks) {
         if (files[i] >= 2) score += 0.5 * files[i];
         if (ranks[i] >= 2) score += 0.5 * ranks[i];
     }
+
     // Rooks better in center file.
+    float center = 0;
+    char count = 0;
     for (auto i = 0; i < files.size(); i++) {
         if (files[i] > 0) {
-            if (i <= 3) score += i / 2.1;
-            else score += (7-i) / 2.1;
+            if (i <= 3) center += i / 2.1 * files[i];
+            else center += (7-i) / 2.1 * files[i];
+            count += files[i];
         }
     }
 
-    return score;
+    return score + center/count;
 }
 
 float queens(Options& options, U64 queens) {
     float score = 0;
+    char count = 0;
 
     for (auto i = 0; i < 64; i++) {
         if (bit(queens, i)) {
             const char x = i%8, y = i/8;
-            // Queens are better in the center
-            score += 4 - abs(x - 3.5);
-            score += 4 - abs(y - 3.5);
+            float horiz, vert;
+
+            if (x <= 3) horiz = x / 2.1;
+            else horiz = (7-x) / 2.1;
+            if (y <= 3) vert = y / 2.1;
+            else vert = (7-y) / 2.1;
+
+            score += horiz * vert;
+            count++;
         }
     }
 
-    return score;
+    return score / count;
 }
 
 
