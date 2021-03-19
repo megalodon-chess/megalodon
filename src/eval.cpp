@@ -257,7 +257,10 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
     else if (20 < total && total <= 68) stage = 1;
     else stage = 2;
 
+    float bias = 0;
     const float mat = material(pos);
+    const float cent = center_control(options, pos, stage);
+
     const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
     const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
     const float wpawn = pawns(options, pos.wp, pos.bp, true);
@@ -269,15 +272,22 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
     const float wqueen = queens(options, pos.wq);
     const float bqueen = queens(options, pos.bq);
 
-    const float cent = center_control(options, pos, stage);
+    if (stage == 0) {
+        U64 pawns = pos.turn ? pos.wp : pos.bp;
+        if ((pawns & IN_CENT) == 0) {
+            if (pos.turn) bias -= 5;
+            else bias += 5;
+        }
+    }
 
     return (
+        bias +
         options.EvalMaterial/100 * 1 *    mat +
-        options.EvalCenter/100 *   0.1 *  cent +
-        options.EvalKing/100 *     0.6 *  (wking-bking) +
+        options.EvalCenter/100 *   0.15 * cent +
+        options.EvalKing/100 *     0.3 *  (wking-bking) +
         options.EvalPawn/100 *     1 *    (wpawn-bpawn) +
-        options.EvalKnight/100 *   0.6 *  (wknight-bknight) +
-        options.EvalRook/100 *     0.2 *  (wrook-brook) + 
-        options.EvalQueen/100 *    0.3 *  (wqueen-bqueen)
+        options.EvalKnight/100 *   0.15 * (wknight-bknight) +
+        options.EvalRook/100 *     0.15 * (wrook-brook) +
+        options.EvalQueen/100 *    0.15 * (wqueen-bqueen)
     );
 }
