@@ -140,8 +140,15 @@ float rooks(Options& options, U64 rooks) {
     }
 
     for (auto i = 0; i < 8; i++) {
-        if (files[i] > 1) score += 0.5 * files[i];
-        if (ranks[i] > 1) score += 0.5 * ranks[i];
+        // Need to check if not 0 because 0^2 = 1
+        if (files[i] != 0) {
+            score += std::pow(files[i], 2)/2;  // ((Number of rooks on file)^2)/2
+            score += 4 - abs(i - 3.5);         // 4 - Distance from center file
+        }
+        if (ranks[i] != 0) {
+            score += std::pow(ranks[i], 2)/2;  // ((Number of rooks on rank)^2)/2
+            if (i == 1 || i == 7) score += 1.5;
+        }
     }
 
     return score;
