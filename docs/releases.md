@@ -2,6 +2,10 @@
 
 This page contains release info.
 
+## [Megalodon 0.2.2][v0.2.2]
+
+This release contains evaluation improvements and legal move bug fixes.
+
 ## [Megalodon 0.2.1][v0.2.1]
 
 This release contains many bug fixes and evaluation improvements.
@@ -87,6 +91,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.2.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.0
 [v0.1.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.1.3
