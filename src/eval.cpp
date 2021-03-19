@@ -89,7 +89,7 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     }
 }
 
-float pawns(Options& options, U64 pawns, bool side) {
+float pawns(Options& options, U64 pawns, U64 other_pawns, bool side) {
     vector<char> file_count = {0, 0, 0, 0, 0, 0, 0, 0};
     float score = 0;
     char num = 0;
@@ -229,8 +229,8 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
     const float mat = material(pos);
     const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
     const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
-    const float wpawn = pawns(options, pos.wp, true);
-    const float bpawn = pawns(options, pos.bp, false);
+    const float wpawn = pawns(options, pos.wp, pos.bp, true);
+    const float bpawn = pawns(options, pos.bp, pos.wp, false);
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
     const float wrook = rooks(options, pos.wr);
