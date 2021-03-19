@@ -139,7 +139,7 @@ float rooks(Options& options, U64 rooks) {
         }
     }
 
-    for (auto i = 0; i < 8; i++) {
+    for (char i = 0; i < 8; i++) {
         if (files[i] != 0) {
             score += std::pow(files[i], 2)/2;    // ((Number of rooks on file)^2)/2
             score += 4 - abs(i - 3.5);           // 4 - Distance from center file
