@@ -90,20 +90,20 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
 }
 
 float pawns(Options& options, U64 pawns, U64 other_pawns, bool side) {
-    vector<char> file_count = {0, 0, 0, 0, 0, 0, 0, 0};
+    vector<char> same_files(8, 0);
     float score = 0;
     char num = 0;
 
     for (char i = 0; i < 64; i++) {
         if (bit(pawns, i)) {
             const char x = i%8, y = (side ? i/8 : 7-(i/8));
-            file_count[x]++;
+            same_files[x]++;
             num++;
             score += 0.45 * y;
         }
     }
     if (num != 0) score /= num;
-    for (auto cnt: file_count) if (cnt > 1) score -= 0.15*(cnt-1);
+    for (auto cnt: same_files) if (cnt > 1) score -= 0.15*(cnt-1);
 
     return score;
 }
