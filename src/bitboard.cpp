@@ -575,23 +575,23 @@ namespace Bitboard {
         if (pos.turn) {
             if (bit(pos.castling, 0)) {
                 if (!bit(all, 5) && !bit(all, 6)) {
-                    if (((CASTLING_WK & king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 6));
+                    if (((CASTLING_WK | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 6));
                 }
             }
             if (bit(pos.castling, 1)) {
                 if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) {
-                    if (((CASTLING_WQ & king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 2));
+                    if (((CASTLING_WQ | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 2));
                 }
             }
         } else {
             if (bit(pos.castling, 2)) {
                 if (!bit(all, 61) && !bit(all, 62)) {
-                    if (((CASTLING_BK & king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 62));
+                    if (((CASTLING_BK | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 62));
                 }
             }
             if (bit(pos.castling, 3)) {
                 if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
-                    if (((CASTLING_BQ & king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 58));
+                    if (((CASTLING_BQ | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 58));
                 }
             }
         }
@@ -852,6 +852,7 @@ namespace Bitboard {
                         }
                     } else if (bit(CN, i)) {
                         // Knights cannot move while pinned.
+                        cout << board_str(pin_mask) << endl;
                         if (piece_pinned) continue;
                         else {
                             for (auto dir: DIR_N) {
