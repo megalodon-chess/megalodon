@@ -852,7 +852,6 @@ namespace Bitboard {
                         }
                     } else if (bit(CN, i)) {
                         // Knights cannot move while pinned.
-                        cout << board_str(pin_mask) << endl;
                         if (piece_pinned) continue;
                         else {
                             for (auto dir: DIR_N) {
