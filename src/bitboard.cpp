@@ -427,60 +427,31 @@ namespace Bitboard {
     }
 
     tuple<bool, U64> pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
-        const U64 opponent = pawns | knights | bishops | rooks | queens;
+        const U64 all = pawns | knights | bishops | rooks | queens | same;
         const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
+        const Location piece_pos = first_bit(piece);
+        const char px = piece_pos.x, py = piece_pos.y;
         U64 pin_ray = EMPTY;
-        bool found;
+        bool found = false;
 
-        for (auto dir: DIR_R) {
-            found = false;
-            char cx = kx, cy = ky;                  // Current (x, y)
-            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
+        char dx = px - kx, dy = py - ky;
+        if (dx != 0) dx /= abs(dx);
+        if (dy != 0) dy /= abs(dy);
+        if (contains(DIR_R, vector<char>({dx, dy}))) {
+            char cx = kx, cy = ky;   // Current (x, y)
             while (true) {
                 cx += dx;
                 cy += dy;
-                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
                 set_bit(pin_ray, loc);
-                if (bit(rooks, loc) || bit(queens, loc)) {
-                    if (found) {
-                        return tuple<bool, U64>(true, pin_ray);
-                    } else {
-                        return tuple<bool, U64>(false, FULL);
-                    }
-                }
-                else if (bit(opponent, loc)) return tuple<bool, U64>(false, FULL);
-                else if (bit(piece, loc)) found = true;
-                else if (bit(same, loc)) return tuple<bool, U64>(false, FULL);
+                if (bit(piece, loc)) found = true;
+                else if (bit(rooks, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
+                else if (bit(all, loc)) break;
             }
-            if (found) return tuple<bool, U64>(false, FULL);
-        }
-
-        for (auto dir: DIR_B) {
-            found = false;
-            char cx = kx, cy = ky;                  // Current (x, y)
-            const char dx = dir[0], dy = dir[1];    // Delta (x, y)
-            while (true) {
-                cx += dx;
-                cy += dy;
-                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
-                const char loc = cy*8 + cx;
-                set_bit(pin_ray, loc);
-                if (bit(rooks, loc) || bit(queens, loc)) {
-                    if (found) {
-                        return tuple<bool, U64>(true, pin_ray);
-                    } else {
-                        return tuple<bool, U64>(false, FULL);
-                    }
-                }
-                else if (bit(opponent, loc)) return tuple<bool, U64>(false, FULL);
-                else if (bit(piece, loc)) found = true;
-                else if (bit(same, loc)) return tuple<bool, U64>(false, FULL);
-            }
-            if (found) return tuple<bool, U64>(false, FULL);
         }
         return tuple<bool, U64>(false, FULL);
+
     }
 
     tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, U64 attackers, bool side) {
