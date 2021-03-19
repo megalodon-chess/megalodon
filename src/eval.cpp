@@ -224,8 +224,7 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
             U64 same = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq; 
             char checks = std::get<1>(Bitboard::checkers(pos.wk, pos.bp, pos.bn, pos.bb, pos.br, pos.bq, same, attackers, true));
             if (checks != 0) return MIN+depth;
-        }
-        else {
+        } else {
             U64 same = pos.bp | pos.bn | pos.bb | pos.br | pos.bq; 
             char checks = std::get<1>(Bitboard::checkers(pos.bk, pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, same, attackers, false));
             if (checks != 0) return MAX-depth;
