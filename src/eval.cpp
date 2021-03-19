@@ -105,7 +105,12 @@ float pawns(Options& options, U64 pawns, U64 other_pawns, bool side) {
         }
     }
     if (num != 0) score /= num;
-    for (auto cnt: same_files) if (cnt > 1) score -= 0.15*(cnt-1);
+    for (auto i = 0; i < 8; i++) {
+        char cnt = same_files[i];
+        if (cnt > 0) {
+            if (cnt > 1) score -= 0.15*(cnt-1);
+        }
+    }
 
     return score;
 }
