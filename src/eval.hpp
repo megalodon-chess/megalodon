@@ -40,10 +40,8 @@ float material(Position);
 float total_mat(Position);
 
 float king(Options&, char, Location, U64, U64);
-float pawns(Options&, U64, U64, bool);
+float pawns(Options&, U64, bool);
 float knights(Options&, U64);
-float rooks(Options&, U64);
-float queens(Options&, U64);
 
 float center_control(Options&, Position, int);
 

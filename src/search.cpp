@@ -19,12 +19,8 @@
 
 #include <iostream>
 #include <vector>
-#include <queue>
 #include <string>
-#include <climits>
-#include <algorithm>
 #include "bitboard.hpp"
-#include "utils.hpp"
 #include "search.hpp"
 #include "eval.hpp"
 #include "options.hpp"
@@ -62,6 +58,7 @@ string SearchInfo::as_string() {
     return str;
 }
 
+
 float moves_left(Options& options, Position pos) {
     // Estimates moves left based on material and move stack.
     float mat_left = 0.9 * (total_mat(pos)-7);
@@ -87,6 +84,10 @@ float move_time(Options& options, Position pos, float time, float inc) {
     //return (time_left/moves) + mat_offset;
 }
 
+
+SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
+    // Non recursive minimax search.
+}
 
 SearchInfo search(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
