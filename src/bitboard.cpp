@@ -429,7 +429,7 @@ namespace Bitboard {
         const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
         U64 pin_ray = EMPTY;
-        bool found = true;
+        bool found = false;
 
         for (auto dir: DIR_R) {
             char cx = kx, cy = ky;                  // Current (x, y)
