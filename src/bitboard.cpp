@@ -429,10 +429,9 @@ namespace Bitboard {
         const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
         U64 pin_ray = EMPTY;
-        bool found;
+        bool found = true;
 
         for (auto dir: DIR_R) {
-            found = false;
             char cx = kx, cy = ky;                  // Current (x, y)
             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
             while (true) {
@@ -456,7 +455,6 @@ namespace Bitboard {
         }
 
         for (auto dir: DIR_B) {
-            found = false;
             char cx = kx, cy = ky;                  // Current (x, y)
             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
             while (true) {
