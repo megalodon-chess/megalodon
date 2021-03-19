@@ -66,6 +66,7 @@ Position::Position() {
     castling = 0;
     ep = false;
     ep_square = 0;
+    done = false;
 }
 
 Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
@@ -87,6 +88,7 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
     castling = _castling;
     ep = _ep;
     ep_square = _ep_square;
+    done = false;
 }
 
 
