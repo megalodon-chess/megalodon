@@ -428,10 +428,11 @@ namespace Bitboard {
         const U64 opponent = pawns | knights | bishops | rooks | queens;
         const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
-        U64 pin_ray = EMPTY;
+        U64 pin_ray;
         bool found = false;
 
         for (auto dir: DIR_R) {
+            pin_ray = EMPTY;
             char cx = kx, cy = ky;                  // Current (x, y)
             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
             while (true) {
@@ -449,6 +450,7 @@ namespace Bitboard {
         }
 
         for (auto dir: DIR_B) {
+            pin_ray = EMPTY;
             char cx = kx, cy = ky;                  // Current (x, y)
             const char dx = dir[0], dy = dir[1];    // Delta (x, y)
             while (true) {
