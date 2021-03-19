@@ -153,9 +153,17 @@ float rooks(Options& options, U64 rooks) {
         }
     }
 
+    // Connected rooks
     for (auto i = 0; i < 8; i++) {
         if (files[i] >= 2) score += 0.5 * files[i];
         if (ranks[i] >= 2) score += 0.5 * ranks[i];
+    }
+    // Rooks better in center file.
+    for (auto i = 0; i < files.size(); i++) {
+        if (files[i] > 0) {
+            if (i <= 3) score += i / 2.1;
+            else score += (7-i) / 2.1;
+        }
     }
 
     return score;
