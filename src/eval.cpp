@@ -159,6 +159,7 @@ float queens(Options& options, U64 queens) {
     for (auto i = 0; i < 64; i++) {
         if (bit(queens, i)) {
             const char x = i%8, y = i/8;
+            // Queens are better in the center
             score += 4 - abs(x - 3.5);
             score += 4 - abs(y - 3.5);
         }
