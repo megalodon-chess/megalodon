@@ -74,7 +74,7 @@ float total_mat(Position pos) {
 
 float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     if (stage == 2) {
-        return 0;  // todo
+        return 8 - abs(kpos.x - 3.5) - abs(kpos.y - 3.5);
     } else {
         float rank_eval;
         if (kpos.y <= 3) rank_eval = 0.7 * (3-kpos.y);
@@ -89,21 +89,35 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     }
 }
 
-float pawns(Options& options, U64 pawns, bool side) {
-    vector<char> file_count = {0, 0, 0, 0, 0, 0, 0, 0};
+float pawns(Options& options, U64 pawns, U64 other_pawns, bool side) {
+    vector<char> same_files(8, 0), other_files(8, 0);
     float score = 0;
     char num = 0;
 
     for (char i = 0; i < 64; i++) {
         if (bit(pawns, i)) {
             const char x = i%8, y = (side ? i/8 : 7-(i/8));
-            file_count[x]++;
+            same_files[x]++;
             num++;
             score += 0.45 * y;
+        } else if (bit(other_pawns, i)) {
+            other_files[i%8];
         }
     }
     if (num != 0) score /= num;
-    for (auto cnt: file_count) if (cnt > 1) score -= 0.15*(cnt-1);
+    for (auto i = 0; i < 8; i++) {
+        char cnt = same_files[i];
+        if (i == 0) {
+            if (other_files[i] == 0 && other_files[i+1] == 0) score += 2;
+        } else if (i == 7) {
+            if (other_files[i-1] == 0 && other_files[i] == 0) score += 2;
+        } else {
+            if (other_files[i-1] == 0 && other_files[i] == 0 && other_files[i+1] == 0) score += 2;
+        }
+        if (cnt > 0) {
+            if (cnt > 1) score -= 0.15*(cnt-1);
+        }
+    }
 
     return score;
 }
@@ -139,9 +153,30 @@ float rooks(Options& options, U64 rooks) {
         }
     }
 
-    for (auto i = 0; i < 8; i++) {
-        if (files[i] >= 2) score += 0.5 * files[i];
-        if (ranks[i] >= 2) score += 0.5 * ranks[i];
+    for (char i = 0; i < 8; i++) {
+        if (files[i] != 0) {
+            score += std::pow(files[i], 2)/2;    // ((Number of rooks on file)^2)/2
+            score += 4 - abs(i - 3.5);           // 4 - Distance from center file
+        }
+        if (ranks[i] != 0) {
+            score += std::pow(ranks[i], 2)/2;    // ((Number of rooks on rank)^2)/2
+            if (i == 1 || i == 6) score += 1.5;  // Good if on rank 2 or 7
+        }
+    }
+
+    return score;
+}
+
+float queens(Options& options, U64 queens) {
+    float score = 0;
+
+    for (auto i = 0; i < 64; i++) {
+        if (bit(queens, i)) {
+            const char x = i%8, y = i/8;
+            // Queens are better in the center
+            score += 4 - abs(x - 3.5);
+            score += 4 - abs(y - 3.5);
+        }
     }
 
     return score;
@@ -167,8 +202,8 @@ float center_control(Options& options, Position pos, int stage) {
     score += w_inneratt / IN_CNT * 0.6;
     score -= b_inneratt / IN_CNT * 0.6;
     score += wp_innerpop / IN_CNT * 0.7;
-    if (wp_innerpop != 0 || stage != 0) score += w_innerpop / IN_CNT * 0.4;
     score -= bp_innerpop / IN_CNT * 0.7;
+    if (wp_innerpop != 0 || stage != 0) score += w_innerpop / IN_CNT * 0.4;
     if (bp_innerpop != 0 || stage != 0) score -= b_innerpop / IN_CNT * 0.4;
 
     // score += w_outeratt / OUT_CNT * 0.2;
@@ -187,16 +222,15 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
         // Increment value by depth to encourage sooner mate.
         if (pos.turn) {
             U64 same = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq; 
-            U64 checks = std::get<0>(Bitboard::checkers(pos.wk, pos.bp, pos.bn, pos.bb, pos.br, pos.bq, same, attackers, true));
-            if (checks != Bitboard::EMPTY) return MIN+depth;
-            return 0;
+            char checks = std::get<1>(Bitboard::checkers(pos.wk, pos.bp, pos.bn, pos.bb, pos.br, pos.bq, same, attackers, true));
+            if (checks != 0) return MIN+depth;
         }
         else {
             U64 same = pos.bp | pos.bn | pos.bb | pos.br | pos.bq; 
-            U64 checks = std::get<0>(Bitboard::checkers(pos.bk, pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, same, attackers, false));
-            if (checks != Bitboard::EMPTY) return MAX-depth;
-            return 0;
+            char checks = std::get<1>(Bitboard::checkers(pos.bk, pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, same, attackers, false));
+            if (checks != 0) return MAX-depth;
         }
+        return 0;
     }
 
     const int movect = pos.move_stack.size();
@@ -209,8 +243,8 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
     const float mat = material(pos);
     const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
     const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
-    const float wpawn = pawns(options, pos.wp, true);
-    const float bpawn = pawns(options, pos.bp, false);
+    const float wpawn = pawns(options, pos.wp, pos.bp, true);
+    const float bpawn = pawns(options, pos.bp, pos.wp, false);
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
     const float wrook = rooks(options, pos.wr);
