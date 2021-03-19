@@ -37,6 +37,6 @@ Options::Options() {
     EvalPawn = 100;
     EvalKnight = 100;
     EvalRook = 100;
-    Chat = 100;
+    EvalQueen = 100;
     Chat = false;
 }
