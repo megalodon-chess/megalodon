@@ -153,6 +153,12 @@ float rooks(Options& options, U64 rooks) {
     return score;
 }
 
+float queens(Options& options, U64 rooks) {
+    float score = 0;
+
+    return score;
+}
+
 
 float center_control(Options& options, Position pos, int stage) {
     float w_inneratt = popcnt(Bitboard::attacked(pos, true)&IN_CENT);
