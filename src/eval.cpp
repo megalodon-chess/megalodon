@@ -188,8 +188,8 @@ float center_control(Options& options, Position pos, int stage) {
     score += w_inneratt / IN_CNT * 0.6;
     score -= b_inneratt / IN_CNT * 0.6;
     score += wp_innerpop / IN_CNT * 0.7;
-    if (wp_innerpop != 0 || stage != 0) score += w_innerpop / IN_CNT * 0.4;
     score -= bp_innerpop / IN_CNT * 0.7;
+    if (wp_innerpop != 0 || stage != 0) score += w_innerpop / IN_CNT * 0.4;
     if (bp_innerpop != 0 || stage != 0) score -= b_innerpop / IN_CNT * 0.4;
 
     // score += w_outeratt / OUT_CNT * 0.2;
