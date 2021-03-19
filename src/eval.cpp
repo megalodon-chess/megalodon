@@ -161,11 +161,17 @@ float center_control(Options& options, Position pos, int stage) {
 }
 
 
-float eval(Options& options, Position pos, bool moves_exist, int depth, U64) {
+float eval(Options& options, Position pos, bool moves_exist, int depth, U64 o_attacks) {
     if (!moves_exist) {
-        // Increment value by depth to encourage sooner mate.
-        if (pos.turn) return MIN+depth;
-        else return MAX-depth;
+        bool checked;
+        if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
+        else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
+        if (checked) {
+            // Increment value by depth to encourage sooner mate.
+            if (pos.turn) return MIN+depth;
+            else return MAX-depth;
+        }
+        return 0;
     }
 
     const int movect = pos.move_stack.size();
