@@ -193,14 +193,14 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 atta
         // Increment value by depth to encourage sooner mate.
         if (pos.turn) {
             U64 same = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq; 
-            U64 checks = std::get<0>(Bitboard::checkers(pos.wk, pos.bp, pos.bn, pos.bb, pos.br, pos.bq, same, attackers, true));
-            if (checks != Bitboard::EMPTY) return MIN+depth;
+            char checks = std::get<1>(Bitboard::checkers(pos.wk, pos.bp, pos.bn, pos.bb, pos.br, pos.bq, same, attackers, true));
+            if (checks != 0) return MIN+depth;
             return 0;
         }
         else {
             U64 same = pos.bp | pos.bn | pos.bb | pos.br | pos.bq; 
-            U64 checks = std::get<0>(Bitboard::checkers(pos.bk, pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, same, attackers, false));
-            if (checks != Bitboard::EMPTY) return MAX-depth;
+            char checks = std::get<1>(Bitboard::checkers(pos.bk, pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, same, attackers, false));
+            if (checks != 0) return MAX-depth;
             return 0;
         }
     }
