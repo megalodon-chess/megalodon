@@ -193,7 +193,7 @@ int loop() {
             if (total < 10) depth++;
 
             double start = get_time();
-            SearchInfo result = search(options, pos, MIN, MAX, true, depth, 0);
+            SearchInfo result = search2(options, pos, MIN, MAX, true, depth, 0);
             double elapse = get_time() - start;
 
             float score = result.score;
