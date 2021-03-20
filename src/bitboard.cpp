@@ -355,7 +355,7 @@ namespace Bitboard {
     }
 
 
-    U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
+    U64 attacked(const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& kings, const U64& opponent, const bool& side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         const char pawn_dir = side ? 1 : -1;
         U64 board = EMPTY;
@@ -416,7 +416,7 @@ namespace Bitboard {
         return board;
     }
 
-    U64 attacked(Position pos, bool turn) {
+    U64 attacked(const Position& pos, const bool& turn) {
         if (turn) {
             U64 opp = pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
             return attacked(pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, pos.wk, opp, true);
