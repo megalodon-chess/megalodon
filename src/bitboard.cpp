@@ -899,8 +899,10 @@ namespace Bitboard {
 
     int quick_eval(Position pos, Move move) {
         int score = 0;
+        U64 all = pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
 
-        // 
+        if (move.is_promo) score += move.promo + 3;
+        if (bit(all, move.to) && (bit(pos.wp, move.from) || bit(pos.bp, move.from))) score += 4;
 
         return score;
     }
