@@ -224,6 +224,8 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 o_at
     const float bpawn = pawns(options, pos.bp, false);
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
+    const float wrook = rooks(options, pos.wr);
+    const float brook = rooks(options, pos.br);
     const float wqueen = queens(options, pos.wq);
     const float bqueen = queens(options, pos.bq);
 
@@ -235,6 +237,7 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 o_at
         options.EvalKing *     0.7 * (wking-bking) +
         options.EvalPawn *     0.8 * (wpawn-bpawn) +
         options.EvalKnight *   0.6 * (wknight-bknight) +
+        options.EvalRook *     0.3 * (wrook-brook) +
         options.EvalQueen *    0.3 * (wqueen-bqueen)
     );
 }
