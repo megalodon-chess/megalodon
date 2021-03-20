@@ -898,7 +898,11 @@ namespace Bitboard {
     }
 
     int quick_eval(Position pos, Move move) {
-        return 0;
+        int score = 0;
+
+        // 
+
+        return score;
     }
 
 
