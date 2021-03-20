@@ -877,7 +877,7 @@ namespace Bitboard {
                 }
             }
         }
-        return moves;
+        return order_moves(pos, moves, attacks);
     }
 
     vector<Move> order_moves(Position pos, vector<Move> moves, U64 attacks) {
