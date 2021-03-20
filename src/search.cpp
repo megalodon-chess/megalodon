@@ -87,6 +87,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
 
 SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
     // Non recursive minimax search.
+    return SearchInfo(0, 0, false, 0, 0, 0, 0, Move());
 }
 
 SearchInfo search(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
