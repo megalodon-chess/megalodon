@@ -145,8 +145,8 @@ SearchInfo search(Options& options, Position pos, int depth, double max_time) {
                     }
                 }
                 if (curr_depth != 1) {
-                    target_node->parent->alpha = target_node->alpha;
-                    target_node->parent->beta = target_node->beta;
+                    if (target_node->alpha > target_node->parent->alpha) target_node->parent->alpha = target_node->alpha;
+                    if (target_node->beta < target_node->parent->beta) target_node->parent->beta = target_node->beta;
                 }
                 target_node->done = true;
             }
