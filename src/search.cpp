@@ -118,6 +118,11 @@ SearchInfo search(Options& options, Position pos, int depth, double max_time) {
             if (found) {
                 target_node->eval = target_node->turn ? MIN : MAX;
                 for (auto& node: nodes[curr_depth]) {
+                    if (curr_depth == depth-1) {
+                        U64 o_attacks = Bitboard::attacked(node, !node.turn);
+                        vector<Move> moves = Bitboard::legal_moves(node, o_attacks);
+                        node.eval = eval(options, node, (moves.size()!=0), curr_depth, o_attacks);
+                    }
                     if (target_node->turn) {
                         if (node.eval > target_node->eval) {
                             target_node->eval = node.eval;
@@ -151,9 +156,7 @@ SearchInfo search(Options& options, Position pos, int depth, double max_time) {
             U64 o_attacks = Bitboard::attacked(target_node, !target_node.turn);
             vector<Move> moves = Bitboard::legal_moves(target_node, o_attacks);
             for (auto& move: moves) {
-                Position new_node = Bitboard::push(target_node, move);
-                if (curr_depth == depth-2) new_node.eval = eval(options, new_node, (moves.size()!=0), curr_depth, o_attacks);
-                new_depth.push_back(new_node);
+                new_depth.push_back(Bitboard::push(target_node, move));
             }
             nodes.push_back(new_depth);
             num_nodes += moves.size();
