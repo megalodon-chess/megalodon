@@ -107,11 +107,47 @@ float pawns(Options& options, U64 pawns, bool side) {
     return score;
 }
 
-float knights(Options& options, U64 knights) {
+float knights(Options& options, U64 kn) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (bit(knights, i)) {
+        if (Bitboard::bit(kn, i)) {
+            const char x = i%8, y = i/8;
+            float horiz, vert;
+            if (x <= 3) horiz = x / 2.1;
+            else horiz = (7-x) / 2.1;
+            if (y <= 3) vert = y / 2.1;
+            else vert = (7-y) / 2.1;
+            score += horiz * vert;
+            count++;
+        }
+    }
+    if (count != 0) score /= count;
+
+    return score;
+}
+
+float rooks(Options& options, U64 ro) {
+    char count = 0;
+    float score = 0;
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(ro, i)) {
+            const char x = i%8;
+            if (x <= 3) score += x / 2.1;
+            else score += (7-x) / 2.1;
+            count++;
+        }
+    }
+    if (count != 0) score /= count;
+
+    return score;
+}
+
+float queens(Options& options, U64 qu) {
+    char count = 0;
+    float score = 0;
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(qu, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
             if (x <= 3) horiz = x / 2.1;
@@ -189,8 +225,20 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 o_at
     const float bpawn = pawns(options, pos.bp, false);
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
+    const float wrook = rooks(options, pos.wr);
+    const float brook = rooks(options, pos.br);
+    const float wqueen = queens(options, pos.wq);
+    const float bqueen = queens(options, pos.bq);
 
     const float cent = center_control(options, pos, stage);
 
-    return mat + 0.6*cent + 0.75*(wking-bking) + 0.8*(wpawn-bpawn) + 0.6*(wknight-bknight);
+    return (
+        options.EvalMaterial/100 * 1.0 * mat +
+        options.EvalCenter/100 *   0.6 * cent +
+        options.EvalKing/100 *     0.7 * (wking-bking) +
+        options.EvalPawn/100 *     0.8 * (wpawn-bpawn) +
+        options.EvalKnight/100 *   0.6 * (wknight-bknight) +
+        options.EvalRook/100 *     0.3 * (wrook-brook) +
+        options.EvalQueen/100 *    0.3 * (wqueen-bqueen)
+    );
 }
