@@ -880,7 +880,7 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> sort_moves(Position pos, vector<Move> moves) {
+    vector<Move> order_moves(Position pos, vector<Move> moves) {
         vector<tuple<Move, int>> evaluated_moves(moves.size()); 
 
         for (char i = 0; i < moves.size(); i++) {
