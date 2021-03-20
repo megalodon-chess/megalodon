@@ -104,15 +104,15 @@ Location::Location(char _x, char _y) {
 
 
 namespace Bitboard {
-    bool bit(U64 board, int pos) {
+    bool bit(const U64& board, const int& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
-    bool bit(char board, int pos) {
+    bool bit(const char& board, const int& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
-    char popcnt(U64 num) {
+    char popcnt(const U64& num) {
         U64 mask = 255ULL;
         char count = 0;
         count += popcnt_tbl[num&mask];

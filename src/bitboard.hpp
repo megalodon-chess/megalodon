@@ -110,9 +110,9 @@ namespace Bitboard {
     const vector<vector<char>> DIR_Q = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<char>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-    bool bit(U64, int);
-    bool bit(char, int);
-    char popcnt(U64);
+    bool bit(const U64&, const int&);
+    bool bit(const char&, const int&);
+    char popcnt(const U64&);
     void set_bit(U64&, int);
     void unset_bit(U64&, int);
     void set_bit(char&, int);
