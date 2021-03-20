@@ -117,7 +117,14 @@ SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool
             }
 
         } else {
-            // Generate and eval
+            vector<Position> new_depth;
+            Position target_node;
+            for (auto& node: nodes[curr_depth]) {
+                if (!node.done) {
+                    target_node = node;
+                    break;
+                }
+            }
         }
     }
 }
