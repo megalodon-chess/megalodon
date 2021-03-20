@@ -61,15 +61,15 @@ string SearchInfo::as_string() {
 
 float moves_left(Options& options, Position pos) {
     // Estimates moves left based on material and move stack.
-    float mat_left = 0.9 * (total_mat(pos)-7);
+    //float mat_left = 0.9 * (total_mat(pos)-7);
     float abs_left = 55 - pos.move_stack.size();
-    if (abs_left < 0) abs_left = 0;
-    if (mat_left < 0) mat_left = 0;
+    if (abs_left < 5) abs_left = 5;
+    //if (mat_left < 0) mat_left = 0;
 
-    float final_left = (mat_left+abs_left) / 2;
-    if (final_left < 1) final_left = 1;
+    //float final_left = (mat_left+abs_left) / 2;
+    //if (final_left < 1) final_left = 1;
 
-    return final_left;
+    return abs_left;
 }
 
 float move_time(Options& options, Position pos, float time, float inc) {
