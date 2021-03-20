@@ -36,7 +36,7 @@ using Bitboard::popcnt;
 using Bitboard::bit;
 
 
-float material(Position pos) {
+float material(const Position& pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
         if      (bit(pos.wp, i)) value += 1;
@@ -53,7 +53,7 @@ float material(Position pos) {
     return value;
 }
 
-float total_mat(Position pos) {
+float total_mat(const Position& pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
         if      (bit(pos.wp, i)) value += 1;
@@ -71,7 +71,7 @@ float total_mat(Position pos) {
 }
 
 
-float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
+float king(const Options& options, const char& stage, const Location& kpos, const U64& pawns, const U64& others) {
     // todo pawn shield
     if (stage == 2) {
         return 0;
@@ -88,7 +88,7 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     }
 }
 
-float pawns(Options& options, U64 pawns, bool side) {
+float pawns(const Options& options, const U64& pawns, const bool& side) {
     vector<char> file_count = {0, 0, 0, 0, 0, 0, 0, 0};
     float score = 0;
     char num = 0;
@@ -107,7 +107,7 @@ float pawns(Options& options, U64 pawns, bool side) {
     return score;
 }
 
-float knights(Options& options, U64 kn) {
+float knights(const Options& options, const U64& kn) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
@@ -127,7 +127,7 @@ float knights(Options& options, U64 kn) {
     return score;
 }
 
-float rooks(Options& options, U64 ro) {
+float rooks(const Options& options, const U64& ro) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
@@ -143,7 +143,7 @@ float rooks(Options& options, U64 ro) {
     return score;
 }
 
-float queens(Options& options, U64 qu) {
+float queens(const Options& options, const U64& qu) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
@@ -164,7 +164,7 @@ float queens(Options& options, U64 qu) {
 }
 
 
-float center_control(Options& options, Position pos, int stage) {
+float center_control(const Options& options, const Position& pos, const int& stage) {
     float w_inneratt = popcnt(Bitboard::attacked(pos, true)&IN_CENT);
     float b_inneratt = popcnt(Bitboard::attacked(pos, false)&IN_CENT);
     float w_innerpop = popcnt(pos.wn&IN_CENT) + popcnt(pos.wb&IN_CENT) + popcnt(pos.wr&IN_CENT) + popcnt(pos.wq&IN_CENT);
@@ -198,7 +198,7 @@ float center_control(Options& options, Position pos, int stage) {
 }
 
 
-float eval(Options& options, Position pos, bool moves_exist, int depth, U64 o_attacks) {
+float eval(const Options& options, const Position& pos, const bool& moves_exist, const int& depth, const U64& o_attacks) {
     if (!moves_exist) {
         bool checked;
         if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
