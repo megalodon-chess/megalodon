@@ -111,7 +111,7 @@ float knights(Options& options, U64 kn) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(kn, i)) {
+        if (bit(kn, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
             if (x <= 3) horiz = x / 2.1;
@@ -131,7 +131,7 @@ float rooks(Options& options, U64 ro) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(ro, i)) {
+        if (bit(ro, i)) {
             const char x = i%8;
             if (x <= 3) score += x / 2.1;
             else score += (7-x) / 2.1;
@@ -147,7 +147,7 @@ float queens(Options& options, U64 qu) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(qu, i)) {
+        if (bit(qu, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
             if (x <= 3) horiz = x / 2.1;
