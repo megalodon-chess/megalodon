@@ -903,6 +903,7 @@ namespace Bitboard {
 
         if (move.is_promo) score += move.promo + 3;
         if (bit(all, move.to) && (bit(pos.wp, move.from) || bit(pos.bp, move.from))) score += 4;
+        if (bit(attacks, move.to)) score -= 1;
 
         return score;
     }
