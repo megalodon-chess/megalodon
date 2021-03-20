@@ -55,10 +55,11 @@ def main():
         for i, line in enumerate(data):
             if line.isnumeric():
                 count = int(line)
-                eng_moves = data[i:i+count]
+                eng_moves = data[i+1:i+count+1]
                 break
 
-        if set(eng_moves) != set([m.uci() for m in board.move_stack]):
+        real_moves = [m.uci() for m in board.generate_legal_moves()]
+        if set(eng_moves) != set(real_moves):
             print("position startpos moves ", end="")
             for m in board.move_stack:
                 print(m.uci(), end=" ")
