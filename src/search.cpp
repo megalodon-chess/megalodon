@@ -119,7 +119,9 @@ SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool
                     if (target_node->turn && (node.eval > target_node->eval)) target_node->eval = node.eval;
                     else if (!target_node->turn && (node.eval < target_node->eval)) target_node->eval = node.eval;
                 }
+                target_node->done = true;
             }
+            nodes.erase(nodes.end()-1);
 
         } else {
             vector<Position> new_depth;
@@ -141,7 +143,11 @@ SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool
             nodes.push_back(new_depth);
             num_nodes += moves.size();
         }
+
+        if (nodes[0][0].done) break;
     }
+
+    return SearchInfo(depth, depth, false, 0, num_nodes, 0, 0, Move());
 }
 
 SearchInfo search(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
