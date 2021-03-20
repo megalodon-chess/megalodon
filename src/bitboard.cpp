@@ -894,7 +894,7 @@ namespace Bitboard {
 
         for (char i = 0; i < num_moves; i++) final_moves[i] = get<0>(evaluated_moves[i]);
 
-        return moves; 
+        return moves;
     }
 
     int quick_eval(Position pos, Move move, U64 attacks) {
