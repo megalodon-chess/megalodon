@@ -56,6 +56,7 @@ struct Position {
     char ep_square;
 
     float eval;
+    int depth;
     vector<Move> move_stack;
     vector<Position*> branches;
 };
