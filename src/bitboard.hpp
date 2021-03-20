@@ -136,8 +136,8 @@ namespace Bitboard {
     tuple<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, U64, bool);
     vector<Move> king_moves(Position, U64, U64, U64);
     vector<Move> legal_moves(Position, U64);
-    vector<Move> order_moves(Position, vector<Move>, U64);
-    int quick_eval(Position, Move, U64);
+    vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);
+    int quick_eval(const Position&, const Move&, const U64&);
 
     vector<U64*> bb_pointers(Position&);
     Position startpos();

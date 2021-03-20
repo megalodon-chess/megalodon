@@ -880,7 +880,7 @@ namespace Bitboard {
         return order_moves(pos, moves, attacks);
     }
 
-    vector<Move> order_moves(Position pos, vector<Move> moves, U64 attacks) {
+    vector<Move> order_moves(const Position& pos, const vector<Move>& moves, const U64& attacks) {
         const char num_moves = moves.size();
         vector<tuple<Move, int>*> evaluated_moves(num_moves);
 
@@ -900,9 +900,9 @@ namespace Bitboard {
         return final_moves;
     }
 
-    int quick_eval(Position pos, Move move, U64 attacks) {
+    int quick_eval(const Position& pos, const Move& move, const U64& attacks) {
         int score = 0;
-        U64 all = pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
+        const U64 all = pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
 
         if (move.is_promo) score += move.promo + 3;
         if (bit(all, move.to) && (bit(pos.wp, move.from) || bit(pos.bp, move.from))) score += 4;
