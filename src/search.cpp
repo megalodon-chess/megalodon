@@ -86,10 +86,11 @@ float move_time(Options& options, Position pos, float time, float inc) {
 
 
 SearchInfo search(Options& options, Position pos, int depth, double max_time) {
+    pos.alpha = MIN;
+    pos.beta = MAX;
     vector<vector<Position>> nodes = {{pos}};
     Move best_move;
     int num_nodes = 1;
-    float alpha = MIN, beta = MAX;
 
     while (true) {
         int curr_depth = nodes.size() - 1;
@@ -117,6 +118,10 @@ SearchInfo search(Options& options, Position pos, int depth, double max_time) {
 
             if (found) {
                 target_node->eval = target_node->turn ? MIN : MAX;
+                if (curr_depth != 1) {
+                    target_node->alpha = target_node->parent->alpha;
+                    target_node->beta = target_node->parent->beta;
+                }
                 for (auto& node: nodes[curr_depth]) {
                     if (curr_depth == depth-1) {
                         U64 o_attacks = Bitboard::attacked(node, !node.turn);
@@ -128,16 +133,20 @@ SearchInfo search(Options& options, Position pos, int depth, double max_time) {
                             target_node->eval = node.eval;
                             if (curr_depth == 1) best_move = node.move_stack.back();
                         }
-                        if (node.eval > alpha) alpha = node.eval;
-                        if (beta <= alpha) break;
+                        if (node.eval > target_node->alpha) target_node->alpha = node.eval;
+                        if (target_node->beta <= target_node->alpha) break;
                     } else {
                         if (node.eval < target_node->eval) {
                             target_node->eval = node.eval;
                             if (curr_depth == 1) best_move = node.move_stack.back();
                         }
-                        if (node.eval < beta) beta = node.eval;
-                        if (beta <= alpha) break;
+                        if (node.eval < target_node->beta) target_node->beta = node.eval;
+                        if (target_node->beta <= target_node->alpha) break;
                     }
+                }
+                if (curr_depth != 1) {
+                    target_node->parent->alpha = target_node->alpha;
+                    target_node->parent->beta = target_node->beta;
                 }
                 target_node->done = true;
             }
@@ -156,7 +165,9 @@ SearchInfo search(Options& options, Position pos, int depth, double max_time) {
             U64 o_attacks = Bitboard::attacked(target_node, !target_node.turn);
             vector<Move> moves = Bitboard::legal_moves(target_node, o_attacks);
             for (auto& move: moves) {
-                new_depth.push_back(Bitboard::push(target_node, move));
+                Position new_node = Bitboard::push(target_node, move);
+                new_node.parent = &target_node;
+                new_depth.push_back(new_node);
             }
             nodes.push_back(new_depth);
             num_nodes += moves.size();

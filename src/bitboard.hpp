@@ -56,7 +56,10 @@ struct Position {
     char ep_square;
 
     float eval;
+    float alpha;
+    float beta;
     bool done;  // Used by search
+    Position* parent;
     vector<Move> move_stack;
 };
 
