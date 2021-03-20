@@ -345,10 +345,10 @@ namespace Bitboard {
         move.is_promo = (uci.size() >= 5);
         if (move.is_promo) {
             switch (uci[4]) {
-                case 'N': move.promo = 0; break; case 'n': move.promo = 0; break;
-                case 'B': move.promo = 1; break; case 'b': move.promo = 1; break;
-                case 'R': move.promo = 2; break; case 'r': move.promo = 2; break;
-                case 'Q': move.promo = 3; break; case 'q': move.promo = 3; break;
+                case 'N': case 'n': move.promo = 0; break;
+                case 'B': case 'b': move.promo = 1; break;
+                case 'R': case 'r': move.promo = 2; break;
+                case 'Q': case 'q': move.promo = 3; break;
             }
         }
         return move;
