@@ -90,17 +90,32 @@ SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool
 
     while (true) {
         int curr_depth = nodes.size() - 1;
-        int depth_done = false;
+        int depth_done = true;
 
-        for (auto& node: nodes[curr_depth]) {
-            if (node.done) {
-                depth_done = true;
-                break;
+        if (nodes.size() < depth) {
+            for (auto& node: nodes[curr_depth]) {
+                if (!node.done) {
+                    depth_done = false;
+                    break;
+                }
             }
         }
 
         if (depth_done) {
-            // Do minimax here
+            Position* target_node;
+            for (auto& node: nodes[curr_depth-1]) {
+                if (!node.done) {
+                    target_node = &node;
+                    break;
+                }
+            }
+            target_node->eval = target_node->turn ? MIN : MAX;
+
+            for (auto& node: nodes[curr_depth]) {
+                if (target_node->turn && (node.eval > target_node->eval)) target_node->eval = node.eval;
+                else if (!target_node->turn && (node.eval < target_node->eval)) target_node->eval = node.eval;
+            }
+
         } else {
             // Generate and eval
         }
