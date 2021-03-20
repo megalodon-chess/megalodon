@@ -33,21 +33,22 @@ using std::vector;
 using std::string;
 
 using Bitboard::popcnt;
+using Bitboard::bit;
 
 
 float material(Position pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if      (Bitboard::bit(pos.wp, i)) value += 1;
-        else if (Bitboard::bit(pos.wn, i)) value += 3;
-        else if (Bitboard::bit(pos.wb, i)) value += 3;
-        else if (Bitboard::bit(pos.wr, i)) value += 5;
-        else if (Bitboard::bit(pos.wq, i)) value += 9;
-        else if (Bitboard::bit(pos.bp, i)) value -= 1;
-        else if (Bitboard::bit(pos.bn, i)) value -= 3;
-        else if (Bitboard::bit(pos.bb, i)) value -= 3;
-        else if (Bitboard::bit(pos.br, i)) value -= 5;
-        else if (Bitboard::bit(pos.bq, i)) value -= 9;
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value -= 1;
+        else if (bit(pos.bn, i)) value -= 3;
+        else if (bit(pos.bb, i)) value -= 3;
+        else if (bit(pos.br, i)) value -= 5;
+        else if (bit(pos.bq, i)) value -= 9;
     }
     return value;
 }
@@ -55,16 +56,16 @@ float material(Position pos) {
 float total_mat(Position pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if      (Bitboard::bit(pos.wp, i)) value += 1;
-        else if (Bitboard::bit(pos.wn, i)) value += 3;
-        else if (Bitboard::bit(pos.wb, i)) value += 3;
-        else if (Bitboard::bit(pos.wr, i)) value += 5;
-        else if (Bitboard::bit(pos.wq, i)) value += 9;
-        else if (Bitboard::bit(pos.bp, i)) value += 1;
-        else if (Bitboard::bit(pos.bn, i)) value += 3;
-        else if (Bitboard::bit(pos.bb, i)) value += 3;
-        else if (Bitboard::bit(pos.br, i)) value += 5;
-        else if (Bitboard::bit(pos.bq, i)) value += 9;
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value += 1;
+        else if (bit(pos.bn, i)) value += 3;
+        else if (bit(pos.bb, i)) value += 3;
+        else if (bit(pos.br, i)) value += 5;
+        else if (bit(pos.bq, i)) value += 9;
     }
     return value;
 }
@@ -93,7 +94,7 @@ float pawns(Options& options, U64 pawns, bool side) {
     char num = 0;
 
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(pawns, i)) {
+        if (bit(pawns, i)) {
             const char x = i%8, y = (side ? i/8 : 7-(i/8));
             file_count[x]++;
             num++;
@@ -110,7 +111,7 @@ float knights(Options& options, U64 kn) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(kn, i)) {
+        if (bit(kn, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
             if (x <= 3) horiz = x / 2.1;
@@ -130,7 +131,7 @@ float rooks(Options& options, U64 ro) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(ro, i)) {
+        if (bit(ro, i)) {
             const char x = i%8;
             if (x <= 3) score += x / 2.1;
             else score += (7-x) / 2.1;
@@ -146,7 +147,7 @@ float queens(Options& options, U64 qu) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(qu, i)) {
+        if (bit(qu, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
             if (x <= 3) horiz = x / 2.1;
