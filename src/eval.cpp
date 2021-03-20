@@ -33,44 +33,45 @@ using std::vector;
 using std::string;
 
 using Bitboard::popcnt;
+using Bitboard::bit;
 
 
-float material(Position pos) {
+float material(const Position& pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if      (Bitboard::bit(pos.wp, i)) value += 1;
-        else if (Bitboard::bit(pos.wn, i)) value += 3;
-        else if (Bitboard::bit(pos.wb, i)) value += 3;
-        else if (Bitboard::bit(pos.wr, i)) value += 5;
-        else if (Bitboard::bit(pos.wq, i)) value += 9;
-        else if (Bitboard::bit(pos.bp, i)) value -= 1;
-        else if (Bitboard::bit(pos.bn, i)) value -= 3;
-        else if (Bitboard::bit(pos.bb, i)) value -= 3;
-        else if (Bitboard::bit(pos.br, i)) value -= 5;
-        else if (Bitboard::bit(pos.bq, i)) value -= 9;
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value -= 1;
+        else if (bit(pos.bn, i)) value -= 3;
+        else if (bit(pos.bb, i)) value -= 3;
+        else if (bit(pos.br, i)) value -= 5;
+        else if (bit(pos.bq, i)) value -= 9;
     }
     return value;
 }
 
-float total_mat(Position pos) {
+float total_mat(const Position& pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if      (Bitboard::bit(pos.wp, i)) value += 1;
-        else if (Bitboard::bit(pos.wn, i)) value += 3;
-        else if (Bitboard::bit(pos.wb, i)) value += 3;
-        else if (Bitboard::bit(pos.wr, i)) value += 5;
-        else if (Bitboard::bit(pos.wq, i)) value += 9;
-        else if (Bitboard::bit(pos.bp, i)) value += 1;
-        else if (Bitboard::bit(pos.bn, i)) value += 3;
-        else if (Bitboard::bit(pos.bb, i)) value += 3;
-        else if (Bitboard::bit(pos.br, i)) value += 5;
-        else if (Bitboard::bit(pos.bq, i)) value += 9;
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value += 1;
+        else if (bit(pos.bn, i)) value += 3;
+        else if (bit(pos.bb, i)) value += 3;
+        else if (bit(pos.br, i)) value += 5;
+        else if (bit(pos.bq, i)) value += 9;
     }
     return value;
 }
 
 
-float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
+float king(const Options& options, const char& stage, const Location& kpos, const U64& pawns, const U64& others) {
     // todo pawn shield
     if (stage == 2) {
         return 0;
@@ -87,13 +88,13 @@ float king(Options& options, char stage, Location kpos, U64 pawns, U64 others) {
     }
 }
 
-float pawns(Options& options, U64 pawns, bool side) {
+float pawns(const Options& options, const U64& pawns, const bool& side) {
     vector<char> file_count = {0, 0, 0, 0, 0, 0, 0, 0};
     float score = 0;
     char num = 0;
 
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(pawns, i)) {
+        if (bit(pawns, i)) {
             const char x = i%8, y = (side ? i/8 : 7-(i/8));
             file_count[x]++;
             num++;
@@ -106,11 +107,47 @@ float pawns(Options& options, U64 pawns, bool side) {
     return score;
 }
 
-float knights(Options& options, U64 knights) {
+float knights(const Options& options, const U64& kn) {
     char count = 0;
     float score = 0;
     for (char i = 0; i < 64; i++) {
-        if (Bitboard::bit(knights, i)) {
+        if (bit(kn, i)) {
+            const char x = i%8, y = i/8;
+            float horiz, vert;
+            if (x <= 3) horiz = x / 2.1;
+            else horiz = (7-x) / 2.1;
+            if (y <= 3) vert = y / 2.1;
+            else vert = (7-y) / 2.1;
+            score += horiz * vert;
+            count++;
+        }
+    }
+    if (count != 0) score /= count;
+
+    return score;
+}
+
+float rooks(const Options& options, const U64& ro) {
+    char count = 0;
+    float score = 0;
+    for (char i = 0; i < 64; i++) {
+        if (bit(ro, i)) {
+            const char x = i%8;
+            if (x <= 3) score += x / 2.1;
+            else score += (7-x) / 2.1;
+            count++;
+        }
+    }
+    if (count != 0) score /= count;
+
+    return score;
+}
+
+float queens(const Options& options, const U64& qu) {
+    char count = 0;
+    float score = 0;
+    for (char i = 0; i < 64; i++) {
+        if (bit(qu, i)) {
             const char x = i%8, y = i/8;
             float horiz, vert;
             if (x <= 3) horiz = x / 2.1;
@@ -127,7 +164,7 @@ float knights(Options& options, U64 knights) {
 }
 
 
-float center_control(Options& options, Position pos, int stage) {
+float center_control(const Options& options, const Position& pos, const int& stage) {
     float w_inneratt = popcnt(Bitboard::attacked(pos, true)&IN_CENT);
     float b_inneratt = popcnt(Bitboard::attacked(pos, false)&IN_CENT);
     float w_innerpop = popcnt(pos.wn&IN_CENT) + popcnt(pos.wb&IN_CENT) + popcnt(pos.wr&IN_CENT) + popcnt(pos.wq&IN_CENT);
@@ -161,7 +198,7 @@ float center_control(Options& options, Position pos, int stage) {
 }
 
 
-float eval(Options& options, Position pos, bool moves_exist, int depth, U64 o_attacks) {
+float eval(const Options& options, const Position& pos, const bool& moves_exist, const int& depth, const U64& o_attacks) {
     if (!moves_exist) {
         bool checked;
         if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
@@ -188,8 +225,20 @@ float eval(Options& options, Position pos, bool moves_exist, int depth, U64 o_at
     const float bpawn = pawns(options, pos.bp, false);
     const float wknight = knights(options, pos.wn);
     const float bknight = knights(options, pos.bn);
+    const float wrook = rooks(options, pos.wr);
+    const float brook = rooks(options, pos.br);
+    const float wqueen = queens(options, pos.wq);
+    const float bqueen = queens(options, pos.bq);
 
     const float cent = center_control(options, pos, stage);
 
-    return mat + 0.6*cent + 0.75*(wking-bking) + 0.8*(wpawn-bpawn) + 0.6*(wknight-bknight);
+    return (
+        options.EvalMaterial/100 * 1.0 * mat +
+        options.EvalCenter/100 *   0.2 * cent +
+        options.EvalKing/100 *     0.7 * (wking-bking) +
+        options.EvalPawn/100 *     0.8 * (wpawn-bpawn) +
+        options.EvalKnight/100 *   0.6 * (wknight-bknight) +
+        options.EvalRook/100 *     0.3 * (wrook-brook) +
+        options.EvalQueen/100 *    0.2 * (wqueen-bqueen)
+    );
 }

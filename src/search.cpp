@@ -165,6 +165,7 @@ SearchInfo search2(Options& options, Position pos, int depth, double max_time) {
     return SearchInfo(depth, depth, false, nodes[0][0].eval, num_nodes, 0, 0, best_move);
 }
 
+
 SearchInfo search(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);

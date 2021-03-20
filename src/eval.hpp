@@ -36,13 +36,15 @@ constexpr U64 OUT_CENT = 66125924401152ULL;
 const float IN_CNT = Bitboard::popcnt(IN_CENT);
 const float OUT_CNT = Bitboard::popcnt(OUT_CENT);
 
-float material(Position);
-float total_mat(Position);
+float material(const Position&);
+float total_mat(const Position&);
 
-float king(Options&, char, Location, U64, U64);
-float pawns(Options&, U64, bool);
-float knights(Options&, U64);
+float king(const Options&, const char&, const Location&, const U64&, const U64&);
+float pawns(const Options&, const U64&, const bool&);
+float knights(const Options&, const U64&);
+float rooks(const Options&, const U64&);
+float queens(const Options&, const U64&);
 
-float center_control(Options&, Position, int);
+float center_control(const Options&, const Position&, const int&);
 
-float eval(Options&, Position, bool, int, U64);
+float eval(const Options&, const Position&, const bool&, const int&, const U64&);

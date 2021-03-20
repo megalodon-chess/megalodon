@@ -104,15 +104,15 @@ Location::Location(char _x, char _y) {
 
 
 namespace Bitboard {
-    bool bit(U64 board, int pos) {
+    bool bit(const U64& board, const int& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
-    bool bit(char board, int pos) {
+    bool bit(const char& board, const int& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
-    char popcnt(U64 num) {
+    char popcnt(const U64& num) {
         U64 mask = 255ULL;
         char count = 0;
         count += popcnt_tbl[num&mask];
@@ -142,20 +142,20 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
-    bool contains(vector<vector<char>> sequence, vector<char> target) {
+    bool contains(const vector<vector<char>>& sequence, const vector<char>& target) {
         for (auto i: sequence) {
             if (i == target) return true;
         }
         return false;
     }
 
-    Location first_bit(U64 board) {
+    Location first_bit(const U64& board) {
         char pos = log2(board & -board);
         return Location(pos%8, pos/8);
     }
 
 
-    string piece_at(Position pos, char loc) {
+    string piece_at(const Position& pos, const char& loc) {
         if (bit(pos.wp, loc)) return "P";
         else if (bit(pos.wn, loc)) return "N";
         else if (bit(pos.wb, loc)) return "B";
@@ -171,12 +171,12 @@ namespace Bitboard {
         else return " ";
     }
 
-    U64 color(Position pos, bool color) {
+    U64 color(const Position& pos, const bool& color) {
         if (color) return pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
         else return pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
     }
 
-    string board_str(U64 board, string on, string off) {
+    string board_str(const U64& board, const string on, const string off) {
         vector<string> rows;
         string repr = "";
 
@@ -197,7 +197,7 @@ namespace Bitboard {
         return repr;
     }
 
-    string board_str(Position pos) {
+    string board_str(const Position& pos) {
         const string row = " +---+---+---+---+---+---+---+---+";
         const string col = " | ";
         string str = "";
@@ -217,12 +217,12 @@ namespace Bitboard {
         return str;
     }
 
-    string square_str(char sq) {
+    string square_str(const char& sq) {
         char x = sq%8, y = sq/8;
         return string(1, x+97) + std::to_string(y+1);
     }
 
-    string move_str(Move move) {
+    string move_str(const Move& move) {
         string str;
         str += square_str(move.from);
         str += square_str(move.to);
@@ -237,7 +237,7 @@ namespace Bitboard {
         return str;
     }
 
-    string fen(Position pos) {
+    string fen(const Position& pos) {
         string str = "";
         int blank_count = 0;
 
@@ -283,7 +283,7 @@ namespace Bitboard {
         return str;
     }
 
-    Position parse_fen(string fen) {
+    Position parse_fen(const string& fen) {
         vector<string> parts = split(fen, " ");
         Position pos;
 
@@ -338,7 +338,7 @@ namespace Bitboard {
         return pos;
     }
 
-    Move parse_uci(string uci) {
+    Move parse_uci(const string& uci) {
         Move move;
         move.from = uci[0]-97 + 8*(uci[1]-49);
         move.to = uci[2]-97 + 8*(uci[3]-49);
@@ -355,7 +355,7 @@ namespace Bitboard {
     }
 
 
-    U64 attacked(U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 kings, U64 opponent, bool side) {
+    U64 attacked(const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& kings, const U64& opponent, const bool& side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         const char pawn_dir = side ? 1 : -1;
         U64 board = EMPTY;
@@ -416,7 +416,7 @@ namespace Bitboard {
         return board;
     }
 
-    U64 attacked(Position pos, bool turn) {
+    U64 attacked(const Position& pos, const bool& turn) {
         if (turn) {
             U64 opp = pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
             return attacked(pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, pos.wk, opp, true);
@@ -426,7 +426,7 @@ namespace Bitboard {
         }
     }
 
-    tuple<bool, U64> pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
+    tuple<bool, U64> pinned(const U64& king, const U64& piece, const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& same) {
         const U64 all = pawns | knights | bishops | rooks | queens | same;
         const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
@@ -449,12 +449,22 @@ namespace Bitboard {
                 else if (bit(rooks, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
                 else if (bit(all, loc)) break;
             }
+        } else if (contains(DIR_B, vector<char>({dx, dy}))) {
+            char cx = kx, cy = ky;   // Current (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                const char loc = cy*8 + cx;
+                set_bit(pin_ray, loc);
+                if (bit(piece, loc)) found = true;
+                else if (bit(bishops, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
+                else if (bit(all, loc)) break;
+            }
         }
         return tuple<bool, U64>(false, FULL);
-
     }
 
-    tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, U64 attackers, bool side) {
+    tuple<U64, char> checkers(const U64& king, const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
         const Location k_pos = first_bit(king);
@@ -528,7 +538,7 @@ namespace Bitboard {
         return tuple<U64, char>(board, atk_cnt);
     }
 
-    vector<Move> king_moves(Position pos, U64 same, U64 all, U64 attacks) {
+    vector<Move> king_moves(const Position& pos, const U64& same, const U64& all, const U64& attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
         Location k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
@@ -572,7 +582,7 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> legal_moves(Position pos, U64 attacks) {
+    vector<Move> legal_moves(Position pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL;
@@ -867,7 +877,38 @@ namespace Bitboard {
                 }
             }
         }
-        return moves;
+        return order_moves(pos, moves, attacks);
+    }
+
+    vector<Move> order_moves(const Position& pos, const vector<Move>& moves, const U64& attacks) {
+        const char num_moves = moves.size();
+        vector<tuple<Move, int>*> evaluated_moves(num_moves);
+
+        for (char i = 0; i < num_moves; i++) {
+            evaluated_moves[i] = new tuple<Move, int>(moves[i], quick_eval(pos, moves[i], attacks));
+        }
+
+        std::sort(evaluated_moves.begin(), evaluated_moves.end(), [](tuple<Move, int>* a, tuple<Move, int>* b){return get<1>(*a) > get<1>(*b);});
+
+        vector<Move> final_moves(num_moves);
+
+        for (char i = 0; i < num_moves; i++) {
+            final_moves[i] = std::move(get<0>(*evaluated_moves[i]));
+            delete evaluated_moves[i];
+        }
+
+        return final_moves;
+    }
+
+    int quick_eval(const Position& pos, const Move& move, const U64& attacks) {
+        int score = 0;
+        const U64 all = pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
+
+        if (move.is_promo) score += move.promo + 3;
+        if (bit(all, move.to) && (bit(pos.wp, move.from) || bit(pos.bp, move.from))) score += 4;
+        if (bit(attacks, move.to)) score -= 1;
+
+        return score;
     }
 
 
@@ -908,7 +949,7 @@ namespace Bitboard {
         return pos;
     }
 
-    Position push(Position pos, Move move) {
+    Position push(Position pos, const Move& move) {
         vector<U64*> pointers = bb_pointers(pos);
         U64* to_board = pointers[0];
         bool is_king = false;

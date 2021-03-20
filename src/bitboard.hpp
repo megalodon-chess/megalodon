@@ -110,35 +110,37 @@ namespace Bitboard {
     const vector<vector<char>> DIR_Q = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<char>> DIR_K = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-    bool bit(U64, int);
-    bool bit(char, int);
-    char popcnt(U64);
+    bool bit(const U64&, const int&);
+    bool bit(const char&, const int&);
+    char popcnt(const U64&);
     void set_bit(U64&, int);
     void unset_bit(U64&, int);
     void set_bit(char&, int);
     void unset_bit(char&, int);
-    bool contains(vector<vector<char>>, vector<char>);
-    Location first_bit(U64);
+    bool contains(const vector<vector<char>>&, const vector<char>&);
+    Location first_bit(const U64&);
 
-    string piece_at(Position, char);
-    U64 color(Position, bool);
-    string board_str(U64, string="X", string="-");
-    string board_str(Position);
-    string square_str(char);
-    string move_str(Move);
-    string fen(Position);
-    Position parse_fen(string);
-    Move parse_uci(string);
+    string piece_at(const Position&, const char&);
+    U64 color(const Position&, const bool&);
+    string board_str(const U64&, const string="X", const string="-");
+    string board_str(const Position&);
+    string square_str(const char&);
+    string move_str(const Move&);
+    string fen(const Position&);
+    Position parse_fen(const string&);
+    Move parse_uci(const string&);
 
-    U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
-    U64 attacked(Position, bool);
-    tuple<bool, U64> pinned(U64, U64, U64, U64, U64, U64, U64, U64);
-    tuple<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, U64, bool);
-    vector<Move> king_moves(Position, U64, U64, U64);
-    vector<Move> legal_moves(Position, U64);
+    U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
+    U64 attacked(const Position&, const bool&);
+    tuple<bool, U64> pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
+    tuple<U64, char> checkers(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
+    vector<Move> king_moves(const Position&, const U64&, const U64&, const U64&);
+    vector<Move> legal_moves(Position, const U64&);
+    vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);
+    int quick_eval(const Position&, const Move&, const U64&);
 
     vector<U64*> bb_pointers(Position&);
     Position startpos();
-    Position push(Position, Move);
+    Position push(Position, const Move&);
     Position push(Position, string);
 }
