@@ -426,7 +426,7 @@ namespace Bitboard {
         }
     }
 
-    tuple<bool, U64> pinned(U64 king, U64 piece, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same) {
+    tuple<bool, U64> pinned(const U64& king, const U64& piece, const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& same) {
         const U64 all = pawns | knights | bishops | rooks | queens | same;
         const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
