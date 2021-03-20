@@ -87,6 +87,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
 
 SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
     vector<vector<Position>> nodes = {{pos}};
+    Move best_move;
     int num_nodes = 1;
 
     while (true) {
@@ -116,8 +117,13 @@ SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool
             if (found) {
                 target_node->eval = target_node->turn ? MIN : MAX;
                 for (auto& node: nodes[curr_depth]) {
-                    if (target_node->turn && (node.eval > target_node->eval)) target_node->eval = node.eval;
-                    else if (!target_node->turn && (node.eval < target_node->eval)) target_node->eval = node.eval;
+                    bool exceeds = false;
+                    if (target_node->turn && (node.eval > target_node->eval)) exceeds = true;
+                    else if (!target_node->turn && (node.eval < target_node->eval)) exceeds = true;
+                    if (exceeds) {
+                        target_node->eval = node.eval;
+                        if (curr_depth == 1) best_move = node.move_stack[node.move_stack.size()-1];
+                    }
                 }
                 target_node->done = true;
             }
@@ -147,7 +153,7 @@ SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool
         if (nodes[0][0].done) break;
     }
 
-    return SearchInfo(depth, depth, false, nodes[0][0].eval, num_nodes, 0, 0, Move());
+    return SearchInfo(depth, depth, false, nodes[0][0].eval, num_nodes, 0, 0, best_move);
 }
 
 SearchInfo search(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
