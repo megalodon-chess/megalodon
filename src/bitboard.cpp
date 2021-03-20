@@ -538,7 +538,7 @@ namespace Bitboard {
         return tuple<U64, char>(board, atk_cnt);
     }
 
-    vector<Move> king_moves(Position pos, U64 same, U64 all, U64 attacks) {
+    vector<Move> king_moves(const Position& pos, const U64& same, const U64& all, const U64& attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
         Location k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
@@ -582,7 +582,7 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> legal_moves(Position pos, U64 attacks) {
+    vector<Move> legal_moves(Position pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL;
@@ -949,7 +949,7 @@ namespace Bitboard {
         return pos;
     }
 
-    Position push(Position pos, Move move) {
+    Position push(Position pos, const Move& move) {
         vector<U64*> pointers = bb_pointers(pos);
         U64* to_board = pointers[0];
         bool is_king = false;

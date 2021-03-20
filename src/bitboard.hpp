@@ -134,13 +134,13 @@ namespace Bitboard {
     U64 attacked(Position, bool);
     tuple<bool, U64> pinned(U64, U64, U64, U64, U64, U64, U64, U64);
     tuple<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, U64, bool);
-    vector<Move> king_moves(Position, U64, U64, U64);
-    vector<Move> legal_moves(Position, U64);
+    vector<Move> king_moves(const Position&, const U64&, const U64&, const U64&);
+    vector<Move> legal_moves(Position, const U64&);
     vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);
     int quick_eval(const Position&, const Move&, const U64&);
 
     vector<U64*> bb_pointers(Position&);
     Position startpos();
-    Position push(Position, Move);
+    Position push(Position, const Move&);
     Position push(Position, string);
 }
