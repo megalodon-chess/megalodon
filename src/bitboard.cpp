@@ -449,6 +449,17 @@ namespace Bitboard {
                 else if (bit(rooks, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
                 else if (bit(all, loc)) break;
             }
+        } else if (contains(DIR_B, vector<char>({dx, dy}))) {
+            char cx = kx, cy = ky;   // Current (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                const char loc = cy*8 + cx;
+                set_bit(pin_ray, loc);
+                if (bit(piece, loc)) found = true;
+                else if (bit(bishops, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
+                else if (bit(all, loc)) break;
+            }
         }
         return tuple<bool, U64>(false, FULL);
     }
