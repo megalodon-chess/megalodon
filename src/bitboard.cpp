@@ -897,6 +897,10 @@ namespace Bitboard {
         return moves; 
     }
 
+    int quick_eval(Position pos, Move move) {
+        return 0;
+    }
+
 
     vector<U64*> bb_pointers(Position& pos) {
         U64* wp = &pos.wp;
