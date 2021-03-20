@@ -103,17 +103,21 @@ SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool
 
         if (depth_done) {
             Position* target_node;
+            bool found = false;
             for (auto& node: nodes[curr_depth-1]) {
                 if (!node.done) {
                     target_node = &node;
+                    found = true;
                     break;
                 }
             }
-            target_node->eval = target_node->turn ? MIN : MAX;
 
-            for (auto& node: nodes[curr_depth]) {
-                if (target_node->turn && (node.eval > target_node->eval)) target_node->eval = node.eval;
-                else if (!target_node->turn && (node.eval < target_node->eval)) target_node->eval = node.eval;
+            if (found) {
+                target_node->eval = target_node->turn ? MIN : MAX;
+                for (auto& node: nodes[curr_depth]) {
+                    if (target_node->turn && (node.eval > target_node->eval)) target_node->eval = node.eval;
+                    else if (!target_node->turn && (node.eval < target_node->eval)) target_node->eval = node.eval;
+                }
             }
 
         } else {
