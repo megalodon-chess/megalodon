@@ -133,7 +133,7 @@ namespace Bitboard {
     U64 attacked(U64, U64, U64, U64, U64, U64, U64, bool);
     U64 attacked(Position, bool);
     tuple<bool, U64> pinned(U64, U64, U64, U64, U64, U64, U64, U64);
-    tuple<U64, char> checkers(U64, U64, U64, U64, U64, U64, U64, U64, bool);
+    tuple<U64, char> checkers(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     vector<Move> king_moves(const Position&, const U64&, const U64&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
     vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);

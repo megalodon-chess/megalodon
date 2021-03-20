@@ -464,7 +464,7 @@ namespace Bitboard {
         return tuple<bool, U64>(false, FULL);
     }
 
-    tuple<U64, char> checkers(U64 king, U64 pawns, U64 knights, U64 bishops, U64 rooks, U64 queens, U64 same_side, U64 attackers, bool side) {
+    tuple<U64, char> checkers(const U64& king, const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
         const Location k_pos = first_bit(king);
