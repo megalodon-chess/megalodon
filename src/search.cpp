@@ -20,7 +20,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <queue>
 #include "bitboard.hpp"
 #include "search.hpp"
 #include "eval.hpp"
@@ -87,26 +86,23 @@ float move_time(Options& options, Position pos, float time, float inc) {
 
 
 SearchInfo search2(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
-    std::queue<Position> nodes;
-    int num_nodes;
+    vector<vector<Position>> nodes = {{pos}};
 
-    pos.depth = 0;
-    nodes.push(pos);
-    while (nodes.size() > 0) {
-        Position node = nodes.front();
-        nodes.pop();
+    while (true) {
+        int curr_depth = nodes.size() - 1;
+        int depth_done = false;
 
-        U64 o_attacks = Bitboard::attacked(node, !node.turn);
-        vector<Move> moves = Bitboard::legal_moves(node, o_attacks);
-        if (node.depth == depth) {
-            node.eval = eval(options, node, moves.size()!=0, depth, o_attacks);
-        } else {
-            for (auto move: moves) {
-                Position new_node = node;
-                new_node = Bitboard::push(new_node, move);
-                node.branches.push_back(&new_node);
+        for (auto& node: nodes[curr_depth]) {
+            if (node.done) {
+                depth_done = true;
+                break;
             }
-            num_nodes += moves.size();
+        }
+
+        if (depth_done) {
+            // Do minimax here
+        } else {
+            // Generate and eval
         }
     }
 }
