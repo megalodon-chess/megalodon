@@ -880,12 +880,12 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> order_moves(Position pos, vector<Move> moves) {
+    vector<Move> order_moves(Position pos, vector<Move> moves, U64 attacks) {
         const char num_moves = moves.size();
         vector<tuple<Move, int>> evaluated_moves(num_moves); 
 
         for (char i = 0; i < num_moves; i++) {
-            evaluated_moves[i] = tuple<Move, int>(moves[i], quick_eval(pos, moves[i]));
+            evaluated_moves[i] = tuple<Move, int>(moves[i], quick_eval(pos, moves[i], attacks));
         }
 
         std::sort(evaluated_moves.begin(), evaluated_moves.end(), [](tuple<Move, int> a, tuple<Move, int> b){return get<1>(a) < get<1>(b);});
@@ -897,7 +897,7 @@ namespace Bitboard {
         return moves; 
     }
 
-    int quick_eval(Position pos, Move move) {
+    int quick_eval(Position pos, Move move, U64 attacks) {
         int score = 0;
         U64 all = pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
 
