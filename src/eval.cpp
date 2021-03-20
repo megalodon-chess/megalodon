@@ -126,6 +126,22 @@ float knights(Options& options, U64 kn) {
     return score;
 }
 
+float rooks(Options& options, U64 ro) {
+    char count = 0;
+    float score = 0;
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(ro, i)) {
+            const char x = i%8, y = i/8;
+            if (x <= 3) score += x / 2.1;
+            else score += (7-x) / 2.1;
+            count++;
+        }
+    }
+    if (count != 0) score /= count;
+
+    return score;
+}
+
 float queens(Options& options, U64 qu) {
     char count = 0;
     float score = 0;
