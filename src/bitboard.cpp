@@ -880,6 +880,22 @@ namespace Bitboard {
         return moves;
     }
 
+    vector<Move> sort_moves(Position pos, vector<Move> moves) {
+        vector<tuple<Move, int>> evaluated_moves(moves.size()); 
+
+        for (char i = 0; i < moves.size(); i++) {
+            evaluated_moves[i] = tuple<Move, int>(moves[i], quick_eval(pos, moves[i]));
+        }
+
+        std::sort(evaluated_moves.begin(), evaluated_moves.end(), [](tuple<Move, int> a, tuple<Move, int> b){return get<1>(a) < get<1>(b);});
+
+        vector<Move> final_moves(moves.size());
+
+        for (char i = 0; i < moves.size(); i++) final_moves[i] = get<0>(evaluated_moves[i]);
+
+        return moves; 
+    }
+
 
     vector<U64*> bb_pointers(Position& pos) {
         U64* wp = &pos.wp;
