@@ -963,8 +963,9 @@ namespace Bitboard {
                 if ((i == 5) || (i == 11)) is_king = true;
                 if ((i == 0) || (i == 6)) is_pawn = true;
                 unset_bit(*p, move.from);
+            } else if (bit(*p, move.from)) {
+                unset_bit(*p, move.to);
             }
-            unset_bit(*p, move.to);
         }
         if (move.is_promo) {
             if (pos.turn) {
