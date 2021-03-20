@@ -56,9 +56,8 @@ struct Position {
     char ep_square;
 
     float eval;
-    int depth;
+    bool done;  // Used by search
     vector<Move> move_stack;
-    vector<Position*> branches;
 };
 
 struct Location {
