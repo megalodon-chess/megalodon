@@ -85,7 +85,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
 }
 
 
-SearchInfo search2(Options& options, Position pos, int depth, double max_time) {
+SearchInfo search(Options& options, Position pos, int depth, double max_time) {
     vector<vector<Position>> nodes = {{pos}};
     Move best_move;
     int num_nodes = 1;
@@ -163,41 +163,4 @@ SearchInfo search2(Options& options, Position pos, int depth, double max_time) {
     }
 
     return SearchInfo(depth, depth, false, nodes[0][0].eval, num_nodes, 0, 0, best_move);
-}
-
-
-SearchInfo search(Options& options, Position pos, float alpha, float beta, bool root, int depth, double max_time) {
-    U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-    vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
-
-    if (depth == 0 || moves.size() == 0) {
-        float score = eval(options, pos, (moves.size() != 0), depth, o_attacks);
-        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
-    }
-    int nodes = 1;
-    int best_ind = 0;
-    float best_eval = pos.turn ? MIN : MAX;
-
-    for (auto i = 0; i < moves.size(); i++) {
-        Position new_pos = Bitboard::push(pos, moves[i]);
-        SearchInfo result = search(options, new_pos, alpha, beta, false, depth-1, max_time);
-        nodes += result.nodes;
-
-        if (pos.turn) {
-            if (result.score > best_eval) {
-                best_ind = i;
-                best_eval = result.score;
-            }
-            if (result.score > alpha) alpha = result.score;
-            if (beta <= alpha) break;
-        } else {
-            if (result.score < best_eval) {
-                best_ind = i;
-                best_eval = result.score;
-            }
-            if (result.score < beta) beta = result.score;
-            if (beta <= alpha) break;
-        }
-    }
-    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
 }
