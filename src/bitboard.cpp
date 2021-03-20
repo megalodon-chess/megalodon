@@ -142,20 +142,20 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
-    bool contains(vector<vector<char>> sequence, vector<char> target) {
+    bool contains(const vector<vector<char>>& sequence, const vector<char>& target) {
         for (auto i: sequence) {
             if (i == target) return true;
         }
         return false;
     }
 
-    Location first_bit(U64 board) {
+    Location first_bit(const U64& board) {
         char pos = log2(board & -board);
         return Location(pos%8, pos/8);
     }
 
 
-    string piece_at(Position pos, char loc) {
+    string piece_at(const Position& pos, const char& loc) {
         if (bit(pos.wp, loc)) return "P";
         else if (bit(pos.wn, loc)) return "N";
         else if (bit(pos.wb, loc)) return "B";
@@ -171,7 +171,7 @@ namespace Bitboard {
         else return " ";
     }
 
-    U64 color(Position pos, bool color) {
+    U64 color(const Position& pos, const bool& color) {
         if (color) return pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
         else return pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
     }

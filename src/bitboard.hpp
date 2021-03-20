@@ -117,11 +117,11 @@ namespace Bitboard {
     void unset_bit(U64&, int);
     void set_bit(char&, int);
     void unset_bit(char&, int);
-    bool contains(vector<vector<char>>, vector<char>);
-    Location first_bit(U64);
+    bool contains(const vector<vector<char>>&, const vector<char>&);
+    Location first_bit(const U64&);
 
-    string piece_at(Position, char);
-    U64 color(Position, bool);
+    string piece_at(const Position&, const char&);
+    U64 color(const Position&, const bool&);
     string board_str(const U64&, const string="X", const string="-");
     string board_str(const Position&);
     string square_str(const char&);
