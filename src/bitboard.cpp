@@ -176,7 +176,7 @@ namespace Bitboard {
         else return pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
     }
 
-    string board_str(U64 board, string on, string off) {
+    string board_str(const U64& board, const string on, const string off) {
         vector<string> rows;
         string repr = "";
 
@@ -197,7 +197,7 @@ namespace Bitboard {
         return repr;
     }
 
-    string board_str(Position pos) {
+    string board_str(const Position& pos) {
         const string row = " +---+---+---+---+---+---+---+---+";
         const string col = " | ";
         string str = "";
@@ -217,12 +217,12 @@ namespace Bitboard {
         return str;
     }
 
-    string square_str(char sq) {
+    string square_str(const char& sq) {
         char x = sq%8, y = sq/8;
         return string(1, x+97) + std::to_string(y+1);
     }
 
-    string move_str(Move move) {
+    string move_str(const Move& move) {
         string str;
         str += square_str(move.from);
         str += square_str(move.to);
@@ -237,7 +237,7 @@ namespace Bitboard {
         return str;
     }
 
-    string fen(Position pos) {
+    string fen(const Position& pos) {
         string str = "";
         int blank_count = 0;
 
@@ -283,7 +283,7 @@ namespace Bitboard {
         return str;
     }
 
-    Position parse_fen(string fen) {
+    Position parse_fen(const string& fen) {
         vector<string> parts = split(fen, " ");
         Position pos;
 
@@ -338,7 +338,7 @@ namespace Bitboard {
         return pos;
     }
 
-    Move parse_uci(string uci) {
+    Move parse_uci(const string& uci) {
         Move move;
         move.from = uci[0]-97 + 8*(uci[1]-49);
         move.to = uci[2]-97 + 8*(uci[3]-49);

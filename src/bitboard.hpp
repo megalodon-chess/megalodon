@@ -122,13 +122,13 @@ namespace Bitboard {
 
     string piece_at(Position, char);
     U64 color(Position, bool);
-    string board_str(U64, string="X", string="-");
-    string board_str(Position);
-    string square_str(char);
-    string move_str(Move);
-    string fen(Position);
-    Position parse_fen(string);
-    Move parse_uci(string);
+    string board_str(const U64&, const string="X", const string="-");
+    string board_str(const Position&);
+    string square_str(const char&);
+    string move_str(const Move&);
+    string fen(const Position&);
+    Position parse_fen(const string&);
+    Move parse_uci(const string&);
 
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
