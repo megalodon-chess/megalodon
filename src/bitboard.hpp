@@ -57,7 +57,7 @@ struct Position {
 
     float eval;
     vector<Move> move_stack;
-    bool done;   // Variable used by search algorithm.
+    vector<Position*> branches;
 };
 
 struct Location {
