@@ -1013,7 +1013,6 @@ namespace Bitboard {
             }
             pos.castling = 0;
         } else {
-            // FIXME also check move.to
             switch (move.from) {
                 case  0: unset_bit(pos.castling, 1);                             break;
                 case  4: unset_bit(pos.castling, 0); unset_bit(pos.castling, 1); break;
@@ -1021,6 +1020,12 @@ namespace Bitboard {
                 case 56: unset_bit(pos.castling, 3);                             break;
                 case 60: unset_bit(pos.castling, 2); unset_bit(pos.castling, 3); break;
                 case 63: unset_bit(pos.castling, 2);                             break;
+            }
+            switch (move.to) {
+                case  0: unset_bit(pos.castling, 1); break;
+                case  7: unset_bit(pos.castling, 0); break;
+                case 56: unset_bit(pos.castling, 3); break;
+                case 63: unset_bit(pos.castling, 2); break;
             }
         }
 
