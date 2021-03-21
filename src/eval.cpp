@@ -219,26 +219,26 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     else stage = 2;
 
     const float mat = material(pos);
-    const float cent = center_control(options, pos, stage);
+    // const float cent = center_control(options, pos, stage);
 
-    const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
-    const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
-    const float wpawn = pawns(options, pos.wp, true);
-    const float bpawn = pawns(options, pos.bp, false);
-    const float wknight = knights(options, pos.wn);
-    const float bknight = knights(options, pos.bn);
-    const float wrook = rooks(options, pos.wr);
-    const float brook = rooks(options, pos.br);
-    const float wqueen = queens(options, pos.wq);
-    const float bqueen = queens(options, pos.bq);
+    // const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
+    // const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
+    // const float wpawn = pawns(options, pos.wp, true);
+    // const float bpawn = pawns(options, pos.bp, false);
+    // const float wknight = knights(options, pos.wn);
+    // const float bknight = knights(options, pos.bn);
+    // const float wrook = rooks(options, pos.wr);
+    // const float brook = rooks(options, pos.br);
+    // const float wqueen = queens(options, pos.wq);
+    // const float bqueen = queens(options, pos.bq);
 
     return (
-        options.EvalMaterial/100 * 1.0 *  mat                +
-        options.EvalCenter  /100 * 0.3 *  cent               +
-        options.EvalKing    /100 * 0.7 * (wking   - bking)   +
-        options.EvalPawn    /100 * 1.0 * (wpawn   - bpawn)   +
-        options.EvalKnight  /100 * 0.6 * (wknight - bknight) +
-        options.EvalRook    /100 * 0.3 * (wrook   - brook)   +
-        options.EvalQueen   /100 * 0.2 * (wqueen  - bqueen)
+        options.EvalMaterial/100 * 1.0 *  mat//                +
+        // options.EvalCenter  /100 * 0.3 *  cent               +
+        // options.EvalKing    /100 * 0.7 * (wking   - bking)   +
+        // options.EvalPawn    /100 * 1.0 * (wpawn   - bpawn)   +
+        // options.EvalKnight  /100 * 0.6 * (wknight - bknight) +
+        // options.EvalRook    /100 * 0.3 * (wrook   - brook)   +
+        // options.EvalQueen   /100 * 0.2 * (wqueen  - bqueen)
     );
 }
