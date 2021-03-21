@@ -219,6 +219,8 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     else stage = 2;
 
     const float mat = material(pos);
+    const float cent = center_control(options, pos, stage);
+
     const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
     const float bking = king(options, stage, Bitboard::first_bit(pos.bk), pos.bp, Bitboard::color(pos, true));
     const float wpawn = pawns(options, pos.wp, true);
@@ -230,9 +232,6 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     const float wqueen = queens(options, pos.wq);
     const float bqueen = queens(options, pos.bq);
 
-    const float cent = center_control(options, pos, stage);
-    const float space = popcnt(o_attacks);
-
     return (
         options.EvalMaterial/100 * 1.0 *  mat                +
         options.EvalCenter  /100 * 0.3 *  cent               +
@@ -240,7 +239,6 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
         options.EvalPawn    /100 * 1.0 * (wpawn   - bpawn)   +
         options.EvalKnight  /100 * 0.6 * (wknight - bknight) +
         options.EvalRook    /100 * 0.3 * (wrook   - brook)   +
-        options.EvalQueen   /100 * 0.2 * (wqueen  - bqueen)  +
-        options.EvalSpace   /100 * 1.0 *  space
+        options.EvalQueen   /100 * 0.2 * (wqueen  - bqueen)
     );
 }
