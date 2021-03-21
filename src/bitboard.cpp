@@ -737,7 +737,7 @@ namespace Bitboard {
                     } else if (bit(CB, i) || bit(CQ, i)) {
                         // Capture and block
                         for (auto dir: DIR_B) {
-                            char cx = (i&7), cy = (i>>3);               // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
@@ -756,7 +756,7 @@ namespace Bitboard {
                     if (bit(CR, i) || bit(CQ, i)) {
                         // Capture and block
                         for (auto dir: DIR_R) {
-                            char cx = (i&7), cy = (i>>3);                  // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
@@ -851,7 +851,7 @@ namespace Bitboard {
                         }
                     } else if (bit(CB, i) || bit(CQ, i)) {
                         for (auto dir: DIR_B) {
-                            char cx = (i&7), cy = (i>>3);                  // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
@@ -866,7 +866,7 @@ namespace Bitboard {
                     }
                     if (bit(CR, i) || bit(CQ, i)) {
                         for (auto dir: DIR_R) {
-                            char cx = (i&7), cy = (i>>3);                  // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
