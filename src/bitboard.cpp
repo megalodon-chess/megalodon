@@ -150,8 +150,6 @@ namespace Bitboard {
     }
 
     Location first_bit(const U64& board) {
-        // FIXME replace divide with bit shift
-        // FIXME replace mod with x & 7
         char pos = log2(board & -board);
         return Location((pos&7), (pos>>3));
     }
@@ -220,8 +218,6 @@ namespace Bitboard {
     }
 
     string square_str(const char& sq) {
-        // FIXME replace divide with bit shift
-        // FIXME replace mod with x & 7
         char x = (sq&7), y = (sq>>3);
         return string(1, x+97) + std::to_string(y+1);
     }
@@ -367,9 +363,6 @@ namespace Bitboard {
         U64 board = EMPTY;
 
         for (char i = 0; i < 64; i++) {
-            // FIXME replace multiply with bit shift
-            // FIXME replace divide with bit shift
-            // FIXME replace mod with x & 7
             const char x = (i&7), y = (i>>3);
             if (bit(pawns, i)) {
                 const char ny = y + pawn_dir;  // Current (x, y) with y as after capture.
@@ -597,9 +590,6 @@ namespace Bitboard {
     vector<Move> legal_moves(Position pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
-        // FIXME replace multiply with bit shift
-        // FIXME replace divide with bit shift
-        // FIXME replace mod with x & 7
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL;
         if (pos.turn) {
             CP = pos.wp;
