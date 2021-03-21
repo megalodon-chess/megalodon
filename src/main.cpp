@@ -21,6 +21,7 @@
 #include <vector>
 #include <string>
 #include "uci.hpp"
+#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
