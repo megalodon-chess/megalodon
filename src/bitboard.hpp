@@ -102,11 +102,10 @@ namespace Bitboard {
     constexpr U64 START_BQ = 576460752303423488ULL;
     constexpr U64 START_BK = 1152921504606846976ULL;
 
-    // FIXME fix castling constants
-    constexpr U64 CASTLING_BK = 6917529027641081856ULL;
-    constexpr U64 CASTLING_BQ = 864691128455135232ULL;
-    constexpr U64 CASTLING_WQ = 12ULL;
-    constexpr U64 CASTLING_WK = 96ULL;
+    constexpr U64 CASTLING_BK = 8070450532247928832ULL;
+    constexpr U64 CASTLING_BQ = 2017612633061982208ULL;
+    constexpr U64 CASTLING_WQ = 28ULL;
+    constexpr U64 CASTLING_WK = 112ULL;
 
     const vector<vector<char>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<char>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
