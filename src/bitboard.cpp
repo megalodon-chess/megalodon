@@ -557,8 +557,6 @@ namespace Bitboard {
         Location k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
         const char kx = k_pos.x, ky = k_pos.y;
         const char start = ky*8 + kx;
-        // FIXME remove king_bit because already included in castling constants.
-        U64 king_bit = 1ULL << start;
 
         for (auto dir: DIR_K) {
             const char x = kx+dir[0], y = ky+dir[1];
@@ -572,23 +570,23 @@ namespace Bitboard {
         if (pos.turn) {
             if (bit(pos.castling, 0)) {
                 if (!bit(all, 5) && !bit(all, 6)) {
-                    if (((CASTLING_WK | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 6));
+                    if ((CASTLING_WK & attacks) == EMPTY) moves.push_back(Move(start, 6));
                 }
             }
             if (bit(pos.castling, 1)) {
                 if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) {
-                    if (((CASTLING_WQ | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 2));
+                    if ((CASTLING_WQ & attacks) == EMPTY) moves.push_back(Move(start, 2));
                 }
             }
         } else {
             if (bit(pos.castling, 2)) {
                 if (!bit(all, 61) && !bit(all, 62)) {
-                    if (((CASTLING_BK | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 62));
+                    if ((CASTLING_BK & attacks) == EMPTY) moves.push_back(Move(start, 62));
                 }
             }
             if (bit(pos.castling, 3)) {
                 if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
-                    if (((CASTLING_BQ | king_bit) & attacks) == EMPTY) moves.push_back(Move(start, 58));
+                    if ((CASTLING_BQ & attacks) == EMPTY) moves.push_back(Move(start, 58));
                 }
             }
         }
