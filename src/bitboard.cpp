@@ -787,7 +787,7 @@ namespace Bitboard {
                             for (auto cy = y + 1; cy < y + speed + 1; cy++) {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & pin_mask) {
+                                if (bit(pin_mask, loc)) {
                                     if (cy == 7) {
                                         // Promotion
                                         for (char p: {0, 1, 2, 3}) {
@@ -802,7 +802,7 @@ namespace Bitboard {
                             for (auto cy = y - 1; cy > y - speed - 1; cy--) {
                                 const char loc = cy*8 + x;
                                 if (bit(ALL, loc)) break;
-                                if ((1ULL << loc) & pin_mask) {
+                                if (bit(pin_mask, loc)) {
                                     if (cy == 7) {
                                         // Promotion
                                         for (char p: {0, 1, 2, 3}) {
@@ -854,7 +854,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(SAME, loc)) break;
-                                if (((1ULL << loc) & pin_mask) != EMPTY) moves.push_back(Move(i, loc));
+                                if (bit(pin_mask, loc)) moves.push_back(Move(i, loc));
                                 if (bit(OPPONENT, loc)) break;
                             }
                         }
@@ -869,7 +869,7 @@ namespace Bitboard {
                                 if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                                 const char loc = cy*8 + cx;
                                 if (bit(SAME, loc)) break;
-                                if (((1ULL << loc) & pin_mask) != EMPTY) moves.push_back(Move(i, loc));
+                                if (bit(pin_mask, loc)) moves.push_back(Move(i, loc));
                                 if (bit(OPPONENT, loc)) break;
                             }
                         }
