@@ -153,7 +153,7 @@ namespace Bitboard {
         // FIXME replace divide with bit shift
         // FIXME replace mod with x & 7
         char pos = log2(board & -board);
-        return Location(pos%8, (pos>>3));
+        return Location((pos&7), (pos>>3));
     }
 
 
@@ -222,7 +222,7 @@ namespace Bitboard {
     string square_str(const char& sq) {
         // FIXME replace divide with bit shift
         // FIXME replace mod with x & 7
-        char x = sq%8, y = (sq>>3);
+        char x = (sq&7), y = (sq>>3);
         return string(1, x+97) + std::to_string(y+1);
     }
 
@@ -370,7 +370,7 @@ namespace Bitboard {
             // FIXME replace multiply with bit shift
             // FIXME replace divide with bit shift
             // FIXME replace mod with x & 7
-            const char x = i%8, y = (i>>3);
+            const char x = (i&7), y = (i>>3);
             if (bit(pawns, i)) {
                 const char ny = y + pawn_dir;  // Current (x, y) with y as after capture.
                 if (0 <= ny && ny < 8) {
@@ -666,7 +666,7 @@ namespace Bitboard {
             for (char i = 0; i < 64; i++) {
                 if (bit(SAME, i) && !get<0>(pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME))) {
                     if (bit(CP, i)) {
-                        const char x = i%8;
+                        const char x = (i&7);
                         char y;
 
                         // Block
@@ -737,7 +737,7 @@ namespace Bitboard {
                             }
                         }
                     } else if (bit(CN, i)) {
-                        char x = i%8, y = (i>>3);
+                        char x = (i&7), y = (i>>3);
                         for (auto dir: DIR_N) {
                             char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
                             if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) continue;
@@ -747,7 +747,7 @@ namespace Bitboard {
                     } else if (bit(CB, i) || bit(CQ, i)) {
                         // Capture and block
                         for (auto dir: DIR_B) {
-                            char cx = i%8, cy = (i>>3);               // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);               // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
@@ -766,7 +766,7 @@ namespace Bitboard {
                     if (bit(CR, i) || bit(CQ, i)) {
                         // Capture and block
                         for (auto dir: DIR_R) {
-                            char cx = i%8, cy = (i>>3);                  // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
@@ -792,7 +792,7 @@ namespace Bitboard {
                     U64 pin_mask = get<1>(pin);
 
                     if (bit(CP, i)) {
-                        const char x = i%8;
+                        const char x = (i&7);
                         char y;
 
                         // Forward
@@ -853,7 +853,7 @@ namespace Bitboard {
                         if (piece_pinned) continue;
                         else {
                             for (auto dir: DIR_N) {
-                                char x = i%8 + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
+                                char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
                                 if (!(0 <= x && x < 8 && 0 <= y && y < 8)) continue;
                                 const char loc = (y<<3) + x;
                                 if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
@@ -861,7 +861,7 @@ namespace Bitboard {
                         }
                     } else if (bit(CB, i) || bit(CQ, i)) {
                         for (auto dir: DIR_B) {
-                            char cx = i%8, cy = (i>>3);                  // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
@@ -876,7 +876,7 @@ namespace Bitboard {
                     }
                     if (bit(CR, i) || bit(CQ, i)) {
                         for (auto dir: DIR_R) {
-                            char cx = i%8, cy = (i>>3);                  // Current (x, y)
+                            char cx = (i&7), cy = (i>>3);                  // Current (x, y)
                             const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                             while (true) {
                                 cx += dx;
