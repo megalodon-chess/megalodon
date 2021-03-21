@@ -231,7 +231,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     const float bqueen = queens(options, pos.bq);
 
     const float cent = center_control(options, pos, stage);
-    const char space = Bitboard::popcnt(o_attacks);
+    const char space = popcnt(o_attacks);
 
     return (
         options.EvalMaterial/100 * 1.0 *  mat                +
