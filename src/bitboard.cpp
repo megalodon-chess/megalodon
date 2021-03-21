@@ -443,6 +443,7 @@ namespace Bitboard {
             while (true) {
                 cx += dx;
                 cy += dy;
+                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
                 set_bit(pin_ray, loc);
                 if (bit(piece, loc)) found = true;
@@ -454,6 +455,7 @@ namespace Bitboard {
             while (true) {
                 cx += dx;
                 cy += dy;
+                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
                 const char loc = cy*8 + cx;
                 set_bit(pin_ray, loc);
                 if (bit(piece, loc)) found = true;
