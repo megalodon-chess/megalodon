@@ -278,7 +278,8 @@ namespace Bitboard {
         }
         str += " ";
 
-        str += "0 1";
+        str += "0 ";
+        str += std::to_string(pos.move_stack.size()/2 + 1);
 
         return str;
     }
