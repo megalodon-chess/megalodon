@@ -102,6 +102,7 @@ namespace Bitboard {
     constexpr U64 START_BQ = 576460752303423488ULL;
     constexpr U64 START_BK = 1152921504606846976ULL;
 
+    // FIXME fix castling constants
     constexpr U64 CASTLING_BK = 6917529027641081856ULL;
     constexpr U64 CASTLING_BQ = 864691128455135232ULL;
     constexpr U64 CASTLING_WQ = 12ULL;

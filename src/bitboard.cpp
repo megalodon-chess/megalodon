@@ -150,6 +150,8 @@ namespace Bitboard {
     }
 
     Location first_bit(const U64& board) {
+        // FIXME replace divide with bit shift
+        // FIXME replace mod with x & 7
         char pos = log2(board & -board);
         return Location(pos%8, pos/8);
     }
@@ -218,6 +220,8 @@ namespace Bitboard {
     }
 
     string square_str(const char& sq) {
+        // FIXME replace divide with bit shift
+        // FIXME replace mod with x & 7
         char x = sq%8, y = sq/8;
         return string(1, x+97) + std::to_string(y+1);
     }
@@ -356,12 +360,16 @@ namespace Bitboard {
     }
 
 
-    U64 attacked(const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& kings, const U64& opponent, const bool& side) {
+    U64 attacked(const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks,
+            const U64& queens, const U64& kings, const U64& opponent, const bool& side) {
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         const char pawn_dir = side ? 1 : -1;
         U64 board = EMPTY;
 
         for (char i = 0; i < 64; i++) {
+            // FIXME replace multiply with bit shift
+            // FIXME replace divide with bit shift
+            // FIXME replace mod with x & 7
             const char x = i%8, y = i/8;
             if (bit(pawns, i)) {
                 const char ny = y + pawn_dir;  // Current (x, y) with y as after capture.
@@ -427,7 +435,8 @@ namespace Bitboard {
         }
     }
 
-    tuple<bool, U64> pinned(const U64& king, const U64& piece, const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& same) {
+    tuple<bool, U64> pinned(const U64& king, const U64& piece, const U64& pawns, const U64& knights,
+            const U64& bishops, const U64& rooks, const U64& queens, const U64& same) {
         const U64 all = pawns | knights | bishops | rooks | queens | same;
         const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
@@ -467,7 +476,8 @@ namespace Bitboard {
         return tuple<bool, U64>(false, FULL);
     }
 
-    tuple<U64, char> checkers(const U64& king, const U64& pawns, const U64& knights, const U64& bishops, const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
+    tuple<U64, char> checkers(const U64& king, const U64& pawns, const U64& knights, const U64& bishops,
+            const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
         const Location k_pos = first_bit(king);
@@ -547,6 +557,7 @@ namespace Bitboard {
         Location k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
         const char kx = k_pos.x, ky = k_pos.y;
         const char start = ky*8 + kx;
+        // FIXME remove king_bit because already included in castling constants.
         U64 king_bit = 1ULL << start;
 
         for (auto dir: DIR_K) {
@@ -588,6 +599,9 @@ namespace Bitboard {
     vector<Move> legal_moves(Position pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
+        // FIXME replace multiply with bit shift
+        // FIXME replace divide with bit shift
+        // FIXME replace mod with x & 7
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL;
         if (pos.turn) {
             CP = pos.wp;
@@ -1001,6 +1015,7 @@ namespace Bitboard {
             }
             pos.castling = 0;
         } else {
+            // FIXME also check move.to
             if (move.from == 0) {
                 unset_bit(pos.castling, 1);
             } else if (move.from == 4) {
