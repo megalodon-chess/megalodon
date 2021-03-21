@@ -51,5 +51,6 @@ public:
     int EvalKnight;
     int EvalRook;
     int EvalQueen;
+    int EvalSpace;
     bool Chat;
 };

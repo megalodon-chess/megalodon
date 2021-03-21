@@ -234,13 +234,13 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     const char space = Bitboard::popcnt(o_attacks);
 
     return (
-        options.EvalMaterial/100 * 1.0 * mat +
-        options.EvalCenter/100 *   0.3 * cent +
-        options.EvalKing/100 *     0.7 * (wking-bking) +
-        options.EvalPawn/100 *     1 * (wpawn-bpawn) +
-        options.EvalKnight/100 *   0.6 * (wknight-bknight) +
-        options.EvalRook/100 *     0.3 * (wrook-brook) +
-        options.EvalQueen/100 *    0.2 * (wqueen-bqueen) +
-        space
+        options.EvalMaterial/100 * 1.0 *  mat     +
+        options.EvalCenter  /100 * 0.3 *  cent    +
+        options.EvalKing    /100 * 0.7 * (wking  -bking) +
+        options.EvalPawn    /100 * 1.0 * (wpawn  -bpawn) +
+        options.EvalKnight  /100 * 0.6 * (wknight-bknight) +
+        options.EvalRook    /100 * 0.3 * (wrook  -brook) +
+        options.EvalQueen   /100 * 0.2 * (wqueen -bqueen) +
+        options.EvalSpace   /100 * 1.0 *  space
     );
 }
