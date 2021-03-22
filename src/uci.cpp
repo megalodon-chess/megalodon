@@ -147,9 +147,17 @@ void perft(Options& options, Position pos, int depth) {
     int nodes = 0;
 
     if (moves.size() > 0) {
+        int move_num = 1;
+        for (const auto& move: moves) {
+            Position new_pos = Bitboard::push(pos, move);
+            int curr_nodes = Perft::movegen(new_pos, depth-1);
+            nodes += curr_nodes;
+            cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
+            move_num++;
+        }
     }
 
-    double elapse = get_time() - start;
+    double elapse = get_time() - start + 0.001;  // Add 1 ms to prevent divide by 0
     cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
 }
 
@@ -211,7 +219,7 @@ int loop() {
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             vector<string> parts = split(cmd, " ");
-            if (parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
+            if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else prev_eval = go(options, pos, parts, prev_eval);
         }
         else if (cmd == "stop");
