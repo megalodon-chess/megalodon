@@ -121,6 +121,7 @@ namespace Bitboard {
     void set_bit(char&, int);
     void unset_bit(char&, int);
     bool contains(const vector<vector<char>>&, const vector<char>&);
+    bool in_board(const char& x, const char& y);
     Location first_bit(const U64&);
 
     string piece_at(const Position&, const char&);

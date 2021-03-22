@@ -38,6 +38,5 @@ Options::Options() {
     EvalKnight = 100;
     EvalRook = 100;
     EvalQueen = 100;
-    EvalSpace = 100;
     Chat = false;
 }
