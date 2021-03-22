@@ -75,7 +75,6 @@ void print_legal_moves(Position pos) {
     for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
 }
 
-
 void chat(Options& options, bool turn, int movect, float score, float prev_score) {
     if (!options.Chat) return;
 
@@ -85,7 +84,6 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
     if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
 }
-
 
 float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
     int mode = 0, depth, total = total_mat(pos);
@@ -143,6 +141,18 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     return result.score;
 }
 
+void perft(Options& options, Position pos, int depth) {
+    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    double start = get_time();
+    int nodes = 0;
+
+    if (moves.size() > 0) {
+    }
+
+    double elapse = get_time() - start;
+    cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
+}
+
 
 int loop() {
     string cmd;
@@ -192,15 +202,6 @@ int loop() {
             U64 attacked = Bitboard::attacked(pos, !pos.turn);
             cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
         }
-        else if (startswith(cmd, "perft")) {
-            vector<string> parts = split(cmd, " ");
-            if (parts[1] == "movegen") {
-                double start = get_time();
-                int count = Perft::movegen(pos, std::stoi(parts[2]));
-                double elapse = get_time() - start;
-                cout << "info nodes " << count << " nps " << (int)(count/elapse) << " time " << (int)(elapse*1000) << endl;
-            }
-        }
         else if (cmd == "legalmoves") print_legal_moves(pos);
 
         else if (cmd == "ucinewgame") {
@@ -208,7 +209,11 @@ int loop() {
             prev_eval = 0;
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
-        else if (startswith(cmd, "go")) prev_eval = go(options, pos, split(cmd, " "), prev_eval);
+        else if (startswith(cmd, "go")) {
+            vector<string> parts = split(cmd, " ");
+            if (parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
+            else prev_eval = go(options, pos, parts, prev_eval);
+        }
         else if (cmd == "stop");
         else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
     }
