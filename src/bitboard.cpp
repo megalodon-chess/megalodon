@@ -149,6 +149,10 @@ namespace Bitboard {
         return false;
     }
 
+    bool in_board(const char& x, const char& y) {
+        return (0 <= x && x < 8 && 0 <= y && y < 8);
+    }
+
     Location first_bit(const U64& board) {
         char pos = log2(board & -board);
         return Location((pos&7), (pos>>3));
@@ -882,7 +886,7 @@ namespace Bitboard {
                 }
             }
         }
-        return moves;//order_moves(pos, moves, attacks);
+        return moves; //order_moves(pos, moves, attacks);
     }
 
     vector<Move> order_moves(const Position& pos, const vector<Move>& moves, const U64& attacks) {
