@@ -70,6 +70,21 @@ float total_mat(const Position& pos) {
     return value;
 }
 
+float non_pawn_mat(const Position& pos) {
+    float value = 0;
+    for (auto i = 0; i < 64; i++) {
+        if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bn, i)) value += 3;
+        else if (bit(pos.bb, i)) value += 3;
+        else if (bit(pos.br, i)) value += 5;
+        else if (bit(pos.bq, i)) value += 9;
+    }
+    return value;
+}
+
 
 float king(const Options& options, const char& stage, const Location& kpos, const U64& pawns, const U64& others) {
     // todo pawn shield
