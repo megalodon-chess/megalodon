@@ -38,44 +38,35 @@ using Bitboard::bit;
 
 float material(const Position& pos) {
     float value = 0;
-    value += popcnt(pos.wp) * 1;
-    value += popcnt(pos.wn) * 3;
-    value += popcnt(pos.wb) * 3;
-    value += popcnt(pos.wr) * 5;
-    value += popcnt(pos.wq) * 9;
-    value -= popcnt(pos.bp) * 1;
-    value -= popcnt(pos.bn) * 3;
-    value -= popcnt(pos.bb) * 3;
-    value -= popcnt(pos.br) * 5;
-    value -= popcnt(pos.bq) * 9;
+    for (auto i = 0; i < 64; i++) {
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value -= 1;
+        else if (bit(pos.bn, i)) value -= 3;
+        else if (bit(pos.bb, i)) value -= 3;
+        else if (bit(pos.br, i)) value -= 5;
+        else if (bit(pos.bq, i)) value -= 9;
+    }
     return value;
 }
 
 float total_mat(const Position& pos) {
     float value = 0;
-    value += popcnt(pos.wp) * 1;
-    value += popcnt(pos.wn) * 3;
-    value += popcnt(pos.wb) * 3;
-    value += popcnt(pos.wr) * 5;
-    value += popcnt(pos.wq) * 9;
-    value += popcnt(pos.bp) * 1;
-    value += popcnt(pos.bn) * 3;
-    value += popcnt(pos.bb) * 3;
-    value += popcnt(pos.br) * 5;
-    value += popcnt(pos.bq) * 9;
-    return value;
-}
-
-float non_pawn_mat(const Position& pos) {
-    float value = 0;
-    value += popcnt(pos.wn) * 3;
-    value += popcnt(pos.wb) * 3;
-    value += popcnt(pos.wr) * 5;
-    value += popcnt(pos.wq) * 9;
-    value += popcnt(pos.bn) * 3;
-    value += popcnt(pos.bb) * 3;
-    value += popcnt(pos.br) * 5;
-    value += popcnt(pos.bq) * 9;
+    for (auto i = 0; i < 64; i++) {
+        if      (bit(pos.wp, i)) value += 1;
+        else if (bit(pos.wn, i)) value += 3;
+        else if (bit(pos.wb, i)) value += 3;
+        else if (bit(pos.wr, i)) value += 5;
+        else if (bit(pos.wq, i)) value += 9;
+        else if (bit(pos.bp, i)) value += 1;
+        else if (bit(pos.bn, i)) value += 3;
+        else if (bit(pos.bb, i)) value += 3;
+        else if (bit(pos.br, i)) value += 5;
+        else if (bit(pos.bq, i)) value += 9;
+    }
     return value;
 }
 
