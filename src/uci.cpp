@@ -87,6 +87,63 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
 }
 
 
+float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
+    int mode = 0, depth, total = total_mat(pos);
+    float wtime, btime, winc, binc;
+    for (auto i = 0; i < parts.size(); i++) {
+        if (parts[i] == "depth") {
+            mode = 1;
+            depth = std::stoi(parts[i+1]);
+            break;
+        } else if (parts[i] == "wtime") {
+            mode = 2;
+            wtime = std::stoi(parts[i+1]);
+        } else if (parts[i] == "btime") {
+            mode = 2;
+            btime = std::stoi(parts[i+1]);
+        } else if (parts[i] == "winc") {
+            mode = 2;
+            winc = std::stoi(parts[i+1]);
+        } else if (parts[i] == "binc") {
+            mode = 2;
+            binc = std::stoi(parts[i+1]);
+        }
+    }
+    wtime /= 1000;
+    btime /= 1000;
+    winc /= 1000;
+    binc /= 1000;
+
+    if (mode == 0) {
+        depth = 5;
+    } else if (mode == 2) {
+        double time;
+        if (pos.turn) time = move_time(options, pos, wtime, winc);
+        else time = move_time(options, pos, btime, binc);
+
+        if (5 <= time) depth = 5;
+        else if (2 <= time && time < 5) depth = 4;
+        else depth = 2;
+    }
+    if (total < 20) depth++;
+    if (total < 10) depth++;
+
+    double start = get_time();
+    SearchInfo result = search(options, pos, depth, 0);
+    double elapse = get_time() - start;
+
+    float score = result.score;
+    result.time = 1000 * (elapse);
+    result.nps = result.nodes / (elapse);
+    if (!pos.turn) result.score *= -1;
+    cout << result.as_string() << endl;
+    cout << "bestmove " << Bitboard::move_str(result.move) << endl;
+
+    chat(options, pos.turn, pos.move_stack.size(), score, prev_eval);
+    return result.score;
+}
+
+
 int loop() {
     string cmd;
     Options options;
@@ -151,62 +208,7 @@ int loop() {
             prev_eval = 0;
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
-        else if (startswith(cmd, "go")) {
-            vector<string> parts = split(cmd, " ");
-            int mode = 0, depth, total = total_mat(pos);
-            float wtime, btime, winc, binc;
-            for (auto i = 0; i < parts.size(); i++) {
-                if (parts[i] == "depth") {
-                    mode = 1;
-                    depth = std::stoi(parts[i+1]);
-                    break;
-                } else if (parts[i] == "wtime") {
-                    mode = 2;
-                    wtime = std::stoi(parts[i+1]);
-                } else if (parts[i] == "btime") {
-                    mode = 2;
-                    btime = std::stoi(parts[i+1]);
-                } else if (parts[i] == "winc") {
-                    mode = 2;
-                    winc = std::stoi(parts[i+1]);
-                } else if (parts[i] == "binc") {
-                    mode = 2;
-                    binc = std::stoi(parts[i+1]);
-                }
-            }
-            wtime /= 1000;
-            btime /= 1000;
-            winc /= 1000;
-            binc /= 1000;
-
-            if (mode == 0) {
-                depth = 5;
-            } else if (mode == 2) {
-                double time;
-                if (pos.turn) time = move_time(options, pos, wtime, winc);
-                else time = move_time(options, pos, btime, binc);
-
-                if (5 <= time) depth = 5;
-                else if (2 <= time && time < 5) depth = 4;
-                else depth = 2;
-            }
-            if (total < 20) depth++;
-            if (total < 10) depth++;
-
-            double start = get_time();
-            SearchInfo result = search(options, pos, depth, 0);
-            double elapse = get_time() - start;
-
-            float score = result.score;
-            result.time = 1000 * (elapse);
-            result.nps = result.nodes / (elapse);
-            if (!pos.turn) result.score *= -1;
-            cout << result.as_string() << endl;
-            cout << "bestmove " << Bitboard::move_str(result.move) << endl;
-
-            chat(options, pos.turn, pos.move_stack.size(), score, prev_eval);
-            prev_eval = result.score;
-        }
+        else if (startswith(cmd, "go")) prev_eval = go(options, pos, split(cmd, " "), prev_eval);
         else if (cmd == "stop");
         else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
     }
