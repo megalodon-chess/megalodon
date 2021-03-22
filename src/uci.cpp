@@ -69,7 +69,7 @@ Position parse_pos(string str) {
 }
 
 
-void legal_moves(Position pos) {
+void print_legal_moves(Position pos) {
     vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
     for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
@@ -144,7 +144,7 @@ int loop() {
                 cout << "info nodes " << count << " nps " << (int)(count/elapse) << " time " << (int)(elapse*1000) << endl;
             }
         }
-        else if (cmd == "legalmoves") legal_moves(pos);
+        else if (cmd == "legalmoves") print_legal_moves(pos);
 
         else if (cmd == "ucinewgame") {
             pos = parse_pos("position startpos");
