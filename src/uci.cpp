@@ -69,12 +69,11 @@ Position parse_pos(string str) {
 }
 
 
-void legal_moves(Position pos) {
+void print_legal_moves(Position pos) {
     vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
     for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
 }
-
 
 void chat(Options& options, bool turn, int movect, float score, float prev_score) {
     if (!options.Chat) return;
@@ -84,6 +83,82 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
     if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
     if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+}
+
+float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
+    int mode = 0, depth, total = total_mat(pos);
+    float wtime, btime, winc, binc;
+    for (auto i = 0; i < parts.size(); i++) {
+        if (parts[i] == "depth") {
+            mode = 1;
+            depth = std::stoi(parts[i+1]);
+            break;
+        } else if (parts[i] == "wtime") {
+            mode = 2;
+            wtime = std::stoi(parts[i+1]);
+        } else if (parts[i] == "btime") {
+            mode = 2;
+            btime = std::stoi(parts[i+1]);
+        } else if (parts[i] == "winc") {
+            mode = 2;
+            winc = std::stoi(parts[i+1]);
+        } else if (parts[i] == "binc") {
+            mode = 2;
+            binc = std::stoi(parts[i+1]);
+        }
+    }
+    wtime /= 1000;
+    btime /= 1000;
+    winc /= 1000;
+    binc /= 1000;
+
+    if (mode == 0) {
+        depth = 5;
+    } else if (mode == 2) {
+        double time;
+        if (pos.turn) time = move_time(options, pos, wtime, winc);
+        else time = move_time(options, pos, btime, binc);
+
+        if (5 <= time) depth = 5;
+        else if (2 <= time && time < 5) depth = 4;
+        else depth = 2;
+    }
+    if (total < 20) depth++;
+    if (total < 10) depth++;
+
+    double start = get_time();
+    SearchInfo result = search(options, pos, depth, 0);
+    double elapse = get_time() - start;
+
+    float score = result.score;
+    result.time = 1000 * (elapse);
+    result.nps = result.nodes / (elapse);
+    if (!pos.turn) result.score *= -1;
+    cout << result.as_string() << endl;
+    cout << "bestmove " << Bitboard::move_str(result.move) << endl;
+
+    chat(options, pos.turn, pos.move_stack.size(), score, prev_eval);
+    return result.score;
+}
+
+void perft(Options& options, Position pos, int depth) {
+    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    double start = get_time();
+    int nodes = 1;
+
+    if (moves.size() > 0) {
+        int move_num = 1;
+        for (const auto& move: moves) {
+            Position new_pos = Bitboard::push(pos, move);
+            int curr_nodes = Perft::movegen(new_pos, depth-1);
+            nodes += curr_nodes;
+            cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
+            move_num++;
+        }
+    }
+
+    double elapse = get_time() - start + 0.001;  // Add 1 ms to prevent divide by 0
+    cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
 }
 
 
@@ -135,16 +210,7 @@ int loop() {
             U64 attacked = Bitboard::attacked(pos, !pos.turn);
             cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
         }
-        else if (startswith(cmd, "perft")) {
-            vector<string> parts = split(cmd, " ");
-            if (parts[1] == "movegen") {
-                double start = get_time();
-                int count = Perft::movegen(pos, std::stoi(parts[2]));
-                double elapse = get_time() - start;
-                cout << "info nodes " << count << " nps " << (int)(count/elapse) << " time " << (int)(elapse*1000) << endl;
-            }
-        }
-        else if (cmd == "legalmoves") legal_moves(pos);
+        else if (cmd == "legalmoves") print_legal_moves(pos);
 
         else if (cmd == "ucinewgame") {
             pos = parse_pos("position startpos");
@@ -153,59 +219,8 @@ int loop() {
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             vector<string> parts = split(cmd, " ");
-            int mode = 0, depth, total = total_mat(pos);
-            float wtime, btime, winc, binc;
-            for (auto i = 0; i < parts.size(); i++) {
-                if (parts[i] == "depth") {
-                    mode = 1;
-                    depth = std::stoi(parts[i+1]);
-                    break;
-                } else if (parts[i] == "wtime") {
-                    mode = 2;
-                    wtime = std::stoi(parts[i+1]);
-                } else if (parts[i] == "btime") {
-                    mode = 2;
-                    btime = std::stoi(parts[i+1]);
-                } else if (parts[i] == "winc") {
-                    mode = 2;
-                    winc = std::stoi(parts[i+1]);
-                } else if (parts[i] == "binc") {
-                    mode = 2;
-                    binc = std::stoi(parts[i+1]);
-                }
-            }
-            wtime /= 1000;
-            btime /= 1000;
-            winc /= 1000;
-            binc /= 1000;
-
-            if (mode == 0) {
-                depth = 5;
-            } else if (mode == 2) {
-                double time;
-                if (pos.turn) time = move_time(options, pos, wtime, winc);
-                else time = move_time(options, pos, btime, binc);
-
-                if (5 <= time) depth = 5;
-                else if (2 <= time && time < 5) depth = 4;
-                else depth = 2;
-            }
-            if (total < 20) depth++;
-            if (total < 10) depth++;
-
-            double start = get_time();
-            SearchInfo result = search(options, pos, depth, 0);
-            double elapse = get_time() - start;
-
-            float score = result.score;
-            result.time = 1000 * (elapse);
-            result.nps = result.nodes / (elapse);
-            if (!pos.turn) result.score *= -1;
-            cout << result.as_string() << endl;
-            cout << "bestmove " << Bitboard::move_str(result.move) << endl;
-
-            chat(options, pos.turn, pos.move_stack.size(), score, prev_eval);
-            prev_eval = result.score;
+            if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
+            else prev_eval = go(options, pos, parts, prev_eval);
         }
         else if (cmd == "stop");
         else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
