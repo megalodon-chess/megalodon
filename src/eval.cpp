@@ -73,7 +73,7 @@ float total_mat(const Position& pos) {
 float non_pawn_mat(const Position& pos) {
     float value = 0;
     for (auto i = 0; i < 64; i++) {
-        if (bit(pos.wn, i)) value += 3;
+        if      (bit(pos.wn, i)) value += 3;
         else if (bit(pos.wb, i)) value += 3;
         else if (bit(pos.wr, i)) value += 5;
         else if (bit(pos.wq, i)) value += 9;
