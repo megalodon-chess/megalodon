@@ -939,18 +939,18 @@ namespace Bitboard {
 
     Position startpos() {
         Position pos;
-        pos.wp = Bitboard::START_WP;
-        pos.wn = Bitboard::START_WN;
-        pos.wb = Bitboard::START_WB;
-        pos.wr = Bitboard::START_WR;
-        pos.wq = Bitboard::START_WQ;
-        pos.wk = Bitboard::START_WK;
-        pos.bp = Bitboard::START_BP;
-        pos.bn = Bitboard::START_BN;
-        pos.bb = Bitboard::START_BB;
-        pos.br = Bitboard::START_BR;
-        pos.bq = Bitboard::START_BQ;
-        pos.bk = Bitboard::START_BK;
+        pos.wp = START_WP;
+        pos.wn = START_WN;
+        pos.wb = START_WB;
+        pos.wr = START_WR;
+        pos.wq = START_WQ;
+        pos.wk = START_WK;
+        pos.bp = START_BP;
+        pos.bn = START_BN;
+        pos.bb = START_BB;
+        pos.br = START_BR;
+        pos.bq = START_BQ;
+        pos.bk = START_BK;
         pos.turn = true;
         pos.castling = 15;
         pos.ep = false;
