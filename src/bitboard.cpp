@@ -113,7 +113,7 @@ namespace Bitboard {
     }
 
     char popcnt(const U64& num) {
-        U64 mask = 255ULL;
+        const U64 mask = 255ULL;
         char count = 0;
         count += popcnt_tbl[num&mask];
         count += popcnt_tbl[(num>>8)&mask];
@@ -143,7 +143,7 @@ namespace Bitboard {
     }
 
     bool contains(const vector<vector<char>>& sequence, const vector<char>& target) {
-        for (auto i: sequence) {
+        for (auto& i: sequence) {
             if (i == target) return true;
         }
         return false;
