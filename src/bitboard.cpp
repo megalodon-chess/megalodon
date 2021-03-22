@@ -502,7 +502,7 @@ namespace Bitboard {
         // Knights
         for (auto dir: DIR_N) {
             const char x = kx + dir[0], y = ky + dir[1];
-            if (!(0 <= x && x < 8 && 0 <= y && y < 8)) continue;
+            if (!in_board(x, y)) continue;
             const char loc = (y<<3) + x;
             if (bit(knights, loc)) {
                 set_bit(board, loc);
@@ -516,7 +516,7 @@ namespace Bitboard {
             while (true) {
                 x += dir[0];
                 y += dir[1];
-                if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+                if (!in_board(x, y)) break;
                 const char loc = (y<<3) + x;
                 if (bit(same_side, loc)) break;
                 if (bit(bishops, loc) || bit(queens, loc)) {
@@ -533,7 +533,7 @@ namespace Bitboard {
             while (true) {
                 x += dir[0];
                 y += dir[1];
-                if (!(0 <= x && x < 8 && 0 <= y && y < 8)) break;
+                if (!in_board(x, y)) break;
                 const char loc = (y<<3) + x;
                 if (bit(same_side, loc)) break;
                 if (bit(rooks, loc) || bit(queens, loc)) {
@@ -557,7 +557,7 @@ namespace Bitboard {
 
         for (auto dir: DIR_K) {
             const char x = kx+dir[0], y = ky+dir[1];
-            if (0 <= x && x < 8 && 0 <= y && y < 8) {
+            if (in_board(x, y)) {
                 const char loc = (y<<3) + x;
                 if (!bit(attacks, loc) && !bit(same, loc)) moves.push_back(Move(start, loc));
             }
@@ -848,7 +848,7 @@ namespace Bitboard {
                         else {
                             for (auto dir: DIR_N) {
                                 char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
-                                if (!(0 <= x && x < 8 && 0 <= y && y < 8)) continue;
+                                if (!in_board(x, y)) continue;
                                 const char loc = (y<<3) + x;
                                 if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
                             }
