@@ -144,7 +144,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
 void perft(Options& options, Position pos, int depth) {
     vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     double start = get_time();
-    int nodes = 0;
+    int nodes = 1;
 
     if (moves.size() > 0) {
         int move_num = 1;
