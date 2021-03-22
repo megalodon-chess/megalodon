@@ -38,6 +38,7 @@ const float OUT_CNT = Bitboard::popcnt(OUT_CENT);
 
 float material(const Position&);
 float total_mat(const Position&);
+float non_pawn_mat(const Position&);
 
 float king(const Options&, const char&, const Location&, const U64&, const U64&);
 float pawns(const Options&, const U64&, const bool&);
