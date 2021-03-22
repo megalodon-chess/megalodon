@@ -394,7 +394,7 @@ namespace Bitboard {
                     while (true) {
                         cx += dx;
                         cy += dy;
-                        if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                        if (!in_board(cx, cy)) break;
                         const char loc = (cy<<3) + cx;
                         set_bit(board, loc);
                         if (bit(opponent, loc)) break;
@@ -409,7 +409,7 @@ namespace Bitboard {
                     while (true) {
                         cx += dx;
                         cy += dy;
-                        if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                        if (!in_board(cx, cy)) break;
                         const char loc = (cy<<3) + cx;
                         set_bit(board, loc);
                         if (bit(opponent, loc)) break;
@@ -450,7 +450,7 @@ namespace Bitboard {
             while (true) {
                 cx += dx;
                 cy += dy;
-                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                if (!in_board(cx, cy)) break;
                 const char loc = (cy<<3) + cx;
                 set_bit(pin_ray, loc);
                 if (bit(piece, loc)) found = true;
@@ -462,7 +462,7 @@ namespace Bitboard {
             while (true) {
                 cx += dx;
                 cy += dy;
-                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                if (!in_board(cx, cy)) break;
                 const char loc = (cy<<3) + cx;
                 set_bit(pin_ray, loc);
                 if (bit(piece, loc)) found = true;
@@ -734,7 +734,7 @@ namespace Bitboard {
                         char x = (i&7), y = (i>>3);
                         for (auto dir: DIR_N) {
                             char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
-                            if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) continue;
+                            if (!in_board(cx, cy)) continue;
                             const char loc = (cy<<3) + cx;
                             if (bit(full_mask, loc)) moves.push_back(Move(i, loc));
                         }
@@ -746,7 +746,7 @@ namespace Bitboard {
                             while (true) {
                                 cx += dx;
                                 cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                if (!in_board(cx, cy)) break;
                                 const char loc = (cy<<3) + cx;
                                 if (bit(SAME, loc)) break;
                                 if (bit(full_mask, loc)) {
@@ -765,7 +765,7 @@ namespace Bitboard {
                             while (true) {
                                 cx += dx;
                                 cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                if (!in_board(cx, cy)) break;
                                 const char loc = (cy<<3) + cx;
                                 if (bit(SAME, loc)) break;
                                 if (bit(full_mask, loc)) {
@@ -860,7 +860,7 @@ namespace Bitboard {
                             while (true) {
                                 cx += dx;
                                 cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                if (!in_board(cx, cy)) break;
                                 const char loc = (cy<<3) + cx;
                                 if (bit(SAME, loc)) break;
                                 if (bit(pin_mask, loc)) moves.push_back(Move(i, loc));
@@ -875,7 +875,7 @@ namespace Bitboard {
                             while (true) {
                                 cx += dx;
                                 cy += dy;
-                                if (!(0 <= cx && cx < 8 && 0 <= cy && cy < 8)) break;
+                                if (!in_board(cx, cy)) break;
                                 const char loc = (cy<<3) + cx;
                                 if (bit(SAME, loc)) break;
                                 if (bit(pin_mask, loc)) moves.push_back(Move(i, loc));
