@@ -140,7 +140,8 @@ int loop() {
             if (parts[1] == "movegen") {
                 double start = get_time();
                 int count = Perft::movegen(pos, std::stoi(parts[2]));
-                cout << "info nodes " << count << " time " << get_time()-start << endl;
+                double elapse = get_time() - start;
+                cout << "info nodes " << count << " nps " << (int)(count/elapse) << " time " << (int)(elapse*1000) << endl;
             }
         }
         else if (cmd == "legalmoves") legal_moves(pos);
