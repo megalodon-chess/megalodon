@@ -59,7 +59,7 @@ def engine_result():
 
     with open(in_path, "w") as file:
         file.write(f"position fen {FEN}\n")
-        file.write(f"perft movegen {DEPTH}\n")
+        file.write(f"go perft {DEPTH}\n")
     with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
         start = time.time()
         p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
@@ -68,7 +68,7 @@ def engine_result():
     with open(out_path, "r") as file:
         out = file.read()
 
-    parts = [l for l in out.split("\n") if l.startswith("info")][0].split()
+    parts = [l for l in out.split("\n") if l.startswith("info")][-1].split()
     for i in range(len(parts)):
         if parts[i] == "nodes":
             nodes = int(parts[i+1])
