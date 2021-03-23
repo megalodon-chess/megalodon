@@ -119,8 +119,8 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
         if (pos.turn) time = move_time(options, pos, wtime, winc);
         else time = move_time(options, pos, btime, binc);
 
-        if (10 <= time) depth = 6;
-        else if (2 <= time && time < 5) depth = 5;
+        if (20 <= time) depth = 6;
+        else if (10 <= time && time < 20) depth = 5;
         else depth = 4;
     }
     if (total < 15) depth++;
