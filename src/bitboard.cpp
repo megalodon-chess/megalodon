@@ -668,15 +668,19 @@ namespace Bitboard {
             return moves;
         } else if (num_checkers == 1) {
             // Block and capture piece giving check to king
-            U64 block_mask = EMPTY, capture_mask = checking_pieces;
+            U64 block_mask = EMPTY;
+            const U64 capture_mask = checking_pieces;
 
             const Location check_pos = first_bit(checking_pieces);
             const char check_x = check_pos.x, check_y = check_pos.y;
 
             char dx = check_x - kx, dy = check_y - ky;
-            if (!contains(DIR_N, vector<char>({dx, dy}))) {
-                if (dx != 0) dx /= abs(dx);
-                if (dy != 0) dy /= abs(dy);
+            if (!(dx == 0 && dy == 0) && !((dx == 0 || dy == 0) || (abs(dx) == abs(dy)))) {
+                if (dx > 0) dx = 1;
+                else if (dx < 0) dx = -1;
+                if (dy > 0) dy = 1;
+                else if (dy < 0) dy = -1;
+
                 char cx = kx, cy = ky;   // Current (x, y)
                 while (true) {
                     cx += dx;
@@ -687,7 +691,7 @@ namespace Bitboard {
                 }
             }
 
-            U64 full_mask = block_mask | capture_mask;
+            const U64 full_mask = block_mask | capture_mask;
 
             // Go through all pieces and check if they can capture/block
             for (char i = 0; i < 64; i++) {
