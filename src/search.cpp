@@ -55,7 +55,7 @@ string SearchInfo::as_string() {
     str += " " + std::to_string((is_mate_score ? (int)score : (int)(100*score)));
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     str += " tbhits 0 time " + std::to_string((int)(1000*time));
-    str += " pv ";// + Bitboard::move_str(move);
+    str += " pv " + Bitboard::move_str(move);
     return str;
 }
 
