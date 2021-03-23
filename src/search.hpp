@@ -49,7 +49,7 @@ struct SearchInfo {
 constexpr float MAX = 1000000;
 constexpr float MIN = -1000000;
 
-float moves_left(Options&, Position);
-float move_time(Options&, Position, float, float);
+float moves_left(const Options&, const Position&);
+float move_time(const Options&, const Position&, const float&, const float&);
 
-SearchInfo search(Options&, Position, int, double);
+SearchInfo search(const Options&, Position, const int&, const double&);

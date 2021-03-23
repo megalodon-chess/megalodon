@@ -59,7 +59,7 @@ string SearchInfo::as_string() {
 }
 
 
-float moves_left(Options& options, Position pos) {
+float moves_left(const Options& options, const Position& pos) {
     // Estimates moves left based on material and move stack.
     //float mat_left = 0.9 * (total_mat(pos)-7);
     float abs_left = 55 - pos.move_stack.size();
@@ -72,7 +72,7 @@ float moves_left(Options& options, Position pos) {
     return abs_left;
 }
 
-float move_time(Options& options, Position pos, float time, float inc) {
+float move_time(const Options& options, const Position& pos, const float& time, const float& inc) {
     // Calculates move time based on moves left and game evaluation.
     float moves = moves_left(options, pos);
     float time_left = time + inc*moves;
@@ -85,7 +85,7 @@ float move_time(Options& options, Position pos, float time, float inc) {
 }
 
 
-SearchInfo search(Options& options, Position pos, int depth, double max_time) {
+SearchInfo search(const Options& options, Position pos, const int& depth, const double& max_time) {
     pos.alpha = MIN;
     pos.beta = MAX;
     vector<vector<Position>> nodes = {{pos}};
