@@ -119,15 +119,15 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
         if (pos.turn) time = move_time(options, pos, wtime, winc);
         else time = move_time(options, pos, btime, binc);
 
-        if (5 <= time) depth = 5;
-        else if (2 <= time && time < 5) depth = 4;
-        else depth = 2;
+        if (10 <= time) depth = 6;
+        else if (2 <= time && time < 5) depth = 5;
+        else depth = 4;
     }
-    if (total < 20) depth++;
-    if (total < 10) depth++;
+    if (total < 15) depth++;
+    if (total < 5) depth++;
 
     double start = get_time();
-    SearchInfo result = search(options, pos, 5);
+    SearchInfo result = search(options, pos, depth);
     double elapse = get_time() - start;
 
     float score = result.score;
