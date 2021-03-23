@@ -18,6 +18,7 @@
 #
 
 # Tests movegen accuracy on random positions.
+# Stops and prints out move sequence when a fail is detected.
 
 import os
 import subprocess

@@ -17,10 +17,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-#  Tests performance and accuracy in move generation.
-#  This script will communicate "perft movegen <depth>" to the engine,
-#  and the engine should output total nodes searched (not leaf nodes)
-#  in the format "info nodes <nodes>"
+#  Tests performance in move generation.
 
 import os
 import sys
