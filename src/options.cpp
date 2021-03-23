@@ -43,3 +43,14 @@ Options::Options() {
 
     set_hash();
 }
+
+void Options::set_hash() {
+    int len = Hash * 262144;
+
+    hash_evaled = new bool[len];
+    hash_evals = new float[len];
+    for (int i = 0; i < len; i++) {
+        hash_evaled[i] = false;
+        hash_evals[i] = 0;
+    }
+}

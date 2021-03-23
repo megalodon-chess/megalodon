@@ -46,6 +46,9 @@ public:
     Options();
     void set_hash();
 
+    bool* hash_evaled = new bool[16];
+    float* hash_evals = new float[16];
+
     int Hash;
     int EvalMaterial;
     int EvalCenter;
