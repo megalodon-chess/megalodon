@@ -503,42 +503,46 @@ namespace Bitboard {
         return (found ? pin_ray : FULL);
     }
 
-    tuple<U64, char> checkers(const Location& k_pos, const U64& pawns, const U64& knights, const U64& bishops,
+    U64 checkers(const Location& k_pos, const U64& pawns, const U64& knights, const U64& bishops,
             const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
         const char kx = k_pos.x, ky = k_pos.y;
-        if (!bit(attackers, (ky<<3)+kx)) return tuple<U64, char>(board, atk_cnt);
+        if (!bit(attackers, (ky<<3)+kx)) return board;
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         const char pawn_dir = side ? -1 : 1;
 
         // Pawns
         const char y = ky - pawn_dir;
-        if (0 <= kx-1 && kx-1 < 8 && 0 <= y && y < 8) {
-            const char loc = (y<<3) + kx-1;
-            if (bit(pawns, loc)) {
-                atk_cnt++;
-                set_bit(board, loc);
+        if (0 <= y && y < 8) {
+            const char loc = (y<<3) + kx;
+            if (0 <= kx-1 && kx-1 < 8) {
+                if (bit(pawns, loc-1)) {
+                    atk_cnt++;
+                    set_bit(board, loc);
+                }
+            }
+            if (0 <= kx+1 && kx+1 < 8) {
+                if (bit(pawns, loc+1)) {
+                    atk_cnt++;
+                    set_bit(board, loc);
+                }
             }
         }
-        if (0 <= kx+1 && kx+1 < 8 && 0 <= y && y < 8) {
-            const char loc = (y<<3) + kx+1;
-            if (bit(pawns, loc)) {
-                atk_cnt++;
-                set_bit(board, loc);
-            }
-        }
+
         // Knights
         for (const auto& dir: DIR_N) {
             const char x = kx + dir[0], y = ky + dir[1];
-            if (!in_board(x, y)) continue;
-            const char loc = (y<<3) + x;
-            if (bit(knights, loc)) {
-                set_bit(board, loc);
-                if (atk_cnt++ > 1) return tuple<U64, char>(board, atk_cnt);
-                break;
+            if (in_board(x, y)) {
+                const char loc = (y<<3) + x;
+                if (bit(knights, loc)) {
+                    set_bit(board, loc);
+                    if (atk_cnt++ > 1) return board;
+                    break;
+                }
             }
         }
+
         // Bishops and part queens
         for (const auto& dir: DIR_B) {
             char x = kx, y = ky;
@@ -550,12 +554,13 @@ namespace Bitboard {
                 if (bit(same_side, loc)) break;
                 if (bit(bishops, loc) || bit(queens, loc)) {
                     set_bit(board, loc);
-                    if (atk_cnt++ > 1) return tuple<U64, char>(board, atk_cnt);
+                    if (atk_cnt++ > 1) return board;
                     break;
                 }
                 if (bit(pieces, loc)) break;
             }
         }
+
         // Rooks and part queens
         for (const auto& dir: DIR_R) {
             char x = kx, y = ky;
@@ -567,14 +572,14 @@ namespace Bitboard {
                 if (bit(same_side, loc)) break;
                 if (bit(rooks, loc) || bit(queens, loc)) {
                     set_bit(board, loc);
-                    if (atk_cnt++ > 1) return tuple<U64, char>(board, atk_cnt);
+                    if (atk_cnt++ > 1) return board;
                     break;
                 }
                 if (bit(pieces, loc)) break;
             }
         }
 
-        return tuple<U64, char>(board, atk_cnt);
+        return board;
     }
 
     vector<Move> king_moves(const Location& k_pos, const char& castling, const bool& side, const U64& same, const U64& all, const U64& attacks) {
@@ -659,9 +664,8 @@ namespace Bitboard {
 
         const char off = pos.turn ? 0 : 2;
         vector<Move> moves = king_moves(k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
-        const tuple<U64, char> checking_data = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
-        const U64 checking_pieces = get<0>(checking_data);
-        const char num_checkers = get<1>(checking_data);
+        const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
+        const char num_checkers = popcnt(checking_pieces);
         const char pawn_dir = pos.turn ? 1 : -1;
 
         if (num_checkers > 1) {
