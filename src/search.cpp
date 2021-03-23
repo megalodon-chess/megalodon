@@ -88,7 +88,7 @@ float move_time(const Options& options, const Position& pos, const float& time, 
 SearchInfo search(const Options& options, Position pos, const int& depth, const double& max_time) {
     pos.alpha = MIN;
     pos.beta = MAX;
-    vector<vector<Position>> nodes = {{pos}};
+    vector<vector<Position*>> nodes = {{&pos}};
     Move best_move;
     int num_nodes = 1;
 
@@ -97,8 +97,8 @@ SearchInfo search(const Options& options, Position pos, const int& depth, const 
         int depth_done = true;
 
         if (nodes.size() < depth) {
-            for (auto& node: nodes[curr_depth]) {
-                if (!node.done) {
+            for (const auto& node: nodes[curr_depth]) {
+                if (!node->done) {
                     depth_done = false;
                     break;
                 }
@@ -108,9 +108,9 @@ SearchInfo search(const Options& options, Position pos, const int& depth, const 
         if (depth_done) {
             Position* target_node;
             bool found = false;
-            for (auto& node: nodes[curr_depth-1]) {
-                if (!node.done) {
-                    target_node = &node;
+            for (const auto& node: nodes[curr_depth-1]) {
+                if (!node->done) {
+                    target_node = node;
                     found = true;
                     break;
                 }
@@ -122,25 +122,25 @@ SearchInfo search(const Options& options, Position pos, const int& depth, const 
                     target_node->alpha = target_node->parent->alpha;
                     target_node->beta = target_node->parent->beta;
                 }
-                for (auto& node: nodes[curr_depth]) {
+                for (const auto& node: nodes[curr_depth]) {
                     if (curr_depth == depth-1) {
-                        U64 o_attacks = Bitboard::attacked(node, !node.turn);
-                        vector<Move> moves = Bitboard::legal_moves(node, o_attacks);
-                        node.eval = eval(options, node, (moves.size()!=0), curr_depth, o_attacks);
+                        U64 o_attacks = Bitboard::attacked(*node, !node->turn);
+                        vector<Move> moves = Bitboard::legal_moves(*node, o_attacks);
+                        node->eval = eval(options, *node, (moves.size()!=0), curr_depth, o_attacks);
                     }
                     if (target_node->turn) {
-                        if (node.eval > target_node->eval) {
-                            target_node->eval = node.eval;
-                            if (curr_depth == 1) best_move = node.move_stack.back();
+                        if (node->eval > target_node->eval) {
+                            target_node->eval = node->eval;
+                            if (curr_depth == 1) best_move = node->move_stack.back();
                         }
-                        if (node.eval > target_node->alpha) target_node->alpha = node.eval;
+                        if (node->eval > target_node->alpha) target_node->alpha = node->eval;
                         if (target_node->beta <= target_node->alpha) break;
                     } else {
-                        if (node.eval < target_node->eval) {
-                            target_node->eval = node.eval;
-                            if (curr_depth == 1) best_move = node.move_stack.back();
+                        if (node->eval < target_node->eval) {
+                            target_node->eval = node->eval;
+                            if (curr_depth == 1) best_move = node->move_stack.back();
                         }
-                        if (node.eval < target_node->beta) target_node->beta = node.eval;
+                        if (node->eval < target_node->beta) target_node->beta = node->eval;
                         if (target_node->beta <= target_node->alpha) break;
                     }
                 }
@@ -153,28 +153,28 @@ SearchInfo search(const Options& options, Position pos, const int& depth, const 
             nodes.erase(nodes.end()-1);
 
         } else {
-            vector<Position> new_depth;
-            Position target_node;
-            for (auto& node: nodes[curr_depth]) {
-                if (!node.done) {
+            vector<Position*> new_depth;
+            Position* target_node;
+            for (const auto& node: nodes[curr_depth]) {
+                if (!node->done) {
                     target_node = node;
                     break;
                 }
             }
 
-            U64 o_attacks = Bitboard::attacked(target_node, !target_node.turn);
-            vector<Move> moves = Bitboard::legal_moves(target_node, o_attacks);
-            for (auto& move: moves) {
-                Position new_node = Bitboard::push(target_node, move);
-                new_node.parent = &target_node;
-                new_depth.push_back(new_node);
+            U64 o_attacks = Bitboard::attacked(*target_node, !target_node->turn);
+            vector<Move> moves = Bitboard::legal_moves(*target_node, o_attacks);
+            for (const auto& move: moves) {
+                Position new_node = Bitboard::push(*target_node, move);
+                new_node.parent = target_node;
+                new_depth.push_back(&new_node);
             }
             nodes.push_back(new_depth);
             num_nodes += moves.size();
         }
 
-        if (nodes[0][0].done) break;
+        if (nodes[0][0]->done) break;
     }
 
-    return SearchInfo(depth, depth, false, nodes[0][0].eval, num_nodes, 0, 0, best_move);
+    return SearchInfo(depth, depth, false, nodes[0][0]->eval, num_nodes, 0, 0, best_move);
 }
