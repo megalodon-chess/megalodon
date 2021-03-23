@@ -219,15 +219,16 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
         }
         return 0;
     }
+    return material(pos);
 
-    const int movect = pos.move_stack.size();
-    const float total = total_mat(pos);
-    char stage;  // 0 = opening, 1 = middlegame, 2 = endgame
-    if (total > 68) stage = 0;
-    else if (20 < total && total <= 68) stage = 1;
-    else stage = 2;
+    // const int movect = pos.move_stack.size();
+    // const float total = total_mat(pos);
+    // char stage;  // 0 = opening, 1 = middlegame, 2 = endgame
+    // if (total > 68) stage = 0;
+    // else if (20 < total && total <= 68) stage = 1;
+    // else stage = 2;
 
-    const float mat = material(pos);
+    // const float mat = material(pos);
     // const float cent = center_control(options, pos, stage);
 
     // const float wking = king(options, stage, Bitboard::first_bit(pos.wk), pos.wp, Bitboard::color(pos, false));
@@ -241,13 +242,13 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     // const float wqueen = queens(options, pos.wq);
     // const float bqueen = queens(options, pos.bq);
 
-    return (
-        options.EvalMaterial/100 * 1.0 *  mat//                 +
+    // return (
+    //     options.EvalMaterial/100 * 1.0 *  mat//                 +
         // options.EvalCenter  /100 * 0.3 *  cent               +
         // options.EvalKing    /100 * 0.7 * (wking   - bking)   +
         // options.EvalPawn    /100 * 1.0 * (wpawn   - bpawn)   +
         // options.EvalKnight  /100 * 0.6 * (wknight - bknight) +
         // options.EvalRook    /100 * 0.3 * (wrook   - brook)   +
         // options.EvalQueen   /100 * 0.2 * (wqueen  - bqueen)
-    );
+    // );
 }
