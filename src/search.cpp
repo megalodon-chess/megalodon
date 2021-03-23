@@ -128,14 +128,12 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
 SearchInfo search(const Options& options, Position pos, const int& depth) {
     // Iterative deepening doesn't have any improvements yet.
     SearchInfo result;
-    float alpha = MIN, beta = MAX;
     double start = get_time();
 
     for (auto d = 1; d <= depth; d++) {
-        result = dfs(options, pos, d, alpha, beta);
+        result = dfs(options, pos, d, MIN, MAX);
         double elapse = get_time() - start;
-        alpha = result.alpha;
-        beta = result.beta;
+
         result.time = elapse;
         result.nps = result.nodes / elapse;
         cout << result.as_string() << endl;
