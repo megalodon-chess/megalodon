@@ -8,29 +8,23 @@ Play against Megalodon on [Lichess][lichess]!
 
 [Version 0.2.2][latest] was recently released!
 
-## To compile with script
+## Compiling
 
-1. Clone or download the repository.
-2. `cd` to `megalodon/`
-4. Run `build.sh`
-5. Run the executable inside `build/`
+### Requirements
 
-```bash
+* GNU Make
+* CMake
+
+### With Bash Script
+
+``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
 cd megalodon/
 ./build.sh
 ./build/Megalodon
 ```
 
-## To compile manually
-
-1. Clone or download the repository.
-2. `cd` to `megalodon/`
-3. Create `build` directory.
-4. `cd` to `build/`
-5. Create `Makefile` with `cmake`
-6. Use `make -j` to create the executable with all cores.
-7. Run the executable.
+### Manually
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
@@ -40,17 +34,6 @@ cd build/
 cmake ..
 make -j
 ./Megalodon
-```
-
-## To compile and run
-1. Clone or download the repository.
-2. `cd` to `megalodon/`
-3. Run `run.sh`
-
-```bash
-git clone https://github.com/megalodon-chess/megalodon.git
-cd megalodon/
-./run.sh
 ```
 
 ## License
