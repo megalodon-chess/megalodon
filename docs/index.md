@@ -20,7 +20,6 @@ Play against Megalodon on [Lichess][lichess]!
 [lichess]: https://lichess.org/@/megalodon-chess
 [latest]: https://github.com/megalodon-chess/megalodon/releases/latest
 [about]: https://megalodon-chess.github.io/megalodon/about
-[blog]: https://megalodon-chess.github.io/megalodon/blog
 [releases]: https://megalodon-chess.github.io/megalodon/releases
 [quickstart]: https://megalodon-chess.github.io/megalodon/quick-start
 [compiling]: https://megalodon-chess.github.io/megalodon/compiling

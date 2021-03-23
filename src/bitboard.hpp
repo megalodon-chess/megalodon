@@ -121,6 +121,7 @@ namespace Bitboard {
     void set_bit(char&, int);
     void unset_bit(char&, int);
     bool contains(const vector<vector<char>>&, const vector<char>&);
+    bool in_board(const char& x, const char& y);
     Location first_bit(const U64&);
 
     string piece_at(const Position&, const char&);
@@ -135,7 +136,7 @@ namespace Bitboard {
 
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
-    tuple<bool, U64> pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
+    U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     tuple<U64, char> checkers(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     vector<Move> king_moves(const Position&, const U64&, const U64&, const U64&);
     vector<Move> legal_moves(Position, const U64&);

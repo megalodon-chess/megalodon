@@ -37,7 +37,7 @@ EvalKing: type=spin, default=100, min=0, max=1000, weight (percent) of king eval
 EvalPawn: type=spin, default=100, min=0, max=1000, weight (percent) of pawn eval.
 EvalKnight: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
 EvalRook: type=spin, default=100, min=0, max=1000, weight (percent) of rook eval.
-EvalRook: type=spin, default=100, min=0, max=1000, weight (percent) of queen eval.
+EvalQueen: type=spin, default=100, min=0, max=1000, weight (percent) of queen eval.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
 
@@ -51,6 +51,5 @@ public:
     int EvalKnight;
     int EvalRook;
     int EvalQueen;
-    int EvalSpace;
     bool Chat;
 };
