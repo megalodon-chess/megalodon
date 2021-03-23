@@ -11,7 +11,6 @@ Play against Megalodon on [Lichess][lichess]!
 ## Table of Contents
 
 * [About][about]
-* [Blog][blog]
 * [Releases][releases]
 * [Quick Start][quickstart]
 * [Compiling][compiling]
