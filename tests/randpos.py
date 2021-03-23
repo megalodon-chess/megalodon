@@ -18,16 +18,16 @@
 #
 
 # Tests movegen accuracy on random positions.
+# Stops and prints out move sequence when a fail is detected.
 
 import os
+import time
 import subprocess
 import random
 import chess
 
 PARENT = os.path.dirname(os.path.realpath(__file__))
-IN = os.path.join(PARENT, "in.txt")
-OUT = os.path.join(PARENT, "out.txt")
-PATH = os.path.join(PARENT, "Megalodon")
+ENG_PATH = "build/Megalodon"
 
 
 def main():
@@ -40,22 +40,25 @@ def main():
                 break
             board.push(random.choice(moves))
 
-        with open(IN, "w") as file:
-            file.write("position startpos moves ")
-            for move in board.move_stack:
-                file.write(move.uci() + " ")
-            file.write("\n")
-            file.write("legalmoves")
+        p = subprocess.Popen([ENG_PATH], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        p.stdin.write(f"position startpos moves ".encode())
+        for move in board.move_stack:
+            p.stdin.write(f"{move.uci()} ".encode())
+        p.stdin.write(b"\n")
+        p.stdin.write(f"legalmoves\n".encode())
+        p.stdin.write(f"quit\n".encode())
+        p.stdin.flush()
+        while p.poll() is None:
+            time.sleep(0.01)
+        out = b""
+        while len(d := p.stdout.read(1)) > 0:
+            out += d
+        out = out.decode().split("\n")
 
-        with open(IN, "r") as stdin, open(OUT, "w") as stdout:
-            subprocess.Popen([PATH], stdin=stdin, stdout=stdout).wait()
-
-        with open(OUT, "r") as file:
-            data = file.read().split("\n")
-        for i, line in enumerate(data):
+        for i, line in enumerate(out):
             if line.isnumeric():
                 count = int(line)
-                eng_moves = data[i+1:i+count+1]
+                eng_moves = out[i+1:i+count+1]
                 break
 
         real_moves = [m.uci() for m in board.generate_legal_moves()]
@@ -65,9 +68,6 @@ def main():
                 print(m.uci(), end=" ")
             print()
             break
-
-    os.remove(IN)
-    os.remove(OUT)
 
 
 main()
