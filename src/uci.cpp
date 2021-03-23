@@ -107,15 +107,15 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
             binc = std::stoi(parts[i+1]);
         }
     }
-    wtime /= 1000;
-    btime /= 1000;
-    winc /= 1000;
-    binc /= 1000;
 
     if (mode == 0) {
         depth = 5;
     } else if (mode == 2) {
         double time;
+        wtime /= 1000;
+        btime /= 1000;
+        winc /= 1000;
+        binc /= 1000;
         if (pos.turn) time = move_time(options, pos, wtime, winc);
         else time = move_time(options, pos, btime, binc);
 
