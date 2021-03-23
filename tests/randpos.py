@@ -53,7 +53,7 @@ def main():
         out = b""
         while len(d := p.stdout.read(1)) > 0:
             out += d
-        out = out.decode()
+        out = out.decode().split("\n")
 
         for i, line in enumerate(out):
             if line.isnumeric():
