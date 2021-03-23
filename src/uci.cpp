@@ -127,11 +127,11 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     if (total < 10) depth++;
 
     double start = get_time();
-    SearchInfo result = search(options, pos, depth, 0);
+    SearchInfo result = search(options, pos, 5);
     double elapse = get_time() - start;
 
     float score = result.score;
-    result.time = 1000 * (elapse);
+    result.time = elapse;
     result.nps = result.nodes / (elapse);
     if (!pos.turn) result.score *= -1;
     cout << result.as_string() << endl;
