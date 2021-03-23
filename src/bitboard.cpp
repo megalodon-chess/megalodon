@@ -637,6 +637,9 @@ namespace Bitboard {
     void single_check_moves(vector<Move>& moves, const Position& pos, const U64& CP, const U64& CN, const U64& CB, const U64& CR,
             const U64& CQ, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK, const U64& SAME,
             const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+        /*
+        Computes all moves when there is one check.
+        */
         // Block and capture piece giving check to king
         U64 block_mask = EMPTY;
         const U64 capture_mask = checking_pieces;
@@ -794,6 +797,9 @@ namespace Bitboard {
     void no_check_moves(vector<Move>& moves, const Position& pos, const U64& CP, const U64& CN, const U64& CB, const U64& CR,
             const U64& CQ, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK, const U64& SAME,
             const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+        /*
+        Computes all moves when there is no check.
+        */
         const char pawn_dir = pos.turn ? 1 : -1;
         for (auto i = 0; i < 64; i++) {
             const Location curr_loc = Location(i&7, (i>>3));
