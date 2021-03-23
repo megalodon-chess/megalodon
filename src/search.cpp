@@ -24,6 +24,7 @@
 #include "search.hpp"
 #include "eval.hpp"
 #include "options.hpp"
+#include "utils.hpp"
 
 using std::cin;
 using std::cout;
@@ -35,7 +36,7 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps, int _time, Move _move) {
+SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps, double _time, Move _move) {
     depth = _depth;
     seldepth = _seldepth;
     is_mate_score = _is_mate;
@@ -53,7 +54,7 @@ string SearchInfo::as_string() {
     str += (is_mate_score ? "mate" : "cp");
     str += " " + std::to_string((is_mate_score ? (int)score : (int)(100*score)));
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
-    str += " tbhits 0 time " + std::to_string(time);
+    str += " tbhits 0 time " + std::to_string((int)(1000*time));
     str += " pv ";// + Bitboard::move_str(move);
     return str;
 }
@@ -124,8 +125,12 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
 SearchInfo search(const Options& options, Position pos, const int& depth) {
     // Iterative deepening doesn't have any improvements yet.
     SearchInfo result;
+    double start = get_time();
     for (auto d = 1; d <= depth; d++) {
         result = dfs(options, pos, d, MIN, MAX);
+        double elapse = get_time() - start;
+        result.time = elapse;
+        result.nps = result.nodes / elapse;
         cout << result.as_string() << endl;
     }
     return result;

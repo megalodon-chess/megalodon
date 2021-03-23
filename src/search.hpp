@@ -33,7 +33,7 @@ using std::string;
 
 struct SearchInfo {
     SearchInfo();
-    SearchInfo(int, int, bool, float, int, int, int, Move);
+    SearchInfo(int, int, bool, float, int, int, double, Move);
     string as_string();
 
     int depth;
@@ -42,7 +42,7 @@ struct SearchInfo {
     float score;
     int nodes;
     int nps;
-    int time;
+    double time;
     Move move;
 };
 
