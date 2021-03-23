@@ -583,8 +583,17 @@ namespace Bitboard {
         return board;
     }
 
-    vector<Move> king_moves(const Location& k_pos, const char& castling, const bool& side, const U64& same, const U64& all, const U64& attacks) {
-        // Pass in attacks from opponent.
+    vector<Move> king_moves(const Location& k_pos, const char& castling, const bool& side, const U64& same,
+            const U64& all, const U64& attacks) {
+        /*
+        Calculates all king moves.
+        k_pos: King position.
+        castling: Castling rights.
+        side: true if white else false
+        same: board of same pieces.
+        all: board of all pieces.
+        attacks: attacks from enemy.
+        */
         vector<Move> moves;
         const char kx = k_pos.x, ky = k_pos.y;
         const char start = (ky<<3) + kx;
@@ -625,7 +634,164 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> legal_moves(Position pos, const U64& attacks) {
+    void single_check_moves(vector<Move>& moves, const Position& pos, const U64& CP, const U64& CN, const U64& CB, const U64& CR,
+            const U64& CQ, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK, const U64& SAME,
+            const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+        // Block and capture piece giving check to king
+        U64 block_mask = EMPTY;
+        const U64 capture_mask = checking_pieces;
+        const char pawn_dir = pos.turn ? 1 : -1;
+
+        const Location check_pos = first_bit(checking_pieces);
+        const char check_x = check_pos.x, check_y = check_pos.y;
+
+        const char kx = k_pos.x, ky = k_pos.y;
+        char dx = check_x - kx, dy = check_y - ky;
+        // If not a knight move create the mask
+        if (!((abs(dx) == 2 && abs(dy) == 1) || (abs(dy) == 2 && abs(dx) == 1))) {
+            if (dx > 0) dx = 1;
+            else if (dx < 0) dx = -1;
+            if (dy > 0) dy = 1;
+            else if (dy < 0) dy = -1;
+
+            char cx = kx, cy = ky;   // Current (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                const char loc = (cy<<3) + cx;
+                if (bit(checking_pieces, loc)) break;
+                set_bit(block_mask, loc);
+            }
+        }
+
+        const U64 full_mask = block_mask | capture_mask;
+
+        // Go through all pieces and check if they can capture/block
+        for (char i = 0; i < 64; i++) {
+            const Location curr_loc = Location(i&7, (i>>3));
+            if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME)) {
+                if (bit(CP, i)) {
+                    const char x = (i&7);
+                    char y;
+
+                    // Block
+                    y = (i>>3);
+                    const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                    if (pos.turn) {
+                        for (char cy = y + 1; cy < y + speed + 1; cy++) {
+                            const char loc = (cy<<3) + x;
+                            if (bit(ALL, loc)) break;
+                            if (bit(block_mask, loc)) {
+                                if (cy == 7) {
+                                    // Promotion
+                                    for (const int& p: {0, 1, 2, 3}) {
+                                        moves.push_back(Move(i, loc, true, p));
+                                    }
+                                } else {
+                                    moves.push_back(Move(i, loc));
+                                }
+                                break;
+                            }
+                        }
+                    } else {
+                        for (char cy = y - 1; cy > y - speed - 1; cy--) {
+                            const char loc = (cy<<3) + x;
+                            if (bit(ALL, loc)) break;
+                            if (bit(block_mask, loc)) {
+                                if (cy == 0) {
+                                    // Promotion
+                                    for (const int& p: {0, 1, 2, 3}) {
+                                        moves.push_back(Move(i, loc, true, p));
+                                    }
+                                } else {
+                                    moves.push_back(Move(i, loc));
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    // Capture
+                    U64 new_capture = capture_mask;
+                    if (pos.ep) {
+                        char start, end, ep_x = pos.ep_square % 8;
+                        if (pos.turn) {
+                            start = 4;
+                            end = 5;
+                        } else {
+                            start = 3;
+                            end = 2;
+                        }
+                        if (y == start && bit(OP, (start<<3) + ep_x)) set_bit(new_capture, (end<<3) + ep_x);
+                    }
+                    y += pawn_dir;
+                    if (0 <= y && y < 8) {
+                        bool promo = y == 7 || y == 0;
+                        for (const auto& offset: {x-1, x+1}) {
+                            if (0 <= offset && offset < 8) {
+                                const char char_move = (y<<3) + offset;
+                                if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
+                                    if (promo) {
+                                        for (const int& p: {0, 1, 2, 3}) {
+                                            moves.push_back(Move(i, char_move, true, p));
+                                        }
+                                    } else {
+                                        moves.push_back(Move(i, char_move));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (bit(CN, i)) {
+                    char x = (i&7), y = (i>>3);
+                    for (const auto& dir: DIR_N) {
+                        char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
+                        if (!in_board(cx, cy)) continue;
+                        const char loc = (cy<<3) + cx;
+                        if (bit(full_mask, loc)) moves.push_back(Move(i, loc));
+                    }
+                } else if (bit(CB, i) || bit(CQ, i)) {
+                    // Capture and block
+                    for (const auto& dir: DIR_B) {
+                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        while (true) {
+                            cx += dx;
+                            cy += dy;
+                            if (!in_board(cx, cy)) break;
+                            const char loc = (cy<<3) + cx;
+                            if (bit(SAME, loc)) break;
+                            if (bit(full_mask, loc)) {
+                                moves.push_back(Move(i, loc));
+                                break;
+                            }
+                            if (bit(OPPONENT, loc)) break;
+                        }
+                    }
+                }
+                if (bit(CR, i) || bit(CQ, i)) {
+                    // Capture and block
+                    for (const auto& dir: DIR_R) {
+                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        while (true) {
+                            cx += dx;
+                            cy += dy;
+                            if (!in_board(cx, cy)) break;
+                            const char loc = (cy<<3) + cx;
+                            if (bit(SAME, loc)) break;
+                            if (bit(full_mask, loc)) {
+                                moves.push_back(Move(i, loc));
+                                break;
+                            }
+                            if (bit(OPPONENT, loc)) break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    vector<Move> legal_moves(const Position pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK;
@@ -663,7 +829,6 @@ namespace Bitboard {
         const Location k_pos = first_bit(CK);
         const char kx = k_pos.x, ky = k_pos.y;
 
-        const char off = pos.turn ? 0 : 2;
         vector<Move> moves = king_moves(k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
         const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const char num_checkers = popcnt(checking_pieces);
@@ -672,156 +837,7 @@ namespace Bitboard {
         if (num_checkers > 1) {
             return moves;
         } else if (num_checkers == 1) {
-            // Block and capture piece giving check to king
-            U64 block_mask = EMPTY;
-            const U64 capture_mask = checking_pieces;
-
-            const Location check_pos = first_bit(checking_pieces);
-            const char check_x = check_pos.x, check_y = check_pos.y;
-
-            char dx = check_x - kx, dy = check_y - ky;
-            // If not a knight move create the mask
-            if (!((abs(dx) == 2 && abs(dy) == 1) || (abs(dy) == 2 && abs(dx) == 1))) {
-                if (dx > 0) dx = 1;
-                else if (dx < 0) dx = -1;
-                if (dy > 0) dy = 1;
-                else if (dy < 0) dy = -1;
-
-                char cx = kx, cy = ky;   // Current (x, y)
-                while (true) {
-                    cx += dx;
-                    cy += dy;
-                    const char loc = (cy<<3) + cx;
-                    if (bit(checking_pieces, loc)) break;
-                    set_bit(block_mask, loc);
-                }
-            }
-
-            const U64 full_mask = block_mask | capture_mask;
-
-            // Go through all pieces and check if they can capture/block
-            for (char i = 0; i < 64; i++) {
-                const Location curr_loc = Location(i&7, (i>>3));
-                if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME)) {
-                    if (bit(CP, i)) {
-                        const char x = (i&7);
-                        char y;
-
-                        // Block
-                        y = (i>>3);
-                        const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
-                        if (pos.turn) {
-                            for (char cy = y + 1; cy < y + speed + 1; cy++) {
-                                const char loc = (cy<<3) + x;
-                                if (bit(ALL, loc)) break;
-                                if (bit(block_mask, loc)) {
-                                    if (cy == 7) {
-                                        // Promotion
-                                        for (const int& p: {0, 1, 2, 3}) {
-                                            moves.push_back(Move(i, loc, true, p));
-                                        }
-                                    } else {
-                                        moves.push_back(Move(i, loc));
-                                    }
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (char cy = y - 1; cy > y - speed - 1; cy--) {
-                                const char loc = (cy<<3) + x;
-                                if (bit(ALL, loc)) break;
-                                if (bit(block_mask, loc)) {
-                                    if (cy == 0) {
-                                        // Promotion
-                                        for (const int& p: {0, 1, 2, 3}) {
-                                            moves.push_back(Move(i, loc, true, p));
-                                        }
-                                    } else {
-                                        moves.push_back(Move(i, loc));
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                        // Capture
-                        U64 new_capture = capture_mask;
-                        if (pos.ep) {
-                            char start, end, ep_x = pos.ep_square % 8;
-                            if (pos.turn) {
-                                start = 4;
-                                end = 5;
-                            } else {
-                                start = 3;
-                                end = 2;
-                            }
-                            if (y == start && bit(OP, (start<<3) + ep_x)) set_bit(new_capture, (end<<3) + ep_x);
-                        }
-                        y += pawn_dir;
-                        if (0 <= y && y < 8) {
-                            bool promo = y == 7 || y == 0;
-                            for (const auto& offset: {x-1, x+1}) {
-                                if (0 <= offset && offset < 8) {
-                                    const char char_move = (y<<3) + offset;
-                                    if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
-                                        if (promo) {
-                                            for (const int& p: {0, 1, 2, 3}) {
-                                                moves.push_back(Move(i, char_move, true, p));
-                                            }
-                                        } else {
-                                            moves.push_back(Move(i, char_move));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else if (bit(CN, i)) {
-                        char x = (i&7), y = (i>>3);
-                        for (const auto& dir: DIR_N) {
-                            char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
-                            if (!in_board(cx, cy)) continue;
-                            const char loc = (cy<<3) + cx;
-                            if (bit(full_mask, loc)) moves.push_back(Move(i, loc));
-                        }
-                    } else if (bit(CB, i) || bit(CQ, i)) {
-                        // Capture and block
-                        for (const auto& dir: DIR_B) {
-                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!in_board(cx, cy)) break;
-                                const char loc = (cy<<3) + cx;
-                                if (bit(SAME, loc)) break;
-                                if (bit(full_mask, loc)) {
-                                    moves.push_back(Move(i, loc));
-                                    break;
-                                }
-                                if (bit(OPPONENT, loc)) break;
-                            }
-                        }
-                    }
-                    if (bit(CR, i) || bit(CQ, i)) {
-                        // Capture and block
-                        for (const auto& dir: DIR_R) {
-                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!in_board(cx, cy)) break;
-                                const char loc = (cy<<3) + cx;
-                                if (bit(SAME, loc)) break;
-                                if (bit(full_mask, loc)) {
-                                    moves.push_back(Move(i, loc));
-                                    break;
-                                }
-                                if (bit(OPPONENT, loc)) break;
-                            }
-                        }
-                    }
-                }
-            }
+            single_check_moves(moves, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         } else {
             for (auto i = 0; i < 64; i++) {
                 const Location curr_loc = Location(i&7, (i>>3));
