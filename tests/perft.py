@@ -54,28 +54,24 @@ def real_result(pos: chess.Board, depth):
 
 
 def engine_result():
-    in_path = os.path.join(PARDIR, "in.txt")
-    out_path = os.path.join(PARDIR, "out.txt")
-
-    with open(in_path, "w") as file:
-        file.write(f"position fen {FEN}\n")
-        file.write(f"go perft {DEPTH}\n")
-    with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
-        start = time.time()
-        p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
-        p.wait()
-        elapse = time.time() - start
-    with open(out_path, "r") as file:
-        out = file.read()
+    p = subprocess.Popen([ENG_PATH], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p.stdin.write(f"position fen {FEN}\n".encode())
+    p.stdin.write(f"go perft {DEPTH}\n".encode())
+    p.stdin.write(f"quit\n".encode())
+    p.stdin.flush()
+    while p.poll() is None:
+        time.sleep(0.01)
+    out = b""
+    while len(d := p.stdout.read(1)) > 0:
+        out += d
+    out = out.decode()
 
     parts = [l for l in out.split("\n") if l.startswith("info")][-1].split()
     for i in range(len(parts)):
         if parts[i] == "nodes":
             nodes = int(parts[i+1])
-            break
-
-    os.remove(in_path)
-    os.remove(out_path)
+        elif parts[i] == "time":
+            elapse = int(parts[i+1]) / 1000
 
     return (nodes, elapse)
 
