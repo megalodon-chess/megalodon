@@ -17,13 +17,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-#  Tests performance and accuracy in move generation.
-#  This script will communicate "perft movegen <depth>" to the engine,
-#  and the engine should output total nodes searched (not leaf nodes)
-#  in the format "info nodes <nodes>"
+#  Tests accuracy in move generation.
 
 import os
-import sys
 import time
 import subprocess
 from termcolor import cprint
@@ -39,26 +35,24 @@ def real_result(pos: chess.Board):
 
 
 def engine_result():
-    in_path = os.path.join(PARDIR, "in.txt")
-    out_path = os.path.join(PARDIR, "out.txt")
+    p = subprocess.Popen([ENG_PATH], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    p.stdin.write(f"position fen {FEN}\n".encode())
+    p.stdin.write(f"legalmoves\n".encode())
+    p.stdin.write(f"quit\n".encode())
+    p.stdin.flush()
+    while p.poll() is None:
+        time.sleep(0.01)
+    out = b""
+    while len(d := p.stdout.read(1)) > 0:
+        out += d
+    out = out.decode().split("\n")
 
-    with open(in_path, "w") as file:
-        file.write(f"position fen {FEN}\n")
-        file.write(f"legalmoves\n")
-    with open(in_path, "r") as stdin, open(out_path, "w") as stdout:
-        p = subprocess.Popen([ENG_PATH], stdin=stdin, stdout=stdout)
-        p.wait()
-    with open(out_path, "r") as file:
-        out = file.read().split("\n")
-        for i, text in enumerate(out):
-            if text.isdigit():
-                moves = out[i+1:-1]
-                break
-        else:
-            moves = []
-
-    os.remove(in_path)
-    os.remove(out_path)
+    for i, text in enumerate(out):
+        if text.isdigit():
+            moves = out[i+1:-1]
+            break
+    else:
+        moves = []
 
     return moves
 
