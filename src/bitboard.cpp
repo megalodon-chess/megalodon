@@ -141,13 +141,6 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
-    bool contains(const vector<vector<char>>& sequence, const vector<char>& target) {
-        for (const auto& i: sequence) {
-            if (i == target) return true;
-        }
-        return false;
-    }
-
     bool in_board(const char& x, const char& y) {
         return (0 <= x && x < 8 && 0 <= y && y < 8);
     }
@@ -505,6 +498,14 @@ namespace Bitboard {
 
     U64 checkers(const Location& k_pos, const U64& pawns, const U64& knights, const U64& bishops,
             const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
+        /*
+        Calculates bitboard of checking pieces.
+        k_pos: King position.
+        pawns, knights, ...: Boards of enemy pieces.
+        same_side: Same side pieces.
+        attackers: Attacks of enemy.
+        side: true if white else false.
+        */
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
         const char kx = k_pos.x, ky = k_pos.y;
