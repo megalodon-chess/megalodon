@@ -2,6 +2,17 @@
 
 This page contains release info.
 
+## [Megalodon 0.2.3][v0.2.3]
+
+This release features improved search and move generation.
+
+The evaluation has been reduced to material only, and it will be developed in v0.3.x
+
+The move generation reaches 900k nodes per second, a 20% improvement from the previous version.
+
+Iterative Deepening has been implemented into the new search algorithm, but there are no
+improvements over single depth alpha-beta yet.
+
 ## [Megalodon 0.2.2][v0.2.2]
 
 This release contains evaluation improvements and legal move bug fixes.
@@ -91,6 +102,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.2.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.1
 [v0.2.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.0
