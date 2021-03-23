@@ -125,7 +125,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind], alpha, beta);
 }
 
-SearchInfo search(const Options& options, Position pos, const int& depth) {
+SearchInfo search(const Options& options, const Position& pos, const int& depth) {
     // Iterative deepening doesn't have any improvements yet.
     SearchInfo result;
     double start = get_time();
