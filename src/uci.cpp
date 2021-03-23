@@ -87,7 +87,7 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
 
 float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
     int mode = 0, depth, total = total_mat(pos);
-    float wtime, btime, winc, binc;
+    float wtime = 0, btime = 0, winc = 0, binc = 0;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
             mode = 1;
@@ -119,12 +119,12 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
         if (pos.turn) time = move_time(options, pos, wtime, winc);
         else time = move_time(options, pos, btime, binc);
 
-        if (5 <= time) depth = 5;
-        else if (2 <= time && time < 5) depth = 4;
-        else depth = 2;
+        if (10 <= time) depth = 6;
+        else if (2 <= time && time < 5) depth = 5;
+        else depth = 4;
     }
-    if (total < 20) depth++;
-    if (total < 10) depth++;
+    if (total < 15) depth++;
+    if (total < 5) depth++;
 
     double start = get_time();
     SearchInfo result = search(options, pos, depth);
