@@ -577,10 +577,9 @@ namespace Bitboard {
         return tuple<U64, char>(board, atk_cnt);
     }
 
-    vector<Move> king_moves(const Position& pos, const U64& same, const U64& all, const U64& attacks) {
+    vector<Move> king_moves(const Location& k_pos, const char& castling, const bool& side, const U64& same, const U64& all, const U64& attacks) {
         // Pass in attacks from opponent.
         vector<Move> moves;
-        const Location k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
         const char kx = k_pos.x, ky = k_pos.y;
         const char start = (ky<<3) + kx;
 
@@ -593,24 +592,24 @@ namespace Bitboard {
         }
 
         // Castling
-        if (pos.turn) {
-            if (bit(pos.castling, 0)) {
+        if (side) {
+            if (bit(castling, 0)) {
                 if (!bit(all, 5) && !bit(all, 6)) {
                     if ((CASTLING_WK & attacks) == EMPTY) moves.push_back(Move(start, 6));
                 }
             }
-            if (bit(pos.castling, 1)) {
+            if (bit(castling, 1)) {
                 if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) {
                     if ((CASTLING_WQ & attacks) == EMPTY) moves.push_back(Move(start, 2));
                 }
             }
         } else {
-            if (bit(pos.castling, 2)) {
+            if (bit(castling, 2)) {
                 if (!bit(all, 61) && !bit(all, 62)) {
                     if ((CASTLING_BK & attacks) == EMPTY) moves.push_back(Move(start, 62));
                 }
             }
-            if (bit(pos.castling, 3)) {
+            if (bit(castling, 3)) {
                 if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
                     if ((CASTLING_BQ & attacks) == EMPTY) moves.push_back(Move(start, 58));
                 }
@@ -658,7 +657,8 @@ namespace Bitboard {
         const Location k_pos = first_bit(CK);
         const char kx = k_pos.x, ky = k_pos.y;
 
-        vector<Move> moves = king_moves(pos, SAME, ALL, attacks);
+        const char off = pos.turn ? 0 : 2;
+        vector<Move> moves = king_moves(k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
         const tuple<U64, char> checking_data = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const U64 checking_pieces = get<0>(checking_data);
         const char num_checkers = get<1>(checking_data);
