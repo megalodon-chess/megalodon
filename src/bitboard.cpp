@@ -113,16 +113,15 @@ namespace Bitboard {
     }
 
     char popcnt(const U64& num) {
-        const U64 mask = 255ULL;
         char count = 0;
-        count += popcnt_tbl[num&mask];
-        count += popcnt_tbl[(num>>8)&mask];
-        count += popcnt_tbl[(num>>16)&mask];
-        count += popcnt_tbl[(num>>24)&mask];
-        count += popcnt_tbl[(num>>32)&mask];
-        count += popcnt_tbl[(num>>40)&mask];
-        count += popcnt_tbl[(num>>48)&mask];
-        count += popcnt_tbl[(num>>56)&mask];
+        count += popcnt_tbl[ num      & BYTE_ALL_ONE];
+        count += popcnt_tbl[(num>>8)  & BYTE_ALL_ONE];
+        count += popcnt_tbl[(num>>16) & BYTE_ALL_ONE];
+        count += popcnt_tbl[(num>>24) & BYTE_ALL_ONE];
+        count += popcnt_tbl[(num>>32) & BYTE_ALL_ONE];
+        count += popcnt_tbl[(num>>40) & BYTE_ALL_ONE];
+        count += popcnt_tbl[(num>>48) & BYTE_ALL_ONE];
+        count += popcnt_tbl[(num>>56) & BYTE_ALL_ONE];
         return count;
     }
 
@@ -140,13 +139,6 @@ namespace Bitboard {
 
     void unset_bit(char& board, int pos) {
         board &= ~(1ULL << pos);
-    }
-
-    bool contains(const vector<vector<char>>& sequence, const vector<char>& target) {
-        for (const auto& i: sequence) {
-            if (i == target) return true;
-        }
-        return false;
     }
 
     bool in_board(const char& x, const char& y) {
@@ -441,84 +433,117 @@ namespace Bitboard {
         }
     }
 
-    tuple<bool, U64> pinned(const U64& king, const U64& piece, const U64& pawns, const U64& knights,
-            const U64& bishops, const U64& rooks, const U64& queens, const U64& same) {
-        const U64 all = pawns | knights | bishops | rooks | queens | same;
-        const Location k_pos = first_bit(king);
-        const char kx = k_pos.x, ky = k_pos.y;
-        const Location piece_pos = first_bit(piece);
-        const char px = piece_pos.x, py = piece_pos.y;
+    U64 pinned(const Location& k_pos, const Location& piece_pos, const U64& pawns, const U64& knights, const U64& bishops,
+            const U64& rooks, const U64& queens, const U64& same) {
+        /*
+        Calculates a bitboard of all squares the piece at piece_pos can move to.
+        If the piece is not pinned, it will return FULL.
+        k_pos: King pos of current side.
+        piece_pos: Position of piece to check if pinned.
+        pawns, knights, ...: Enemy bitboards.
+        same: Bitboard of all same side pieces.
+        */
         U64 pin_ray = EMPTY;
-        bool found = false;
-
+        const U64 all = pawns | knights | bishops | rooks | queens | same;
+        const char kx = k_pos.x, ky = k_pos.y;
+        const char px = piece_pos.x, py = piece_pos.y;
         char dx = px - kx, dy = py - ky;
-        if (dx != 0) dx /= abs(dx);
-        if (dy != 0) dy /= abs(dy);
-        if (contains(DIR_R, vector<char>({dx, dy}))) {
+        bool found = false;  // true = piece is pinned, false = piece is not pinned.
+
+        if (dx > 0) dx = 1;
+        else if (dx < 0) dx = -1;
+        if (dy > 0) dy = 1;
+        else if (dy < 0) dy = -1;
+
+        if (!(dx == 0 && dy == 0) && (dx == 0 && dy != 0) || (dx != 0 && dy == 0)) {
             char cx = kx, cy = ky;   // Current (x, y)
             while (true) {
                 cx += dx;
                 cy += dy;
-                if (!in_board(cx, cy)) break;
+                if (!in_board(cx, cy)) {
+                    found = false;
+                    break;
+                }
                 const char loc = (cy<<3) + cx;
                 set_bit(pin_ray, loc);
-                if (bit(piece, loc)) found = true;
-                else if (bit(rooks, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
-                else if (bit(all, loc)) break;
+                if (cx==px && cy==py) found = true;
+                else if (bit(rooks, loc) || bit(queens, loc)) break;
+                else if (bit(all, loc)) {
+                    found = false;
+                    break;
+                }
             }
-        } else if (contains(DIR_B, vector<char>({dx, dy}))) {
+        } else if (!(dx == 0 && dy == 0) && (abs(dx) == abs(dy))) {
             char cx = kx, cy = ky;   // Current (x, y)
             while (true) {
                 cx += dx;
                 cy += dy;
-                if (!in_board(cx, cy)) break;
+                if (!in_board(cx, cy)) {
+                    found = false;
+                    break;
+                }
                 const char loc = (cy<<3) + cx;
                 set_bit(pin_ray, loc);
-                if (bit(piece, loc)) found = true;
-                else if (bit(bishops, loc) || bit(queens, loc)) return tuple<bool, U64>(found, found ? pin_ray : FULL);
-                else if (bit(all, loc)) break;
+                if (cx==px && cy==py) found = true;
+                else if (bit(bishops, loc) || bit(queens, loc)) break;
+                else if (bit(all, loc)) {
+                    found = false;
+                    break;
+                }
             }
         }
-        return tuple<bool, U64>(false, FULL);
+
+        return (found ? pin_ray : FULL);
     }
 
-    tuple<U64, char> checkers(const U64& king, const U64& pawns, const U64& knights, const U64& bishops,
+    U64 checkers(const Location& k_pos, const U64& pawns, const U64& knights, const U64& bishops,
             const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
+        /*
+        Calculates bitboard of checking pieces.
+        k_pos: King position.
+        pawns, knights, ...: Boards of enemy pieces.
+        same_side: Same side pieces.
+        attackers: Attacks of enemy.
+        side: true if white else false.
+        */
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
-        const Location k_pos = first_bit(king);
         const char kx = k_pos.x, ky = k_pos.y;
-        if (!bit(attackers, (ky<<3)+kx)) return tuple<U64, char>(board, atk_cnt);
+        if (!bit(attackers, (ky<<3)+kx)) return board;
         const U64 pieces = pawns | knights | bishops | rooks | queens;
         const char pawn_dir = side ? -1 : 1;
 
         // Pawns
         const char y = ky - pawn_dir;
-        if (0 <= kx-1 && kx-1 < 8 && 0 <= y && y < 8) {
-            const char loc = (y<<3) + kx-1;
-            if (bit(pawns, loc)) {
-                atk_cnt++;
-                set_bit(board, loc);
+        if (0 <= y && y < 8) {
+            const char loc = (y<<3) + kx;
+            if (0 <= kx-1 && kx-1 < 8) {
+                if (bit(pawns, loc-1)) {
+                    atk_cnt++;
+                    set_bit(board, loc);
+                }
+            }
+            if (0 <= kx+1 && kx+1 < 8) {
+                if (bit(pawns, loc+1)) {
+                    atk_cnt++;
+                    set_bit(board, loc);
+                }
             }
         }
-        if (0 <= kx+1 && kx+1 < 8 && 0 <= y && y < 8) {
-            const char loc = (y<<3) + kx+1;
-            if (bit(pawns, loc)) {
-                atk_cnt++;
-                set_bit(board, loc);
-            }
-        }
+
         // Knights
         for (const auto& dir: DIR_N) {
             const char x = kx + dir[0], y = ky + dir[1];
-            if (!in_board(x, y)) continue;
-            const char loc = (y<<3) + x;
-            if (bit(knights, loc)) {
-                set_bit(board, loc);
-                if (atk_cnt++ > 1) return tuple<U64, char>(board, atk_cnt);
-                break;
+            if (in_board(x, y)) {
+                const char loc = (y<<3) + x;
+                if (bit(knights, loc)) {
+                    set_bit(board, loc);
+                    if (atk_cnt++ > 1) return board;
+                    break;
+                }
             }
         }
+
         // Bishops and part queens
         for (const auto& dir: DIR_B) {
             char x = kx, y = ky;
@@ -530,12 +555,13 @@ namespace Bitboard {
                 if (bit(same_side, loc)) break;
                 if (bit(bishops, loc) || bit(queens, loc)) {
                     set_bit(board, loc);
-                    if (atk_cnt++ > 1) return tuple<U64, char>(board, atk_cnt);
+                    if (atk_cnt++ > 1) return board;
                     break;
                 }
                 if (bit(pieces, loc)) break;
             }
         }
+
         // Rooks and part queens
         for (const auto& dir: DIR_R) {
             char x = kx, y = ky;
@@ -547,20 +573,28 @@ namespace Bitboard {
                 if (bit(same_side, loc)) break;
                 if (bit(rooks, loc) || bit(queens, loc)) {
                     set_bit(board, loc);
-                    if (atk_cnt++ > 1) return tuple<U64, char>(board, atk_cnt);
+                    if (atk_cnt++ > 1) return board;
                     break;
                 }
                 if (bit(pieces, loc)) break;
             }
         }
 
-        return tuple<U64, char>(board, atk_cnt);
+        return board;
     }
 
-    vector<Move> king_moves(const Position& pos, const U64& same, const U64& all, const U64& attacks) {
-        // Pass in attacks from opponent.
+    vector<Move> king_moves(const Location& k_pos, const char& castling, const bool& side, const U64& same,
+            const U64& all, const U64& attacks) {
+        /*
+        Calculates all king moves.
+        k_pos: King position.
+        castling: Castling rights.
+        side: true if white else false
+        same: board of same pieces.
+        all: board of all pieces.
+        attacks: attacks from enemy.
+        */
         vector<Move> moves;
-        const Location k_pos = first_bit(pos.turn ? pos.wk : pos.bk);
         const char kx = k_pos.x, ky = k_pos.y;
         const char start = (ky<<3) + kx;
 
@@ -573,24 +607,24 @@ namespace Bitboard {
         }
 
         // Castling
-        if (pos.turn) {
-            if (bit(pos.castling, 0)) {
+        if (side) {
+            if (bit(castling, 0)) {
                 if (!bit(all, 5) && !bit(all, 6)) {
                     if ((CASTLING_WK & attacks) == EMPTY) moves.push_back(Move(start, 6));
                 }
             }
-            if (bit(pos.castling, 1)) {
+            if (bit(castling, 1)) {
                 if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) {
                     if ((CASTLING_WQ & attacks) == EMPTY) moves.push_back(Move(start, 2));
                 }
             }
         } else {
-            if (bit(pos.castling, 2)) {
+            if (bit(castling, 2)) {
                 if (!bit(all, 61) && !bit(all, 62)) {
                     if ((CASTLING_BK & attacks) == EMPTY) moves.push_back(Move(start, 62));
                 }
             }
-            if (bit(pos.castling, 3)) {
+            if (bit(castling, 3)) {
                 if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
                     if ((CASTLING_BQ & attacks) == EMPTY) moves.push_back(Move(start, 58));
                 }
@@ -600,7 +634,282 @@ namespace Bitboard {
         return moves;
     }
 
-    vector<Move> legal_moves(Position pos, const U64& attacks) {
+    void single_check_moves(vector<Move>& moves, const Position& pos, const U64& CP, const U64& CN, const U64& CB, const U64& CR,
+            const U64& CQ, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK, const U64& SAME,
+            const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+        /*
+        Computes all moves when there is one check.
+        */
+        // Block and capture piece giving check to king
+        U64 block_mask = EMPTY;
+        const U64 capture_mask = checking_pieces;
+        const char pawn_dir = pos.turn ? 1 : -1;
+
+        const Location check_pos = first_bit(checking_pieces);
+        const char check_x = check_pos.x, check_y = check_pos.y;
+
+        const char kx = k_pos.x, ky = k_pos.y;
+        char dx = check_x - kx, dy = check_y - ky;
+        // If not a knight move create the mask
+        if (!((abs(dx) == 2 && abs(dy) == 1) || (abs(dy) == 2 && abs(dx) == 1))) {
+            if (dx > 0) dx = 1;
+            else if (dx < 0) dx = -1;
+            if (dy > 0) dy = 1;
+            else if (dy < 0) dy = -1;
+
+            char cx = kx, cy = ky;   // Current (x, y)
+            while (true) {
+                cx += dx;
+                cy += dy;
+                const char loc = (cy<<3) + cx;
+                if (bit(checking_pieces, loc)) break;
+                set_bit(block_mask, loc);
+            }
+        }
+
+        const U64 full_mask = block_mask | capture_mask;
+
+        // Go through all pieces and check if they can capture/block
+        for (char i = 0; i < 64; i++) {
+            const Location curr_loc = Location(i&7, (i>>3));
+            if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME)) {
+                if (bit(CP, i)) {
+                    const char x = (i&7);
+                    char y;
+
+                    // Block
+                    y = (i>>3);
+                    const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                    if (pos.turn) {
+                        for (char cy = y + 1; cy < y + speed + 1; cy++) {
+                            const char loc = (cy<<3) + x;
+                            if (bit(ALL, loc)) break;
+                            if (bit(block_mask, loc)) {
+                                if (cy == 7) {
+                                    // Promotion
+                                    for (const int& p: {0, 1, 2, 3}) {
+                                        moves.push_back(Move(i, loc, true, p));
+                                    }
+                                } else {
+                                    moves.push_back(Move(i, loc));
+                                }
+                                break;
+                            }
+                        }
+                    } else {
+                        for (char cy = y - 1; cy > y - speed - 1; cy--) {
+                            const char loc = (cy<<3) + x;
+                            if (bit(ALL, loc)) break;
+                            if (bit(block_mask, loc)) {
+                                if (cy == 0) {
+                                    // Promotion
+                                    for (const int& p: {0, 1, 2, 3}) {
+                                        moves.push_back(Move(i, loc, true, p));
+                                    }
+                                } else {
+                                    moves.push_back(Move(i, loc));
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    // Capture
+                    U64 new_capture = capture_mask;
+                    if (pos.ep) {
+                        char start, end, ep_x = pos.ep_square % 8;
+                        if (pos.turn) {
+                            start = 4;
+                            end = 5;
+                        } else {
+                            start = 3;
+                            end = 2;
+                        }
+                        if (y == start && bit(OP, (start<<3) + ep_x)) set_bit(new_capture, (end<<3) + ep_x);
+                    }
+                    y += pawn_dir;
+                    if (0 <= y && y < 8) {
+                        bool promo = y == 7 || y == 0;
+                        for (const auto& offset: {x-1, x+1}) {
+                            if (0 <= offset && offset < 8) {
+                                const char char_move = (y<<3) + offset;
+                                if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
+                                    if (promo) {
+                                        for (const int& p: {0, 1, 2, 3}) {
+                                            moves.push_back(Move(i, char_move, true, p));
+                                        }
+                                    } else {
+                                        moves.push_back(Move(i, char_move));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (bit(CN, i)) {
+                    char x = (i&7), y = (i>>3);
+                    for (const auto& dir: DIR_N) {
+                        char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
+                        if (!in_board(cx, cy)) continue;
+                        const char loc = (cy<<3) + cx;
+                        if (bit(full_mask, loc)) moves.push_back(Move(i, loc));
+                    }
+                } else if (bit(CB, i) || bit(CQ, i)) {
+                    // Capture and block
+                    for (const auto& dir: DIR_B) {
+                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        while (true) {
+                            cx += dx;
+                            cy += dy;
+                            if (!in_board(cx, cy)) break;
+                            const char loc = (cy<<3) + cx;
+                            if (bit(SAME, loc)) break;
+                            if (bit(full_mask, loc)) {
+                                moves.push_back(Move(i, loc));
+                                break;
+                            }
+                            if (bit(OPPONENT, loc)) break;
+                        }
+                    }
+                }
+                if (bit(CR, i) || bit(CQ, i)) {
+                    // Capture and block
+                    for (const auto& dir: DIR_R) {
+                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        while (true) {
+                            cx += dx;
+                            cy += dy;
+                            if (!in_board(cx, cy)) break;
+                            const char loc = (cy<<3) + cx;
+                            if (bit(SAME, loc)) break;
+                            if (bit(full_mask, loc)) {
+                                moves.push_back(Move(i, loc));
+                                break;
+                            }
+                            if (bit(OPPONENT, loc)) break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    void no_check_moves(vector<Move>& moves, const Position& pos, const U64& CP, const U64& CN, const U64& CB, const U64& CR,
+            const U64& CQ, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK, const U64& SAME,
+            const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+        /*
+        Computes all moves when there is no check.
+        */
+        const char pawn_dir = pos.turn ? 1 : -1;
+        for (auto i = 0; i < 64; i++) {
+            const Location curr_loc = Location(i&7, (i>>3));
+            if (bit(SAME, i)) {
+                U64 pin = pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME);
+                bool piece_pinned = (pin != FULL);
+
+                if (bit(CP, i)) {
+                    const char x = (i&7);
+                    char y;
+
+                    // Forward
+                    y = (i>>3);
+                    const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
+                    if (pos.turn) {
+                        for (char cy = y + 1; cy < y + speed + 1; cy++) {
+                            const char loc = (cy<<3) + x;
+                            if (bit(ALL, loc)) break;
+                            if (bit(pin, loc)) {
+                                if (cy == 7) {
+                                    // Promotion
+                                    for (const int& p: {0, 1, 2, 3}) {
+                                        moves.push_back(Move(i, loc, true, p));
+                                    }
+                                } else {
+                                    moves.push_back(Move(i, loc));
+                                }
+                            }
+                        }
+                    } else {
+                        for (char cy = y - 1; cy > y - speed - 1; cy--) {
+                            const char loc = (cy<<3) + x;
+                            if (bit(ALL, loc)) break;
+                            if (bit(pin, loc)) {
+                                if (cy == 7) {
+                                    // Promotion
+                                    for (const int& p: {0, 1, 2, 3}) {
+                                        moves.push_back(Move(i, loc, true, p));
+                                    }
+                                } else {
+                                    moves.push_back(Move(i, loc));
+                                }
+                            }
+                        }
+                    }
+                    // Captures
+                    y += pawn_dir;
+                    if (0 <= y && y < 8) {
+                        bool promo = y == 0 || y == 7;
+                        for (const auto& offset: {x-1, x+1}) {
+                            if (0 <= offset && offset < 8) {
+                                const char char_move = (y<<3) + offset;
+                                if ((bit(pin, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square))) {
+                                    if (promo) {
+                                        for (const int& p: {0, 1, 2, 3}) {
+                                            moves.push_back(Move(i, char_move, true, p));
+                                        }
+                                    } else {
+                                        moves.push_back(Move(i, char_move));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (bit(CN, i)) {
+                    // Knights cannot move while pinned.
+                    if (piece_pinned) continue;
+                    else {
+                        for (const auto& dir: DIR_N) {
+                            char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
+                            if (!in_board(x, y)) continue;
+                            const char loc = (y<<3) + x;
+                            if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
+                        }
+                    }
+                } else if (bit(CB, i) || bit(CQ, i)) {
+                    for (const auto& dir: DIR_B) {
+                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        while (true) {
+                            cx += dx;
+                            cy += dy;
+                            if (!in_board(cx, cy)) break;
+                            const char loc = (cy<<3) + cx;
+                            if (bit(SAME, loc)) break;
+                            if (bit(pin, loc)) moves.push_back(Move(i, loc));
+                            if (bit(OPPONENT, loc)) break;
+                        }
+                    }
+                }
+                if (bit(CR, i) || bit(CQ, i)) {
+                    for (const auto& dir: DIR_R) {
+                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        while (true) {
+                            cx += dx;
+                            cy += dy;
+                            if (!in_board(cx, cy)) break;
+                            const char loc = (cy<<3) + cx;
+                            if (bit(SAME, loc)) break;
+                            if (bit(pin, loc)) moves.push_back(Move(i, loc));
+                            if (bit(OPPONENT, loc)) break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    vector<Move> legal_moves(const Position pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK;
@@ -635,265 +944,20 @@ namespace Bitboard {
         const U64 OPPONENT = OP | ON | OB | OR | OQ | OK;
         const U64 ALL = SAME | OPPONENT;
 
-        vector<Move> moves = king_moves(pos, SAME, ALL, attacks);
-        const tuple<U64, char> checking_data = checkers(CK, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
-        const U64 checking_pieces = get<0>(checking_data);
-        const char num_checkers = get<1>(checking_data);
+        const Location k_pos = first_bit(CK);
+        const char kx = k_pos.x, ky = k_pos.y;
+
+        vector<Move> moves = king_moves(k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
+        const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
+        const char num_checkers = popcnt(checking_pieces);
         const char pawn_dir = pos.turn ? 1 : -1;
 
         if (num_checkers > 1) {
             return moves;
         } else if (num_checkers == 1) {
-            // Block and capture piece giving check to king
-            U64 block_mask = EMPTY, capture_mask = checking_pieces;
-            Location k_pos = first_bit(CK), check_pos = first_bit(checking_pieces);
-            const char kx = k_pos.x, ky = k_pos.y, check_x = check_pos.x, check_y = check_pos.y;
-
-            char dx = check_x - kx, dy = check_y - ky;
-            if (!contains(DIR_N, vector<char>({dx, dy}))) {
-                if (dx != 0) dx /= abs(dx);
-                if (dy != 0) dy /= abs(dy);
-                char cx = kx, cy = ky;   // Current (x, y)
-                while (true) {
-                    cx += dx;
-                    cy += dy;
-                    const char loc = (cy<<3) + cx;
-                    if (bit(checking_pieces, loc)) break;
-                    set_bit(block_mask, loc);
-                }
-            }
-
-            U64 full_mask = block_mask | capture_mask;
-
-            // Go through all pieces and check if they can capture/block
-            for (char i = 0; i < 64; i++) {
-                if (bit(SAME, i) && !get<0>(pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME))) {
-                    if (bit(CP, i)) {
-                        const char x = (i&7);
-                        char y;
-
-                        // Block
-                        y = (i>>3);
-                        const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
-                        if (pos.turn) {
-                            for (char cy = y + 1; cy < y + speed + 1; cy++) {
-                                const char loc = (cy<<3) + x;
-                                if (bit(ALL, loc)) break;
-                                if (bit(block_mask, loc)) {
-                                    if (cy == 7) {
-                                        // Promotion
-                                        for (const int& p: {0, 1, 2, 3}) {
-                                            moves.push_back(Move(i, loc, true, p));
-                                        }
-                                    } else {
-                                        moves.push_back(Move(i, loc));
-                                    }
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (char cy = y - 1; cy > y - speed - 1; cy--) {
-                                const char loc = (cy<<3) + x;
-                                if (bit(ALL, loc)) break;
-                                if (bit(block_mask, loc)) {
-                                    if (cy == 0) {
-                                        // Promotion
-                                        for (const int& p: {0, 1, 2, 3}) {
-                                            moves.push_back(Move(i, loc, true, p));
-                                        }
-                                    } else {
-                                        moves.push_back(Move(i, loc));
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                        // Capture
-                        U64 new_capture = capture_mask;
-                        if (pos.ep) {
-                            char start, end, ep_x = pos.ep_square % 8;
-                            if (pos.turn) {
-                                start = 4;
-                                end = 5;
-                            } else {
-                                start = 3;
-                                end = 2;
-                            }
-                            if (y == start && bit(OP, (start<<3) + ep_x)) set_bit(new_capture, (end<<3) + ep_x);
-                        }
-                        y += pawn_dir;
-                        if (0 <= y && y < 8) {
-                            bool promo = y == 7 || y == 0;
-                            for (const auto& offset: {x-1, x+1}) {
-                                if (0 <= offset && offset < 8) {
-                                    const char char_move = (y<<3) + offset;
-                                    if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
-                                        if (promo) {
-                                            for (const int& p: {0, 1, 2, 3}) {
-                                                moves.push_back(Move(i, char_move, true, p));
-                                            }
-                                        } else {
-                                            moves.push_back(Move(i, char_move));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else if (bit(CN, i)) {
-                        char x = (i&7), y = (i>>3);
-                        for (const auto& dir: DIR_N) {
-                            char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
-                            if (!in_board(cx, cy)) continue;
-                            const char loc = (cy<<3) + cx;
-                            if (bit(full_mask, loc)) moves.push_back(Move(i, loc));
-                        }
-                    } else if (bit(CB, i) || bit(CQ, i)) {
-                        // Capture and block
-                        for (const auto& dir: DIR_B) {
-                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!in_board(cx, cy)) break;
-                                const char loc = (cy<<3) + cx;
-                                if (bit(SAME, loc)) break;
-                                if (bit(full_mask, loc)) {
-                                    moves.push_back(Move(i, loc));
-                                    break;
-                                }
-                                if (bit(OPPONENT, loc)) break;
-                            }
-                        }
-                    }
-                    if (bit(CR, i) || bit(CQ, i)) {
-                        // Capture and block
-                        for (const auto& dir: DIR_R) {
-                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!in_board(cx, cy)) break;
-                                const char loc = (cy<<3) + cx;
-                                if (bit(SAME, loc)) break;
-                                if (bit(full_mask, loc)) {
-                                    moves.push_back(Move(i, loc));
-                                    break;
-                                }
-                                if (bit(OPPONENT, loc)) break;
-                            }
-                        }
-                    }
-                }
-            }
+            single_check_moves(moves, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         } else {
-            for (auto i = 0; i < 64; i++) {
-                if (bit(SAME, i)) {
-                    tuple<bool, U64> pin = pinned(CK, (1ULL << i), OP, OK, OB, OR, OQ, SAME);
-                    bool piece_pinned = get<0>(pin);
-                    U64 pin_mask = get<1>(pin);
-
-                    if (bit(CP, i)) {
-                        const char x = (i&7);
-                        char y;
-
-                        // Forward
-                        y = (i>>3);
-                        const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
-                        if (pos.turn) {
-                            for (char cy = y + 1; cy < y + speed + 1; cy++) {
-                                const char loc = (cy<<3) + x;
-                                if (bit(ALL, loc)) break;
-                                if (bit(pin_mask, loc)) {
-                                    if (cy == 7) {
-                                        // Promotion
-                                        for (const int& p: {0, 1, 2, 3}) {
-                                            moves.push_back(Move(i, loc, true, p));
-                                        }
-                                    } else {
-                                        moves.push_back(Move(i, loc));
-                                    }
-                                }
-                            }
-                        } else {
-                            for (char cy = y - 1; cy > y - speed - 1; cy--) {
-                                const char loc = (cy<<3) + x;
-                                if (bit(ALL, loc)) break;
-                                if (bit(pin_mask, loc)) {
-                                    if (cy == 7) {
-                                        // Promotion
-                                        for (const int& p: {0, 1, 2, 3}) {
-                                            moves.push_back(Move(i, loc, true, p));
-                                        }
-                                    } else {
-                                        moves.push_back(Move(i, loc));
-                                    }
-                                }
-                            }
-                        }
-                        // Captures
-                        y += pawn_dir;
-                        if (0 <= y && y < 8) {
-                            bool promo = y == 0 || y == 7;
-                            for (const auto& offset: {x-1, x+1}) {
-                                if (0 <= offset && offset < 8) {
-                                    const char char_move = (y<<3) + offset;
-                                    if ((bit(pin_mask, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square))) {
-                                        if (promo) {
-                                            for (const int& p: {0, 1, 2, 3}) {
-                                                moves.push_back(Move(i, char_move, true, p));
-                                            }
-                                        } else {
-                                            moves.push_back(Move(i, char_move));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else if (bit(CN, i)) {
-                        // Knights cannot move while pinned.
-                        if (piece_pinned) continue;
-                        else {
-                            for (const auto& dir: DIR_N) {
-                                char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
-                                if (!in_board(x, y)) continue;
-                                const char loc = (y<<3) + x;
-                                if (!bit(SAME, loc)) moves.push_back(Move(i, loc));
-                            }
-                        }
-                    } else if (bit(CB, i) || bit(CQ, i)) {
-                        for (const auto& dir: DIR_B) {
-                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!in_board(cx, cy)) break;
-                                const char loc = (cy<<3) + cx;
-                                if (bit(SAME, loc)) break;
-                                if (bit(pin_mask, loc)) moves.push_back(Move(i, loc));
-                                if (bit(OPPONENT, loc)) break;
-                            }
-                        }
-                    }
-                    if (bit(CR, i) || bit(CQ, i)) {
-                        for (const auto& dir: DIR_R) {
-                            char cx = (i&7), cy = (i>>3);             // Current (x, y)
-                            const char dx = dir[0], dy = dir[1];      // Delta (x, y)
-                            while (true) {
-                                cx += dx;
-                                cy += dy;
-                                if (!in_board(cx, cy)) break;
-                                const char loc = (cy<<3) + cx;
-                                if (bit(SAME, loc)) break;
-                                if (bit(pin_mask, loc)) moves.push_back(Move(i, loc));
-                                if (bit(OPPONENT, loc)) break;
-                            }
-                        }
-                    }
-                }
-            }
+            no_check_moves(moves, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         }
         return moves; //order_moves(pos, moves, attacks);
     }

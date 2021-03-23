@@ -107,6 +107,8 @@ namespace Bitboard {
     constexpr U64 CASTLING_WQ = 28ULL;
     constexpr U64 CASTLING_WK = 112ULL;
 
+    constexpr U64 BYTE_ALL_ONE = 255ULL;
+
     const vector<vector<char>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<char>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
     const vector<vector<char>> DIR_B = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
@@ -120,7 +122,6 @@ namespace Bitboard {
     void unset_bit(U64&, int);
     void set_bit(char&, int);
     void unset_bit(char&, int);
-    bool contains(const vector<vector<char>>&, const vector<char>&);
     bool in_board(const char& x, const char& y);
     Location first_bit(const U64&);
 
@@ -136,9 +137,15 @@ namespace Bitboard {
 
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
-    tuple<bool, U64> pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
-    tuple<U64, char> checkers(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
-    vector<Move> king_moves(const Position&, const U64&, const U64&, const U64&);
+    U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
+    U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
+    vector<Move> king_moves(const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
+    void single_check_moves(vector<Move>&, const Position&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const Location&, const U64&);
+    void no_check_moves(vector<Move>&, const Position&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
     vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);
     int quick_eval(const Position&, const Move&, const U64&);
