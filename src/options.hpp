@@ -31,6 +31,7 @@ using std::string;
 
 class Options {
 /*
+Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalCenter: type=spin, default=100, min=0, max=1000, weight (percent) of center control eval.
 EvalKing: type=spin, default=100, min=0, max=1000, weight (percent) of king eval.
@@ -43,7 +44,9 @@ Chat: type=check, default=true, whether the engine should chat with you.
 
 public:
     Options();
+    void set_hash();
 
+    int Hash;
     int EvalMaterial;
     int EvalCenter;
     int EvalKing;

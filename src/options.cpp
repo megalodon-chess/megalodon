@@ -30,6 +30,7 @@ using std::string;
 
 
 Options::Options() {
+    Hash = 16;
     EvalMaterial = 100;
     EvalMaterial = 100;
     EvalCenter = 100;
@@ -39,4 +40,6 @@ Options::Options() {
     EvalRook = 100;
     EvalQueen = 100;
     Chat = false;
+
+    set_hash();
 }
