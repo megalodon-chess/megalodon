@@ -126,13 +126,18 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
 }
 
 SearchInfo search(const Options& options, const Position& pos, const int& depth) {
-    // Iterative deepening doesn't have any improvements yet.
     SearchInfo result;
+    float alpha = MIN, beta = MAX;
     double start = get_time();
 
     for (auto d = 1; d <= depth; d++) {
-        result = dfs(options, pos, d, MIN, MAX);
+        result = dfs(options, pos, d, alpha, beta);
         double elapse = get_time() - start;
+
+        if (d >= 4) {
+            alpha = result.alpha - 5;
+            beta = result.beta + 5;
+        }
 
         result.time = elapse;
         result.nps = result.nodes / elapse;
