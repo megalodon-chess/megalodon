@@ -675,7 +675,8 @@ namespace Bitboard {
             const char check_x = check_pos.x, check_y = check_pos.y;
 
             char dx = check_x - kx, dy = check_y - ky;
-            if (!(dx == 0 && dy == 0) && !((dx == 0 || dy == 0) || (abs(dx) == abs(dy)))) {
+            // If not a knight move create the mask
+            if (!((abs(dx) == 2 && abs(dy) == 1) || (abs(dy) == 2 && abs(dx) == 1))) {
                 if (dx > 0) dx = 1;
                 else if (dx < 0) dx = -1;
                 if (dy > 0) dy = 1;
