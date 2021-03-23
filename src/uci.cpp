@@ -26,6 +26,7 @@
 #include "options.hpp"
 #include "eval.hpp"
 #include "perft.hpp"
+#include "hash.hpp"
 
 using std::cin;
 using std::cout;
@@ -204,6 +205,7 @@ int loop() {
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
+        else if (cmd == "hash") cout << hash(pos) << endl;
         else if (cmd == "eval") {
             U64 attacked = Bitboard::attacked(pos, !pos.turn);
             cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;

@@ -26,6 +26,7 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "options.hpp"
+#include "hash.hpp"
 
 using std::abs;
 using std::cin;
@@ -209,6 +210,7 @@ namespace Bitboard {
             str += col + "\n" + row + "\n";
         }
         str += "\nFen: " + fen(pos) + "\n";
+        str += "Hash: " + std::to_string(hash(pos)) + "\n";
 
         return str;
     }
