@@ -33,7 +33,7 @@ using std::string;
 
 struct SearchInfo {
     SearchInfo();
-    SearchInfo(int, int, bool, float, int, int, double, Move);
+    SearchInfo(int, int, bool, float, int, int, double, Move, float, float);
     string as_string();
 
     int depth;
@@ -44,6 +44,8 @@ struct SearchInfo {
     int nps;
     double time;
     Move move;
+    float alpha;
+    float beta;
 };
 
 constexpr float MAX = 1000000;

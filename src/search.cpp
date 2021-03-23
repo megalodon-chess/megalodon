@@ -36,7 +36,8 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps, double _time, Move _move) {
+SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps,
+        double _time, Move _move, float _alpha, float _beta) {
     depth = _depth;
     seldepth = _seldepth;
     is_mate_score = _is_mate;
@@ -45,6 +46,8 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, i
     nps = _nps;
     time = _time;
     move = _move;
+    alpha = _alpha;
+    beta = _beta;
 }
 
 string SearchInfo::as_string() {
@@ -92,7 +95,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
 
     if (depth == 0 || moves.size() == 0) {
         const float score = eval(options, pos, moves.size()!=0, depth, o_attacks);
-        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move());
+        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move(), alpha, beta);
     }
     int nodes = 1;
     int best_ind = 0;
@@ -119,19 +122,24 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             if (beta <= alpha) break;
         }
     }
-    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind]);
+    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind], alpha, beta);
 }
 
 SearchInfo search(const Options& options, Position pos, const int& depth) {
     // Iterative deepening doesn't have any improvements yet.
     SearchInfo result;
+    float alpha = MIN, beta = MAX;
     double start = get_time();
+
     for (auto d = 1; d <= depth; d++) {
-        result = dfs(options, pos, d, MIN, MAX);
+        result = dfs(options, pos, d, alpha, beta);
         double elapse = get_time() - start;
+        alpha = result.alpha;
+        beta = result.beta;
         result.time = elapse;
         result.nps = result.nodes / elapse;
         cout << result.as_string() << endl;
     }
+
     return result;
 }
