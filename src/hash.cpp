@@ -31,4 +31,10 @@ using std::vector;
 using std::string;
 
 unsigned int hash(const Position& pos) {
+    return (
+        (pos.wp | pos.wn)
+        | (pos.wb | pos.wr | pos.wq)
+        | ((pos.wk & pos.bp) & (pos.bn | pos.bb | pos.br))
+        | (pos.bq | pos.bk)
+    ) - (pos.castling*pos.ep_square);
 }
