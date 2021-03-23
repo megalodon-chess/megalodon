@@ -122,5 +122,11 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
 }
 
 SearchInfo search(const Options& options, Position pos, const int& depth) {
-    return dfs(options, pos, depth, MIN, MAX);
+    // Iterative deepening doesn't have any improvements yet.
+    SearchInfo result;
+    for (auto d = 1; d <= depth; d++) {
+        result = dfs(options, pos, d, MIN, MAX);
+        cout << result.as_string() << endl;
+    }
+    return result;
 }
