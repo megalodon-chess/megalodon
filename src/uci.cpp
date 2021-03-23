@@ -127,7 +127,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     if (total < 10) depth++;
 
     double start = get_time();
-    SearchInfo result = search(options, pos, depth, 0);
+    SearchInfo result = search(options, pos, depth);
     double elapse = get_time() - start;
 
     float score = result.score;
