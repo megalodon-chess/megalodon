@@ -45,7 +45,9 @@ Options::Options() {
 }
 
 void Options::set_hash() {
-    int len = Hash * 262144;
+    delete hash_evaled;
+    delete hash_evals;
+    int len = Hash * 125000;
 
     hash_evaled = new bool[len];
     hash_evals = new float[len];

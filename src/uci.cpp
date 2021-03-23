@@ -172,6 +172,7 @@ int loop() {
         }
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
+            cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalCenter type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKing type spin default 100 min 0 max 1000" << "\n";
@@ -187,7 +188,11 @@ int loop() {
             string name = parts[2];
             string value = parts[4];
 
-            if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
+            if (name == "Hash") {
+                options.Hash = std::stoi(value);
+                options.set_hash();
+            }
+            else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalCenter") options.EvalCenter = std::stoi(value);
             else if (name == "EvalKing") options.EvalKing = std::stoi(value);
             else if (name == "EvalPawn") options.EvalPawn = std::stoi(value);
@@ -219,5 +224,7 @@ int loop() {
         else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
     }
 
+    delete options.hash_evaled;
+    delete options.hash_evals;
     return 0;
 }
