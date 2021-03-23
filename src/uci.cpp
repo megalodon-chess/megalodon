@@ -87,7 +87,7 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
 
 float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
     int mode = 0, depth, total = total_mat(pos);
-    float wtime, btime, winc, binc;
+    float wtime = 0, btime = 0, winc = 0, binc = 0;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
             mode = 1;
