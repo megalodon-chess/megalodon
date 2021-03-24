@@ -73,20 +73,16 @@ float phase(const Position& pos) {
     else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
 }
 
-float middle_game(const Position& pos) {
-    float score = 0;
-
-    score += pawn_structure(pos.wp) - pawn_structure(pos.bp);
-
-    return score;
+float middle_game(const float& pawn_struct) {
+    return (
+        pawn_struct * 0.9
+    );
 }
 
-float end_game(const Position& pos) {
-    float score = 0;
-
-    score += pawn_structure(pos.wp) - pawn_structure(pos.bp);
-
-    return score;
+float end_game(const float& pawn_struct) {
+    return (
+        pawn_struct * 1.2
+    );
 }
 
 
@@ -131,7 +127,11 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
         return 0;
     }
 
-    const float mg = middle_game(pos), eg = end_game(pos);
+    const float pawn_struct = pawn_structure(pos.wp) - pawn_structure(pos.bp);
+
+    // Endgame and middle game are for weighting categories.
+    const float mg = middle_game(pawn_struct);
+    const float eg = end_game(pawn_struct);
     const float p = phase(pos);
     const float score = mg*p + eg*(1-p);
 
