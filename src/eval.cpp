@@ -36,22 +36,35 @@ using Bitboard::popcnt;
 using Bitboard::bit;
 
 
-float non_pawn_mat(const Position& pos) {
+float non_pawn_mat(const Position& pos, const bool& mg) {
     float value = 0;
-    value += popcnt(pos.wn) * 3;
-    value += popcnt(pos.wb) * 3;
-    value += popcnt(pos.wr) * 5;
-    value += popcnt(pos.wq) * 9;
-    value += popcnt(pos.bn) * 3;
-    value += popcnt(pos.bb) * 3;
-    value += popcnt(pos.br) * 5;
-    value += popcnt(pos.bq) * 9;
+    if (mg) {
+        value += popcnt(pos.wn) * MG_KNIGHT;
+        value += popcnt(pos.wb) * MG_BISHOP;
+        value += popcnt(pos.wr) * MG_ROOK;
+        value += popcnt(pos.wq) * MG_QUEEN;
+        value += popcnt(pos.bn) * MG_KNIGHT;
+        value += popcnt(pos.bb) * MG_BISHOP;
+        value += popcnt(pos.br) * MG_ROOK;
+        value += popcnt(pos.bq) * MG_QUEEN;
+    } else {
+        value += popcnt(pos.wn) * EG_KNIGHT;
+        value += popcnt(pos.wb) * EG_BISHOP;
+        value += popcnt(pos.wr) * EG_ROOK;
+        value += popcnt(pos.wq) * EG_QUEEN;
+        value += popcnt(pos.bn) * EG_KNIGHT;
+        value += popcnt(pos.bb) * EG_BISHOP;
+        value += popcnt(pos.br) * EG_ROOK;
+        value += popcnt(pos.bq) * EG_QUEEN;
+    }
     return value;
 }
 
 float phase(const Position& pos) {
-    float npm = non_pawn_mat(pos);
-    return npm;
+    int npm = non_pawn_mat(pos, true);
+    if (npm > ENDGAME_LIM) npm = ENDGAME_LIM;
+    else if (npm < MIDGAME_LIM) npm = MIDGAME_LIM;
+    return (((npm - ENDGAME_LIM) * 128) / (MIDGAME_LIM - ENDGAME_LIM)) << 0;
 }
 
 
