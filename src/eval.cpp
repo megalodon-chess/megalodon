@@ -119,7 +119,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
 
     return (
-        //options.EvalMaterial/100   * material(pos) +
+        options.EvalMaterial/100   * material(pos) +
         options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp)
     );
 }
