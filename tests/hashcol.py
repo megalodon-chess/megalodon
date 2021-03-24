@@ -66,6 +66,7 @@ def main():
 
         if len(hashes) != len(set(hashes)):
             print(f"Found collision, tried {len(hashes)} positions.")
+            break
 
 
 main()
