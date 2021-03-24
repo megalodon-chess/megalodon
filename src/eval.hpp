@@ -35,6 +35,7 @@ using std::string;
 constexpr int MIDGAME_LIM = 50;
 constexpr int ENDGAME_LIM = 20;
 
+float material(const Position&);
 float total_mat(const Position&);
 float non_pawn_mat(const Position&);
 

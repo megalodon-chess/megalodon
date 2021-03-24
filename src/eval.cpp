@@ -36,6 +36,21 @@ using Bitboard::popcnt;
 using Bitboard::bit;
 
 
+float material(const Position& pos) {
+    float value = 0;
+    value += popcnt(pos.wp) * 1;
+    value += popcnt(pos.wn) * 3;
+    value += popcnt(pos.wb) * 3;
+    value += popcnt(pos.wr) * 5;
+    value += popcnt(pos.wq) * 9;
+    value -= popcnt(pos.bp) * 1;
+    value -= popcnt(pos.bn) * 3;
+    value -= popcnt(pos.bb) * 3;
+    value -= popcnt(pos.br) * 5;
+    value -= popcnt(pos.bq) * 9;
+    return value;
+}
+
 float total_mat(const Position& pos) {
     float value = 0;
     value += popcnt(pos.wp) * 1;
@@ -127,6 +142,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
         return 0;
     }
 
+    const float mat = material(pos);
     const float pawn_struct = pawn_structure(pos.wp) - pawn_structure(pos.bp);
 
     // Endgame and middle game are for weighting categories.
@@ -135,5 +151,5 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     const float p = phase(pos);
     const float score = mg*p + eg*(1-p);
 
-    return score;
+    return mat + score;
 }
