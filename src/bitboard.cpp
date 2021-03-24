@@ -115,14 +115,14 @@ namespace Bitboard {
 
     char popcnt(const U64& num) {
         char count = 0;
-        count += popcnt_tbl[ num      & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>8)  & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>16) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>24) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>32) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>40) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>48) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>56) & BYTE_ALL_ONE];
+        count += popcnt_tbl[ num      & 255ULL];
+        count += popcnt_tbl[(num>>8)  & 255ULL];
+        count += popcnt_tbl[(num>>16) & 255ULL];
+        count += popcnt_tbl[(num>>24) & 255ULL];
+        count += popcnt_tbl[(num>>32) & 255ULL];
+        count += popcnt_tbl[(num>>40) & 255ULL];
+        count += popcnt_tbl[(num>>48) & 255ULL];
+        count += popcnt_tbl[(num>>56) & 255ULL];
         return count;
     }
 
