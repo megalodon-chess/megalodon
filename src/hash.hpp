@@ -17,10 +17,12 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include <string>
-#include "options.hpp"
+#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
@@ -28,31 +30,4 @@ using std::endl;
 using std::vector;
 using std::string;
 
-
-Options::Options() {
-    Hash = 16;
-    EvalMaterial = 100;
-    EvalMaterial = 100;
-    EvalCenter = 100;
-    EvalKing = 100;
-    EvalPawn = 100;
-    EvalKnight = 100;
-    EvalRook = 100;
-    EvalQueen = 100;
-    Chat = false;
-
-    set_hash();
-}
-
-void Options::set_hash() {
-    delete hash_evaled;
-    delete hash_evals;
-    hash_size = Hash * 125000;
-
-    hash_evaled = new bool[hash_size];
-    hash_evals = new float[hash_size];
-    for (int i = 0; i < hash_size; i++) {
-        hash_evaled[i] = false;
-        hash_evals[i] = 0;
-    }
-}
+unsigned int hash(const Position&);

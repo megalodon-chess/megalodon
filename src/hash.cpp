@@ -19,8 +19,10 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <string>
-#include "options.hpp"
+#include "hash.hpp"
+#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
@@ -28,31 +30,12 @@ using std::endl;
 using std::vector;
 using std::string;
 
-
-Options::Options() {
-    Hash = 16;
-    EvalMaterial = 100;
-    EvalMaterial = 100;
-    EvalCenter = 100;
-    EvalKing = 100;
-    EvalPawn = 100;
-    EvalKnight = 100;
-    EvalRook = 100;
-    EvalQueen = 100;
-    Chat = false;
-
-    set_hash();
-}
-
-void Options::set_hash() {
-    delete hash_evaled;
-    delete hash_evals;
-    hash_size = Hash * 125000;
-
-    hash_evaled = new bool[hash_size];
-    hash_evals = new float[hash_size];
-    for (int i = 0; i < hash_size; i++) {
-        hash_evaled[i] = false;
-        hash_evals[i] = 0;
-    }
+unsigned int hash(const Position& pos) {
+    return (
+        (pos.wp ^ pos.bp)
+        ^ (pos.wk | pos.wq ^ pos.bb)
+        ^ (pos.bk | pos.bq ^ pos.wb)
+        | (pos.wn & pos.wr | pos.wp)
+        | (pos.bn & pos.br | pos.bp)
+    ) - (pos.castling*pos.ep_square);
 }

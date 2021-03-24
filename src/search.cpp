@@ -25,6 +25,7 @@
 #include "eval.hpp"
 #include "options.hpp"
 #include "utils.hpp"
+#include "hash.hpp"
 
 using std::cin;
 using std::cout;
@@ -94,7 +95,15 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
     if (depth == 0 || moves.size() == 0) {
-        const float score = eval(options, pos, moves.size()!=0, depth, o_attacks);
+        const int idx = 0;//hash(pos) % options.hash_size;
+        float score;
+        if (false && options.hash_evaled[idx]) {  // Disabled until hash algorithm improvement.
+            score = options.hash_evals[idx];
+        } else {
+            score = eval(options, pos, moves.size()!=0, depth, o_attacks);
+            options.hash_evaled[idx] = true;
+            options.hash_evals[idx] = score;
+        }
         return SearchInfo(depth, depth, false, score, 1, 0, 0, Move(), alpha, beta);
     }
     int nodes = 1;
@@ -126,13 +135,18 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
 }
 
 SearchInfo search(const Options& options, const Position& pos, const int& depth) {
-    // Iterative deepening doesn't have any improvements yet.
     SearchInfo result;
+    float alpha = MIN, beta = MAX;
     double start = get_time();
 
     for (auto d = 1; d <= depth; d++) {
-        result = dfs(options, pos, d, MIN, MAX);
+        result = dfs(options, pos, d, alpha, beta);
         double elapse = get_time() - start;
+
+        if (d >= 4) {
+            alpha = result.alpha - 5;
+            beta = result.beta + 5;
+        }
 
         result.time = elapse;
         result.nps = result.nodes / elapse;
