@@ -38,7 +38,7 @@ SearchInfo::SearchInfo() {
 }
 
 SearchInfo::SearchInfo(int _depth, int _seldepth, float _score, int _nodes, int _nps,
-        double _time, Move _move, float _alpha, float _beta) {
+        double _time, Move _move, float _alpha, float _beta, bool turn) {
     depth = _depth;
     seldepth = _seldepth;
     is_mate_score = !(MIN+20 <= score && score <= MAX-20);
@@ -109,7 +109,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             options.hash_evaled[idx] = true;
             options.hash_evals[idx] = score;
         }
-        return SearchInfo(depth, depth, score, 1, 0, 0, Move(), alpha, beta);
+        return SearchInfo(depth, depth, score, 1, 0, 0, Move(), alpha, beta, pos.turn);
     }
     int nodes = 1;
     int best_ind = 0;
@@ -136,7 +136,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             if (beta <= alpha) break;
         }
     }
-    return SearchInfo(depth, depth, best_eval, nodes, 0, 0, moves[best_ind], alpha, beta);
+    return SearchInfo(depth, depth, best_eval, nodes, 0, 0, moves[best_ind], alpha, beta, pos.turn);
 }
 
 SearchInfo search(const Options& options, const Position& pos, const int& depth) {
