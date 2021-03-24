@@ -76,6 +76,7 @@ float non_pawn_mat(const Position& pos, const bool& mg) {
 }
 
 float phase(const Position& pos) {
+    // MAX_PHASE at start of game, 0 at end
     float npm = non_pawn_mat(pos, true);
     if (npm < ENDGAME_LIM) npm = ENDGAME_LIM;
     else if (npm > MIDGAME_LIM) npm = MIDGAME_LIM;
