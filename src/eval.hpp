@@ -51,5 +51,4 @@ constexpr float EG_QUEEN  = 9;
 
 
 float total_mat(const Position&);
-
 float eval(const Options&, const Position&, const bool&, const int&, const U64&);
