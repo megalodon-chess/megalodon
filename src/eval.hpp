@@ -34,6 +34,8 @@ using std::string;
 
 float non_pawn_mat(const Position&);
 
+float phase(const Position&);
+
 float middle_game(const Position&);
 float end_game(const Position&);
 

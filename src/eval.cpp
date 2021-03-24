@@ -49,6 +49,11 @@ float non_pawn_mat(const Position& pos) {
     return value;
 }
 
+float phase(const Position& pos) {
+    float npm = non_pawn_mat(pos);
+    return npm;
+}
+
 
 float middle_game(const Position& pos) {
     float score = 0;
