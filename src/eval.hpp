@@ -48,7 +48,7 @@ constexpr int EG_ROOK = 1380;
 constexpr int EG_QUEEN = 2682;
 
 
-float total_mat(const Position&, const bool&);
+float total_mat(const Position&);
 float non_pawn_mat(const Position&, const bool&);
 
 float phase(const Position&);
