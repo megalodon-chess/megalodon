@@ -113,5 +113,5 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     float mg = middle_game(pos), eg = end_game(pos);
     float p = phase(pos);
 
-    return score;
+    return score/100; // Because of centipawns
 }

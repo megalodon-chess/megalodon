@@ -32,6 +32,7 @@ using std::vector;
 using std::string;
 
 
+// In centipawns
 constexpr int MIDGAME_LIM = 15258;
 constexpr int ENDGAME_LIM = 3915;
 
