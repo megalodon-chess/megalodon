@@ -175,6 +175,7 @@ int loop() {
         else if (cmd == "uci") {
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
             cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
@@ -188,6 +189,7 @@ int loop() {
                 options.set_hash();
             }
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
+            else if (name == "EvalPawnStruct") options.EvalMaterial = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
         }

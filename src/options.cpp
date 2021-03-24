@@ -32,6 +32,7 @@ using std::string;
 Options::Options() {
     Hash = 16;
     EvalMaterial = 100;
+    EvalPawnStruct = 100;
     Chat = false;
 
     set_hash();

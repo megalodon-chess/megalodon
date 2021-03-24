@@ -33,6 +33,7 @@ class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
+EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
 
@@ -46,5 +47,6 @@ public:
 
     int Hash;
     int EvalMaterial;
+    int EvalPawnStruct;
     bool Chat;
 };
