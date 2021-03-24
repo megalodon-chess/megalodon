@@ -29,23 +29,28 @@ PARENT = os.path.dirname(os.path.realpath(__file__))
 ENG_PATH = "build/Megalodon"
 
 
+def randpos():
+    board = chess.Board()
+    num_moves = random.randint(10, 60)
+    for i in range(num_moves):
+        moves = list(board.generate_legal_moves())
+        if len(moves) == 0:
+            break
+        board.push(random.choice(moves))
+    return board
+
+
 def main():
     hashes = []
     while True:
-        board = chess.Board()
-        num_moves = random.randint(10, 60)
-        for i in range(num_moves):
-            moves = list(board.generate_legal_moves())
-            if len(moves) == 0:
-                break
-            board.push(random.choice(moves))
-
+        boards = [randpos() for i in range(1000)]
         p = subprocess.Popen([ENG_PATH], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        p.stdin.write(f"position startpos moves ".encode())
-        for move in board.move_stack:
-            p.stdin.write(f"{move.uci()} ".encode())
-        p.stdin.write(b"\n")
-        p.stdin.write(f"hash\n".encode())
+        for board in boards:
+            p.stdin.write(f"position startpos moves ".encode())
+            for move in board.move_stack:
+                p.stdin.write(f"{move.uci()} ".encode())
+            p.stdin.write(b"\n")
+            p.stdin.write(f"hash\n".encode())
         p.stdin.write(f"quit\n".encode())
         p.stdin.flush()
         while p.poll() is None:
@@ -57,18 +62,10 @@ def main():
 
         for line in out:
             if line.isnumeric():
-                h = int(line)
-                break
+                hashes.append(int(line))
 
-        if h in hashes:
-            print(h)
-            print("position startpos ", end="")
-            for m in board.move_stack:
-                print(m.uci(), end=" ")
-            print()
-            print(f"Tried {len(hashes)} positions.")
-            break
-        hashes.append(h)
+        if len(hashes) != len(set(hashes)):
+            print(f"Found collision, tried {len(hashes)} positions.")
 
 
 main()
