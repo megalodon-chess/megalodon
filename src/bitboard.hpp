@@ -122,6 +122,8 @@ namespace Bitboard {
     constexpr U64 FILE6 = 2314885530818453536ULL;
     constexpr U64 FILE7 = 4629771061636907072ULL;
     constexpr U64 FILE8 = 9259542123273814144ULL;
+    const vector<U64> RANKS = {RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8};
+    const vector<U64> FILES = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
 
     const vector<vector<char>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<char>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};

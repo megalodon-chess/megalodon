@@ -32,23 +32,22 @@ using std::vector;
 using std::string;
 
 
-// In centipawns
-constexpr int MIDGAME_LIM = 15258;
-constexpr int ENDGAME_LIM = 3915;
+constexpr int MIDGAME_LIM = 40;
+constexpr int ENDGAME_LIM = 8;
 constexpr int LIM_DIFF = MIDGAME_LIM - ENDGAME_LIM;
-constexpr int MAX_PHASE = 128;
+constexpr int MAX_PHASE = 78;
 
-constexpr int MG_PAWN   =  124;
-constexpr int MG_KNIGHT =  781;
-constexpr int MG_BISHOP =  825;
-constexpr int MG_ROOK   = 1276;
-constexpr int MG_QUEEN  = 2538;
+constexpr float MG_PAWN   = 1;
+constexpr float MG_KNIGHT = 3;
+constexpr float MG_BISHOP = 3;
+constexpr float MG_ROOK   = 5;
+constexpr float MG_QUEEN  = 9;
 
-constexpr int EG_PAWN   =  206;
-constexpr int EG_KNIGHT =  854;
-constexpr int EG_BISHOP =  915;
-constexpr int EG_ROOK   = 1380;
-constexpr int EG_QUEEN  = 2682;
+constexpr float EG_PAWN   = 1;
+constexpr float EG_KNIGHT = 3;
+constexpr float EG_BISHOP = 3;
+constexpr float EG_ROOK   = 5;
+constexpr float EG_QUEEN  = 9;
 
 
 float total_mat(const Position&);

@@ -37,11 +37,11 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps,
-        double _time, Move _move, float _alpha, float _beta) {
+SearchInfo::SearchInfo(int _depth, int _seldepth, float _score, int _nodes, int _nps,
+        double _time, Move _move, float _alpha, float _beta, bool turn) {
     depth = _depth;
     seldepth = _seldepth;
-    is_mate_score = _is_mate;
+    is_mate_score = !(MIN+20 <= score && score <= MAX-20);
     score = _score;
     nodes = _nodes;
     nps = _nps;
@@ -55,8 +55,13 @@ string SearchInfo::as_string() {
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
     str += " multipv 1 score ";
-    str += (is_mate_score ? "mate" : "cp");
-    str += " " + std::to_string((is_mate_score ? (int)score : (int)(100*score)));
+    if (is_mate_score) {
+        str += "mate ";
+        str += std::to_string((int)(MAX-abs(score)+1));
+    } else {
+        str += "cp ";
+        str += std::to_string((int)(100*score));
+    }
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     str += " tbhits 0 time " + std::to_string((int)(1000*time));
     str += " pv " + Bitboard::move_str(move);
@@ -104,7 +109,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             options.hash_evaled[idx] = true;
             options.hash_evals[idx] = score;
         }
-        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move(), alpha, beta);
+        return SearchInfo(depth, depth, score, 1, 0, 0, Move(), alpha, beta, pos.turn);
     }
     int nodes = 1;
     int best_ind = 0;
@@ -131,7 +136,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             if (beta <= alpha) break;
         }
     }
-    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind], alpha, beta);
+    return SearchInfo(depth, depth, best_eval, nodes, 0, 0, moves[best_ind], alpha, beta, pos.turn);
 }
 
 SearchInfo search(const Options& options, const Position& pos, const int& depth) {
