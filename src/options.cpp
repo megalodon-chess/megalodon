@@ -47,11 +47,11 @@ Options::Options() {
 void Options::set_hash() {
     delete hash_evaled;
     delete hash_evals;
-    int len = Hash * 125000;
+    hash_size = Hash * 125000;
 
-    hash_evaled = new bool[len];
-    hash_evals = new float[len];
-    for (int i = 0; i < len; i++) {
+    hash_evaled = new bool[hash_size];
+    hash_evals = new float[hash_size];
+    for (int i = 0; i < hash_size; i++) {
         hash_evaled[i] = false;
         hash_evals[i] = 0;
     }

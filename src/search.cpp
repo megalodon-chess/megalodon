@@ -25,6 +25,7 @@
 #include "eval.hpp"
 #include "options.hpp"
 #include "utils.hpp"
+#include "hash.hpp"
 
 using std::cin;
 using std::cout;
@@ -94,7 +95,15 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
     if (depth == 0 || moves.size() == 0) {
-        const float score = eval(options, pos, moves.size()!=0, depth, o_attacks);
+        const int idx = hash(pos) % options.hash_size;
+        float score;
+        if (options.hash_evaled[idx]) {
+            score = options.hash_evals[idx];
+        } else {
+            score = eval(options, pos, moves.size()!=0, depth, o_attacks);
+            options.hash_evaled[idx] = true;
+            options.hash_evals[idx] = score;
+        }
         return SearchInfo(depth, depth, false, score, 1, 0, 0, Move(), alpha, beta);
     }
     int nodes = 1;

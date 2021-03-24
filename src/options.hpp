@@ -48,6 +48,7 @@ public:
 
     bool* hash_evaled = new bool[16];
     float* hash_evals = new float[16];
+    int hash_size;
 
     int Hash;
     int EvalMaterial;
