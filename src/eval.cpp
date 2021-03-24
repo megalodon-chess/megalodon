@@ -110,5 +110,8 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
     float score = 0;
 
+    float mg = middle_game(pos), eg = end_game(pos);
+    float p = phase(pos);
+
     return score;
 }
