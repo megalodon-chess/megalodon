@@ -72,6 +72,25 @@ float pawn_structure(const U64 wp, const U64 bp) {
     char passed = 0;
     char backward = 0;
     char islands = 0;
+
+    // Islands
+    bool white = false, black = false;  // Whether the current index is a pawn.
+    for (char i = 0; i < 8; i++) {
+        if ((Bitboard::FILES[i] & wp) != 0) {
+            if (!white) islands++;
+            white = true;
+        } else {
+            white = false;
+        }
+        if ((Bitboard::FILES[i] & bp) != 0) {
+            if (!black) islands--;
+            black = true;
+        } else {
+            black = false;
+        }
+    }
+
+    return -0.4*islands;
 }
 
 
@@ -89,7 +108,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
 
     return (
-        options.EvalMaterial/100   * material(pos) +
+        //options.EvalMaterial/100   * material(pos) +
         options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp)
     );
 }
