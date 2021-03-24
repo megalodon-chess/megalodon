@@ -97,7 +97,7 @@ float end_game(const Position& pos) {
 }
 
 
-float pawn_structure(const U64 wp, const U64 bp) {
+float pawn_structure(const U64& wp, const U64& bp) {
     // Values represent white_count - black_count
     char passed = 0;
     char backward = 0;
