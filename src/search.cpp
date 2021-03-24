@@ -90,7 +90,7 @@ float move_time(const Options& options, const Position& pos, const float& time, 
 }
 
 
-SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta) {
+SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta, const bool& root) {
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
@@ -112,8 +112,13 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
 
     for (auto i = 0; i < moves.size(); i++) {
         Position new_pos = Bitboard::push(pos, moves[i]);
-        SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta);
+        SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false);
         nodes += result.nodes;
+
+        if (root) {
+            cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
+                << " currmovenumber " << i+1 << endl;
+        }
 
         if (pos.turn) {
             if (result.score > best_eval) {
@@ -140,7 +145,7 @@ SearchInfo search(const Options& options, const Position& pos, const int& depth)
     double start = get_time();
 
     for (auto d = 1; d <= depth; d++) {
-        result = dfs(options, pos, d, alpha, beta);
+        result = dfs(options, pos, d, alpha, beta, true);
         double elapse = get_time() - start;
 
         if (d >= 4) {
