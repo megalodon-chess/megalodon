@@ -33,12 +33,6 @@ class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
-EvalCenter: type=spin, default=100, min=0, max=1000, weight (percent) of center control eval.
-EvalKing: type=spin, default=100, min=0, max=1000, weight (percent) of king eval.
-EvalPawn: type=spin, default=100, min=0, max=1000, weight (percent) of pawn eval.
-EvalKnight: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
-EvalRook: type=spin, default=100, min=0, max=1000, weight (percent) of rook eval.
-EvalQueen: type=spin, default=100, min=0, max=1000, weight (percent) of queen eval.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
 
@@ -52,11 +46,5 @@ public:
 
     int Hash;
     int EvalMaterial;
-    int EvalCenter;
-    int EvalKing;
-    int EvalPawn;
-    int EvalKnight;
-    int EvalRook;
-    int EvalQueen;
     bool Chat;
 };

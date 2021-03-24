@@ -32,13 +32,6 @@ using std::string;
 Options::Options() {
     Hash = 16;
     EvalMaterial = 100;
-    EvalMaterial = 100;
-    EvalCenter = 100;
-    EvalKing = 100;
-    EvalPawn = 100;
-    EvalKnight = 100;
-    EvalRook = 100;
-    EvalQueen = 100;
     Chat = false;
 
     set_hash();

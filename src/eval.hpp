@@ -38,14 +38,5 @@ const float OUT_CNT = Bitboard::popcnt(OUT_CENT);
 
 float material(const Position&);
 float total_mat(const Position&);
-float non_pawn_mat(const Position&);
-
-float king(const Options&, const char&, const Location&, const U64&, const U64&);
-float pawns(const Options&, const U64&, const bool&);
-float knights(const Options&, const U64&);
-float rooks(const Options&, const U64&);
-float queens(const Options&, const U64&);
-
-float center_control(const Options&, const Position&, const int&);
 
 float eval(const Options&, const Position&, const bool&, const int&, const U64&);
