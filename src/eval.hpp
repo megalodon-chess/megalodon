@@ -35,17 +35,17 @@ using std::string;
 constexpr int MIDGAME_LIM = 15258;
 constexpr int ENDGAME_LIM = 3915;
 
-constexpr int MG_PAWN = 124;
-constexpr int MG_KNIGHT = 781;
-constexpr int MG_BISHOP = 825;
-constexpr int MG_ROOK = 1276;
-constexpr int MG_QUEEN = 2538;
+constexpr int MG_PAWN   =  124;
+constexpr int MG_KNIGHT =  781;
+constexpr int MG_BISHOP =  825;
+constexpr int MG_ROOK   = 1276;
+constexpr int MG_QUEEN  = 2538;
 
-constexpr int EG_PAWN = 206;
-constexpr int EG_KNIGHT = 854;
-constexpr int EG_BISHOP = 915;
-constexpr int EG_ROOK = 1380;
-constexpr int EG_QUEEN = 2682;
+constexpr int EG_PAWN   =  206;
+constexpr int EG_KNIGHT =  854;
+constexpr int EG_BISHOP =  915;
+constexpr int EG_ROOK   = 1380;
+constexpr int EG_QUEEN  = 2682;
 
 
 float total_mat(const Position&);
