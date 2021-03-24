@@ -100,7 +100,7 @@ float end_game(const float& pawn_struct) {
 }
 
 
-float pawn_structure(const U64& wp, const U64& bp) {
+float pawn_structure(const U64& pawns) {
     // Values represent white_count - black_count
     char passed = 0;
     char backward = 0;
@@ -108,27 +108,18 @@ float pawn_structure(const U64& wp, const U64& bp) {
     char stacked = 0;
 
     // Islands and stacked
-    bool white = false, black = false;  // Whether the current index is a pawn.
+    bool white = false;  // Whether the current index is a pawn.
     for (char i = 0; i < 8; i++) {
-        const U64& w = Bitboard::FILES[i] & wp;
-        const U64& b = Bitboard::FILES[i] & bp;
-        if (w == Bitboard::EMPTY) {
+        const U64& p = Bitboard::FILES[i] & pawns;
+        if (p == Bitboard::EMPTY) {
             white = false;
         } else {
             if (!white) islands++;
             white = true;
         }
-        if (b == Bitboard::EMPTY) {
-            black = false;
-        } else {
-            if (!black) islands--;
-            black = true;
-        }
 
-        const char& wcnt = popcnt(w);
-        const char& bcnt = popcnt(b);
-        if (wcnt > 1) stacked += (wcnt-1);
-        if (bcnt > 1) stacked -= (bcnt-1);
+        const char& cnt = popcnt(p);
+        if (cnt > 1) stacked += (cnt-1);
     }
 
     return (
@@ -153,7 +144,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     float score = 0;
 
     const float mat = material(pos);
-    const float pawn_struct = pawn_structure(pos.wp, pos.bp) - pawn_structure(pos.wp, pos.bp);
+    const float pawn_struct = pawn_structure(pos.wp) - pawn_structure(pos.bp);
 
     // Endgame and middle game are for weighting categories.
     const float mg = middle_game(pawn_struct);
