@@ -95,7 +95,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
     if (depth == 0 || moves.size() == 0) {
-        const int idx = hash(pos) % options.hash_size;
+        const int idx = 0;//hash(pos) % options.hash_size;
         float score;
         if (false && options.hash_evaled[idx]) {  // Disabled until hash algorithm improvement.
             score = options.hash_evals[idx];
