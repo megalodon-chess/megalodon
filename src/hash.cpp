@@ -32,9 +32,10 @@ using std::string;
 
 unsigned int hash(const Position& pos) {
     return (
-        (pos.wp ^ pos.wn)
-        | (pos.wb | pos.wr | pos.wq)
-        | ((pos.wk & pos.bp) ^ (pos.bn | pos.bb ^ pos.br))
-        | (pos.bq | pos.bk)
+        (pos.wp ^ pos.bp)
+        ^ (pos.wk | pos.wq ^ pos.bb)
+        ^ (pos.bk | pos.bq ^ pos.wb)
+        | (pos.wn & pos.wr | pos.wp)
+        | (pos.bn & pos.br | pos.bp)
     ) - (pos.castling*pos.ep_square);
 }
