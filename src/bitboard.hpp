@@ -94,7 +94,6 @@ namespace Bitboard {
     constexpr U64 START_WR = 129ULL;
     constexpr U64 START_WQ = 8ULL;
     constexpr U64 START_WK = 16ULL;
-
     constexpr U64 START_BP = 71776119061217280ULL;
     constexpr U64 START_BN = 4755801206503243776ULL;
     constexpr U64 START_BB = 2594073385365405696ULL;
@@ -106,6 +105,23 @@ namespace Bitboard {
     constexpr U64 CASTLING_BQ = 2017612633061982208ULL;
     constexpr U64 CASTLING_WQ = 28ULL;
     constexpr U64 CASTLING_WK = 112ULL;
+
+    constexpr U64 RANK1 = 255ULL;
+    constexpr U64 RANK2 = 65280ULL;
+    constexpr U64 RANK3 = 16711680ULL;
+    constexpr U64 RANK4 = 4278190080ULL;
+    constexpr U64 RANK5 = 1095216660480ULL;
+    constexpr U64 RANK6 = 280375465082880ULL;
+    constexpr U64 RANK7 = 71776119061217280ULL;
+    constexpr U64 RANK8 = 18374686479671623680ULL;
+    constexpr U64 FILE1 = 72340172838076673ULL;
+    constexpr U64 FILE2 = 144680345676153346ULL;
+    constexpr U64 FILE3 = 289360691352306692ULL;
+    constexpr U64 FILE4 = 578721382704613384ULL;
+    constexpr U64 FILE5 = 1157442765409226768ULL;
+    constexpr U64 FILE6 = 2314885530818453536ULL;
+    constexpr U64 FILE7 = 4629771061636907072ULL;
+    constexpr U64 FILE8 = 9259542123273814144ULL;
 
     const vector<vector<char>> DIR_R = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const vector<vector<char>> DIR_N = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
@@ -120,7 +136,7 @@ namespace Bitboard {
     void unset_bit(U64&, int);
     void set_bit(char&, int);
     void unset_bit(char&, int);
-    bool contains(const vector<vector<char>>&, const vector<char>&);
+    bool in_board(const char& x, const char& y);
     Location first_bit(const U64&);
 
     string piece_at(const Position&, const char&);
@@ -135,9 +151,15 @@ namespace Bitboard {
 
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
-    tuple<bool, U64> pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
-    tuple<U64, char> checkers(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
-    vector<Move> king_moves(const Position&, const U64&, const U64&, const U64&);
+    U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
+    U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
+    vector<Move> king_moves(const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
+    void single_check_moves(vector<Move>&, const Position&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const Location&, const U64&);
+    void no_check_moves(vector<Move>&, const Position&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
+        const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
     vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);
     int quick_eval(const Position&, const Move&, const U64&);

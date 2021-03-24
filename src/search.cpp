@@ -24,6 +24,8 @@
 #include "search.hpp"
 #include "eval.hpp"
 #include "options.hpp"
+#include "utils.hpp"
+#include "hash.hpp"
 
 using std::cin;
 using std::cout;
@@ -35,7 +37,8 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps, int _time, Move _move) {
+SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps,
+        double _time, Move _move, float _alpha, float _beta) {
     depth = _depth;
     seldepth = _seldepth;
     is_mate_score = _is_mate;
@@ -44,6 +47,8 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, i
     nps = _nps;
     time = _time;
     move = _move;
+    alpha = _alpha;
+    beta = _beta;
 }
 
 string SearchInfo::as_string() {
@@ -53,13 +58,13 @@ string SearchInfo::as_string() {
     str += (is_mate_score ? "mate" : "cp");
     str += " " + std::to_string((is_mate_score ? (int)score : (int)(100*score)));
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
-    str += " tbhits 0 time " + std::to_string(time);
-    str += " pv ";// + Bitboard::move_str(move);
+    str += " tbhits 0 time " + std::to_string((int)(1000*time));
+    str += " pv " + Bitboard::move_str(move);
     return str;
 }
 
 
-float moves_left(Options& options, Position pos) {
+float moves_left(const Options& options, const Position& pos) {
     // Estimates moves left based on material and move stack.
     //float mat_left = 0.9 * (total_mat(pos)-7);
     float abs_left = 55 - pos.move_stack.size();
@@ -72,7 +77,7 @@ float moves_left(Options& options, Position pos) {
     return abs_left;
 }
 
-float move_time(Options& options, Position pos, float time, float inc) {
+float move_time(const Options& options, const Position& pos, const float& time, const float& inc) {
     // Calculates move time based on moves left and game evaluation.
     float moves = moves_left(options, pos);
     float time_left = time + inc*moves;
@@ -85,96 +90,68 @@ float move_time(Options& options, Position pos, float time, float inc) {
 }
 
 
-SearchInfo search(Options& options, Position pos, int depth, double max_time) {
-    pos.alpha = MIN;
-    pos.beta = MAX;
-    vector<vector<Position>> nodes = {{pos}};
-    Move best_move;
-    int num_nodes = 1;
+SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta) {
+    U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+    vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-    while (true) {
-        int curr_depth = nodes.size() - 1;
-        int depth_done = true;
-
-        if (nodes.size() < depth) {
-            for (auto& node: nodes[curr_depth]) {
-                if (!node.done) {
-                    depth_done = false;
-                    break;
-                }
-            }
-        }
-
-        if (depth_done) {
-            Position* target_node;
-            bool found = false;
-            for (auto& node: nodes[curr_depth-1]) {
-                if (!node.done) {
-                    target_node = &node;
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found) {
-                target_node->eval = target_node->turn ? MIN : MAX;
-                if (curr_depth != 1) {
-                    target_node->alpha = target_node->parent->alpha;
-                    target_node->beta = target_node->parent->beta;
-                }
-                for (auto& node: nodes[curr_depth]) {
-                    if (curr_depth == depth-1) {
-                        U64 o_attacks = Bitboard::attacked(node, !node.turn);
-                        vector<Move> moves = Bitboard::legal_moves(node, o_attacks);
-                        node.eval = eval(options, node, (moves.size()!=0), curr_depth, o_attacks);
-                    }
-                    if (target_node->turn) {
-                        if (node.eval > target_node->eval) {
-                            target_node->eval = node.eval;
-                            if (curr_depth == 1) best_move = node.move_stack.back();
-                        }
-                        if (node.eval > target_node->alpha) target_node->alpha = node.eval;
-                        if (target_node->beta <= target_node->alpha) break;
-                    } else {
-                        if (node.eval < target_node->eval) {
-                            target_node->eval = node.eval;
-                            if (curr_depth == 1) best_move = node.move_stack.back();
-                        }
-                        if (node.eval < target_node->beta) target_node->beta = node.eval;
-                        if (target_node->beta <= target_node->alpha) break;
-                    }
-                }
-                if (curr_depth != 1) {
-                    if (target_node->alpha > target_node->parent->alpha) target_node->parent->alpha = target_node->alpha;
-                    if (target_node->beta < target_node->parent->beta) target_node->parent->beta = target_node->beta;
-                }
-                target_node->done = true;
-            }
-            nodes.erase(nodes.end()-1);
-
+    if (depth == 0 || moves.size() == 0) {
+        const int idx = 0;//hash(pos) % options.hash_size;
+        float score;
+        if (false && options.hash_evaled[idx]) {  // Disabled until hash algorithm improvement.
+            score = options.hash_evals[idx];
         } else {
-            vector<Position> new_depth;
-            Position target_node;
-            for (auto& node: nodes[curr_depth]) {
-                if (!node.done) {
-                    target_node = node;
-                    break;
-                }
-            }
+            score = eval(options, pos, moves.size()!=0, depth, o_attacks);
+            options.hash_evaled[idx] = true;
+            options.hash_evals[idx] = score;
+        }
+        return SearchInfo(depth, depth, false, score, 1, 0, 0, Move(), alpha, beta);
+    }
+    int nodes = 1;
+    int best_ind = 0;
+    float best_eval = pos.turn ? MIN : MAX;
 
-            U64 o_attacks = Bitboard::attacked(target_node, !target_node.turn);
-            vector<Move> moves = Bitboard::legal_moves(target_node, o_attacks);
-            for (auto& move: moves) {
-                Position new_node = Bitboard::push(target_node, move);
-                new_node.parent = &target_node;
-                new_depth.push_back(new_node);
+    for (auto i = 0; i < moves.size(); i++) {
+        Position new_pos = Bitboard::push(pos, moves[i]);
+        SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta);
+        nodes += result.nodes;
+
+        if (pos.turn) {
+            if (result.score > best_eval) {
+                best_ind = i;
+                best_eval = result.score;
             }
-            nodes.push_back(new_depth);
-            num_nodes += moves.size();
+            if (result.score > alpha) alpha = result.score;
+            if (beta <= alpha) break;
+        } else {
+            if (result.score < best_eval) {
+                best_ind = i;
+                best_eval = result.score;
+            }
+            if (result.score < beta) beta = result.score;
+            if (beta <= alpha) break;
+        }
+    }
+    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, moves[best_ind], alpha, beta);
+}
+
+SearchInfo search(const Options& options, const Position& pos, const int& depth) {
+    SearchInfo result;
+    float alpha = MIN, beta = MAX;
+    double start = get_time();
+
+    for (auto d = 1; d <= depth; d++) {
+        result = dfs(options, pos, d, alpha, beta);
+        double elapse = get_time() - start;
+
+        if (d >= 4) {
+            alpha = result.alpha - 5;
+            beta = result.beta + 5;
         }
 
-        if (nodes[0][0].done) break;
+        result.time = elapse;
+        result.nps = result.nodes / elapse;
+        cout << result.as_string() << endl;
     }
 
-    return SearchInfo(depth, depth, false, nodes[0][0].eval, num_nodes, 0, 0, best_move);
+    return result;
 }

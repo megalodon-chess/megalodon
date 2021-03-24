@@ -19,8 +19,9 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <string>
-#include "uci.hpp"
+#include "hash.hpp"
 #include "bitboard.hpp"
 
 using std::cin;
@@ -29,17 +30,12 @@ using std::endl;
 using std::vector;
 using std::string;
 
-
-void print_info() {
-    cout << "Megalodon v0.2.3 - UCI chess engine" << "\n";
-    cout << "Copyright the Megalodon developers (in AUTHORS file)" << "\n";
-    cout << "https://github.com/megalodon-chess/megalodon" << "\n";
-    cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << endl;
-}
-
-
-int main() {
-    srand(time(NULL));
-    print_info();
-    return loop();
+unsigned int hash(const Position& pos) {
+    return (
+        (pos.wp ^ pos.bp)
+        ^ (pos.wk | pos.wq ^ pos.bb)
+        ^ (pos.bk | pos.bq ^ pos.wb)
+        | (pos.wn & pos.wr | pos.wp)
+        | (pos.bn & pos.br | pos.bp)
+    ) - (pos.castling*pos.ep_square);
 }
