@@ -36,6 +36,21 @@ using Bitboard::popcnt;
 using Bitboard::bit;
 
 
+float total_mat(const Position& pos) {
+    float value = 0;
+    value += popcnt(pos.wp) * 1;
+    value += popcnt(pos.wn) * 3;
+    value += popcnt(pos.wb) * 3;
+    value += popcnt(pos.wr) * 5;
+    value += popcnt(pos.wq) * 9;
+    value += popcnt(pos.bp) * 1;
+    value += popcnt(pos.bn) * 3;
+    value += popcnt(pos.bb) * 3;
+    value += popcnt(pos.br) * 5;
+    value += popcnt(pos.bq) * 9;
+    return value;
+}
+
 float non_pawn_mat(const Position& pos, const bool& mg) {
     float value = 0;
     if (mg) {
