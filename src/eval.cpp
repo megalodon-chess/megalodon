@@ -87,45 +87,39 @@ float phase(const Position& pos) {
 float middle_game(const Position& pos) {
     float score = 0;
 
+    score += pawn_structure(pos.wp) - pawn_structure(pos.bp);
+
     return score;
 }
 
 float end_game(const Position& pos) {
     float score = 0;
 
+    score += pawn_structure(pos.wp) - pawn_structure(pos.bp);
+
     return score;
 }
 
 
-float pawn_structure(const U64& wp, const U64& bp) {
-    // Values represent white_count - black_count
+float pawn_structure(const U64& pawns) {
     char passed = 0;
     char backward = 0;
     char islands = 0;
     char doubled = 0;
 
     // Islands and doubled/tripled
-    bool white = false, black = false;  // Whether the current index is a pawn.
+    bool on = false;
     for (char i = 0; i < 8; i++) {
-        U64 w = Bitboard::FILES[i] & wp;
-        U64 b = Bitboard::FILES[i] & bp;
-        if (w == 0) {
-            white = false;
+        const U64 file = Bitboard::FILES[i] & pawns;
+        if (file == 0) {
+            on = false;
         } else {
-            if (!white) islands++;
-            white = true;
-        }
-        if (b == 0) {
-            black = false;
-        } else {
-            if (!black) islands--;
-            black = true;
+            if (!on) islands++;
+            on = true;
         }
 
-        char wcnt = popcnt(w);
-        char bcnt = popcnt(b);
+        const char wcnt = popcnt(file);
         if (wcnt >= 2) doubled += (wcnt-1);
-        if (bcnt >= 2) doubled -= (bcnt-1);
     }
 
     return (

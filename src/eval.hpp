@@ -51,4 +51,12 @@ constexpr float EG_QUEEN  = 9;
 
 
 float total_mat(const Position&);
+float non_pawn_mat(const Position&, const bool&);
+
+float phase(const Position&);
+float middle_game(const Position&);
+float end_game(const Position&);
+
+float pawn_structure(const U64&);
+
 float eval(const Options&, const Position&, const bool&, const int&, const U64&);
