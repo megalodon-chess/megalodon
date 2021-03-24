@@ -32,8 +32,8 @@ using std::vector;
 using std::string;
 
 
-constexpr int MIDGAME_LIM = 40;
-constexpr int ENDGAME_LIM = 8;
+constexpr int MIDGAME_LIM = 50;
+constexpr int ENDGAME_LIM = 20;
 constexpr int LIM_DIFF = MIDGAME_LIM - ENDGAME_LIM;
 constexpr int MAX_PHASE = 78;
 
