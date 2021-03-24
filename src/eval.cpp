@@ -51,34 +51,23 @@ float total_mat(const Position& pos) {
     return value;
 }
 
-float non_pawn_mat(const Position& pos, const bool& mg) {
+float non_pawn_mat(const Position& pos) {
     float value = 0;
-    if (mg) {
-        value += popcnt(pos.wn) * MG_KNIGHT;
-        value += popcnt(pos.wb) * MG_BISHOP;
-        value += popcnt(pos.wr) * MG_ROOK;
-        value += popcnt(pos.wq) * MG_QUEEN;
-        value += popcnt(pos.bn) * MG_KNIGHT;
-        value += popcnt(pos.bb) * MG_BISHOP;
-        value += popcnt(pos.br) * MG_ROOK;
-        value += popcnt(pos.bq) * MG_QUEEN;
-    } else {
-        value += popcnt(pos.wn) * EG_KNIGHT;
-        value += popcnt(pos.wb) * EG_BISHOP;
-        value += popcnt(pos.wr) * EG_ROOK;
-        value += popcnt(pos.wq) * EG_QUEEN;
-        value += popcnt(pos.bn) * EG_KNIGHT;
-        value += popcnt(pos.bb) * EG_BISHOP;
-        value += popcnt(pos.br) * EG_ROOK;
-        value += popcnt(pos.bq) * EG_QUEEN;
-    }
+    value += popcnt(pos.wn) * 3;
+    value += popcnt(pos.wb) * 3;
+    value += popcnt(pos.wr) * 5;
+    value += popcnt(pos.wq) * 9;
+    value += popcnt(pos.bn) * 3;
+    value += popcnt(pos.bb) * 3;
+    value += popcnt(pos.br) * 5;
+    value += popcnt(pos.bq) * 9;
     return value;
 }
 
 
 float phase(const Position& pos) {
     // 1 = full middlegame, 0 = full endgame.
-    float npm = non_pawn_mat(pos, true);
+    float npm = non_pawn_mat(pos);
     if (npm >= MIDGAME_LIM) return 1;
     else if (npm <= ENDGAME_LIM) return 0;
     else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));

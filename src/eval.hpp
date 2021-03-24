@@ -35,21 +35,8 @@ using std::string;
 constexpr int MIDGAME_LIM = 50;
 constexpr int ENDGAME_LIM = 20;
 
-constexpr float MG_PAWN   = 1;
-constexpr float MG_KNIGHT = 3;
-constexpr float MG_BISHOP = 3;
-constexpr float MG_ROOK   = 5;
-constexpr float MG_QUEEN  = 9;
-
-constexpr float EG_PAWN   = 1;
-constexpr float EG_KNIGHT = 3;
-constexpr float EG_BISHOP = 3;
-constexpr float EG_ROOK   = 5;
-constexpr float EG_QUEEN  = 9;
-
-
 float total_mat(const Position&);
-float non_pawn_mat(const Position&, const bool&);
+float non_pawn_mat(const Position&);
 
 float phase(const Position&);
 float middle_game(const Position&);
