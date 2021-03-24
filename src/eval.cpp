@@ -106,9 +106,9 @@ float pawn_structure(const U64& wp, const U64& bp) {
     char passed = 0;
     char backward = 0;
     char islands = 0;
-    char doubled = 0;
+    char stacked = 0;
 
-    // Islands and doubled/tripled
+    // Islands and stacked
     bool white = false, black = false;  // Whether the current index is a pawn.
     for (char i = 0; i < 8; i++) {
         const U64& w = Bitboard::FILES[i] & wp;
@@ -128,13 +128,13 @@ float pawn_structure(const U64& wp, const U64& bp) {
 
         const char& wcnt = popcnt(w);
         const char& bcnt = popcnt(b);
-        if (wcnt > 1) doubled += (wcnt-1);
-        if (bcnt > 1) doubled -= (bcnt-1);
+        if (wcnt > 1) stacked += (wcnt-1);
+        if (bcnt > 1) stacked -= (bcnt-1);
     }
 
     return (
         -0.3 * islands +
-        -0.2 * doubled
+        -0.2 * stacked
     );
 }
 
