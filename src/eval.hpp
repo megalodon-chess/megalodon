@@ -35,6 +35,8 @@ using std::string;
 // In centipawns
 constexpr int MIDGAME_LIM = 15258;
 constexpr int ENDGAME_LIM = 3915;
+constexpr int LIM_DIFF = MIDGAME_LIM - ENDGAME_LIM;
+constexpr int MAX_PHASE = 128;
 
 constexpr int MG_PAWN   =  124;
 constexpr int MG_KNIGHT =  781;

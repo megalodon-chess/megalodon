@@ -79,7 +79,7 @@ float phase(const Position& pos) {
     float npm = non_pawn_mat(pos, true);
     if (npm < ENDGAME_LIM) npm = ENDGAME_LIM;
     else if (npm > MIDGAME_LIM) npm = MIDGAME_LIM;
-    return ((npm - ENDGAME_LIM) * 128) / (MIDGAME_LIM - ENDGAME_LIM);
+    return ((npm - ENDGAME_LIM) * MAX_PHASE) / LIM_DIFF;
 }
 
 
@@ -112,6 +112,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
 
     float mg = middle_game(pos), eg = end_game(pos);
     float p = phase(pos);
+    score = (mg*p + eg*(MAX_PHASE - p)) / MAX_PHASE;
 
     return score/100; // Because of centipawns
 }
