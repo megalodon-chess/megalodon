@@ -84,7 +84,7 @@ float phase(const Position& pos) {
     float npm = non_pawn_mat(pos);
     if (npm >= MIDGAME_LIM) return 1;
     else if (npm <= ENDGAME_LIM) return 0;
-    else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
+    else return float(npm-ENDGAME_LIM) / LIM_DIFF;
 }
 
 float middle_game(const float& pawn_struct) {
@@ -150,7 +150,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     const float mg = middle_game(pawn_struct);
     const float eg = end_game(pawn_struct);
     const float p = phase(pos);
-    score = (mg*p + eg*(MAX_PHASE - p)) / MAX_PHASE;
+    score = mg*p + eg*(1 - p);
 
     return mat + score;
 }
