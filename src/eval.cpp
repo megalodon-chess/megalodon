@@ -97,6 +97,44 @@ float end_game(const Position& pos) {
 }
 
 
+float pawn_structure(const U64 wp, const U64 bp) {
+    // Values represent white_count - black_count
+    char passed = 0;
+    char backward = 0;
+    char islands = 0;
+    char doubled = 0;
+
+    // Islands and doubled/tripled
+    bool white = false, black = false;  // Whether the current index is a pawn.
+    for (char i = 0; i < 8; i++) {
+        U64 w = Bitboard::FILES[i] & wp;
+        U64 b = Bitboard::FILES[i] & bp;
+        if (w == 0) {
+            white = false;
+        } else {
+            if (!white) islands++;
+            white = true;
+        }
+        if (b == 0) {
+            black = false;
+        } else {
+            if (!black) islands--;
+            black = true;
+        }
+
+        char wcnt = popcnt(w);
+        char bcnt = popcnt(b);
+        if (wcnt >= 2) doubled += (wcnt-1);
+        if (bcnt >= 2) doubled -= (bcnt-1);
+    }
+
+    return (
+        -0.3 * islands +
+        -0.2 * doubled
+    );
+}
+
+
 float eval(const Options& options, const Position& pos, const bool& moves_exist, const int& depth, const U64& o_attacks) {
     if (!moves_exist) {
         bool checked;
