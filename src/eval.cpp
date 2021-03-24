@@ -99,8 +99,8 @@ float pawn_structure(const U64 wp, const U64 bp) {
     }
 
     return (
-        -0.4 * islands +
-        -0.3 * doubled
+        -0.3 * islands +
+        -0.2 * doubled
     );
 }
 
