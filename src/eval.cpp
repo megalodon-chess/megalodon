@@ -56,6 +56,12 @@ float middle_game(const Position& pos) {
     return score;
 }
 
+float end_game(const Position& pos) {
+    float score = 0;
+
+    return score;
+}
+
 
 float eval(const Options& options, const Position& pos, const bool& moves_exist, const int& depth, const U64& o_attacks) {
     if (!moves_exist) {
