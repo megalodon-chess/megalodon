@@ -67,6 +67,14 @@ float total_mat(const Position& pos) {
 }
 
 
+float pawn_structure(const U64 wp, const U64 bp) {
+    // Values represent white_count - black_count
+    char passed = 0;
+    char backward = 0;
+    char islands = 0;
+}
+
+
 float eval(const Options& options, const Position& pos, const bool& moves_exist, const int& depth, const U64& o_attacks) {
     if (!moves_exist) {
         bool checked;
@@ -79,5 +87,9 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
         }
         return 0;
     }
-    return material(pos);
+
+    return (
+        options.EvalMaterial/100   * material(pos) +
+        options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp)
+    );
 }
