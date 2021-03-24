@@ -36,6 +36,21 @@ using Bitboard::popcnt;
 using Bitboard::bit;
 
 
+float material(const Position& pos) {
+    float value = 0;
+    value += popcnt(pos.wp) * 1;
+    value += popcnt(pos.wn) * 3;
+    value += popcnt(pos.wb) * 3;
+    value += popcnt(pos.wr) * 5;
+    value += popcnt(pos.wq) * 9;
+    value -= popcnt(pos.bp) * 1;
+    value -= popcnt(pos.bn) * 3;
+    value -= popcnt(pos.bb) * 3;
+    value -= popcnt(pos.br) * 5;
+    value -= popcnt(pos.bq) * 9;
+    return value;
+}
+
 float total_mat(const Position& pos) {
     float value = 0;
     value += popcnt(pos.wp) * 1;
@@ -51,53 +66,37 @@ float total_mat(const Position& pos) {
     return value;
 }
 
-float non_pawn_mat(const Position& pos, const bool& mg) {
+float non_pawn_mat(const Position& pos) {
     float value = 0;
-    if (mg) {
-        value += popcnt(pos.wn) * MG_KNIGHT;
-        value += popcnt(pos.wb) * MG_BISHOP;
-        value += popcnt(pos.wr) * MG_ROOK;
-        value += popcnt(pos.wq) * MG_QUEEN;
-        value += popcnt(pos.bn) * MG_KNIGHT;
-        value += popcnt(pos.bb) * MG_BISHOP;
-        value += popcnt(pos.br) * MG_ROOK;
-        value += popcnt(pos.bq) * MG_QUEEN;
-    } else {
-        value += popcnt(pos.wn) * EG_KNIGHT;
-        value += popcnt(pos.wb) * EG_BISHOP;
-        value += popcnt(pos.wr) * EG_ROOK;
-        value += popcnt(pos.wq) * EG_QUEEN;
-        value += popcnt(pos.bn) * EG_KNIGHT;
-        value += popcnt(pos.bb) * EG_BISHOP;
-        value += popcnt(pos.br) * EG_ROOK;
-        value += popcnt(pos.bq) * EG_QUEEN;
-    }
+    value += popcnt(pos.wn) * 3;
+    value += popcnt(pos.wb) * 3;
+    value += popcnt(pos.wr) * 5;
+    value += popcnt(pos.wq) * 9;
+    value += popcnt(pos.bn) * 3;
+    value += popcnt(pos.bb) * 3;
+    value += popcnt(pos.br) * 5;
+    value += popcnt(pos.bq) * 9;
     return value;
 }
 
 float phase(const Position& pos) {
-    // MAX_PHASE at start of game, 0 at end
-    float npm = non_pawn_mat(pos, true);
-    if (npm < ENDGAME_LIM) npm = ENDGAME_LIM;
-    else if (npm > MIDGAME_LIM) npm = MIDGAME_LIM;
-    return ((npm - ENDGAME_LIM) * MAX_PHASE) / LIM_DIFF;
+    // 1 = full middlegame, 0 = full endgame.
+    float npm = non_pawn_mat(pos);
+    if (npm >= MIDGAME_LIM) return 1;
+    else if (npm <= ENDGAME_LIM) return 0;
+    else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
 }
 
-
-float middle_game(const Position& pos) {
-    float score = 0;
-
-    score += pawn_structure(pos.wp, pos.bp);
-
-    return score;
+float middle_game(const float& pawn_struct) {
+    return (
+        pawn_struct * 0.9
+    );
 }
 
-float end_game(const Position& pos) {
-    float score = 0;
-
-    score += pawn_structure(pos.wp, pos.bp);
-
-    return score;
+float end_game(const float& pawn_struct) {
+    return (
+        pawn_struct * 1.2
+    );
 }
 
 
@@ -153,9 +152,14 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
     float score = 0;
 
-    const float mg = middle_game(pos), eg = end_game(pos);
+    const float mat = material(pos);
+    const float pawn_struct = pawn_structure(pos.wp, pos.bp) - pawn_structure(pos.wp, pos.bp);
+
+    // Endgame and middle game are for weighting categories.
+    const float mg = middle_game(pawn_struct);
+    const float eg = end_game(pawn_struct);
     const float p = phase(pos);
     score = (mg*p + eg*(MAX_PHASE - p)) / MAX_PHASE;
 
-    return score/100; // Because of centipawns
+    return mat + score;
 }
