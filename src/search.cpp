@@ -97,7 +97,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     if (depth == 0 || moves.size() == 0) {
         const int idx = hash(pos) % options.hash_size;
         float score;
-        if (options.hash_evaled[idx]) {
+        if (false && options.hash_evaled[idx]) {  // Disabled until hash algorithm improvement.
             score = options.hash_evals[idx];
         } else {
             score = eval(options, pos, moves.size()!=0, depth, o_attacks);
