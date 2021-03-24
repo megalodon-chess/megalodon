@@ -34,4 +34,6 @@ using std::string;
 
 float non_pawn_mat(const Position&);
 
+float middle_game(const Position&);
+
 float eval(const Options&, const Position&, const bool&, const int&, const U64&);
