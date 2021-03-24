@@ -75,19 +75,17 @@ float non_pawn_mat(const Position& pos, const bool& mg) {
     return value;
 }
 
-
 float phase(const Position& pos) {
-    // 1 = full middlegame, 0 = full endgame.
+    // MAX_PHASE at start of game, 0 at end
     float npm = non_pawn_mat(pos, true);
-    if (npm >= MIDGAME_LIM) return 1;
-    else if (npm <= ENDGAME_LIM) return 0;
-    else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
+    if (npm < ENDGAME_LIM) npm = ENDGAME_LIM;
+    else if (npm > MIDGAME_LIM) npm = MIDGAME_LIM;
+    return ((npm - ENDGAME_LIM) * MAX_PHASE) / LIM_DIFF;
 }
+
 
 float middle_game(const Position& pos) {
     float score = 0;
-
-    score += pawn_structure(pos.wp) - pawn_structure(pos.bp);
 
     return score;
 }
@@ -95,31 +93,39 @@ float middle_game(const Position& pos) {
 float end_game(const Position& pos) {
     float score = 0;
 
-    score += pawn_structure(pos.wp) - pawn_structure(pos.bp);
-
     return score;
 }
 
 
-float pawn_structure(const U64& pawns) {
+float pawn_structure(const U64& wp, const U64& bp) {
+    // Values represent white_count - black_count
     char passed = 0;
     char backward = 0;
     char islands = 0;
     char doubled = 0;
 
     // Islands and doubled/tripled
-    bool on = false;
+    bool white = false, black = false;  // Whether the current index is a pawn.
     for (char i = 0; i < 8; i++) {
-        const U64 file = Bitboard::FILES[i] & pawns;
-        if (file == 0) {
-            on = false;
+        U64 w = Bitboard::FILES[i] & wp;
+        U64 b = Bitboard::FILES[i] & bp;
+        if (w == 0) {
+            white = false;
         } else {
-            if (!on) islands++;
-            on = true;
+            if (!white) islands++;
+            white = true;
+        }
+        if (b == 0) {
+            black = false;
+        } else {
+            if (!black) islands--;
+            black = true;
         }
 
-        const char wcnt = popcnt(file);
+        char wcnt = popcnt(w);
+        char bcnt = popcnt(b);
         if (wcnt >= 2) doubled += (wcnt-1);
+        if (bcnt >= 2) doubled -= (bcnt-1);
     }
 
     return (
@@ -141,10 +147,11 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
         }
         return 0;
     }
+    float score = 0;
 
     const float mg = middle_game(pos), eg = end_game(pos);
     const float p = phase(pos);
-    const float score = mg*p + eg*(1-p);
+    score = (mg*p + eg*(MAX_PHASE - p)) / MAX_PHASE;
 
-    return score;
+    return score/100; // Because of centipawns
 }

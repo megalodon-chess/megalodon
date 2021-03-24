@@ -34,6 +34,8 @@ using std::string;
 
 constexpr int MIDGAME_LIM = 50;
 constexpr int ENDGAME_LIM = 20;
+constexpr int LIM_DIFF = MIDGAME_LIM - ENDGAME_LIM;
+constexpr int MAX_PHASE = 128;
 
 constexpr float MG_PAWN   = 1;
 constexpr float MG_KNIGHT = 3;
