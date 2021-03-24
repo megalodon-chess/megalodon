@@ -84,7 +84,7 @@ float phase(const Position& pos) {
     float npm = non_pawn_mat(pos);
     if (npm >= MIDGAME_LIM) return 1;
     else if (npm <= ENDGAME_LIM) return 0;
-    else return float(npm-ENDGAME_LIM) / LIM_DIFF;
+    else return (float)(npm-ENDGAME_LIM) / LIM_DIFF;
 }
 
 float middle_game(const float& pawn_struct) {
