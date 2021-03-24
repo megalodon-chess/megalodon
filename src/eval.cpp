@@ -110,8 +110,8 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
     float score = 0;
 
-    float mg = middle_game(pos), eg = end_game(pos);
-    float p = phase(pos);
+    const float mg = middle_game(pos), eg = end_game(pos);
+    const float p = phase(pos);
     score = (mg*p + eg*(MAX_PHASE - p)) / MAX_PHASE;
 
     return score/100; // Because of centipawns
