@@ -35,7 +35,7 @@ using std::string;
 constexpr int MIDGAME_LIM = 50;
 constexpr int ENDGAME_LIM = 20;
 constexpr int LIM_DIFF = MIDGAME_LIM - ENDGAME_LIM;
-constexpr int MAX_PHASE = 128;
+constexpr int MAX_PHASE = 78;
 
 constexpr float MG_PAWN   = 1;
 constexpr float MG_KNIGHT = 3;
@@ -57,6 +57,6 @@ float phase(const Position&);
 float middle_game(const Position&);
 float end_game(const Position&);
 
-float pawn_structure(const U64&);
+float pawn_structure(const U64&, const U64&);
 
 float eval(const Options&, const Position&, const bool&, const int&, const U64&);
