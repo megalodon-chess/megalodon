@@ -129,7 +129,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
 
     SearchInfo result = search(options, pos, depth);
 
-    cout << "bestmove " << Bitboard::move_str(result.move) << endl;
+    cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
     return result.score;
