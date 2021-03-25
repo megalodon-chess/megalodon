@@ -98,7 +98,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     if (depth == 0 || moves.size() == 0) {
         const int idx = options.UseHashTable ? (hash(pos) % options.hash_size) : 0;
         float score;
-        if (options.UseHashTable && options.hash_evaled[idx]) {  // Disabled until hash algorithm improvement.
+        if (options.UseHashTable && options.hash_evaled[idx]) {
             score = options.hash_evals[idx];
         } else {
             score = eval(options, pos, moves.size()!=0, depth, o_attacks);
@@ -112,34 +112,75 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     float best_eval = pos.turn ? MIN : MAX;
     vector<Move> pv;
 
-    for (auto i = 0; i < moves.size(); i++) {
-        Position new_pos = Bitboard::push(pos, moves[i]);
-        SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false);
-        nodes += result.nodes;
+    if (depth == 1) {  // Extra case to reduce function calls.
+        for (auto i = 0; i < moves.size(); i++) {
+            Position new_pos = Bitboard::push(pos, moves[i]);
 
-        if (root) {
-            cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
-                << " currmovenumber " << i+1 << endl;
+            const int idx = options.UseHashTable ? (hash(new_pos) % options.hash_size) : 0;
+            float score;
+            if (options.UseHashTable && options.hash_evaled[idx]) {
+                score = options.hash_evals[idx];
+            } else {
+                score = eval(options, new_pos, moves.size()!=0, depth, o_attacks);
+                options.hash_evaled[idx] = true;
+                options.hash_evals[idx] = score;
+            }
+            nodes++;
+
+            if (root) {
+                cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
+                    << " currmovenumber " << i+1 << endl;
+            }
+
+            if (pos.turn) {
+                if (score > best_eval) {
+                    best_ind = i;
+                    best_eval = score;
+                    pv = {};
+                }
+                if (score > alpha) alpha = score;
+                if (beta <= alpha) break;
+            } else {
+                if (score < best_eval) {
+                    best_ind = i;
+                    best_eval = score;
+                    pv = {};
+                }
+                if (score < beta) beta = score;
+                if (beta <= alpha) break;
+            }
         }
+    } else {
+        for (auto i = 0; i < moves.size(); i++) {
+            Position new_pos = Bitboard::push(pos, moves[i]);
+            SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false);
+            nodes += result.nodes;
 
-        if (pos.turn) {
-            if (result.score > best_eval) {
-                best_ind = i;
-                best_eval = result.score;
-                pv = result.pv;
+            if (root) {
+                cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
+                    << " currmovenumber " << i+1 << endl;
             }
-            if (result.score > alpha) alpha = result.score;
-            if (beta <= alpha) break;
-        } else {
-            if (result.score < best_eval) {
-                best_ind = i;
-                best_eval = result.score;
-                pv = result.pv;
+
+            if (pos.turn) {
+                if (result.score > best_eval) {
+                    best_ind = i;
+                    best_eval = result.score;
+                    pv = result.pv;
+                }
+                if (result.score > alpha) alpha = result.score;
+                if (beta <= alpha) break;
+            } else {
+                if (result.score < best_eval) {
+                    best_ind = i;
+                    best_eval = result.score;
+                    pv = result.pv;
+                }
+                if (result.score < beta) beta = result.score;
+                if (beta <= alpha) break;
             }
-            if (result.score < beta) beta = result.score;
-            if (beta <= alpha) break;
         }
     }
+
     pv.insert(pv.begin(), moves[best_ind]);
     return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta);
 }
