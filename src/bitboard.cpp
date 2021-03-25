@@ -435,6 +435,17 @@ namespace Bitboard {
         }
     }
 
+    int num_attacks(const vector<Move>& moves, const Location& sq) {
+        // Returns the number of attackers attacking a certain square.
+
+        int cnt = 0;
+        const char loc = sq.y*8 + sq.x;
+        for (const auto& move: moves ) {
+            if (move.to == loc) cnt++;
+        }
+        return cnt;
+    }
+
     U64 pinned(const Location& k_pos, const Location& piece_pos, const U64& pawns, const U64& knights, const U64& bishops,
             const U64& rooks, const U64& queens, const U64& same) {
         /*
@@ -993,18 +1004,6 @@ namespace Bitboard {
         if (bit(attacks, move.to)) score -= 1;
 
         return score;
-    }
-
-
-    int attackers(const vector<Move>& moves, const Location& sq) {
-        // Returns the number of attackers attacking a certain square.
-
-        int cnt = 0;
-        const char loc = sq.y*8 + sq.x;
-        for (const auto& move: moves ) {
-            if (move.to == loc) cnt++;
-        }
-        return cnt;
     }
 
 
