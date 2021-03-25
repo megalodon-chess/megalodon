@@ -131,8 +131,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
 }
 
 
-float eval(const Options& options, const Position& pos, const bool& moves_exist, const int& depth, const U64& o_attacks) {
-    if (!moves_exist) {
+float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
+    if (moves.empty()) {
         bool checked;
         if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
         else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;

@@ -45,4 +45,4 @@ float end_game(const float&);
 
 float pawn_structure(const U64&, const U64&);
 
-float eval(const Options&, const Position&, const bool&, const int&, const U64&);
+float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&);
