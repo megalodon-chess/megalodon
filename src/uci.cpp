@@ -127,9 +127,13 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     if (total < 15) depth++;
     if (total < 5) depth++;
 
-    SearchInfo result = search(options, pos, depth);
+    SearchInfo result;
+    if (mode == 1) {
 
-    cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
+    } else { 
+        result = search(options, pos, depth);
+        cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
+    }
 
     chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
     return result.score;
