@@ -111,7 +111,7 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     bool on = false;
     for (char i = 0; i < 8; i++) {
         const U64 file = Bitboard::FILES[i] & s_pawns;
-        if (file == 0) {
+        if (file == Bitboard::EMPTY) {
             on = false;
         } else {
             if (!on) islands++;
