@@ -110,7 +110,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     }
 
     if (mode == 0) {
-        depth = 5;
+        depth = 7;
     } else if (mode == 2) {
         double time;
         wtime /= 1000;
