@@ -42,9 +42,9 @@ def randpos():
 
 def main():
     hashes = []
+    p = subprocess.Popen([ENG_PATH], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     while True:
         boards = [randpos() for i in range(1000)]
-        p = subprocess.Popen([ENG_PATH], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         for board in boards:
             p.stdin.write(f"position startpos moves ".encode())
             for move in board.move_stack:
