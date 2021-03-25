@@ -41,7 +41,7 @@ vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!", "Great job!", "
 vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
-Position parse_pos(string str) {
+Position parse_pos(const string& str) {
     vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
         Position pos = Bitboard::startpos();
@@ -70,13 +70,13 @@ Position parse_pos(string str) {
 }
 
 
-void print_legal_moves(Position pos) {
+void print_legal_moves(const Position& pos) {
     vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
     for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
 }
 
-void chat(Options& options, bool turn, int movect, float score, float prev_score) {
+void chat(const Options& options, const bool& turn, const int& movect, const float& score, const float& prev_score) {
     if (!options.Chat) return;
 
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
@@ -86,7 +86,7 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
-float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
+float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval) {
     int mode = 0, depth, total = total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
     for (auto i = 0; i < parts.size(); i++) {
@@ -134,9 +134,9 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     return result.score;
 }
 
-void perft(Options& options, Position pos, int depth) {
-    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
-    double start = get_time();
+void perft(const Options& options, const Position& pos, const int& depth) {
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const double start = get_time();
     int nodes = 1;
 
     if (moves.size() > 0) {
@@ -154,8 +154,8 @@ void perft(Options& options, Position pos, int depth) {
     cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
 }
 
-void perft_hash(Options& options, Position pos, int knodes) {
-    double time = Perft::hash_perft(pos, knodes);
+void perft_hash(const Options& options, const Position& pos, const int& knodes) {
+    const double time = Perft::hash_perft(pos, knodes);
     cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
 }
 
