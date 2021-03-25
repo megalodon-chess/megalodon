@@ -2,6 +2,20 @@
 
 This page contains release info.
 
+## [Megalodon 0.2.4][v0.2.4]
+
+This release features a hash table and searches a principal variation.
+
+The hash algorithm currently has about 1 collision every 10000 hashes, so it is extremely unreliable.
+We recommend not using the hash table in this version.
+
+To toggle hash table on and off:
+
+```
+setoption name UseHashTable value true
+setoption name UseHashTable value false
+```
+
 ## [Megalodon 0.2.3][v0.2.3]
 
 This release features improved search and move generation.
@@ -102,6 +116,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.2.4]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.2
 [v0.2.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.1
