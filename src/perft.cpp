@@ -23,6 +23,7 @@
 #include <string>
 #include "bitboard.hpp"
 #include "utils.hpp"
+#include "hash.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,7 +33,7 @@ using std::string;
 
 
 namespace Perft {
-    int movegen(Position pos, int depth) {
+    int movegen(const Position& pos, const int& depth) {
         if (depth == 0) {
             return 1;
         } else {
@@ -43,5 +44,11 @@ namespace Perft {
             }
             return count;
         }
+    }
+
+    double hash_perft(const Position& pos, const int& knodes) {
+        double start = get_time();
+        for (auto i = 0; i < knodes*1000; i++) hash(pos);
+        return get_time() - start;
     }
 }

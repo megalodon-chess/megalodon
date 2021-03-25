@@ -155,6 +155,11 @@ void perft(Options& options, Position pos, int depth) {
     cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
 }
 
+void perft_hash(Options& options, Position pos, int knodes) {
+    double time = Perft::hash_perft(pos, knodes);
+    cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
+}
+
 
 int loop() {
     string cmd;
@@ -195,7 +200,14 @@ int loop() {
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
-        else if (cmd == "hash") cout << hash(pos) << endl;
+        else if (startswith(cmd, "hash")) {
+            vector<string> parts = split(cmd, " ");
+            if (parts.size() == 1) {
+                cout << hash(pos) << endl;
+            } else if (parts[1] == "perft" && parts.size() >= 2) {
+                perft_hash(options, pos, std::stoi(parts[2]));
+            }
+        }
         else if (cmd == "eval") {
             U64 attacked = Bitboard::attacked(pos, !pos.turn);
             cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
