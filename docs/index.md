@@ -14,7 +14,7 @@ Play against Megalodon on [Lichess][lichess]!
 * [Releases][releases]
 * [Quick Start][quickstart]
 * [Compiling][compiling]
-* [Current Projects][projects]
+* [Contributing][contrib]
 
 [lichess]: https://lichess.org/@/megalodon-chess
 [latest]: https://github.com/megalodon-chess/megalodon/releases/latest
@@ -22,4 +22,4 @@ Play against Megalodon on [Lichess][lichess]!
 [releases]: https://megalodon-chess.github.io/megalodon/releases
 [quickstart]: https://megalodon-chess.github.io/megalodon/quick-start
 [compiling]: https://megalodon-chess.github.io/megalodon/compiling
-[projects]: https://megalodon-chess.github.io/megalodon/projects
+[contrib]: https://github.com/megalodon-chess/megalodon/blob/main/CONTRIBUTING.md
