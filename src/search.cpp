@@ -179,7 +179,7 @@ SearchInfo search(const Options& options, const Position& pos, const int& depth)
         }
 
         result.time = elapse;
-        result.nps = result.nodes / elapse;
+        result.nps = result.nodes / (elapse+0.001);
         cout << result.as_string() << endl;
     }
 
