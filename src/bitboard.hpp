@@ -147,8 +147,6 @@ namespace Bitboard {
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
-    vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);
-    int quick_eval(const Position&, const Move&, const U64&);
 
     vector<U64*> bb_pointers(Position&);
     Position startpos();
