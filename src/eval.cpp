@@ -124,7 +124,9 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
 
     return (
         -0.3 * islands +
-        -0.2 * doubled
+        -0.2 * doubled +
+         0.4 * passed  +
+        -0.2 * backward
     );
 }
 
