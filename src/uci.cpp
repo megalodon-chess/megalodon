@@ -128,7 +128,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     if (total < 5) depth++;
 
     SearchInfo result;
-    if (mode == 1) result = dfs(options, pos, depth, MIN, MAX, true);
+    if (mode == 1) result = search(options, pos, depth);
     else result = search(options, pos, depth);
 
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
