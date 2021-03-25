@@ -80,10 +80,10 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     if (!options.Chat) return;
 
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
-    if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+    else if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    else if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+    else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
 float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
