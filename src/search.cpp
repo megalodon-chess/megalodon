@@ -105,7 +105,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
         if (false && options.hash_evaled[idx]) {  // Disabled until hash algorithm improvement.
             score = options.hash_evals[idx];
         } else {
-            score = eval(options, pos, moves.size()!=0, depth, o_attacks);
+            score = eval(options, pos, moves, depth, o_attacks);
             options.hash_evaled[idx] = true;
             options.hash_evals[idx] = score;
         }
