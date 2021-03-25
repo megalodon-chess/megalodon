@@ -37,7 +37,7 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, int _nodes, int _nps,
+SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U64 _nodes, int _nps,
         double _time, vector<Move> _pv, float _alpha, float _beta) {
     depth = _depth;
     seldepth = _seldepth;
@@ -107,7 +107,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
         }
         return SearchInfo(depth, depth, false, score, 1, 0, 0, {}, alpha, beta);
     }
-    int nodes = 1;
+    U64 nodes = 1;
     int best_ind = 0;
     float best_eval = pos.turn ? MIN : MAX;
     vector<Move> pv;
@@ -115,7 +115,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     for (auto i = 0; i < moves.size(); i++) {
         const Position new_pos = Bitboard::push(pos, moves[i]);
         float score;
-        int curr_nodes;
+        U64 curr_nodes;
         vector<Move> curr_pv;
         if (depth == 1) {
             const int idx = options.UseHashTable ? (hash(new_pos) % options.hash_size) : 0;
