@@ -964,37 +964,6 @@ namespace Bitboard {
         return moves; //order_moves(pos, moves, attacks);
     }
 
-    vector<Move> order_moves(const Position& pos, const vector<Move>& moves, const U64& attacks) {
-        const char num_moves = moves.size();
-        vector<tuple<Move, int>*> evaluated_moves(num_moves);
-
-        for (char i = 0; i < num_moves; i++) {
-            evaluated_moves[i] = new tuple<Move, int>(moves[i], quick_eval(pos, moves[i], attacks));
-        }
-
-        std::sort(evaluated_moves.begin(), evaluated_moves.end(), [](tuple<Move, int>* a, tuple<Move, int>* b){return get<1>(*a) > get<1>(*b);});
-
-        vector<Move> final_moves(num_moves);
-
-        for (char i = 0; i < num_moves; i++) {
-            final_moves[i] = std::move(get<0>(*evaluated_moves[i]));
-            delete evaluated_moves[i];
-        }
-
-        return final_moves;
-    }
-
-    int quick_eval(const Position& pos, const Move& move, const U64& attacks) {
-        int score = 0;
-        const U64 all = pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
-
-        if (move.is_promo) score += move.promo + 3;
-        if (bit(all, move.to) && (bit(pos.wp, move.from) || bit(pos.bp, move.from))) score += 4;
-        if (bit(attacks, move.to)) score -= 1;
-
-        return score;
-    }
-
 
     vector<U64*> bb_pointers(Position& pos) {
         return {
