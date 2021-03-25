@@ -31,5 +31,6 @@ using std::vector;
 using std::string;
 
 namespace Perft {
-    int movegen(Position, int);
+    int movegen(const Position&, const int&);
+    int hash(const Position&, const int&);
 }
