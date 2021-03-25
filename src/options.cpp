@@ -31,7 +31,7 @@ using std::string;
 
 Options::Options() {
     Hash = 16;
-    UseHashTable = true;
+    UseHashTable = false;
     EvalMaterial = 100;
     Chat = false;
 

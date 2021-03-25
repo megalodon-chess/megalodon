@@ -179,7 +179,7 @@ int loop() {
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default true" << "\n";
+            cout << "option name UseHashTable type check default false" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
