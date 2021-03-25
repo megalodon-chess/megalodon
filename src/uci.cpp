@@ -155,11 +155,9 @@ void perft(Options& options, Position pos, int depth) {
     cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
 }
 
-void perft_hash(Options& options, Position pos, int depth) {
-    double start = get_time();
-    int node_cnt = Perft::hash(pos, depth);
-    double elapse = get_time() - start + 0.001;  // Add 1 ms to prevent divide by 0
-    cout << "info depth " << depth << " nodes " << node_cnt << " nps " << (int)(node_cnt/elapse) << " time " << (int)(elapse*1000) << endl;
+void perft_hash(Options& options, Position pos, int knodes) {
+    double time = Perft::hash_perft(pos, knodes);
+    cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
 }
 
 

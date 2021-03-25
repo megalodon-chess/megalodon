@@ -32,5 +32,5 @@ using std::string;
 
 namespace Perft {
     int movegen(const Position&, const int&);
-    int hash(const Position&, const int&);
+    double hash_perft(const Position&, const int&);
 }

@@ -23,6 +23,7 @@
 #include <string>
 #include "bitboard.hpp"
 #include "utils.hpp"
+#include "hash.hpp"
 
 using std::cin;
 using std::cout;
@@ -45,16 +46,9 @@ namespace Perft {
         }
     }
 
-    int hash(const Position& pos, const int& depth) {
-        if (depth == 0) {
-            return 1;
-        } else {
-            int count = 1;
-            for (auto move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))) {
-                Position new_pos = Bitboard::push(pos, move);
-                count += hash(new_pos, depth-1);
-            }
-            return count;
-        }
+    double hash_perft(const Position& pos, const int& knodes) {
+        double start = get_time();
+        for (auto i = 0; i < knodes*1000; i++) hash(pos);
+        return get_time() - start;
     }
 }
