@@ -30,7 +30,7 @@ using std::endl;
 using std::vector;
 using std::string;
 
-unsigned int hash(const Position& pos) {
+U64 hash(const Position& pos) {
     return (
         (((pos.wp | pos.bp | pos.wk | pos.bk | pos.wq | pos.bq)<<3) & ((pos.wn | pos.wb | pos.bn | pos.bb)<<7)) ^
         (((pos.wp | pos.bp | pos.wr | pos.br | pos.wk | pos.bk)<<2) ^ ((pos.wn | pos.bn | pos.wq | pos.bq)>>3)) &
