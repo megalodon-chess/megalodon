@@ -80,10 +80,10 @@ void chat(Options& options, bool turn, int movect, float score, float prev_score
     if (!options.Chat) return;
 
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
-    if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+    else if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    else if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+    else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
 float go(Options& options, Position& pos, vector<string> parts, float prev_eval) {
@@ -110,7 +110,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     }
 
     if (mode == 0) {
-        depth = 5;
+        depth = 7;
     } else if (mode == 2) {
         double time;
         wtime /= 1000;
@@ -127,10 +127,11 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     if (total < 15) depth++;
     if (total < 5) depth++;
 
-    SearchInfo result = search(options, pos, depth);
+    SearchInfo result;
+    if (mode == 1) result = dfs(options, pos, depth, MIN, MAX, true);
+    else result = search(options, pos, depth);
 
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
-
     chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
     return result.score;
 }
