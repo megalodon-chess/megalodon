@@ -101,7 +101,7 @@ float end_game(const float& pawn_struct) {
 }
 
 
-float pawn_structure(const U64& pawns) {
+float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     char passed = 0;
     char backward = 0;
     char islands = 0;
@@ -110,7 +110,7 @@ float pawn_structure(const U64& pawns) {
     // Islands and doubled/tripled
     bool on = false;
     for (char i = 0; i < 8; i++) {
-        const U64 file = Bitboard::FILES[i] & pawns;
+        const U64 file = Bitboard::FILES[i] & s_pawns;
         if (file == 0) {
             on = false;
         } else {
@@ -143,7 +143,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
 
     const float mat = material(pos);
-    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp)-pawn_structure(pos.bp));
+    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp, pos.bp)-pawn_structure(pos.bp, pos.wp));
 
     // Endgame and middle game are for weighting categories.
     const float mg = middle_game(pawn_struct);
