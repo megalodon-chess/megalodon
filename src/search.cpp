@@ -127,7 +127,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             }
             nodes++;
 
-            if (root) {
+            if (root && (depth >= 6)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
                     << " currmovenumber " << i+1 << endl;
             }
@@ -156,7 +156,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false);
             nodes += result.nodes;
 
-            if (root) {
+            if (root && (depth >= 6)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
                     << " currmovenumber " << i+1 << endl;
             }
