@@ -997,6 +997,8 @@ namespace Bitboard {
 
 
     int attackers(const vector<Move>& moves, const Location& sq) {
+        // Returns the number of attackers attacking a certain square.
+
         int cnt = 0;
         const char loc = sq.y*8 + sq.x;
         for (const auto& move: moves ) {
