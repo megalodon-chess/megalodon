@@ -189,7 +189,7 @@ int loop() {
                 options.set_hash();
             }
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
-            else if (name == "EvalPawnStruct") options.EvalMaterial = std::stoi(value);
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
         }
