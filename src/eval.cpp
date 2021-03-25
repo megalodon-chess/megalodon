@@ -143,7 +143,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
 
     const float mat = material(pos);
-    const float pawn_struct = options.EvalPawnStruct/100 * (pawn_structure(pos.wp)-pawn_structure(pos.bp));
+    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp)-pawn_structure(pos.bp));
 
     // Endgame and middle game are for weighting categories.
     const float mg = middle_game(pawn_struct);
