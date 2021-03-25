@@ -996,6 +996,16 @@ namespace Bitboard {
     }
 
 
+    int attackers(const vector<Move>& moves, const Location& sq) {
+        int cnt = 0;
+        const char loc = sq.y*8 + sq.x;
+        for (const auto& move: moves ) {
+            if (move.to == loc) cnt++;
+        }
+        return cnt;
+    }
+
+
     vector<U64*> bb_pointers(Position& pos) {
         return {
             &pos.wp,
