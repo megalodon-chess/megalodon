@@ -30,12 +30,15 @@ using std::endl;
 using std::vector;
 using std::string;
 
-unsigned int hash(const Position& pos) {
+U64 hash(const Position& pos) {
     return (
-        (pos.wp ^ pos.bp)
-        ^ (pos.wk | pos.wq ^ pos.bb)
-        ^ (pos.bk | pos.bq ^ pos.wb)
-        | (pos.wn & pos.wr | pos.wp)
-        | (pos.bn & pos.br | pos.bp)
-    ) - (pos.castling*pos.ep_square);
+        (((pos.wp | pos.bp | pos.wk | pos.bk | pos.wq | pos.bq)<<3) & ((pos.wn | pos.wb | pos.bn | pos.bb)<<7)) ^
+        (((pos.wp | pos.bp | pos.wr | pos.br | pos.wk | pos.bk)<<2) ^ ((pos.wn | pos.bn | pos.wq | pos.bq)>>3)) &
+        (((pos.wr | pos.bq | pos.wn | pos.bb | pos.wp | pos.br)>>5) & ((pos.wq | pos.bk | pos.wp | pos.bb)<<1)) |
+        (((pos.wq | pos.bp | pos.wn | pos.bq | pos.wk | pos.bp)>>9) & ((pos.wp | pos.br | pos.wn | pos.bb)<<8)) ^
+        (((pos.wn | pos.wq | pos.bq | pos.wq | pos.wk | pos.bn)<<9) ^ ((pos.wb | pos.wq | pos.bk | pos.br)<<2)) |
+        (((pos.wb | pos.wp | pos.bn | pos.bp | pos.wb | pos.bn)>>8) & ((pos.wp | pos.bp | pos.wq | pos.bq)>>2)) ^
+        (((pos.wq | pos.bp | pos.wr | pos.br | pos.wn | pos.bq)>>1) & ((pos.wp | pos.br | pos.wb | pos.wb)>>4)) &
+        (((pos.wk | pos.wn | pos.bq | pos.wp | pos.bk | pos.br)>>3) ^ ((pos.wb | pos.br | pos.bn | pos.bq)<<6))
+    ) - (pos.castling*(pos.ep_square<<(pos.turn ? 1 : 9)));
 }

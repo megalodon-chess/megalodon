@@ -129,7 +129,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
 
     SearchInfo result = search(options, pos, depth);
 
-    cout << "bestmove " << Bitboard::move_str(result.move) << endl;
+    cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
     return result.score;
@@ -155,6 +155,11 @@ void perft(Options& options, Position pos, int depth) {
     cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
 }
 
+void perft_hash(Options& options, Position pos, int knodes) {
+    double time = Perft::hash_perft(pos, knodes);
+    cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
+}
+
 
 int loop() {
     string cmd;
@@ -174,8 +179,9 @@ int loop() {
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
+            cout << "option name UseHashTable type check default false" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name Chat type check default true" << "\n";
+            cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
@@ -187,13 +193,21 @@ int loop() {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
+            else if (name == "UseHashTable") options.UseHashTable = (value == "true");
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
-        else if (cmd == "hash") cout << hash(pos) << endl;
+        else if (startswith(cmd, "hash")) {
+            vector<string> parts = split(cmd, " ");
+            if (parts.size() == 1) {
+                cout << hash(pos) << endl;
+            } else if (parts[1] == "perft" && parts.size() >= 2) {
+                perft_hash(options, pos, std::stoi(parts[2]));
+            }
+        }
         else if (cmd == "eval") {
             U64 attacked = Bitboard::attacked(pos, !pos.turn);
             cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;

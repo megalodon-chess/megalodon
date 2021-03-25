@@ -30,4 +30,4 @@ using std::endl;
 using std::vector;
 using std::string;
 
-unsigned int hash(const Position&);
+U64 hash(const Position&);
