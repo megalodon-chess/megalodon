@@ -111,11 +111,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     vector<vector<char>> s_files(8), o_files(8);       // Store y values of all pawns in file
 
     for (char i = 0; i < 64; i++) {
-        if (bit(s_pawns, i)) {
-            s_files[i&7].push_back(i>>3);
-        } else if (bit(o_pawns, i)) {
-            o_files[i&7].push_back(i>>3);
-        }
+        if      (bit(s_pawns, i)) s_files[i&7].push_back(i>>3);
+        else if (bit(o_pawns, i)) o_files[i&7].push_back(i>>3);
     }
 
     // Islands and doubled/tripled
