@@ -2,6 +2,18 @@
 
 This page contains release info.
 
+## [Megalodon 0.2.5][v0.2.5]
+
+This version is more than four times faster than the previous release.
+
+There are also minor bug fixes, such as increasing the `nodes` max size.
+
+The big speed increase is due to directly calling `eval` instead of `search` when there is one depth left.
+
+The time management algorithm was also improved, and Megalodon will usually not time out or think very long.
+
+You can also set when alpha-beta values are passed, and their margin through `setoption`.
+
 ## [Megalodon 0.2.4][v0.2.4]
 
 This release features a hash table and searches a principal variation.
@@ -116,6 +128,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.2.5]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.3
 [v0.2.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.2
