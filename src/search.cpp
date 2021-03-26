@@ -38,7 +38,7 @@ SearchInfo::SearchInfo() {
 }
 
 SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U64 _nodes, int _nps,
-        double _time, vector<Move> _pv, float _alpha, float _beta) {
+        double _time, vector<Move> _pv, float _alpha, float _beta, bool _full) {
     depth = _depth;
     seldepth = _seldepth;
     is_mate_score = _is_mate;
@@ -49,6 +49,7 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U
     pv = _pv;
     alpha = _alpha;
     beta = _beta;
+    full = _full;
 }
 
 string SearchInfo::as_string() {
@@ -106,15 +107,19 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             options.hash_evaled[idx] = true;
             options.hash_evals[idx] = score;
         }
-        return SearchInfo(depth, depth, false, score, 1, 0, 0, {}, alpha, beta);
+        return SearchInfo(depth, depth, false, score, 1, 0, 0, {}, alpha, beta, true);
     }
 
     U64 nodes = 1;
     int best_ind = 0;
     float best_eval = pos.turn ? MIN : MAX;
     vector<Move> pv;
+    bool full = true;
     for (auto i = 0; i < moves.size(); i++) {
-        if (depth >= 2 && get_time() >= endtime) break;
+        if (depth >= 2 && get_time() >= endtime) {
+            full = false;
+            break;
+        }
 
         const Position new_pos = Bitboard::push(pos, moves[i]);
         const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime);
@@ -145,7 +150,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     }
 
     pv.insert(pv.begin(), moves[best_ind]);
-    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta);
+    return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta, full);
 }
 
 SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime) {
@@ -157,7 +162,7 @@ SearchInfo search(const Options& options, const Position& pos, const int& depth,
     for (auto d = 1; d <= depth; d++) {
         if (get_time() >= end) break;
 
-        result = dfs(options, pos, d, alpha, beta, true, end);
+        SearchInfo curr_result = dfs(options, pos, d, alpha, beta, true, end);
         double elapse = get_time() - start;
 
         if (d >= options.ABPassStart) {
@@ -165,9 +170,10 @@ SearchInfo search(const Options& options, const Position& pos, const int& depth,
             beta = result.beta + options.ABPassMargin/100;
         }
 
-        result.time = elapse;
-        result.nps = result.nodes / (elapse+0.001);
-        cout << result.as_string() << endl;
+        curr_result.time = elapse;
+        curr_result.nps = curr_result.nodes / (elapse+0.001);
+        cout << curr_result.as_string() << endl;
+        if (curr_result.full) result = curr_result;
     }
 
     return result;
