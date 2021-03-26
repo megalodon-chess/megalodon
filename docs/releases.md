@@ -4,6 +4,8 @@ This page contains release info.
 
 ## [Megalodon 0.2.5][v0.2.5]
 
+**THIS RELEASE CONTAINS BUGS**
+
 This version is more than four times faster than the previous release.
 
 There are also minor bug fixes, such as increasing the `nodes` max size.
