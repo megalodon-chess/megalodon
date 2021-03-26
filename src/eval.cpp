@@ -168,6 +168,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
         }
     }
 
+    cout << backward << endl;
+
     return (
         -0.3 * islands +
         -0.2 * doubled +

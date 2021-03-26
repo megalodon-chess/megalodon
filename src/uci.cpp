@@ -180,9 +180,9 @@ int loop() {
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
-            vector<string> parts = split(cmd, " ");
-            string name = parts[2];
-            string value = parts[4];
+            const vector<string> parts = split(cmd, " ");
+            const string name = parts[2];
+            const string value = parts[4];
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
@@ -197,8 +197,8 @@ int loop() {
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
         else if (cmd == "hash") cout << hash(pos) << endl;
         else if (cmd == "eval") {
-            U64 attacked = Bitboard::attacked(pos, !pos.turn);
-            cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
+            const U64 attacked = Bitboard::attacked(pos, !pos.turn);
+            cout << eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
 
@@ -208,7 +208,7 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else prev_eval = go(options, pos, parts, prev_eval);
         }
