@@ -102,7 +102,7 @@ float end_game(const float& pawn_struct) {
 }
 
 
-float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
+float pawn_structure(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir) {
     char passed = 0;
     char backward = 0;
     char islands = 0;
