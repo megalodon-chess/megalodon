@@ -33,6 +33,7 @@ class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
 UseHashTable: type=check, default=false, whether the engine should use hash table.
+PrintCurrMove: type=check, default=true, whether the engine should print currmove info.
 MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 Chat: type=check, default=true, whether the engine should chat with you.
@@ -48,6 +49,7 @@ public:
 
     int Hash;
     bool UseHashTable;
+    bool PrintCurrMove;
     int MoveTimeMult;
     int EvalMaterial;
     bool Chat;

@@ -95,7 +95,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
             mode = 1;
-            depth = std::stof(parts[i+1]) / 1000;
+            depth = std::stoi(parts[i+1]);
         } else if (parts[i] == "wtime") {
             mode = 2;
             wtime = std::stof(parts[i+1]) / 1000;
@@ -180,6 +180,7 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
             cout << "option name UseHashTable type check default false" << "\n";
+            cout << "option name PrintCurrMove type check default true" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name Chat type check default false" << "\n";
@@ -195,6 +196,7 @@ int loop() {
                 options.set_hash();
             }
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
+            else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");

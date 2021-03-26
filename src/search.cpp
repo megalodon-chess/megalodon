@@ -139,7 +139,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
         }
 
         nodes += curr_nodes;
-        if (root && (depth >= 6)) {
+        if (root && options.PrintCurrMove && (depth >= 6)) {
             cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
                 << " currmovenumber " << i+1 << endl;
         }
