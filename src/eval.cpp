@@ -102,7 +102,7 @@ float end_game(const float& pawn_struct) {
 }
 
 
-float pawn_structure(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir) {
+float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     char passed = 0;
     char backward = 0;
     char islands = 0;
@@ -139,6 +139,9 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const char& pawn_di
             const char to_check = *std::min_element(s_files[0].begin(), s_files[0].end());
             const char s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
             const char o_target = *std::min_element(o_files[1].begin(), o_files[1].end());
+            if (s_target > to_check && o_target == s_target) {
+                
+            }
         }
     }
     if (!s_files[7].empty()) {
@@ -170,7 +173,7 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
     const char pawn_dir = pos.turn ? 1 : -1;
 
     const float mat = material(pos);
-    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp, pos.bp, pawn_dir)-pawn_structure(pos.bp, pos.wp, pawn_dir));
+    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp, pos.bp, pos.turn)-pawn_structure(pos.bp, pos.wp, pos.turn));
 
     // Endgame and middle game are for weighting categories.
     const float mg = middle_game(pawn_struct);
