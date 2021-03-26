@@ -183,7 +183,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
                 char to_check, s_target;
                 if (side) {
                     to_check = *std::min_element(s_files[i].begin(), s_files[i].end());
-                    if (std::find(o_left.begin(), o_left.end(), to_check+2) != o_left.end() || std::find(o_right.begin(), o_right.end(), to_check+2) != o_right.end()) {
+                    if (std::find(o_left.begin(), o_left.end(), to_check+2) != o_left.end() ||
+                            std::find(o_right.begin(), o_right.end(), to_check+2) != o_right.end()) {
                         if (s_left.empty()) s_target = 7;
                         else s_target = *std::min_element(s_left.begin(), s_left.end());
                         if (s_target <= to_check) {
@@ -196,7 +197,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
                     }
                 } else {
                     to_check = *std::max_element(s_files[i].begin(), s_files[i].end());
-                    if (std::find(o_left.begin(), o_left.end(), to_check-2) != o_left.end() || std::find(o_right.begin(), o_right.end(), to_check-2) != o_right.end()) {
+                    if (std::find(o_left.begin(), o_left.end(), to_check-2) != o_left.end() ||
+                            std::find(o_right.begin(), o_right.end(), to_check-2) != o_right.end()) {
                         if (s_left.empty()) s_target = 0;
                         else s_target = *std::max_element(s_left.begin(), s_left.end());
                         if (s_target >= to_check) {
