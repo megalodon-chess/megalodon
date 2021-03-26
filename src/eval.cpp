@@ -135,6 +135,11 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     }
 
     // Check outer files
+    /*
+    to_check - The pawn we are currently checking to see if it is backward
+    s_target - The pawn on the same side is the checking pawn, we are checking if this pawn is behind to_check
+    if statement - Checks if there exists a opposite pawn 2 spaces ahead on either side
+    */
     if (!s_files[0].empty()) {
         if (o_files[0].empty() && o_files[1].empty()) passed++;
         else if (!o_files[1].empty()) {
