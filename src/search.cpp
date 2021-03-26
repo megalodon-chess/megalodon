@@ -117,6 +117,8 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
         if (depth >= 2 && get_time() >= endtime) break;
 
         const Position new_pos = Bitboard::push(pos, moves[i]);
+        const U64 curr_attacks = Bitboard::attacked(new_pos, !new_pos.turn);
+        const vector<Move> curr_moves = Bitboard::legal_moves(new_pos, curr_attacks);
         float score;
         U64 curr_nodes;
         vector<Move> curr_pv;
@@ -125,7 +127,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             if (options.UseHashTable && options.hash_evaled[idx]) {
                 score = options.hash_evals[idx];
             } else {
-                score = eval(options, new_pos, moves.size()!=0, depth, o_attacks);
+                score = eval(options, new_pos, curr_moves.size()!=0, depth, curr_attacks);
                 options.hash_evaled[idx] = true;
                 options.hash_evals[idx] = score;
             }
