@@ -181,6 +181,8 @@ int loop() {
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
             cout << "option name UseHashTable type check default false" << "\n";
             cout << "option name PrintCurrMove type check default true" << "\n";
+            cout << "option name ABPassStart type spin default 5 min 1 max 100" << "\n";
+            cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name Chat type check default false" << "\n";
@@ -197,6 +199,8 @@ int loop() {
             }
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
             else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
+            else if (name == "ABPassStart") options.ABPassStart = std::stoi(value);
+            else if (name == "ABPassMargin") options.ABPassMargin = std::stoi(value);
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
