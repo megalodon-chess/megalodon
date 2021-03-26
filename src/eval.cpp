@@ -106,11 +106,14 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     char backward = 0;
     char islands = 0;
     char doubled = 0;
+    vector<U64> s_files, o_files;
 
     // Islands and doubled/tripled
     bool on = false;
     for (char i = 0; i < 8; i++) {
         const U64 file = Bitboard::FILES[i] & s_pawns;
+        s_files.push_back(file);
+        o_files.push_back(Bitboard::FILES[i] & o_pawns);
         if (file == Bitboard::EMPTY) {
             on = false;
         } else {
