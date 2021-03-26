@@ -21,6 +21,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <algorithm>
 #include "bitboard.hpp"
 #include "options.hpp"
 #include "eval.hpp"
@@ -134,6 +135,7 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     // Check outer files
     if (!s_files[0].empty()) {
         if (o_files[0].empty() && o_files[1].empty()) passed++;
+        
     }
     if (!s_files[7].empty()) {
         if (o_files[7].empty() && o_files[6].empty()) passed++;
