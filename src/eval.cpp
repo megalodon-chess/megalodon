@@ -118,24 +118,25 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     // Islands and doubled/tripled
     bool on = false;
     for (char i = 0; i < 8; i++) {
-        const U64 file = Bitboard::FILES[i] & s_pawns;
-        if (file == Bitboard::EMPTY) {
+        const vector<char> s_file = s_files[i], o_file = o_files[i];
+
+        if (s_file.empty()) {
             on = false;
         } else {
             if (!on) islands++;
             on = true;
         }
 
-        const char wcnt = popcnt(file);
+        const char wcnt = s_file.size();
         if (wcnt >= 2) doubled += (wcnt-1);
     }
 
     // Check outer files
-    if (s_files[0] != 0) {
-        if (o_files[0] == 0 && o_files[1] == 0) passed++;
+    if (!s_files[0].empty()) {
+        if (o_files[0].empty() && o_files[1].empty()) passed++;
     }
-    if (s_files[7] != 0) {
-        if (o_files[7] == 0 && o_files[6] == 0) passed++;
+    if (!s_files[7].empty()) {
+        if (o_files[7].empty() && o_files[6].empty()) passed++;
     }
 
     return (
