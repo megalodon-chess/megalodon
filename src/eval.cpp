@@ -21,6 +21,7 @@
 #include <vector>
 #include <queue>
 #include <string>
+#include <set>
 #include <algorithm>
 #include "bitboard.hpp"
 #include "options.hpp"
@@ -28,6 +29,7 @@
 #include "search.hpp"
 
 using std::cin;
+using std::set;
 using std::cout;
 using std::endl;
 using std::vector;
@@ -109,18 +111,17 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     char doubled = 0;
 
     // Create files
-    // todo use set
-    vector<vector<char>> s_files(8), o_files(8);       // Store y values of all pawns in file
+    vector<set<char>> s_files(8), o_files(8);       // Store y values of all pawns in file
 
     for (char i = 0; i < 64; i++) {
-        if      (bit(s_pawns, i)) s_files[i&7].push_back(i>>3);
-        else if (bit(o_pawns, i)) o_files[i&7].push_back(i>>3);
+        if      (bit(s_pawns, i)) s_files[i&7].insert(i>>3);
+        else if (bit(o_pawns, i)) o_files[i&7].insert(i>>3);
     }
 
     // Islands and doubled/tripled
     bool on = false;
     for (char i = 0; i < 8; i++) {
-        const vector<char> s_file = s_files[i], o_file = o_files[i];
+        const set<char> s_file = s_files[i], o_file = o_files[i];
 
         if (s_file.empty()) {
             on = false;
@@ -178,8 +179,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     // Check inner files
     for (char i = 1; i < 7; i++) {
         if (!s_files[i].empty()) {
-            const vector<char> o_left = o_files[i-1], o_right = o_files[i+1];
-            const vector<char> s_left = s_files[i-1], s_right = s_files[i+1];
+            const set<char> o_left = o_files[i-1], o_right = o_files[i+1];
+            const set<char> s_left = s_files[i-1], s_right = s_files[i+1];
             if (o_left.empty() && o_files[i].empty() && o_right.empty()) passed++;
             else if (!o_left.empty() || !o_right.empty()) {
                 char to_check, s_target;
