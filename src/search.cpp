@@ -108,59 +108,39 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
         }
         return SearchInfo(depth, depth, false, score, 1, 0, 0, {}, alpha, beta);
     }
+
     U64 nodes = 1;
     int best_ind = 0;
     float best_eval = pos.turn ? MIN : MAX;
     vector<Move> pv;
-
     for (auto i = 0; i < moves.size(); i++) {
         if (depth >= 2 && get_time() >= endtime) break;
 
         const Position new_pos = Bitboard::push(pos, moves[i]);
         const U64 curr_attacks = Bitboard::attacked(new_pos, !new_pos.turn);
         const vector<Move> curr_moves = Bitboard::legal_moves(new_pos, curr_attacks);
-        float score;
-        U64 curr_nodes;
-        vector<Move> curr_pv;
-        if (depth == 1) {
-            const int idx = options.UseHashTable ? (hash(new_pos) % options.hash_size) : 0;
-            if (options.UseHashTable && options.hash_evaled[idx]) {
-                score = options.hash_evals[idx];
-            } else {
-                score = eval(options, new_pos, curr_moves.size()!=0, depth, curr_attacks);
-                options.hash_evaled[idx] = true;
-                options.hash_evals[idx] = score;
-            }
-            curr_pv = {};
-            curr_nodes = 1;
-        } else {
-            const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime);
-            score = result.score;
-            curr_nodes = result.nodes;
-            curr_pv = result.pv;
-        }
+        const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime);
 
-        nodes += curr_nodes;
         if (root && options.PrintCurrMove && (depth >= 6)) {
             cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
                 << " currmovenumber " << i+1 << endl;
         }
 
         if (pos.turn) {
-            if (score > best_eval) {
+            if (result.score > best_eval) {
                 best_ind = i;
-                best_eval = score;
-                pv = curr_pv;
+                best_eval = result.score;
+                pv = result.pv;
             }
-            if (score > alpha) alpha = score;
+            if (result.score > alpha) alpha = result.score;
             if (beta <= alpha) break;
         } else {
-            if (score < best_eval) {
+            if (result.score < best_eval) {
                 best_ind = i;
-                best_eval = score;
-                pv = curr_pv;
+                best_eval = result.score;
+                pv = result.pv;
             }
-            if (score < beta) beta = score;
+            if (result.score < beta) beta = result.score;
             if (beta <= alpha) break;
         }
     }
