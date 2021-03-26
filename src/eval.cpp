@@ -125,7 +125,13 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
         if (wcnt >= 2) doubled += (wcnt-1);
     }
 
-
+    // Check outer files
+    if (s_files[0] != 0) {
+        if (o_files[0] == 0 && o_files[1] == 0) passed++;
+    }
+    if (s_files[7] != 0) {
+        if (o_files[7] == 0 && o_files[6] == 0) passed++;
+    }
 
     return (
         -0.3 * islands +
