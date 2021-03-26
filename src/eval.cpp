@@ -168,7 +168,6 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
         }
     }
 
-    cout << backward << endl;
 
     return (
         -0.3 * islands +
@@ -195,7 +194,7 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
     const char pawn_dir = pos.turn ? 1 : -1;
 
     const float mat = material(pos);
-    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp, pos.bp, pos.turn)-pawn_structure(pos.bp, pos.wp, pos.turn));
+    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp, pos.bp, pos.turn)-pawn_structure(pos.bp, pos.wp, !pos.turn));
 
     // Endgame and middle game are for weighting categories.
     const float mg = middle_game(pawn_struct);
