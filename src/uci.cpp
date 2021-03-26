@@ -87,47 +87,46 @@ void chat(const Options& options, const bool& turn, const int& movect, const flo
 }
 
 float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval) {
-    int mode = 0, depth, total = total_mat(pos);
+    int mode = 0;
+    int depth;
+    double movetime;
+    const int total = total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
             mode = 1;
-            depth = std::stoi(parts[i+1]);
-            break;
+            depth = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "wtime") {
             mode = 2;
-            wtime = std::stoi(parts[i+1]);
+            wtime = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "btime") {
             mode = 2;
-            btime = std::stoi(parts[i+1]);
+            btime = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "winc") {
             mode = 2;
-            winc = std::stoi(parts[i+1]);
+            winc = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "binc") {
             mode = 2;
-            binc = std::stoi(parts[i+1]);
+            binc = std::stof(parts[i+1]) / 1000;
+        } else if (parts[i] == "movetime") {
+            mode = 3;
+            movetime = std::stof(parts[i+1]) / 1000;
         }
     }
 
     if (mode == 0) {
-        depth = 7;
+        depth = 99;
+        movetime = 10000000;  // About 100 days
+    } else if (mode == 1) {
+        movetime = 10000000;
     } else if (mode == 2) {
-        double time;
-        wtime /= 1000;
-        btime /= 1000;
-        winc /= 1000;
-        binc /= 1000;
-        if (pos.turn) time = move_time(options, pos, wtime, winc);
-        else time = move_time(options, pos, btime, binc);
-
-        if (20 <= time) depth = 6;
-        else if (10 <= time && time < 20) depth = 5;
-        else depth = 4;
+        depth = 99;
+        if (pos.turn) movetime = move_time(options, pos, wtime, winc);
+        else movetime = move_time(options, pos, btime, binc);
     }
-    if (total < 15) depth++;
-    if (total < 5) depth++;
+    movetime *= options.MoveTimeMult / 100;
 
-    const SearchInfo result = search(options, pos, depth);
+    const SearchInfo result = search(options, pos, depth, movetime);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
@@ -181,6 +180,7 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
             cout << "option name UseHashTable type check default false" << "\n";
+            cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
@@ -195,6 +195,7 @@ int loop() {
                 options.set_hash();
             }
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
+            else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;

@@ -91,7 +91,8 @@ float move_time(const Options& options, const Position& pos, const float& time, 
 }
 
 
-SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta, const bool& root) {
+SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta,
+        const bool& root, const double& endtime) {
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
@@ -113,6 +114,8 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     vector<Move> pv;
 
     for (auto i = 0; i < moves.size(); i++) {
+        if (depth >= 2 && get_time() >= endtime) break;
+
         const Position new_pos = Bitboard::push(pos, moves[i]);
         float score;
         U64 curr_nodes;
@@ -129,7 +132,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             curr_pv = {};
             curr_nodes = 1;
         } else {
-            const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false);
+            const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime);
             score = result.score;
             curr_nodes = result.nodes;
             curr_pv = result.pv;
@@ -164,13 +167,16 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta);
 }
 
-SearchInfo search(const Options& options, const Position& pos, const int& depth) {
+SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime) {
     SearchInfo result;
     float alpha = MIN, beta = MAX;
-    double start = get_time();
+    const double start = get_time();
+    const double end = start + movetime;
 
     for (auto d = 1; d <= depth; d++) {
-        result = dfs(options, pos, d, alpha, beta, true);
+        if (get_time() >= end) break;
+
+        result = dfs(options, pos, d, alpha, beta, true, end);
         double elapse = get_time() - start;
 
         if (d >= 4) {
