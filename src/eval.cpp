@@ -151,7 +151,7 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
                 }
             } else {
                 to_check = *std::max_element(s_files[0].begin(), s_files[0].end());
-                if (std::find(o_files[6].begin(), o_files[6].end(), to_check-2) != o_files[6].end()) {
+                if (std::find(o_files[1].begin(), o_files[1].end(), to_check-2) != o_files[1].end()) {
                     if (s_files[0].empty()) s_target = 0;
                     else s_target = *std::max_element(s_files[1].begin(), s_files[1].end());
                     if (s_target < to_check) backward++;
@@ -165,14 +165,18 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
             char to_check, s_target;
             if (side) {
                 to_check = *std::min_element(s_files[7].begin(), s_files[7].end());
-                if (s_files[6].empty()) s_target = 7;
-                else s_target = *std::min_element(s_files[6].begin(), s_files[6].end());
-                if (s_target > to_check) backward++;
+                if (std::find(o_files[6].begin(), o_files[6].end(), to_check+2) != o_files[6].end()) {
+                    if (s_files[7].empty()) s_target = 7;
+                    else s_target = *std::min_element(s_files[6].begin(), s_files[6].end());
+                    if (s_target > to_check) backward++;
+                }
             } else {
                 to_check = *std::max_element(s_files[7].begin(), s_files[7].end());
-                if (s_files[6].empty()) s_target = 0;
-                else s_target = *std::min_element(s_files[6].begin(), s_files[6].end());
-                if (s_target < to_check) backward++;
+                if (std::find(o_files[6].begin(), o_files[6].end(), to_check-2) != o_files[6].end()) {
+                    if (s_files[7].empty()) s_target = 0;
+                    else s_target = *std::max_element(s_files[6].begin(), s_files[6].end());
+                    if (s_target < to_check) backward++;
+                }
             }
         }
     }
