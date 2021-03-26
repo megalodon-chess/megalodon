@@ -54,5 +54,5 @@ constexpr float MIN = -1000000;
 float moves_left(const Options&, const Position&);
 float move_time(const Options&, const Position&, const float&, const float&);
 
-SearchInfo search(const Options&, const Position&, const int&);
-SearchInfo dfs(const Options&, const Position&, const int&, float, float, const bool&);
+SearchInfo search(const Options&, const Position&, const int&, const double&);
+SearchInfo dfs(const Options&, const Position&, const int&, float, float, const bool&, const double&);

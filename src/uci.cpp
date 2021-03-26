@@ -87,7 +87,10 @@ void chat(const Options& options, const bool& turn, const int& movect, const flo
 }
 
 float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval) {
-    int mode = 0, depth, total = total_mat(pos);
+    int mode = 0;
+    int depth;
+    double movetime;
+    const int total = total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
@@ -110,24 +113,17 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     }
 
     if (mode == 0) {
-        depth = 7;
+        depth = 99;
+        movetime = 10000000;  // About 100 days
+    } else if (mode == 1) {
+        movetime = 10000000;
     } else if (mode == 2) {
-        double time;
-        wtime /= 1000;
-        btime /= 1000;
-        winc /= 1000;
-        binc /= 1000;
-        if (pos.turn) time = move_time(options, pos, wtime, winc);
-        else time = move_time(options, pos, btime, binc);
-
-        if (20 <= time) depth = 6;
-        else if (10 <= time && time < 20) depth = 5;
-        else depth = 4;
+        depth = 99;
+        if (pos.turn) movetime = move_time(options, pos, wtime/1000, winc/1000);
+        else movetime = move_time(options, pos, btime/1000, binc/1000);
     }
-    if (total < 15) depth++;
-    if (total < 5) depth++;
 
-    const SearchInfo result = search(options, pos, depth);
+    const SearchInfo result = search(options, pos, depth, movetime);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_stack.size(), result.score, prev_eval);
