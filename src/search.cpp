@@ -117,9 +117,8 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
         if (depth >= 2 && get_time() >= endtime) break;
 
         const Position new_pos = Bitboard::push(pos, moves[i]);
-        const U64 curr_attacks = Bitboard::attacked(new_pos, !new_pos.turn);
-        const vector<Move> curr_moves = Bitboard::legal_moves(new_pos, curr_attacks);
         const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime);
+        nodes += result.nodes;
 
         if (root && options.PrintCurrMove && (depth >= 6)) {
             cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
@@ -162,8 +161,8 @@ SearchInfo search(const Options& options, const Position& pos, const int& depth,
         double elapse = get_time() - start;
 
         if (d >= options.ABPassStart) {
-            alpha = result.alpha - options.ABPassMargin;
-            beta = result.beta + options.ABPassMargin;
+            alpha = result.alpha - options.ABPassMargin/100;
+            beta = result.beta + options.ABPassMargin/100;
         }
 
         result.time = elapse;
