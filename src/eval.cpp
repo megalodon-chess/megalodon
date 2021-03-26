@@ -109,6 +109,7 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     char doubled = 0;
 
     // Create files
+    // todo use set
     vector<vector<char>> s_files(8), o_files(8);       // Store y values of all pawns in file
 
     for (char i = 0; i < 64; i++) {
@@ -136,37 +137,26 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     if (!s_files[0].empty()) {
         if (o_files[0].empty() && o_files[1].empty()) passed++;
         else if (!o_files[1].empty()) {
-            char to_check, s_target, o_target;
-            if (side) {
-                to_check = *std::min_element(s_files[0].begin(), s_files[0].end());       // Is this pawn backward?
-                if (s_files[0].empty()) s_target = 7;                                     // Does it have a neighboring pawn behind it?
-                else s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
-                o_target = *std::min_element(o_files[1].begin(), o_files[1].end());       // Does it have a opposite pawn blocking its path
-                if (s_target > to_check && o_target == s_target + 1) backward++;
-            } else {
-                to_check = *std::max_element(s_files[0].begin(), s_files[0].end());       // Is this pawn backward?
-                if (s_files[0].empty()) s_target = 0;                                     // Does it have a neighboring pawn behind it?
-                else s_target = *std::max_element(s_files[1].begin(), s_files[1].end());
-                o_target = *std::max_element(o_files[1].begin(), o_files[1].end());       // Does it have a opposite pawn blocking its path
-                if (s_target < to_check && o_target == s_target - 1) backward++;
-            }
+            char s_target;
+            const char to_check = *std::min_element(s_files[0].begin(), s_files[0].end());       // Is this pawn backward?
+            const char o_target = *std::min_element(o_files[1].begin(), o_files[1].end());       // Does it have a opposite pawn blocking its path?
+            if (s_files[0].empty()) s_target = side ? 7 : 0;                                     // Does it have a neighboring pawn behind it?
+            else s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
+            if (side) if (s_target > to_check && o_target == s_target + 1) backward++;
+            else      if (s_target < to_check && o_target == s_target - 1) backward++;
         }
     }
     if (!s_files[7].empty()) {
         if (o_files[7].empty() && o_files[6].empty()) passed++;
-        else if (!o_files[6].empty() && !s_files[6].empty()) {
-            char to_check, s_target, o_target;
-            if (side) {
-                to_check = *std::min_element(s_files[7].begin(), s_files[7].end());
-                s_target = *std::min_element(s_files[6].begin(), s_files[6].end());
-                o_target = *std::min_element(o_files[6].begin(), o_files[6].end());
-                if (s_target > to_check && o_target == s_target + 1) backward++;
-            } else {
-                to_check = *std::max_element(s_files[7].begin(), s_files[7].end());
-                s_target = *std::max_element(s_files[6].begin(), s_files[6].end());
-                o_target = *std::max_element(o_files[6].begin(), o_files[6].end());
-                if (s_target < to_check && o_target == s_target - 1) backward++;
-            }
+        else if (!o_files[6].empty()) {
+            char s_target;
+            const char to_check = *std::min_element(s_files[7].begin(), s_files[7].end());       // Is this pawn backward?
+            const char o_target = *std::min_element(o_files[6].begin(), o_files[6].end());       // Does it have a opposite pawn blocking its path?
+            if (s_files[6].empty()) s_target = side ? 7 : 0;                                     // Does it have a neighboring pawn behind it?
+            else s_target = *std::min_element(s_files[6].begin(), s_files[6].end());
+
+            if (side) if (s_target > to_check && o_target == s_target + 1) backward++;
+            else      if (s_target < to_check && o_target == s_target - 1) backward++;
         }
     }
 
