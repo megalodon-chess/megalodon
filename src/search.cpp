@@ -179,9 +179,9 @@ SearchInfo search(const Options& options, const Position& pos, const int& depth,
         result = dfs(options, pos, d, alpha, beta, true, end);
         double elapse = get_time() - start;
 
-        if (d >= 4) {
-            alpha = result.alpha - 5;
-            beta = result.beta + 5;
+        if (d >= options.ABPassStart) {
+            alpha = result.alpha - options.ABPassMargin;
+            beta = result.beta + options.ABPassMargin;
         }
 
         result.time = elapse;
