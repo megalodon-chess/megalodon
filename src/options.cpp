@@ -32,6 +32,7 @@ using std::string;
 Options::Options() {
     Hash = 16;
     UseHashTable = false;
+    MoveTimeMult = 100;
     EvalMaterial = 100;
     Chat = false;
 

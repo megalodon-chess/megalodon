@@ -124,6 +124,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         if (pos.turn) movetime = move_time(options, pos, wtime, winc);
         else movetime = move_time(options, pos, btime, binc);
     }
+    movetime *= options.MoveTimeMult / 100;
 
     const SearchInfo result = search(options, pos, depth, movetime);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
@@ -179,6 +180,7 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
             cout << "option name UseHashTable type check default false" << "\n";
+            cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name Chat type check default false" << "\n";
             cout << "uciok" << endl;
@@ -193,6 +195,7 @@ int loop() {
                 options.set_hash();
             }
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
+            else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
