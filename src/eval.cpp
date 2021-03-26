@@ -140,9 +140,9 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
         else if (!o_files[1].empty()) {
             char to_check, s_target, o_target;
             if (side) {
-                to_check = *std::min_element(s_files[0].begin(), s_files[0].end());       // Is this pawn backward?
+                to_check = *std::min_element(s_files[0].begin(), s_files[0].end());
                 if (std::find(o_files[1].begin(), o_files[1].end(), to_check+2) != o_files[1].end()) {
-                    if (s_files[0].empty()) s_target = 7;                                     // Does it have a neighboring pawn behind it?
+                    if (s_files[0].empty()) s_target = 7;
                     else s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
                     if (s_target > to_check && o_target == s_target + 1) backward++;
                 }
