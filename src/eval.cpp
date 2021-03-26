@@ -135,17 +135,19 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     // Check outer files
     if (!s_files[0].empty()) {
         if (o_files[0].empty() && o_files[1].empty()) passed++;
-        else if (!o_files[1].empty() && !s_files[1].empty()) {
+        else if (!o_files[1].empty()) {
             char to_check, s_target, o_target;
             if (side) {
-                to_check = *std::min_element(s_files[0].begin(), s_files[0].end());
-                s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
-                o_target = *std::min_element(o_files[1].begin(), o_files[1].end());
+                to_check = *std::min_element(s_files[0].begin(), s_files[0].end());       // Is this pawn backward?
+                if (s_files[0].empty()) s_target = 7;                                     // Does it have a neighboring pawn behind it?
+                else s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
+                o_target = *std::min_element(o_files[1].begin(), o_files[1].end());       // Does it have a opposite pawn blocking its path
                 if (s_target > to_check && o_target == s_target + 1) backward++;
             } else {
-                to_check = *std::max_element(s_files[0].begin(), s_files[0].end());
-                s_target = *std::max_element(s_files[1].begin(), s_files[1].end());
-                o_target = *std::max_element(o_files[1].begin(), o_files[1].end());
+                to_check = *std::max_element(s_files[0].begin(), s_files[0].end());       // Is this pawn backward?
+                if (s_files[0].empty()) s_target = 0;                                     // Does it have a neighboring pawn behind it?
+                else s_target = *std::max_element(s_files[1].begin(), s_files[1].end());
+                o_target = *std::max_element(o_files[1].begin(), o_files[1].end());       // Does it have a opposite pawn blocking its path
                 if (s_target < to_check && o_target == s_target - 1) backward++;
             }
         }
@@ -168,6 +170,7 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
         }
     }
 
+    // Check inner files
     for (char i = 1; i < 7; i++) {
         if (!s_files[i].empty()) {
             if (o_files[i-1].empty() && o_files[i].empty() && o_files[i+1].empty()) passed++;
