@@ -179,23 +179,33 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
             const vector<char> o_left = o_files[i-1], o_right = o_files[i+1];
             if (o_left.empty() && o_files[i].empty() && o_right.empty()) passed++;
             else if (!o_left.empty() || !o_right.empty()) {
-                char to_check, s_target1, s_target2;
+                char to_check, s_target;
                 if (side) {
                     to_check = *std::min_element(s_files[i].begin(), s_files[i].end());
                     if (std::find(o_left.begin(), o_left.end(), to_check+2) != o_left.end() || std::find(o_right.begin(), o_right.end(), to_check+2) != o_right.end()) {
-                        if (s_files[i-1].empty()) s_target1 = 7;
-                        else s_target1 = *std::min_element(s_files[i-1].begin(), s_files[i-1].end());
-                        if (s_files[i+1].empty()) s_target2 = 7;
-                        else s_target2 = *std::min_element(s_files[i+1].begin(), s_files[i+1].end());
-                        if (s_target1 > to_check && s_target2 > to_check) backward++;
+                        if (s_files[i-1].empty()) s_target = 7;
+                        else s_target = *std::min_element(s_files[i-1].begin(), s_files[i-1].end());
+                        if (s_target <= to_check) {
+                            backward++;
+                            continue;
+                        }
+                        if (s_files[i+1].empty()) s_target = 7;
+                        else s_target = *std::min_element(s_files[i+1].begin(), s_files[i+1].end());
+                        if (s_target <= to_check) backward++;
                     }
                 } else {
                     to_check = *std::max_element(s_files[i].begin(), s_files[i].end());
-                    if (s_files[i-1].empty()) s_target1 = 0;
-                    else s_target1 = *std::max_element(s_files[i-1].begin(), s_files[i-1].end());
-                    if (s_files[i+1].empty()) s_target2 = 0;
-                    else s_target2 = *std::max_element(s_files[i+1].begin(), s_files[i+1].end());
-                    if (s_target1 < to_check && s_target2 < to_check) backward++;
+                    if (std::find(o_left.begin(), o_left.end(), to_check-2) != o_left.end() || std::find(o_right.begin(), o_right.end(), to_check-2) != o_right.end()) {
+                        if (s_files[i-1].empty()) s_target = 0;
+                        else s_target = *std::max_element(s_files[i-1].begin(), s_files[i-1].end());
+                        if (s_target >= to_check) {
+                            backward++;
+                            continue;
+                        }
+                        if (s_files[i+1].empty()) s_target = 0;
+                        else s_target = *std::max_element(s_files[i+1].begin(), s_files[i+1].end());
+                        if (s_target >= to_check) backward++;
+                    }
                 }
             }
         }
