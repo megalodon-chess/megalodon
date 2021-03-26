@@ -16,6 +16,27 @@ Play against Megalodon on [Lichess][lichess]!
 * [Compiling][compiling]
 * [Contributing][contrib]
 
+## Version 1.0.0
+
+Megalodon 1.0.0 is scheduled to be released on March 31st.
+
+### Goals
+
+* ELO: 1200
+* Nodes per second: 30000
+* Bitboard move generation
+* Breadth first search
+* Minimax move picking with alpha-beta pruning
+* Prune lowest N% branches (bad branches), N defined by user option
+
+### Checkpoints
+
+* v0.1.0: Working move generation and DFS minimax.
+* v0.1.x: Move generation optimization.
+* v0.2.x: BFS move search with alpha-beta and bad branch pruning.
+* v0.3.x: Evaluation improvements.
+* v0.4.x: Final optimizations and prepare v1.0.0 release.
+
 [lichess]: https://lichess.org/@/megalodon-chess
 [latest]: https://github.com/megalodon-chess/megalodon/releases/latest
 [about]: https://megalodon-chess.github.io/megalodon/about
