@@ -136,11 +136,16 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     if (!s_files[0].empty()) {
         if (o_files[0].empty() && o_files[1].empty()) passed++;
         else if (!o_files[1].empty() && !s_files[1].empty()) {
-            const char to_check = *std::min_element(s_files[0].begin(), s_files[0].end());
-            const char s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
-            const char o_target = *std::min_element(o_files[1].begin(), o_files[1].end());
-            if (s_target > to_check && o_target == s_target) {
-                
+            char to_check, s_target, o_target;
+            if (side) {
+                to_check = *std::min_element(s_files[0].begin(), s_files[0].end());
+                s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
+                o_target = *std::min_element(o_files[1].begin(), o_files[1].end());
+                if (s_target > to_check && o_target == s_target) {
+                    
+                }
+            } else {
+
             }
         }
     }
