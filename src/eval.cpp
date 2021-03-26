@@ -135,7 +135,11 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     // Check outer files
     if (!s_files[0].empty()) {
         if (o_files[0].empty() && o_files[1].empty()) passed++;
-        
+        else if (!o_files[1].empty() && !s_files[1].empty()) {
+            const char to_check = *std::min_element(s_files[0].begin(), s_files[0].end());
+            const char s_target = *std::min_element(s_files[1].begin(), s_files[1].end());
+            const char o_target = *std::min_element(o_files[1].begin(), o_files[1].end());
+        }
     }
     if (!s_files[7].empty()) {
         if (o_files[7].empty() && o_files[6].empty()) passed++;
