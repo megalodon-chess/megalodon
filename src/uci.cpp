@@ -95,20 +95,22 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
             mode = 1;
-            depth = std::stoi(parts[i+1]);
-            break;
+            depth = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "wtime") {
             mode = 2;
-            wtime = std::stoi(parts[i+1]);
+            wtime = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "btime") {
             mode = 2;
-            btime = std::stoi(parts[i+1]);
+            btime = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "winc") {
             mode = 2;
-            winc = std::stoi(parts[i+1]);
+            winc = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "binc") {
             mode = 2;
-            binc = std::stoi(parts[i+1]);
+            binc = std::stof(parts[i+1]) / 1000;
+        } else if (parts[i] == "movetime") {
+            mode = 3;
+            movetime = std::stof(parts[i+1]) / 1000;
         }
     }
 
@@ -119,8 +121,8 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         movetime = 10000000;
     } else if (mode == 2) {
         depth = 99;
-        if (pos.turn) movetime = move_time(options, pos, wtime/1000, winc/1000);
-        else movetime = move_time(options, pos, btime/1000, binc/1000);
+        if (pos.turn) movetime = move_time(options, pos, wtime, winc);
+        else movetime = move_time(options, pos, btime, binc);
     }
 
     const SearchInfo result = search(options, pos, depth, movetime);
