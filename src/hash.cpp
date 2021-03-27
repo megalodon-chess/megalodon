@@ -46,10 +46,10 @@ namespace Hash {
         const U64 u4 = pos.wk ^ pos.bn | u1;
         const U64 u5 = ((U64)c1) << abs(c2-c3);
         const U64 u6 = pos.wn | pos.bb | pos.wr | pos.br;
-        const U64 u7 =  ((S2<<c1) + u4) ^ ((S3<<c3) + u1) + pos.wn - pos.br + pos.wp - pos.wk;
-        const U64 u8 =  ((S7<<c4) + u6) | ((S5<<c3) + u2) + pos.bb - pos.wk + pos.bp - pos.wn;
-        const U64 u9 =  ((S5<<c2) + u1) ^ ((S7<<c1) + u2) + pos.wb - pos.bk + pos.wn - pos.wp;
-        const U64 u10 = ((S2<<c2) + u3) | ((S3<<c4) + u6) + pos.bq - pos.wq + pos.bn - pos.bp;
+        const U64 u7 =  ((S2<<RANDC[c1]) + u4) ^ ((S3<<RANDC[c3]) + u1) + pos.wn - pos.br + pos.wp - pos.wk;
+        const U64 u8 =  ((S7<<RANDC[c4]) + u6) | ((S5<<RANDC[c3]) + u2) + pos.bb - pos.wk + pos.bp - pos.wn;
+        const U64 u9 =  ((S5<<RANDC[c2]) + u1) ^ ((S7<<RANDC[c1]) + u2) + pos.wb - pos.bk + pos.wn - pos.wp;
+        const U64 u10 = ((S2<<RANDC[c2]) + u3) | ((S3<<RANDC[c4]) + u6) + pos.bq - pos.wq + pos.bn - pos.bp;
         return (u7>>c1) + (u8>>c2) + (u9>>c3) + (u10>>c4);
     }
 }
