@@ -10,7 +10,7 @@ To compile Megalodon from it's source code, follow these steps:
 
 ## Compiling With Automated Bash Script
 
-Requires g++, CMake and GNU Make.
+Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
