@@ -21,7 +21,7 @@ cd megalodon/
 
 ## Compiling With CMake and GNU Make
 
-Requires g++, CMake and GNU Make.
+Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
