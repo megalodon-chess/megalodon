@@ -33,5 +33,13 @@ using std::string;
 
 namespace Hash {
     U64 hash(const Position& pos) {
+        const unsigned char c1 = pos.turn ? 5 : 41;
+        const unsigned char c1 = pos.turn ? 23 : 1;
+        const unsigned char c1 = pos.turn ? 24 : 58;
+        const unsigned short s1 = RAND[pos.ep_square + c1];
+        const unsigned short s2 = pos.turn ? S3 : S7;
+        const unsigned short s3 = pos.turn ? S5 : S2;
+        const U64 u1 = pos.wp >> c1;
+        const U64 u2 = pos.bp ^ u1;
     }
 }
