@@ -37,7 +37,7 @@ namespace Hash {
         const unsigned char c2 = pos.turn ? 23 : 1;
         const unsigned char c3 = pos.turn ? 29 : 54;
         const unsigned char c4 = pos.turn ? 11 : 36;
-        const unsigned short s1 = RAND[pos.ep_square + c1];
+        const unsigned short s1 = RANDS[pos.ep_square + c1];
         const unsigned short s2 = pos.turn ? S3 : S7;
         const unsigned short s3 = pos.turn ? S5 : S2;
         const U64 u1 = pos.wp >> c1;
