@@ -116,9 +116,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
     // Islands and doubled/tripled
     bool on = false;
     for (auto i = 0; i < 8; i++) {
-        if (s_files[i] == 0) {
-            on = false;
-        } else {
+        if (s_files[i] == 0) on = false;
+        else {
             if (!on) islands++;
             on = true;
         }
