@@ -40,10 +40,10 @@ namespace Hash {
         const unsigned short s1 = RANDS[pos.ep_square + c1];
         const unsigned short s2 = pos.turn ? S3 : S7;
         const unsigned short s3 = pos.turn ? S5 : S2;
-        const U64 u1 = pos.wp >> c1;
-        const U64 u2 = pos.bp ^ u1;
-        const U64 u3 = pos.wn ^ pos.bq | u2;
-        const U64 u4 = pos.wk ^ pos.bn | u1;
+        const U64 u1 = (pos.wp ^ pos.bp) << RANDC[c1];
+        const U64 u2 = (pos.bp ^ pos.wn) << RANDC[c2];
+        const U64 u3 = (pos.wn ^ pos.bq) << RANDC[c3];
+        const U64 u4 = (pos.wk ^ pos.bn) << RANDC[c4];
         const U64 u5 = ((U64)c1) << abs(c2-c3);
         const U64 u6 = pos.wn | pos.bb | pos.wr | pos.br;
         const U64 u7 =  ((S2<<RANDC[c1]) + u4) ^ ((S3<<RANDC[c3]) + u1) + pos.wn - pos.br + pos.wp - pos.wk;
