@@ -34,12 +34,22 @@ using std::string;
 namespace Hash {
     U64 hash(const Position& pos) {
         const unsigned char c1 = pos.turn ? 5 : 41;
-        const unsigned char c1 = pos.turn ? 23 : 1;
-        const unsigned char c1 = pos.turn ? 24 : 58;
+        const unsigned char c2 = pos.turn ? 23 : 1;
+        const unsigned char c3 = pos.turn ? 29 : 54;
+        const unsigned char c4 = pos.turn ? 11 : 36;
         const unsigned short s1 = RAND[pos.ep_square + c1];
         const unsigned short s2 = pos.turn ? S3 : S7;
         const unsigned short s3 = pos.turn ? S5 : S2;
         const U64 u1 = pos.wp >> c1;
         const U64 u2 = pos.bp ^ u1;
+        const U64 u3 = pos.wn ^ pos.bq | u2;
+        const U64 u4 = pos.wk ^ pos.bn | u1;
+        const U64 u5 = ((U64)c1) << abs(c2-c3);
+        const U64 u6 = pos.wn | pos.bb | pos.wr | pos.br;
+        const U64 u7 =  ((S2<<c1) + u4) ^ ((S3<<c3) + u1) + pos.wn - pos.br + pos.wp - pos.wk;
+        const U64 u8 =  ((S7<<c4) + u6) | ((S5<<c3) + u2) + pos.bb - pos.wk + pos.bp - pos.wn;
+        const U64 u9 =  ((S5<<c2) + u1) ^ ((S7<<c1) + u2) + pos.wb - pos.bk + pos.wn - pos.wp;
+        const U64 u10 = ((S2<<c2) + u3) | ((S3<<c4) + u6) + pos.bq - pos.wq + pos.bn - pos.bp;
+        return (u7>>c1) + (u8>>c2) + (u9>>c3) + (u10>>c4);
     }
 }
