@@ -7,6 +7,7 @@ You will need a separate chess GUI program. Some common ones are listed below:
 
 * Arena Chess
 * Lucas Chess
+* Cutechess
 
 The Megalodon Developers are working on another chess GUI, [Hammerhead][hammerhead], but as of now it is not functional.
 

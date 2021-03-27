@@ -31,6 +31,11 @@ using std::string;
 
 Options::Options() {
     Hash = 16;
+    UseHashTable = false;
+    PrintCurrMove = true;
+    ABPassStart = 5;
+    ABPassMargin = 500;
+    MoveTimeMult = 100;
     EvalMaterial = 100;
     Chat = false;
 

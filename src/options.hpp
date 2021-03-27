@@ -32,6 +32,11 @@ using std::string;
 class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
+UseHashTable: type=check, default=false, whether the engine should use hash table.
+PrintCurrMove: type=check, default=true, whether the engine should print currmove info.
+ABPassStart: type=spin, default=5, min=1, max=100, start depth where alpha and beta values are passed to next iteration.
+ABPassMargin: type=spin, default=500, min=0, max=10000, add/sub offset of alpha and beta.
+MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
@@ -45,6 +50,11 @@ public:
     int hash_size;
 
     int Hash;
+    bool UseHashTable;
+    bool PrintCurrMove;
+    int ABPassStart;
+    int ABPassMargin;
+    int MoveTimeMult;
     int EvalMaterial;
     bool Chat;
 };
