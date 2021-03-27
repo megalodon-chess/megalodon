@@ -44,7 +44,7 @@ def main():
     hashes = []
     while True:
         p = subprocess.Popen([ENG_PATH], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        boards = [randpos() for i in range(1000)]
+        boards = [randpos() for i in range(10000)]
         for board in boards:
             p.stdin.write(f"position startpos moves ".encode())
             for move in board.move_stack:
@@ -67,6 +67,7 @@ def main():
         if len(hashes) != len(set(hashes)):
             print(f"Found collision, tried {len(hashes)} positions.")
             break
+        print(f"Tried {len(hashes)} positions.")
 
 
 main()
