@@ -30,4 +30,11 @@ using std::endl;
 using std::vector;
 using std::string;
 
-U64 hash(const Position&);
+namespace Hash {
+    constexpr unsigned short S2 = 41421;  // First 5 digits of sqrt(2) % 65536
+    constexpr unsigned short S3 =  7769;  // First 5 digits of sqrt(3) % 65536
+    constexpr unsigned short S5 = 23606;  // First 5 digits of sqrt(5) % 65536
+    constexpr unsigned short S7 = 64575;  // First 5 digits of sqrt(7) % 65536
+
+    U64 hash(const Position&);
+}
