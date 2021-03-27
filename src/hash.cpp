@@ -33,7 +33,7 @@ using std::string;
 
 namespace Hash {
     U64 hash(const Position& pos) {
-        const unsigned char c1 = (pos.wp%43) + (pos.bp%137) + 31*pos.turn;
+        const unsigned char c1 = (pos.wp%43) + (pos.bp%137) + ((pos.wn|pos.wb|pos.bn|pos.bb|pos.wr|pos.br)%44) + 31*pos.turn;
         const unsigned char c2 = ((pos.wn<<c1) & 255ULL) + RANDC[c1];
         const unsigned char c3 = ((pos.bp<<c2) & 255ULL) + RANDC[c2];
         const unsigned char c4 = ((pos.wr<<c3) & 255ULL) + RANDC[c3];
