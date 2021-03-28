@@ -137,8 +137,8 @@ float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir) {
     int blocked = 0;
 
     for (char i = 0; i < 64; i++) {
-        if (bit(s_pawns, i) && (bit(o_pawns, i-8) || (bit(o_pawns, i-17) && bit(o_pawns, i-15)))) blocked++;
-        if (bit(o_pawns, i) && (bit(s_pawns, i+8) || (bit(s_pawns, i+15) && bit(s_pawns, i+17)))) blocked++;
+        if (bit(s_pawns, i) && (bit(o_pawns, i-8*pawn_dir) || (bit(o_pawns, i-17*pawn_dir) && bit(o_pawns, i-15*pawn_dir)))) blocked++;
+        if (bit(o_pawns, i) && (bit(s_pawns, i+8*pawn_dir) || (bit(s_pawns, i+15*pawn_dir) && bit(s_pawns, i+17*pawn_dir)))) blocked++;
     }
 
     return space;
