@@ -88,10 +88,6 @@ float phase(const Position& pos) {
     else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
 }
 
-float space(const U64& s_pawns, const U64& o_pawns) {
-    float space = 0;
-    return space;
-}
 
 float middle_game(const float& pawn_struct) {
     return (
@@ -133,6 +129,11 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
          0.4 * passed  +
         -0.2 * backward
     );
+}
+
+float space(const U64& s_pawns, const U64& o_pawns) {
+    float space = 0;
+    return space;
 }
 
 
