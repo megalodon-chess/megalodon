@@ -133,6 +133,14 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
 
 float space(const U64& s_pawns, const U64& o_pawns) {
     float space = 0;
+    int pawn_cnt = popcnt(s_pawns) + popcnt(o_pawns);
+    int blocked = 0;
+
+    for (char i = 0; i < 64; i++) {
+        if (bit(s_pawns, i) && (bit(o_pawns, i-8) || (bit(o_pawns, i-17) && bit(o_pawns, i-15)))) blocked++;
+        if (bit(o_pawns, i) && (bit(s_pawns, i+8) || (bit(s_pawns, i+15) && bit(s_pawns, i+17)))) blocked++;
+    }
+
     return space;
 }
 
