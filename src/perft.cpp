@@ -24,6 +24,7 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "hash.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
@@ -49,6 +50,15 @@ namespace Perft {
     double hash_perft(const Position& pos, const int& knodes) {
         double start = get_time();
         for (auto i = 0; i < knodes*1000; i++) hash(pos);
+        return get_time() - start;
+    }
+
+    double eval_perft(const Options& options, const Position& pos, const int& knodes) {
+        U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+
+        double start = get_time();
+        for (auto i = 0; i < knodes*1000; i++) eval(options, pos, !moves.empty(), 0, o_attacks);
         return get_time() - start;
     }
 }
