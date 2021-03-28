@@ -170,6 +170,7 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
         }
         return 0;
     }
+    cout << space(pos.wp, pos.bp, )
 
     const float mat = material(pos);
     const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp, pos.bp)-pawn_structure(pos.bp, pos.wp));
