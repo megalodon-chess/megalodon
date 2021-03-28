@@ -243,7 +243,7 @@ int loop() {
             else prev_eval = go(options, pos, parts, prev_eval);
         }
         else if (cmd == "stop");
-        else if (cmd.size() > 0) cout << "Unknown command: " << cmd << endl;
+        else if (cmd.size() > 0) std::cerr << "Unknown command: " << cmd << endl;
     }
 
     delete options.hash_evaled;
