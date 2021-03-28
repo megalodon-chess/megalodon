@@ -146,10 +146,15 @@ float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const 
     for (char x = 2; x < 6; x++) {
         for (char y = side ? 1 : 2; y < side ? 6 : 7; y++) {
             const char loc = y<<3 + x;
+            if (!bit(s_pawns, loc) && !bit(o_pawns, loc+17*pawn_dir) && !bit(o_pawns, loc+15*pawn_dir)) {
+                space++;
+                if (bit(s_pawns, loc-8*pawn_dir) || bit(s_pawns, loc-16*pawn_dir) || bit(s_pawns, loc-24*pawn_dir) &&
+                    Bitboard::num_attacks(moves, Location(loc)) == 0) space++;
+            }
         }
     }
 
-    return space;
+    return space*weight*weight/16;
 }
 
 
