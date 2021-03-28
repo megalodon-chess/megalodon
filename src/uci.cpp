@@ -42,7 +42,7 @@ const vector<string> GAME_END{"Good game!", "I look forward to playing again.", 
 
 
 Position parse_pos(string str) {
-    vector<string> parts = split(str, " ");
+    const vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
         Position pos = Bitboard::startpos();
         if (parts.size() > 3 && parts[2] == "moves") {
@@ -71,7 +71,7 @@ Position parse_pos(string str) {
 
 
 void print_legal_moves(Position pos) {
-    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
     for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
 }
@@ -127,7 +127,7 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
     if (total < 15) depth++;
     if (total < 5) depth++;
 
-    SearchInfo result = search(options, pos, depth);
+    const SearchInfo result = search(options, pos, depth);
 
     cout << "bestmove " << Bitboard::move_str(result.move) << endl;
 
@@ -136,8 +136,8 @@ float go(Options& options, Position& pos, vector<string> parts, float prev_eval)
 }
 
 void perft(Options& options, Position pos, int depth) {
-    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
-    double start = get_time();
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const double start = get_time();
     int nodes = 1;
 
     if (moves.size() > 0) {
@@ -180,9 +180,9 @@ int loop() {
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
-            vector<string> parts = split(cmd, " ");
-            string name = parts[2];
-            string value = parts[4];
+            const vector<string> parts = split(cmd, " ");
+            const string name = parts[2];
+            const string value = parts[4];
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
@@ -198,7 +198,7 @@ int loop() {
         else if (cmd == "hash") cout << hash(pos) << endl;
         else if (cmd == "eval") {
             U64 attacked = Bitboard::attacked(pos, !pos.turn);
-            cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
+            cout << eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
 
@@ -208,7 +208,7 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else prev_eval = go(options, pos, parts, prev_eval);
         }
