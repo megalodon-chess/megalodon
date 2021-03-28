@@ -101,34 +101,43 @@ float end_game(const float& pawn_struct) {
 }
 
 
-float pawn_structure(const U64& s_pawns, const U64& o_pawns, const bool& side) {
-    char passed = 0;
-    char backward = 0;
+float pawn_structure(const U64& wp, const U64& bp) {
+    // Values represent white - black
+    char stacked = 0;
     char islands = 0;
-    char doubled = 0;
-    U64 s_files[8];
-    U64 o_files[8];
-    for (auto i = 0; i < 8; i++) {
-        s_files[i] = s_pawns & Bitboard::FILES[i];
-        o_files[i] = o_pawns & Bitboard::FILES[i];
+    char passed = 0;
+    char backwards = 0;
+
+    U64 w_files[8], b_files[8];
+    for (char i = 0; i < 8; i++) {
+        w_files[i] = wp & Bitboard::FILES[i];
+        b_files[i] = bp & Bitboard::FILES[i];
     }
 
-    // Islands and doubled/tripled
-    bool on = false;
-    for (auto i = 0; i < 8; i++) {
-        if (s_files[i] == 0) on = false;
+    // Stacked and islands
+    bool w_on = false;
+    bool b_on = false;
+    for (char i = 0; i < 8; i++) {
+        if (w_files[i] == 0) w_on = false;
         else {
-            if (!on) islands++;
-            on = true;
+            if (!w_on) islands++;
+            w_on = true;
+        }
+        if (b_files[i] == 0) b_on = false;
+        else {
+            if (!b_on) islands--;
+            b_on = true;
         }
 
-        const char wcnt = popcnt(s_files[i]);
-        if (wcnt >= 2) doubled += (wcnt-1);
+        const char wcnt = popcnt(w_files[i]);
+        const char bcnt = popcnt(b_files[i]);
+        if (wcnt >= 2) stacked += (wcnt-1);
+        if (bcnt >= 2) stacked -= (bcnt-1);
     }
 
     return (
         -0.3 * islands +
-        -0.2 * doubled
+        -0.2 * stacked
     );
 }
 
@@ -147,8 +156,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
     }
 
     const float mat = 0;//material(pos);
-    const float pawn_struct = (float)options.EvalPawnStruct/100 *
-        (pawn_structure(pos.wp, pos.bp, true)-pawn_structure(pos.bp, pos.wp, false));
+    const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
 
     // Endgame and middle game are for weighting categories.
     const float mg = middle_game(pawn_struct);
