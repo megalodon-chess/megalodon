@@ -132,9 +132,8 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
 }
 
 float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir) {
-    float space = 0;
-    const int pawn_cnt = popcnt(s_pawns) + popcnt(o_pawns);
     char blocked = 0;
+    const int pawn_cnt = popcnt(s_pawns) + popcnt(o_pawns);
 
     for (char i = 0; i < 64; i++) {
         if (bit(s_pawns, i) && (bit(o_pawns, i-8*pawn_dir) || (bit(o_pawns, i-17*pawn_dir) && bit(o_pawns, i-15*pawn_dir)))) blocked++;
@@ -142,6 +141,13 @@ float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir) {
     }
 
     const int weight = pawn_cnt - 3 + blocked;
+
+    float space = 0;
+    for (char x = 2; x < 6; x++) {
+        for (char y = 2; y < 6; y++) {
+            const char loc = y<<3 + x;
+        }
+    }
 
     return space;
 }
