@@ -131,7 +131,7 @@ float pawn_structure(const U64& s_pawns, const U64& o_pawns) {
     );
 }
 
-float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir) {
+float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const vector<Move>& moves) {
     char blocked = 0;
     const int pawn_cnt = popcnt(s_pawns) + popcnt(o_pawns);
 
