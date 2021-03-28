@@ -144,11 +144,8 @@ float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const 
 
     float space = 0;
     for (char x = 2; x < 6; x++) {
-        for (char y = 1; y < 6; y++) {
+        for (char y = side ? 1 : 2; y < side ? 6 : 7; y++) {
             const char loc = y<<3 + x;
-            if (true) {
-
-            }
         }
     }
 
