@@ -158,6 +158,11 @@ void perft_hash(const Options& options, const Position& pos, const int& knodes) 
     cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
 }
 
+void perft_eval(const Options& options, const Position& pos, const int& knodes) {
+    const double time = Perft::eval_perft(options, pos, knodes);
+    cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
+}
+
 
 int loop() {
     string cmd;
@@ -216,9 +221,14 @@ int loop() {
                 perft_hash(options, pos, std::stoi(parts[2]));
             }
         }
-        else if (cmd == "eval") {
-            U64 attacked = Bitboard::attacked(pos, !pos.turn);
-            cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
+        else if (startswith(cmd, "eval")) {
+            vector<string> parts = split(cmd, " ");
+            if (parts.size() == 1) {
+                U64 attacked = Bitboard::attacked(pos, !pos.turn);
+                cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
+            } else if (parts[1] == "perft" && parts.size() >= 2) {
+                perft_eval(options, pos, std::stoi(parts[2]));
+            }
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
 
