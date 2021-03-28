@@ -40,8 +40,6 @@ void print_info() {
 
 int main() {
     srand(time(NULL));
-    char i = -1;
-    cout << +i << endl;
     print_info();
     return loop();
 }
