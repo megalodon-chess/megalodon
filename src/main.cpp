@@ -39,7 +39,7 @@ void print_info() {
 
 
 int main() {
-    srand(time(NULL));
+    srand(1234);
     print_info();
     return loop();
 }
