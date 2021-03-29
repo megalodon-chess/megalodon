@@ -105,7 +105,7 @@ Location::Location(char _x, char _y) {
 
 Location::Location(char loc) {
     x = loc&7;
-    y = loc<<3;
+    y = loc>>3;
 }
 
 
