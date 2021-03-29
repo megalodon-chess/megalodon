@@ -108,10 +108,29 @@ float pawn_structure(const U64& wp, const U64& bp) {
     char passed = 0;
     char backwards = 0;
 
-    U64 w_files[8], b_files[8];
+    char w_files[8], b_files[8];  // Position of most advanced pawn, side dependent (-1 if no pawn)
     for (char i = 0; i < 8; i++) {
-        w_files[i] = wp & Bitboard::FILES[i];
-        b_files[i] = bp & Bitboard::FILES[i];
+        const U64 w = (wp & Bitboard::FILES[i]) >> i;
+        bool found = false;
+        for (char j = 7; j > -1; j--) {
+            if ((w & (1ULL<<(j*8))) != 0) {
+                w_files[i] = j;
+                found = true;
+                break;
+            }
+        }
+        if (!found) w_files[i] = -1;
+
+        const U64 b = (bp & Bitboard::FILES[i]) >> i;
+        found = false;
+        for (char j = 0; j < 8; j++) {
+            if ((b & (1ULL<<(j*8))) != 0) {
+                b_files[i] = j;
+                found = true;
+                break;
+            }
+        }
+        if (!found) b_files[i] = -1;
     }
 
     // Stacked and islands
