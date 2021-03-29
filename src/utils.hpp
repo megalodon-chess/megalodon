@@ -42,3 +42,4 @@ bool endswith(string, string);
 vector<Position> flatten(vector<vector<Position>> vec);
 
 string rand_choice(vector<string>);
+U64 randull();

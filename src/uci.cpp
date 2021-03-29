@@ -223,7 +223,7 @@ int loop() {
         else if (startswith(cmd, "hash")) {
             vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
-                cout << hash(pos) << endl;
+                cout << Hash::hash(pos) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_hash(options, pos, std::stoi(parts[2]));
             }
