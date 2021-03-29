@@ -166,9 +166,24 @@ float pawn_structure(const U64& wp, const U64& bp) {
         if (bcnt >= 2) stacked -= (bcnt-1);
     }
 
+    // Passed
+    for (char i = 0; i < 8; i++) {
+        if (w_files[i] != 0) {
+            const bool blocked_right = (i>=1) && (b_back[i-1]!=-1) && (w_adv[i]>=b_back[i-1]);
+            const bool blocked_left = (i<=6) && (b_back[i+1]!=-1) && (w_adv[i]>=b_back[i+1]);
+            if (!blocked_right && !blocked_left) passed++;
+        }
+        if (b_files[i] != 0) {
+            const bool blocked_right = (i>=1) && (w_back[i-1]!=-1) && (b_adv[i]<=w_back[i-1]);
+            const bool blocked_left = (i<=6) && (w_back[i+1]!=-1) && (b_adv[i]<=w_back[i+1]);
+            if (!blocked_right && !blocked_left) passed--;
+        }
+    }
+
     return (
         -0.3 * islands +
-        -0.2 * stacked
+        -0.2 * stacked +
+        0.6 * passed
     );
 }
 
