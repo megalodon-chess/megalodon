@@ -34,4 +34,5 @@ namespace Perft {
     int movegen(const Position&, const int&);
     double hash_perft(const Position&, const int&);
     double eval_perft(const Options&, const Position&, const int&);
+    double push_perft(const Position&, const int&);
 }
