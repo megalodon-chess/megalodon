@@ -30,15 +30,34 @@ using std::endl;
 using std::vector;
 using std::string;
 
-U64 hash(const Position& pos) {
-    return (
-        (((pos.wp | pos.bp | pos.wk | pos.bk | pos.wq | pos.bq)<<3) & ((pos.wn | pos.wb | pos.bn | pos.bb)<<7)) ^
-        (((pos.wp | pos.bp | pos.wr | pos.br | pos.wk | pos.bk)<<2) ^ ((pos.wn | pos.bn | pos.wq | pos.bq)>>3)) &
-        (((pos.wr | pos.bq | pos.wn | pos.bb | pos.wp | pos.br)>>5) & ((pos.wq | pos.bk | pos.wp | pos.bb)<<1)) |
-        (((pos.wq | pos.bp | pos.wn | pos.bq | pos.wk | pos.bp)>>9) & ((pos.wp | pos.br | pos.wn | pos.bb)<<8)) ^
-        (((pos.wn | pos.wq | pos.bq | pos.wq | pos.wk | pos.bn)<<9) ^ ((pos.wb | pos.wq | pos.bk | pos.br)<<2)) |
-        (((pos.wb | pos.wp | pos.bn | pos.bp | pos.wb | pos.bn)>>8) & ((pos.wp | pos.bp | pos.wq | pos.bq)>>2)) ^
-        (((pos.wq | pos.bp | pos.wr | pos.br | pos.wn | pos.bq)>>1) & ((pos.wp | pos.br | pos.wb | pos.wb)>>4)) &
-        (((pos.wk | pos.wn | pos.bq | pos.wp | pos.bk | pos.br)>>3) ^ ((pos.wb | pos.br | pos.bn | pos.bq)<<6))
-    ) - (pos.castling*(pos.ep_square<<(pos.turn ? 1 : 9)));
+
+namespace Hash {
+    U64 piece_bits[64][12];
+
+    void init() {
+        for (auto i = 0; i < 64; i++) {
+            for (auto j = 0; j < 12; j++) {
+                piece_bits[i][j] = ((U64)rand()) * ((U64)rand());
+            }
+        }
+    }
+
+    U64 hash(const Position& pos) {
+        U64 value = 0;
+        for (auto i = 0; i < 64; i++) {
+            if      (Bitboard::bit(pos.wp, i)) value ^= piece_bits[i][0];
+            else if (Bitboard::bit(pos.wn, i)) value ^= piece_bits[i][1];
+            else if (Bitboard::bit(pos.wb, i)) value ^= piece_bits[i][2];
+            else if (Bitboard::bit(pos.wr, i)) value ^= piece_bits[i][3];
+            else if (Bitboard::bit(pos.wq, i)) value ^= piece_bits[i][4];
+            else if (Bitboard::bit(pos.wk, i)) value ^= piece_bits[i][5];
+            else if (Bitboard::bit(pos.bp, i)) value ^= piece_bits[i][6];
+            else if (Bitboard::bit(pos.bn, i)) value ^= piece_bits[i][7];
+            else if (Bitboard::bit(pos.bb, i)) value ^= piece_bits[i][8];
+            else if (Bitboard::bit(pos.br, i)) value ^= piece_bits[i][9];
+            else if (Bitboard::bit(pos.bq, i)) value ^= piece_bits[i][10];
+            else if (Bitboard::bit(pos.bk, i)) value ^= piece_bits[i][11];
+        }
+        return value;
+    }
 }
