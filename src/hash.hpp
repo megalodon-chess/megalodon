@@ -31,5 +31,6 @@ using std::vector;
 using std::string;
 
 namespace Hash {
+    void init();
     U64 hash(const Position&);
 }
