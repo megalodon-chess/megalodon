@@ -143,8 +143,9 @@ float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const 
     const int weight = pawn_cnt - 3 + blocked;
 
     float space = 0;
+    const char start = side ? 1 : 2, end = side ? 6 : 7;
     for (char x = 2; x < 6; x++) {
-        for (char y = side ? 1 : 2; y < side ? 6 : 7; y++) {
+        for (char y = start; y < end; y++) {
             const char loc = y<<3 + x;
             if (!bit(s_pawns, loc) && !bit(o_pawns, loc+17*pawn_dir) && !bit(o_pawns, loc+15*pawn_dir)) {
                 space++;
