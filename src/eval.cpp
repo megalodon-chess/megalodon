@@ -108,8 +108,10 @@ float pawn_structure(const U64& wp, const U64& bp) {
     char passed = 0;
     char backwards = 0;
 
-    char w_adv[8], b_adv[8];  // Position of most advanced pawn, side dependent (-1 if no pawn)
-    U64 w_files[8], b_files[8];  // Bitboards of pawns on each file.
+    // Generate file values
+    char w_adv[8], b_adv[8];     // Position of most advanced pawn, side dependent (-1 if no pawn)
+    char w_back[8], b_back[8];   // Position of least advanced pawn, side dependent (-1 if no pawn)
+    U64 w_files[8], b_files[8];  // Bitboards of pawns on each file
     for (char i = 0; i < 8; i++) {
         w_files[i] = wp & Bitboard::FILES[i];
         b_files[i] = bp & Bitboard::FILES[i];
@@ -118,23 +120,29 @@ float pawn_structure(const U64& wp, const U64& bp) {
         bool found = false;
         for (char j = 7; j > -1; j--) {
             if ((w & (1ULL<<(j*8))) != 0) {
-                w_adv[i] = j;
+                if (!found) w_adv[i] = j;
+                w_back[i] = j;
                 found = true;
-                break;
             }
         }
-        if (!found) w_adv[i] = -1;
+        if (!found) {
+            w_adv[i] = -1;
+            w_back[i] = -1;
+        }
 
         const U64 b = (bp & Bitboard::FILES[i]) >> i;
         found = false;
-        for (char j = 0; j < 8; j++) {
+        for (char j = 7; j > -1; j--) {
             if ((b & (1ULL<<(j*8))) != 0) {
-                b_adv[i] = j;
+                if (!found) b_adv[i] = j;
+                b_back[i] = j;
                 found = true;
-                break;
             }
         }
-        if (!found) b_adv[i] = -1;
+        if (!found) {
+            b_adv[i] = -1;
+            b_back[i] = -1;
+        }
     }
 
     // Stacked and islands
