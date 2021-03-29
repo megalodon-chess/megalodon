@@ -23,6 +23,7 @@
 #include <string>
 #include "hash.hpp"
 #include "bitboard.hpp"
+#include "utils.hpp"
 
 using std::cin;
 using std::cout;
@@ -33,13 +34,27 @@ using std::string;
 
 namespace Hash {
     U64 piece_bits[64][12];
+    U64 ep_square[64];
+    U64 turn[2];
+    U64 ep[2];
+    U64 castling[15];
 
     void init() {
         for (auto i = 0; i < 64; i++) {
             for (auto j = 0; j < 12; j++) {
-                piece_bits[i][j] = ((U64)rand()) * ((U64)rand());
+                piece_bits[i][j] = randull();
             }
         }
+        for (auto i = 0; i < 64; i++) {
+            ep_square[i] = randull();
+        }
+        for (auto i = 0; i < 15; i++) {
+            castling[i] = randull();
+        }
+        turn[0] = randull();
+        turn[1] = randull();
+        ep[0] = randull();
+        ep[1] = randull();
     }
 
     U64 hash(const Position& pos) {
@@ -58,6 +73,10 @@ namespace Hash {
             else if (Bitboard::bit(pos.bq, i)) value ^= piece_bits[i][10];
             else if (Bitboard::bit(pos.bk, i)) value ^= piece_bits[i][11];
         }
+        value ^= turn[pos.turn];
+        value ^= ep[pos.ep];
+        value ^= castling[pos.castling];
+        value ^= ep_square[pos.ep_square];
         return value;
     }
 }
