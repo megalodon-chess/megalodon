@@ -49,7 +49,7 @@ namespace Perft {
 
     double hash_perft(const Position& pos, const int& knodes) {
         double start = get_time();
-        for (auto i = 0; i < knodes*1000; i++) Hash::hash(pos);
+        for (auto i = 0; i < knodes*1000; i++) hash(pos);
         return get_time() - start;
     }
 
