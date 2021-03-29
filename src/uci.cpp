@@ -198,7 +198,7 @@ int loop() {
         else if (cmd == "hash") cout << hash(pos) << endl;
         else if (cmd == "eval") {
             U64 attacked = Bitboard::attacked(pos, !pos.turn);
-            cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
+            cout << eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
 
