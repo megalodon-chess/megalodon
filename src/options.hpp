@@ -58,5 +58,6 @@ public:
     int MoveTimeMult;
     int EvalMaterial;
     int EvalPawnStruct;
+    int EvalSpace;
     bool Chat;
 };

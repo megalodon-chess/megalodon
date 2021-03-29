@@ -88,15 +88,17 @@ float phase(const Position& pos) {
     else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
 }
 
-float middle_game(const float& pawn_struct) {
+float middle_game(const float& pawn_struct, const float& space) {
     return (
-        pawn_struct * 0.9
+        pawn_struct * 0.9 +
+        space       * 1.0
     );
 }
 
-float end_game(const float& pawn_struct) {
+float end_game(const float& pawn_struct, const float& space) {
     return (
-        pawn_struct * 1.2
+        pawn_struct * 1.2 +
+        space       * 0.9
     );
 }
 
@@ -229,11 +231,13 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
     }
 
     const float mat = material(pos);
+    const char pawn_dir = pos.turn ? -1 : 1;
     const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
+    const float s = (float)options.EvalSpace/100 * (space(pos.wp, pos.bp, pawn_dir, moves, pos.turn) - space(pos.bp, pos.wp, -pawn_dir, moves, !pos.turn));
 
     // Endgame and middle game are for weighting categories.
-    const float mg = middle_game(pawn_struct);
-    const float eg = end_game(pawn_struct);
+    const float mg = middle_game(pawn_struct, s);
+    const float eg = end_game(pawn_struct, s);
     const float p = phase(pos);
     const float score = mg*p + eg*(1-p);
 
