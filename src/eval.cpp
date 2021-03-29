@@ -188,8 +188,8 @@ float pawn_structure(const U64& wp, const U64& bp) {
 }
 
 
-float eval(const Options& options, const Position& pos, const bool& moves_exist, const int& depth, const U64& o_attacks) {
-    if (!moves_exist) {
+float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
+    if (moves.empty()) {
         bool checked;
         if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
         else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
@@ -201,7 +201,7 @@ float eval(const Options& options, const Position& pos, const bool& moves_exist,
         return 0;
     }
 
-    const float mat = 0;//material(pos);
+    const float mat = material(pos);
     const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
 
     // Endgame and middle game are for weighting categories.
