@@ -31,7 +31,7 @@ ENG_PATH = "build/Megalodon"
 
 def randpos():
     board = chess.Board()
-    num_moves = random.randint(10, 60)
+    num_moves = random.randint(30, 60)
     for i in range(num_moves):
         moves = list(board.generate_legal_moves())
         if len(moves) == 0:
