@@ -143,7 +143,7 @@ float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const 
     const int weight = pawn_cnt - 3 + blocked;
 
     float space = 0;
-    const char start = side ? 1 : 2, end = side ? 6 : 7;
+    const char start = side ? 1 : 4, end = side ? 4 : 7;
     for (char x = 2; x < 6; x++) {
         for (char y = start; y < end; y++) {
             const char loc = y<<3 + x;
@@ -171,6 +171,8 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
         }
         return 0;
     }
+
+    cout << space(pos.wp, pos.bp, -1, moves, true) - space(pos.bp, pos.wp, 1, moves, false) << endl;
 
     const float mat = material(pos);
     const float pawn_struct = ((float)options.EvalPawnStruct)/100 * (pawn_structure(pos.wp, pos.bp)-pawn_structure(pos.bp, pos.wp));
