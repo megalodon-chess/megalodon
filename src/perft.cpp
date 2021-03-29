@@ -23,6 +23,8 @@
 #include <string>
 #include "bitboard.hpp"
 #include "utils.hpp"
+#include "hash.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
@@ -32,7 +34,7 @@ using std::string;
 
 
 namespace Perft {
-    int movegen(Position pos, int depth) {
+    int movegen(const Position& pos, const int& depth) {
         if (depth == 0) {
             return 1;
         } else {
@@ -43,5 +45,27 @@ namespace Perft {
             }
             return count;
         }
+    }
+
+    double hash_perft(const Position& pos, const int& knodes) {
+        double start = get_time();
+        for (auto i = 0; i < knodes*1000; i++) hash(pos);
+        return get_time() - start;
+    }
+
+    double eval_perft(const Options& options, const Position& pos, const int& knodes) {
+        U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+
+        double start = get_time();
+        for (auto i = 0; i < knodes*1000; i++) eval(options, pos, !moves.empty(), 0, o_attacks);
+        return get_time() - start;
+    }
+
+    double push_perft(const Position& pos, const int& knodes) {
+        Move move = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))[0];
+        double start = get_time();
+        for (auto i = 0; i < knodes*1000; i++) Bitboard::push(pos, move);
+        return get_time() - start;
     }
 }

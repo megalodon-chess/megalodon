@@ -125,11 +125,18 @@ namespace Bitboard {
     const U64 RANKS[8] = {RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8};
     const U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
 
-    const vector<vector<char>> DIR_R{{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const vector<vector<char>> DIR_N{{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
-    const vector<vector<char>> DIR_B{{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
-    const vector<vector<char>> DIR_Q{{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const vector<vector<char>> DIR_K{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+    constexpr U64 BYTE_ALL_ONE = 255ULL;
+
+    constexpr char DIR_R_SIZE = 4;
+    constexpr char DIR_N_SIZE = 8;
+    constexpr char DIR_B_SIZE = 4;
+    constexpr char DIR_Q_SIZE = 8;
+    constexpr char DIR_K_SIZE = 8;
+    const char DIR_R[DIR_R_SIZE][2] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    const char DIR_N[DIR_N_SIZE][2] = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
+    const char DIR_B[DIR_B_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    const char DIR_Q[DIR_Q_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    const char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(const U64&, const int&);
     bool bit(const char&, const int&);
@@ -164,8 +171,6 @@ namespace Bitboard {
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
-    vector<Move> order_moves(const Position&, const vector<Move>&, const U64&);
-    int quick_eval(const Position&, const Move&, const U64&);
 
     vector<U64*> bb_pointers(Position&);
     Position startpos();
