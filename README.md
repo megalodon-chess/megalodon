@@ -10,12 +10,15 @@ Play against Megalodon on [Lichess][lichess]!
 
 ## Compiling
 
-### Requirements
+## Requirements
 
 * GNU Make
 * CMake
+* g++
 
-### With Bash Script
+## Compiling With Automated Bash Script
+
+Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
@@ -24,7 +27,9 @@ cd megalodon/
 ./build/Megalodon
 ```
 
-### Manually
+## Compiling With CMake and GNU Make
+
+Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
@@ -33,6 +38,17 @@ mkdir build
 cd build/
 cmake ..
 make -j
+./Megalodon
+```
+
+## Compiling Manually
+
+Requires g++.
+
+``` bash
+git clone https://github.com/megalodon-chess/megalodon.git
+cd megalodon/src/
+g++ *.cpp -o Megalodon
 ./Megalodon
 ```
 
