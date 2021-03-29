@@ -55,11 +55,11 @@ def main():
         p.stdin.flush()
         while p.poll() is None:
             time.sleep(0.01)
+
         out = b""
         while len(d := p.stdout.read(1)) > 0:
             out += d
         out = out.decode().split("\n")
-
         for line in out:
             if line.isnumeric():
                 hashes.append(int(line))
@@ -67,6 +67,7 @@ def main():
         if len(hashes) != len(set(hashes)):
             print(f"Found collision, tried {len(hashes)} positions.")
             break
+        print(f"Tried {len(hashes)} positions.")
 
 
 main()

@@ -49,7 +49,7 @@ namespace Perft {
 
     double hash_perft(const Position& pos, const int& knodes) {
         double start = get_time();
-        for (auto i = 0; i < knodes*1000; i++) hash(pos);
+        for (auto i = 0; i < knodes*1000; i++) Hash::hash(pos);
         return get_time() - start;
     }
 
@@ -59,6 +59,13 @@ namespace Perft {
 
         double start = get_time();
         for (auto i = 0; i < knodes*1000; i++) eval(options, pos, !moves.empty(), 0, o_attacks);
+        return get_time() - start;
+    }
+
+    double push_perft(const Position& pos, const int& knodes) {
+        Move move = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))[0];
+        double start = get_time();
+        for (auto i = 0; i < knodes*1000; i++) Bitboard::push(pos, move);
         return get_time() - start;
     }
 }

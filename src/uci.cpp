@@ -163,6 +163,11 @@ void perft_eval(const Options& options, const Position& pos, const int& knodes) 
     cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
 }
 
+void perft_push(const Position& pos, const int& knodes) {
+    const double time = Perft::push_perft(pos, knodes);
+    cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
+}
+
 
 int loop() {
     string cmd;
@@ -216,7 +221,7 @@ int loop() {
         else if (startswith(cmd, "hash")) {
             vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
-                cout << hash(pos) << endl;
+                cout << Hash::hash(pos) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_hash(options, pos, std::stoi(parts[2]));
             }
@@ -231,6 +236,10 @@ int loop() {
             }
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
+        else if (startswith(cmd, "pushperft")) {
+            vector<string> parts = split(cmd, " ");
+            perft_push(pos, std::stoi(parts[1]));
+        }
 
         else if (cmd == "ucinewgame") {
             pos = parse_pos("position startpos");
