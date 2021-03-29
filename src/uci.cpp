@@ -35,10 +35,10 @@ using std::vector;
 using std::string;
 using std::to_string;
 
-vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
-vector<string> WINNING = {"Looks like I'm playing well!", "Wow!", "This is great!"};
-vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
-vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
+const vector<string> GREETINGS{"Hello!", "Lets play!", "Are you ready for a game?"};
+const vector<string> WINNING{"Looks like I'm playing well!", "Wow!", "This is great!"};
+const vector<string> LOSING{"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
+const vector<string> GAME_END{"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
 Position parse_pos(const string& str) {
@@ -195,7 +195,8 @@ int loop() {
             cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name Chat type check default false" << "\n";
+            cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
@@ -213,6 +214,7 @@ int loop() {
             else if (name == "ABPassMargin") options.ABPassMargin = std::stoi(value);
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
         }
@@ -230,7 +232,7 @@ int loop() {
             vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                cout << eval(options, pos, !Bitboard::legal_moves(pos, attacked).empty(), 0, attacked) << endl;
+                cout << eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }

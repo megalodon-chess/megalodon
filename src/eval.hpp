@@ -31,12 +31,18 @@ using std::endl;
 using std::vector;
 using std::string;
 
-constexpr U64 IN_CENT = 103481868288ULL;
-constexpr U64 OUT_CENT = 66125924401152ULL;
-const float IN_CNT = Bitboard::popcnt(IN_CENT);
-const float OUT_CNT = Bitboard::popcnt(OUT_CENT);
+
+constexpr int MIDGAME_LIM = 50;
+constexpr int ENDGAME_LIM = 20;
 
 float material(const Position&);
 float total_mat(const Position&);
+float non_pawn_mat(const Position&);
 
-float eval(const Options&, const Position&, const bool&, const int&, const U64&);
+float phase(const Position&);
+float middle_game(const float&);
+float end_game(const float&);
+
+float pawn_structure(const U64&, const U64&);
+
+float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&);

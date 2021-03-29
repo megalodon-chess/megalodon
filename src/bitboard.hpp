@@ -71,7 +71,7 @@ struct Location {
     char y;
 };
 
-const char popcnt_tbl[256] = {
+constexpr char popcnt_tbl[256]{
     0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
     1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
     1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
@@ -94,7 +94,6 @@ namespace Bitboard {
     constexpr U64 START_WR = 129ULL;
     constexpr U64 START_WQ = 8ULL;
     constexpr U64 START_WK = 16ULL;
-
     constexpr U64 START_BP = 71776119061217280ULL;
     constexpr U64 START_BN = 4755801206503243776ULL;
     constexpr U64 START_BB = 2594073385365405696ULL;
@@ -106,6 +105,25 @@ namespace Bitboard {
     constexpr U64 CASTLING_BQ = 2017612633061982208ULL;
     constexpr U64 CASTLING_WQ = 28ULL;
     constexpr U64 CASTLING_WK = 112ULL;
+
+    constexpr U64 RANK1 = 255ULL;
+    constexpr U64 RANK2 = 65280ULL;
+    constexpr U64 RANK3 = 16711680ULL;
+    constexpr U64 RANK4 = 4278190080ULL;
+    constexpr U64 RANK5 = 1095216660480ULL;
+    constexpr U64 RANK6 = 280375465082880ULL;
+    constexpr U64 RANK7 = 71776119061217280ULL;
+    constexpr U64 RANK8 = 18374686479671623680ULL;
+    constexpr U64 FILE1 = 72340172838076673ULL;
+    constexpr U64 FILE2 = 144680345676153346ULL;
+    constexpr U64 FILE3 = 289360691352306692ULL;
+    constexpr U64 FILE4 = 578721382704613384ULL;
+    constexpr U64 FILE5 = 1157442765409226768ULL;
+    constexpr U64 FILE6 = 2314885530818453536ULL;
+    constexpr U64 FILE7 = 4629771061636907072ULL;
+    constexpr U64 FILE8 = 9259542123273814144ULL;
+    const U64 RANKS[8] = {RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8};
+    const U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
 
     constexpr U64 BYTE_ALL_ONE = 255ULL;
 
@@ -142,6 +160,7 @@ namespace Bitboard {
 
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
+    char num_attacks(const vector<Move>&, const Location&);
     U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     vector<Move> king_moves(const Location&, const char&, const bool&, const U64&, const U64&, const U64&);

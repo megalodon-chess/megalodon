@@ -38,6 +38,7 @@ ABPassStart: type=spin, default=5, min=1, max=100, start depth where alpha and b
 ABPassMargin: type=spin, default=500, min=0, max=10000, add/sub offset of alpha and beta.
 MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
+EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
 
@@ -56,5 +57,6 @@ public:
     int ABPassMargin;
     int MoveTimeMult;
     int EvalMaterial;
+    int EvalPawnStruct;
     bool Chat;
 };

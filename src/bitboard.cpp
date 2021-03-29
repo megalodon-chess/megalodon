@@ -115,14 +115,14 @@ namespace Bitboard {
 
     char popcnt(const U64& num) {
         char count = 0;
-        count += popcnt_tbl[ num      & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>8)  & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>16) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>24) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>32) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>40) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>48) & BYTE_ALL_ONE];
-        count += popcnt_tbl[(num>>56) & BYTE_ALL_ONE];
+        count += popcnt_tbl[ num      & 255ULL];
+        count += popcnt_tbl[(num>>8)  & 255ULL];
+        count += popcnt_tbl[(num>>16) & 255ULL];
+        count += popcnt_tbl[(num>>24) & 255ULL];
+        count += popcnt_tbl[(num>>32) & 255ULL];
+        count += popcnt_tbl[(num>>40) & 255ULL];
+        count += popcnt_tbl[(num>>48) & 255ULL];
+        count += popcnt_tbl[(num>>56) & 255ULL];
         return count;
     }
 
@@ -433,6 +433,17 @@ namespace Bitboard {
             U64 opp = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq;
             return attacked(pos.bp, pos.bn, pos.bb, pos.br, pos.bq, pos.bk, opp, false);
         }
+    }
+
+    char num_attacks(const vector<Move>& moves, const Location& sq) {
+        // Returns the number of attackers attacking a certain square.
+
+        char cnt = 0;
+        const char loc = (sq.y<<3) + sq.x;
+        for (const auto& move: moves) {
+            if (move.to == loc) cnt++;
+        }
+        return cnt;
     }
 
     U64 pinned(const Location& k_pos, const Location& piece_pos, const U64& pawns, const U64& knights, const U64& bishops,

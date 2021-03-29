@@ -37,6 +37,7 @@ Options::Options() {
     ABPassMargin = 500;
     MoveTimeMult = 100;
     EvalMaterial = 100;
+    EvalPawnStruct = 100;
     Chat = false;
 
     set_hash();

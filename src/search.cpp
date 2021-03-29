@@ -41,7 +41,7 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U
         double _time, vector<Move> _pv, float _alpha, float _beta, bool _full) {
     depth = _depth;
     seldepth = _seldepth;
-    is_mate_score = _is_mate;
+    is_mate_score = !(MIN+20 <= score && score <= MAX-20);
     score = _score;
     nodes = _nodes;
     nps = _nps;
@@ -56,8 +56,13 @@ string SearchInfo::as_string() {
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
     str += " multipv 1 score ";
-    str += (is_mate_score ? "mate" : "cp");
-    str += " " + std::to_string((is_mate_score ? (int)score : (int)(100*score)));
+    if (is_mate_score) {
+        str += "mate ";
+        str += std::to_string((int)(MAX-abs(score)+1));
+    } else {
+        str += "cp ";
+        str += std::to_string((int)(100*score));
+    }
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     str += " tbhits 0 time " + std::to_string((int)(1000*time));
     str += " pv ";
@@ -103,7 +108,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
         if (options.UseHashTable && options.hash_evaled[idx]) {
             score = options.hash_evals[idx];
         } else {
-            score = eval(options, pos, moves.size()!=0, depth, o_attacks);
+            score = eval(options, pos, moves, depth, o_attacks);
             options.hash_evaled[idx] = true;
             options.hash_evals[idx] = score;
         }
@@ -148,7 +153,6 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
             if (beta <= alpha) break;
         }
     }
-
     pv.insert(pv.begin(), moves[best_ind]);
     return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta, full);
 }
