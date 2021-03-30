@@ -67,7 +67,7 @@ Position::Position() {
     castling = 0;
     ep = false;
     ep_square = 0;
-    done = false;
+    move_cnt = 0;
 }
 
 Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
@@ -89,7 +89,7 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
     castling = _castling;
     ep = _ep;
     ep_square = _ep_square;
-    done = false;
+    move_cnt = 0;
 }
 
 
@@ -103,13 +103,18 @@ Location::Location(char _x, char _y) {
     y = _y;
 }
 
+Location::Location(char loc) {
+    x = loc&7;
+    y = loc>>3;
+}
+
 
 namespace Bitboard {
-    bool bit(const U64& board, const int& pos) {
+    bool bit(const U64& board, const char& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
-    bool bit(const char& board, const int& pos) {
+    bool bit(const char& board, const char& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
@@ -126,19 +131,19 @@ namespace Bitboard {
         return count;
     }
 
-    void set_bit(U64& board, int pos) {
+    void set_bit(U64& board, const char& pos) {
         board |= (1ULL << pos);
     }
 
-    void unset_bit(U64& board, int pos) {
+    void unset_bit(U64& board, const char& pos) {
         board &= ~(1ULL << pos);
     }
 
-    void set_bit(char& board, int pos) {
+    void set_bit(char& board, const char& pos) {
         board |= (1ULL << pos);
     }
 
-    void unset_bit(char& board, int pos) {
+    void unset_bit(char& board, const char& pos) {
         board &= ~(1ULL << pos);
     }
 
@@ -202,7 +207,7 @@ namespace Bitboard {
         str += row + "\n";
         for (auto y = 7; y >= 0; y--) {
             for (auto x = 0; x < 8; x++) {
-                int loc = 8*y + x;
+                const char loc = 8*y + x;
                 string symbol = piece_at(pos, loc);
                 str += col;
                 str += symbol;
@@ -237,7 +242,7 @@ namespace Bitboard {
 
     string fen(const Position& pos) {
         string str = "";
-        int blank_count = 0;
+        char blank_count = 0;
 
         for (auto y = 7; y >= 0; y--) {
             for (auto x = 0; x < 8; x++) {
@@ -273,7 +278,7 @@ namespace Bitboard {
         str += " ";
 
         str += "0 ";
-        str += std::to_string(pos.move_stack.size()/2 + 1);
+        str += std::to_string(pos.move_cnt/2 + 1);
 
         return str;
     }
@@ -282,13 +287,13 @@ namespace Bitboard {
         vector<string> parts = split(fen, " ");
         Position pos;
 
-        int x = 0, y = 7;
+        char x = 0, y = 7;
         for (const auto& ch: parts[0]) {
             if (ch == '/') {
                 y--;
                 x = 0;
             } else {
-                int loc = 8*y + x;
+                const char loc = 8*y + x;
                 if (48 <= ch && ch <= 57) {
                     x += (ch-48);
                 } else {
@@ -313,7 +318,7 @@ namespace Bitboard {
 
         pos.turn = (parts[1] == "w");
 
-        int castling = 0;
+        char castling = 0;
         for (const auto& ch: parts[2]) {
             switch (ch) {
                 case 'K': castling += 1; break;
@@ -359,7 +364,7 @@ namespace Bitboard {
         side: The side that is attacking.
         return: Bitboard of all attacked squares.
         */
-        const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
+        const U64 pieces = pawns | knights | bishops | rooks | queens | kings | opponent;
         const char pawn_dir = side ? 1 : -1;
         U64 board = EMPTY;
 
@@ -373,15 +378,15 @@ namespace Bitboard {
                 }
             }
             if (bit(knights, i)) {
-                for (const auto& dir: DIR_N) {                        // Iterate through all knight moves.
+                for (const auto& dir: DIR_N) {                 // Iterate through all knight moves.
                     const char nx = x+dir[0], ny = y+dir[1];   // Position after moving.
-                    if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) set_bit(board, (ny<<3) + nx);
+                    if (in_board(nx, ny)) set_bit(board, (ny<<3) + nx);
                 }
             }
             if (bit(kings, i)) {
                 for (const auto& dir: DIR_K) {
-                    const char kx = x+dir[0], ky = y+dir[1];
-                    if (0 <= kx && kx < 8 && 0 <= ky && ky < 8) set_bit(board, (ky<<3) + kx);
+                    const char nx = x+dir[0], ny = y+dir[1];
+                    if (in_board(nx, ny)) set_bit(board, (ny<<3) + nx);
                 }
             }
             if (bit(rooks, i) || bit(queens, i)) {
@@ -394,7 +399,6 @@ namespace Bitboard {
                         if (!in_board(cx, cy)) break;
                         const char loc = (cy<<3) + cx;
                         set_bit(board, loc);
-                        if (bit(opponent, loc)) break;
                         if (bit(pieces, loc)) break;
                     }
                 }
@@ -409,7 +413,6 @@ namespace Bitboard {
                         if (!in_board(cx, cy)) break;
                         const char loc = (cy<<3) + cx;
                         set_bit(board, loc);
-                        if (bit(opponent, loc)) break;
                         if (bit(pieces, loc)) break;
                     }
                 }
@@ -427,10 +430,10 @@ namespace Bitboard {
         return: Bitboard of attacks.
         */
         if (turn) {
-            U64 opp = pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
+            const U64 opp = pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
             return attacked(pos.wp, pos.wn, pos.wb, pos.wr, pos.wq, pos.wk, opp, true);
         } else {
-            U64 opp = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq;
+            const U64 opp = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq;
             return attacked(pos.bp, pos.bn, pos.bb, pos.br, pos.bq, pos.bk, opp, false);
         }
     }
@@ -685,7 +688,7 @@ namespace Bitboard {
         // Go through all pieces and check if they can capture/block
         for (char i = 0; i < 64; i++) {
             const Location curr_loc = Location(i&7, (i>>3));
-            if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME)) {
+            if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME) == FULL) {
                 if (bit(CP, i)) {
                     const char x = (i&7);
                     char y;
@@ -700,7 +703,7 @@ namespace Bitboard {
                             if (bit(block_mask, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -716,7 +719,7 @@ namespace Bitboard {
                             if (bit(block_mask, loc)) {
                                 if (cy == 0) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -747,7 +750,7 @@ namespace Bitboard {
                                 const char char_move = (y<<3) + offset;
                                 if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
                                     if (promo) {
-                                        for (const int& p: {0, 1, 2, 3}) {
+                                        for (const char& p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, char_move, true, p));
                                         }
                                     } else {
@@ -822,10 +825,9 @@ namespace Bitboard {
 
                 if (bit(CP, i)) {
                     const char x = (i&7);
-                    char y;
+                    char y = i>>3;
 
                     // Forward
-                    y = (i>>3);
                     const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
                     if (pos.turn) {
                         for (char cy = y + 1; cy < y + speed + 1; cy++) {
@@ -834,7 +836,7 @@ namespace Bitboard {
                             if (bit(pin, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -849,7 +851,7 @@ namespace Bitboard {
                             if (bit(pin, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -867,7 +869,7 @@ namespace Bitboard {
                                 const char char_move = (y<<3) + offset;
                                 if ((bit(pin, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square))) {
                                     if (promo) {
-                                        for (const int& p: {0, 1, 2, 3}) {
+                                        for (const char& p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, char_move, true, p));
                                         }
                                     } else {
@@ -972,7 +974,7 @@ namespace Bitboard {
         } else {
             no_check_moves(moves, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         }
-        return moves; //order_moves(pos, moves, attacks);
+        return moves;
     }
 
 
@@ -1100,7 +1102,7 @@ namespace Bitboard {
         }
 
         pos.turn = !pos.turn;
-        pos.move_stack.push_back(move);
+        pos.move_cnt++;
         return pos;
     }
 

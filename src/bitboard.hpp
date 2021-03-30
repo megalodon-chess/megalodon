@@ -56,16 +56,14 @@ struct Position {
     char ep_square;
 
     float eval;
-    float alpha;
-    float beta;
-    bool done;  // Used by search
     Position* parent;
-    vector<Move> move_stack;
+    int move_cnt;
 };
 
 struct Location {
     Location();
     Location(char, char);
+    Location(char);
 
     char x;
     char y;
@@ -138,13 +136,13 @@ namespace Bitboard {
     const char DIR_Q[DIR_Q_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     const char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-    bool bit(const U64&, const int&);
-    bool bit(const char&, const int&);
+    bool bit(const U64&, const char&);
+    bool bit(const char&, const char&);
     char popcnt(const U64&);
-    void set_bit(U64&, int);
-    void unset_bit(U64&, int);
-    void set_bit(char&, int);
-    void unset_bit(char&, int);
+    void set_bit(U64&, const char&);
+    void unset_bit(U64&, const char&);
+    void set_bit(char&, const char&);
+    void unset_bit(char&, const char&);
     bool in_board(const char& x, const char& y);
     Location first_bit(const U64&);
 
