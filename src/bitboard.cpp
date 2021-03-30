@@ -67,7 +67,7 @@ Position::Position() {
     castling = 0;
     ep = false;
     ep_square = 0;
-    done = false;
+    move_cnt = 0;
 }
 
 Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
@@ -89,7 +89,7 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
     castling = _castling;
     ep = _ep;
     ep_square = _ep_square;
-    done = false;
+    move_cnt = 0;
 }
 
 
@@ -273,7 +273,7 @@ namespace Bitboard {
         str += " ";
 
         str += "0 ";
-        str += std::to_string(pos.move_stack.size()/2 + 1);
+        str += std::to_string(pos.move_cnt/2 + 1);
 
         return str;
     }
@@ -1097,7 +1097,7 @@ namespace Bitboard {
         }
 
         pos.turn = !pos.turn;
-        pos.move_stack.push_back(move);
+        pos.move_cnt++;
         return pos;
     }
 

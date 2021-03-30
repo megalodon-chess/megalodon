@@ -74,7 +74,7 @@ string SearchInfo::as_string() {
 float moves_left(const Options& options, const Position& pos) {
     // Estimates moves left based on material and move stack.
     //float mat_left = 0.9 * (total_mat(pos)-7);
-    float abs_left = 55 - pos.move_stack.size();
+    float abs_left = 55 - pos.move_cnt;
     if (abs_left < 5) abs_left = 5;
     //if (mat_left < 0) mat_left = 0;
 
