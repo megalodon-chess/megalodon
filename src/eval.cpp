@@ -92,7 +92,7 @@ float middle_game(const float& pawn_struct, const float& knight, const float& sp
     return (
         pawn_struct *  0.9 +
         knight      * -0.3 +
-        space       *  0.7
+        space       *  0.3
     );
 }
 
@@ -100,7 +100,7 @@ float end_game(const float& pawn_struct, const float& knight, const float& space
     return (
         pawn_struct *  1.2 +
         knight      * -0.2 +
-        space       *  0.6
+        space       *  0.2
     );
 }
 
