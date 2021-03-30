@@ -91,14 +91,14 @@ float phase(const Position& pos) {
 float middle_game(const float& pawn_struct, const float& space) {
     return (
         pawn_struct * 0.9 +
-        space       * 1.0
+        space       * 0.7
     );
 }
 
 float end_game(const float& pawn_struct, const float& space) {
     return (
         pawn_struct * 1.2 +
-        space       * 0.9
+        space       * 0.6
     );
 }
 
@@ -190,16 +190,6 @@ float pawn_structure(const U64& wp, const U64& bp) {
 }
 
 float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const vector<Move>& moves, const bool& side) {
-    char blocked = 0;
-    const int pawn_cnt = popcnt(s_pawns) + popcnt(o_pawns);
-
-    for (char i = 0; i < 64; i++) {
-        if (bit(s_pawns, i) && (bit(o_pawns, i-8*pawn_dir) || (bit(o_pawns, i-17*pawn_dir) && bit(o_pawns, i-15*pawn_dir)))) blocked++;
-        if (bit(o_pawns, i) && (bit(s_pawns, i+8*pawn_dir) || (bit(s_pawns, i+15*pawn_dir) && bit(s_pawns, i+17*pawn_dir)))) blocked++;
-    }
-
-    const int weight = pawn_cnt - 3 + blocked;
-
     float space = 0;
     const char start = side ? 1 : 4, end = side ? 4 : 7;
     for (char x = 2; x < 6; x++) {
@@ -213,7 +203,7 @@ float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const 
         }
     }
 
-    return space*weight*weight/16;
+    return space;
 }
 
 
