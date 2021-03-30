@@ -40,6 +40,7 @@ MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
 EvalKnights: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
+EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
 
@@ -61,5 +62,6 @@ public:
     int EvalPawnStruct;
     int EvalSpace;
     int EvalKnights;
+    int EvalKings;
     bool Chat;
 };

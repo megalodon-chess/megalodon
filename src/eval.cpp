@@ -88,18 +88,21 @@ float phase(const Position& pos) {
     else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
 }
 
-float middle_game(const float& pawn_struct, const float& knight, const float& space) {
+
+float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
     return (
         pawn_struct *  0.9 +
         knight      * -0.3 +
+        king        *  0.2 +
         space       *  0.3
     );
 }
 
-float end_game(const float& pawn_struct, const float& knight, const float& space) {
+float end_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
     return (
         pawn_struct *  1.2 +
         knight      * -0.2 +
+        king        * -0.3 +
         space       *  0.2
     );
 }
@@ -238,6 +241,14 @@ float knights(const U64& wn, const U64& bn) {
     return wdist - bdist;
 }
 
+float kings(const U64& wk, const U64& bk) {
+    const Location w = Bitboard::first_bit(wk);
+    const Location b = Bitboard::first_bit(bk);
+    const char wdist = center_dist((w.y<<3)+w.x);
+    const char bdist = center_dist((b.y<<3)+b.x);
+    return wdist - bdist;
+}
+
 
 float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
     if (moves.empty()) {
@@ -258,10 +269,11 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
     const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
     const float sp = (float)options.EvalSpace/100 * (space(pos.wp, pos.bp, pawn_dir, moves, pos.turn) - space(pos.bp, pos.wp, -pawn_dir, moves, !pos.turn));
     const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn);
+    const float king = ((float)options.EvalKings)/100 * kings(pos.wk, pos.bk);
 
     // Endgame and middle game are for weighting categories.
-    const float mg = middle_game(pawn_struct, knight, sp);
-    const float eg = end_game(pawn_struct, knight, sp);
+    const float mg = middle_game(pawn_struct, knight, king, sp);
+    const float eg = end_game(pawn_struct, knight, king, sp);
     const float p = phase(pos);
     const float score = mg*p + eg*(1-p);
 
