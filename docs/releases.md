@@ -2,6 +2,16 @@
 
 This page contains release info.
 
+## [Megalodon 0.2.6][v0.2.6]
+
+This release features many evaluation categories, including pawn structure, knights, kings, and space.
+
+You can tune the weights with UCI options.
+
+We will also start hosting a Sharktest server in a few days.
+
+This allows you to use your CPU power to tune Megalodon's evaluation.
+
 ## [Megalodon 0.2.5][v0.2.5]
 
 **THIS RELEASE CONTAINS BUGS**
@@ -130,6 +140,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.2.6]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.4
 [v0.2.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.3
