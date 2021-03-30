@@ -52,7 +52,7 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U
     full = _full;
 }
 
-string SearchInfo::as_string() {
+string SearchInfo::as_string(bool PrintPv) {
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
     str += " multipv 1 score ";
@@ -66,7 +66,9 @@ string SearchInfo::as_string() {
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     str += " tbhits 0 time " + std::to_string((int)(1000*time));
     str += " pv ";
-    for (const auto& move: pv) str += Bitboard::move_str(move) + " ";
+    if (PrintPv) {
+        for (const auto& move: pv) str += Bitboard::move_str(move) + " ";
+    }
     return str;
 }
 
@@ -178,8 +180,7 @@ namespace Search {
 
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
-            if (!options.PrintPv) curr_result.pv = {};
-            cout << curr_result.as_string() << endl;
+            cout << curr_result.as_string(options.PrintPv) << endl;
             if (curr_result.full) result = curr_result;
         }
 
