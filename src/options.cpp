@@ -39,6 +39,7 @@ Options::Options() {
     EvalMaterial   = 100;
     EvalPawnStruct = 100;
     EvalSpace      = 100;
+    EvalKnights = 100;
     Chat = false;
 
     set_hash();

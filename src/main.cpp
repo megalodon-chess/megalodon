@@ -22,6 +22,7 @@
 #include <string>
 #include "uci.hpp"
 #include "bitboard.hpp"
+#include "hash.hpp"
 
 using std::cin;
 using std::cout;
@@ -38,8 +39,14 @@ void print_info() {
 }
 
 
+void init() {
+    Hash::init();
+}
+
+
 int main() {
-    srand(time(NULL));
+    srand(1234);
+    init();
     print_info();
     return loop();
 }

@@ -108,3 +108,7 @@ vector<Position> flatten(vector<vector<Position>> vec) {
 string rand_choice(vector<string> choices) {
     return choices[rand()%choices.size()];
 }
+
+U64 randull() {
+    return ((U64)rand()) * ((U64)rand());
+}

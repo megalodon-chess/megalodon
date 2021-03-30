@@ -30,4 +30,7 @@ using std::endl;
 using std::vector;
 using std::string;
 
-U64 hash(const Position&);
+namespace Hash {
+    void init();
+    U64 hash(const Position&);
+}
