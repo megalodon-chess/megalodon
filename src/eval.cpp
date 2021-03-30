@@ -94,7 +94,7 @@ namespace Eval {
         return (
             pawn_struct *  0.9 +
             knight      *  0.2 +
-            king        * -0.2 +
+            king        *  0.2 +
             space       *  1
         );
     }
@@ -102,7 +102,7 @@ namespace Eval {
     float end_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
             pawn_struct *  1.2 +
-            knight      * -0.1 +
+            knight      *  0.1 +
             king        * -0.3 +
             space       *  0        // Space encourages pawns in the center, which discourages promotion.
         );
@@ -221,7 +221,7 @@ namespace Eval {
             }
         }
 
-        return space / 6;
+        return space / 5;
     }
 
     float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {
