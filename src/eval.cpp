@@ -101,6 +101,17 @@ float end_game(const float& pawn_struct) {
 }
 
 
+char center_dist(const char& i) {
+    const char x = i&7, y = i>>3;
+    char dist = 0;
+    if (x <= 3) dist += 3-x;
+    else dist += x-4;
+    if (y <= 3) dist += 3-y;
+    else dist += y-4;
+    return dist;
+}
+
+
 float pawn_structure(const U64& wp, const U64& bp) {
     // Values represent white - black
     char stacked = 0;
@@ -185,6 +196,10 @@ float pawn_structure(const U64& wp, const U64& bp) {
         -0.2 * stacked +
         0.6 * passed
     );
+}
+
+float knights(const U64& wn, const U64& bn) {
+
 }
 
 
