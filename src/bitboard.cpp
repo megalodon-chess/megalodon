@@ -210,7 +210,7 @@ namespace Bitboard {
             str += col + "\n" + row + "\n";
         }
         str += "\nFen: " + fen(pos) + "\n";
-        str += "Hash: " + std::to_string(hash(pos)) + "\n";
+        str += "Hash: " + std::to_string(Hash::hash(pos)) + "\n";
 
         return str;
     }

@@ -38,6 +38,7 @@ Options::Options() {
     MoveTimeMult = 100;
     EvalMaterial = 100;
     EvalPawnStruct = 100;
+    EvalKnights = 100;
     Chat = false;
 
     set_hash();

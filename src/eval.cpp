@@ -88,16 +88,29 @@ float phase(const Position& pos) {
     else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
 }
 
-float middle_game(const float& pawn_struct) {
+float middle_game(const float& pawn_struct, const float& knight) {
     return (
-        pawn_struct * 0.9
+        pawn_struct * 0.9 +
+        knight * -0.3
     );
 }
 
-float end_game(const float& pawn_struct) {
+float end_game(const float& pawn_struct, const float& knight) {
     return (
-        pawn_struct * 1.2
+        pawn_struct * 1.2 +
+        knight * -0.2
     );
+}
+
+
+char center_dist(const char& i) {
+    const char x = i&7, y = i>>3;
+    char dist = 0;
+    if (x <= 3) dist += 3-x;
+    else dist += x-4;
+    if (y <= 3) dist += 3-y;
+    else dist += y-4;
+    return dist;
 }
 
 
@@ -187,6 +200,25 @@ float pawn_structure(const U64& wp, const U64& bp) {
     );
 }
 
+float knights(const U64& wn, const U64& bn) {
+    float wdist = 0, bdist = 0;
+    char wcnt = 0, bcnt = 0;
+
+    for (char i = 0; i < 64; i++) {
+        if (bit(wn, i)) {
+            wcnt++;
+            wdist += center_dist(i);
+        } else if (bit(bn, i)) {
+            bcnt++;
+            bdist += center_dist(i);
+        }
+    }
+
+    if (wcnt > 0) wdist /= wcnt;
+    if (bcnt > 0) bdist /= bcnt;
+    return wdist - bdist;
+}
+
 
 float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
     if (moves.empty()) {
@@ -195,18 +227,20 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
         else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
         if (checked) {
             // Increment value by depth to encourage sooner mate.
-            if (pos.turn) return MIN+depth;
-            else return MAX-depth;
+            // The smaller depth is, the closer it is to the leaf nodes.
+            if (pos.turn) return MIN - depth;  // Mate by black
+            else return MAX + depth;           // Mate by white
         }
         return 0;
     }
 
     const float mat = material(pos);
-    const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
+    const float pawn_struct = ((float)options.EvalPawnStruct)/100 * pawn_structure(pos.wp, pos.bp);
+    const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn);
 
     // Endgame and middle game are for weighting categories.
-    const float mg = middle_game(pawn_struct);
-    const float eg = end_game(pawn_struct);
+    const float mg = middle_game(pawn_struct, knight);
+    const float eg = end_game(pawn_struct, knight);
     const float p = phase(pos);
     const float score = mg*p + eg*(1-p);
 
