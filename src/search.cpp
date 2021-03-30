@@ -178,6 +178,7 @@ namespace Search {
 
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
+            if (!options.PrintPv) curr_result.pv = {};
             cout << curr_result.as_string() << endl;
             if (curr_result.full) result = curr_result;
         }
