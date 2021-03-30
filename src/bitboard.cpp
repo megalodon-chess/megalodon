@@ -685,7 +685,7 @@ namespace Bitboard {
         // Go through all pieces and check if they can capture/block
         for (char i = 0; i < 64; i++) {
             const Location curr_loc = Location(i&7, (i>>3));
-            if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME)) {
+            if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME) == FULL) {
                 if (bit(CP, i)) {
                     const char x = (i&7);
                     char y;
@@ -823,7 +823,6 @@ namespace Bitboard {
                 if (bit(CP, i)) {
                     const char x = (i&7);
                     char y = i>>3;
-                    cout << piece_pinned << endl;
 
                     // Forward
                     const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
