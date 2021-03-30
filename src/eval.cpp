@@ -195,8 +195,9 @@ float eval(const Options& options, const Position& pos, const vector<Move>& move
         else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
         if (checked) {
             // Increment value by depth to encourage sooner mate.
-            if (pos.turn) return MIN+depth;
-            else return MAX-depth;
+            // The smaller depth is, the closer it is to the leaf nodes.
+            if (pos.turn) return MIN - depth;  // Mate by black
+            else return MAX + depth;           // Mate by white
         }
         return 0;
     }
