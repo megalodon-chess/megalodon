@@ -90,7 +90,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     int mode = 0;
     int depth;
     double movetime;
-    const int total = total_mat(pos);
+    const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
@@ -236,7 +236,7 @@ int loop() {
             vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                cout << eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
+                cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
