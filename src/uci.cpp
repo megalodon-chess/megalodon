@@ -196,6 +196,7 @@ int loop() {
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
@@ -215,6 +216,7 @@ int loop() {
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
+            else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
             else if (name == "Chat") options.Chat = (value == "true");
             else cout << "Unknown option: " << name << endl;
         }
