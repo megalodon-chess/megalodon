@@ -188,16 +188,21 @@ int loop() {
         else if (cmd == "uci") {
             cout << "id name Megalodon" << "\n";
             cout << "id author Megalodon Developers" << "\n";
+
             cout << "option name Hash type spin default 16 min 1 max 65536" << "\n";
             cout << "option name UseHashTable type check default false" << "\n";
-            cout << "option name PrintCurrMove type check default true" << "\n";
+
             cout << "option name ABPassStart type spin default 5 min 1 max 100" << "\n";
             cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
+
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
+
+            cout << "option name PrintCurrMove type check default true" << "\n";
+            cout << "option name PrintPv type check default true" << "\n";
             cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
@@ -211,15 +216,20 @@ int loop() {
                 options.set_hash();
             }
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
-            else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
+
             else if (name == "ABPassStart") options.ABPassStart = std::stoi(value);
             else if (name == "ABPassMargin") options.ABPassMargin = std::stoi(value);
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
+
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
             else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
             else if (name == "EvalKings") options.EvalKings = std::stoi(value);
+
+            else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
+            else if (name == "PrintPv") options.PrintPv = (value == "true");
             else if (name == "Chat") options.Chat = (value == "true");
+
             else cout << "Unknown option: " << name << endl;
         }
 
