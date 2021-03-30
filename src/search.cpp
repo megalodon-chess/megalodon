@@ -102,7 +102,7 @@ SearchInfo dfs(const Options& options, const Position& pos, const int& depth, fl
     U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
     vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-    if (depth == 0 || moves.size() == 0) {
+    if (depth == 0 || moves.empty()) {
         // const int idx = options.UseHashTable ? (Hash::hash(pos) % options.hash_size) : 0;
         // float score;
         // if (options.UseHashTable && options.hash_evaled[idx]) {
