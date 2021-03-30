@@ -359,7 +359,7 @@ namespace Bitboard {
         side: The side that is attacking.
         return: Bitboard of all attacked squares.
         */
-        const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
+        const U64 pieces = pawns | knights | bishops | rooks | queens | kings | opponent;
         const char pawn_dir = side ? 1 : -1;
         U64 board = EMPTY;
 
@@ -373,7 +373,7 @@ namespace Bitboard {
                 }
             }
             if (bit(knights, i)) {
-                for (const auto& dir: DIR_N) {                        // Iterate through all knight moves.
+                for (const auto& dir: DIR_N) {                 // Iterate through all knight moves.
                     const char nx = x+dir[0], ny = y+dir[1];   // Position after moving.
                     if (0 <= nx && nx < 8 && 0 <= ny && ny < 8) set_bit(board, (ny<<3) + nx);
                 }
@@ -394,7 +394,6 @@ namespace Bitboard {
                         if (!in_board(cx, cy)) break;
                         const char loc = (cy<<3) + cx;
                         set_bit(board, loc);
-                        if (bit(opponent, loc)) break;
                         if (bit(pieces, loc)) break;
                     }
                 }
@@ -409,7 +408,6 @@ namespace Bitboard {
                         if (!in_board(cx, cy)) break;
                         const char loc = (cy<<3) + cx;
                         set_bit(board, loc);
-                        if (bit(opponent, loc)) break;
                         if (bit(pieces, loc)) break;
                     }
                 }
