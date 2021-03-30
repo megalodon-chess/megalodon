@@ -93,8 +93,8 @@ namespace Eval {
     float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
             pawn_struct *  0.9 +
-            knight      * -0.2 +
-            king        *  0.2 +
+            knight      *  0.2 +
+            king        * -0.2 +
             space       *  1
         );
     }
@@ -224,17 +224,19 @@ namespace Eval {
         return space / 6;
     }
 
-    float knights(const U64& wn, const U64& bn) {
+    float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {
         float wdist = 0, bdist = 0;
         char wcnt = 0, bcnt = 0;
+        const bool wp_in_cent = ((INNER_CENTER|OUTER_CENTER) & wp) != 0;
+        const bool bp_in_cent = ((INNER_CENTER|OUTER_CENTER) & bp) != 0;
 
         for (char i = 0; i < 64; i++) {
-            if (bit(wn, i)) {
+            if (wp_in_cent && bit(wn, i)) {
                 wcnt++;
-                wdist += center_dist(i);
-            } else if (bit(bn, i)) {
+                wdist += 6 - center_dist(i);
+            } else if (bp_in_cent && bit(bn, i)) {
                 bcnt++;
-                bdist += center_dist(i);
+                bdist += 6 - center_dist(i);
             }
         }
 
@@ -268,7 +270,7 @@ namespace Eval {
 
         const float mat = material(pos);
         const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
-        const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn);
+        const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn, pos.wp, pos.bp);
         const float king = ((float)options.EvalKings)/100 * kings(pos.wk, pos.bk);
         const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
 
