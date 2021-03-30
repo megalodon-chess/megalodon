@@ -211,12 +211,12 @@ namespace Eval {
 
         for (char x = 2; x < 6; x++) {
             // White
-            for (char y = 1; y < 4; y++) {
+            for (char y = 1; y < 5; y++) {
                 if (bit(wp, (y<<3)+x)) space += y-1;
             }
 
             // Black
-            for (char y = 4; y < 7; y++) {
+            for (char y = 3; y < 7; y++) {
                 if (bit(bp, (y<<3)+x)) space -= 6-y;
             }
         }
@@ -280,6 +280,6 @@ namespace Eval {
         const float p = phase(pos);
         const float score = mg*p + eg*(1-p);
 
-        return mat + score;
+        return mat + 0.4*score;
     }
 }
