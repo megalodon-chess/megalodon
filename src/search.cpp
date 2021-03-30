@@ -180,7 +180,7 @@ namespace Search {
 
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
-            cout << curr_result.as_string(options.PrintPv) << endl;
+            if (curr_result.full) cout << curr_result.as_string(options.PrintPv) << endl;
             if (curr_result.full) result = curr_result;
         }
 
