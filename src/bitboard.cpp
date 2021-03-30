@@ -126,19 +126,19 @@ namespace Bitboard {
         return count;
     }
 
-    void set_bit(U64& board, int pos) {
+    void set_bit(U64& board, const char& pos) {
         board |= (1ULL << pos);
     }
 
-    void unset_bit(U64& board, int pos) {
+    void unset_bit(U64& board, const char& pos) {
         board &= ~(1ULL << pos);
     }
 
-    void set_bit(char& board, int pos) {
+    void set_bit(char& board, const char& pos) {
         board |= (1ULL << pos);
     }
 
-    void unset_bit(char& board, int pos) {
+    void unset_bit(char& board, const char& pos) {
         board &= ~(1ULL << pos);
     }
 
@@ -202,7 +202,7 @@ namespace Bitboard {
         str += row + "\n";
         for (auto y = 7; y >= 0; y--) {
             for (auto x = 0; x < 8; x++) {
-                int loc = 8*y + x;
+                const char loc = 8*y + x;
                 string symbol = piece_at(pos, loc);
                 str += col;
                 str += symbol;
@@ -237,7 +237,7 @@ namespace Bitboard {
 
     string fen(const Position& pos) {
         string str = "";
-        int blank_count = 0;
+        char blank_count = 0;
 
         for (auto y = 7; y >= 0; y--) {
             for (auto x = 0; x < 8; x++) {
@@ -282,13 +282,13 @@ namespace Bitboard {
         vector<string> parts = split(fen, " ");
         Position pos;
 
-        int x = 0, y = 7;
+        char x = 0, y = 7;
         for (const auto& ch: parts[0]) {
             if (ch == '/') {
                 y--;
                 x = 0;
             } else {
-                int loc = 8*y + x;
+                const char loc = 8*y + x;
                 if (48 <= ch && ch <= 57) {
                     x += (ch-48);
                 } else {
@@ -313,7 +313,7 @@ namespace Bitboard {
 
         pos.turn = (parts[1] == "w");
 
-        int castling = 0;
+        char castling = 0;
         for (const auto& ch: parts[2]) {
             switch (ch) {
                 case 'K': castling += 1; break;
