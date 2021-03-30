@@ -40,8 +40,8 @@ float total_mat(const Position&);
 float non_pawn_mat(const Position&);
 
 float phase(const Position&);
-float middle_game(const float&);
-float end_game(const float&);
+float middle_game(const float&, const float&);
+float end_game(const float&, const float&);
 
 char center_dist(const char&);
 
