@@ -58,7 +58,7 @@ namespace Perft {
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
         double start = get_time();
-        for (auto i = 0; i < knodes*1000; i++) eval(options, pos, moves, 0, o_attacks);
+        for (auto i = 0; i < knodes*1000; i++) Eval::eval(options, pos, moves, 0, o_attacks);
         return get_time() - start;
     }
 

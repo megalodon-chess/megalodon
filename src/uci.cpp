@@ -90,7 +90,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     int mode = 0;
     int depth;
     double movetime;
-    const int total = total_mat(pos);
+    const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
@@ -121,12 +121,12 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         movetime = 10000000;
     } else if (mode == 2) {
         depth = 99;
-        if (pos.turn) movetime = move_time(options, pos, wtime, winc);
-        else movetime = move_time(options, pos, btime, binc);
+        if (pos.turn) movetime = Search::move_time(options, pos, wtime, winc);
+        else movetime = Search::move_time(options, pos, btime, binc);
     }
     movetime *= options.MoveTimeMult / 100;
 
-    const SearchInfo result = search(options, pos, depth, movetime);
+    const SearchInfo result = Search::search(options, pos, depth, movetime);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -236,7 +236,7 @@ int loop() {
             vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                cout << eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
+                cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
