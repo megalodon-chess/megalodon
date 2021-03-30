@@ -95,7 +95,7 @@ namespace Eval {
             pawn_struct *  0.9 +
             knight      * -0.3 +
             king        *  0.2 +
-            space       *  0.3
+            space       *  1
         );
     }
 
@@ -104,7 +104,7 @@ namespace Eval {
             pawn_struct *  1.2 +
             knight      * -0.2 +
             king        * -0.3 +
-            space       *  0.2
+            space       *  0   // Space encourages pawns in the center, which discourages promotion.
         );
     }
 
@@ -206,21 +206,22 @@ namespace Eval {
         );
     }
 
-    float space(const U64& s_pawns, const U64& o_pawns, const char& pawn_dir, const vector<Move>& moves, const bool& side) {
+    float space(const U64& wp, const U64& bp) {
         float space = 0;
-        const char start = side ? 1 : 4, end = side ? 4 : 7;
+
         for (char x = 2; x < 6; x++) {
-            for (char y = start; y < end; y++) {
-                const char loc = (y<<3) + x;
-                if (!bit(s_pawns, loc) && !bit(o_pawns, loc+17*pawn_dir) && !bit(o_pawns, loc+15*pawn_dir)) {
-                    space++;
-                    if (bit(s_pawns, loc-8*pawn_dir) || bit(s_pawns, loc-16*pawn_dir) || bit(s_pawns, loc-24*pawn_dir) &&
-                        Bitboard::num_attacks(moves, Location(loc)) == 0) space++;
-                }
+            // White
+            for (char y = 1; y < 4; y++) {
+                if (bit(wp, (y<<3)+x)) space += y-1;
+            }
+
+            // Black
+            for (char y = 4; y < 7; y++) {
+                if (bit(bp, (y<<3)+x)) space -= 6-y;
             }
         }
 
-        return space;
+        return space / 6;
     }
 
     float knights(const U64& wn, const U64& bn) {
@@ -268,7 +269,7 @@ namespace Eval {
         const float mat = material(pos);
         const char pawn_dir = pos.turn ? -1 : 1;
         const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
-        const float sp = (float)options.EvalSpace/100 * (space(pos.wp, pos.bp, pawn_dir, moves, pos.turn) - space(pos.bp, pos.wp, -pawn_dir, moves, !pos.turn));
+        const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
         const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn);
         const float king = ((float)options.EvalKings)/100 * kings(pos.wk, pos.bk);
 
