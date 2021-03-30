@@ -105,11 +105,11 @@ Location::Location(char _x, char _y) {
 
 
 namespace Bitboard {
-    bool bit(const U64& board, const int& pos) {
+    bool bit(const U64& board, const char& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
-    bool bit(const char& board, const int& pos) {
+    bool bit(const char& board, const char& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
@@ -210,7 +210,7 @@ namespace Bitboard {
             str += col + "\n" + row + "\n";
         }
         str += "\nFen: " + fen(pos) + "\n";
-        str += "Hash: " + std::to_string(hash(pos)) + "\n";
+        str += "Hash: " + std::to_string(Hash::hash(pos)) + "\n";
 
         return str;
     }
@@ -700,7 +700,7 @@ namespace Bitboard {
                             if (bit(block_mask, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -716,7 +716,7 @@ namespace Bitboard {
                             if (bit(block_mask, loc)) {
                                 if (cy == 0) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -747,7 +747,7 @@ namespace Bitboard {
                                 const char char_move = (y<<3) + offset;
                                 if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
                                     if (promo) {
-                                        for (const int& p: {0, 1, 2, 3}) {
+                                        for (const char& p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, char_move, true, p));
                                         }
                                     } else {
@@ -822,10 +822,10 @@ namespace Bitboard {
 
                 if (bit(CP, i)) {
                     const char x = (i&7);
-                    char y;
+                    char y = i>>3;
+                    cout << piece_pinned << endl;
 
                     // Forward
-                    y = (i>>3);
                     const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
                     if (pos.turn) {
                         for (char cy = y + 1; cy < y + speed + 1; cy++) {
@@ -834,7 +834,7 @@ namespace Bitboard {
                             if (bit(pin, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -849,7 +849,7 @@ namespace Bitboard {
                             if (bit(pin, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const int& p: {0, 1, 2, 3}) {
+                                    for (const char& p: {0, 1, 2, 3}) {
                                         moves.push_back(Move(i, loc, true, p));
                                     }
                                 } else {
@@ -867,7 +867,7 @@ namespace Bitboard {
                                 const char char_move = (y<<3) + offset;
                                 if ((bit(pin, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square))) {
                                     if (promo) {
-                                        for (const int& p: {0, 1, 2, 3}) {
+                                        for (const char& p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, char_move, true, p));
                                         }
                                     } else {
