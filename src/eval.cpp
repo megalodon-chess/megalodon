@@ -93,7 +93,7 @@ namespace Eval {
     float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
             pawn_struct *  0.9 +
-            knight      * -0.3 +
+            knight      * -0.2 +
             king        *  0.2 +
             space       *  1
         );
@@ -102,9 +102,9 @@ namespace Eval {
     float end_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
             pawn_struct *  1.2 +
-            knight      * -0.2 +
+            knight      * -0.1 +
             king        * -0.3 +
-            space       *  0   // Space encourages pawns in the center, which discourages promotion.
+            space       *  0        // Space encourages pawns in the center, which discourages promotion.
         );
     }
 
@@ -267,11 +267,10 @@ namespace Eval {
         }
 
         const float mat = material(pos);
-        const char pawn_dir = pos.turn ? -1 : 1;
         const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
-        const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
         const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn);
         const float king = ((float)options.EvalKings)/100 * kings(pos.wk, pos.bk);
+        const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king, sp);
