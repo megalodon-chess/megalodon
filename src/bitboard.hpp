@@ -63,6 +63,7 @@ struct Position {
 struct Location {
     Location();
     Location(char, char);
+    Location(char);
 
     char x;
     char y;

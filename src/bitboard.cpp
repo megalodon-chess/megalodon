@@ -103,6 +103,11 @@ Location::Location(char _x, char _y) {
     y = _y;
 }
 
+Location::Location(char loc) {
+    x = loc&7;
+    y = loc>>3;
+}
+
 
 namespace Bitboard {
     bool bit(const U64& board, const char& pos) {
