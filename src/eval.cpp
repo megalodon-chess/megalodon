@@ -259,8 +259,8 @@ namespace Eval {
             if (checked) {
                 // Increment value by depth to encourage sooner mate.
                 // The smaller depth is, the closer it is to the leaf nodes.
-                if (pos.turn) return MIN - depth;  // Mate by black
-                else return MAX + depth;           // Mate by white
+                if (pos.turn) return Search::MIN - depth;  // Mate by black
+                else return Search::MAX + depth;           // Mate by white
             }
             return 0;
         }

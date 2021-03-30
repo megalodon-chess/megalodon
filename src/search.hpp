@@ -50,11 +50,13 @@ struct SearchInfo {
     bool full;
 };
 
-constexpr float MAX = 10000;
-constexpr float MIN = -10000;
+namespace Search {
+    constexpr float MAX = 10000;
+    constexpr float MIN = -10000;
 
-float moves_left(const Options&, const Position&);
-float move_time(const Options&, const Position&, const float&, const float&);
+    float moves_left(const Options&, const Position&);
+    float move_time(const Options&, const Position&, const float&, const float&);
 
-SearchInfo search(const Options&, const Position&, const int&, const double&);
-SearchInfo dfs(const Options&, const Position&, const int&, float, float, const bool&, const double&);
+    SearchInfo search(const Options&, const Position&, const int&, const double&);
+    SearchInfo dfs(const Options&, const Position&, const int&, float, float, const bool&, const double&);
+}
