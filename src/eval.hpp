@@ -40,12 +40,13 @@ float total_mat(const Position&);
 float non_pawn_mat(const Position&);
 
 float phase(const Position&);
-float middle_game(const float&, const float&);
-float end_game(const float&, const float&);
+float middle_game(const float&, const float&, const float&);
+float end_game(const float&, const float&, const float&);
 
 char center_dist(const char&);
 
 float pawn_structure(const U64&, const U64&);
 float knights(const U64&, const U64&);
+float kings(const U64&, const U64&);
 
 float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&);
