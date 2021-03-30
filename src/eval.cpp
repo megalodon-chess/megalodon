@@ -100,7 +100,7 @@ float end_game(const float& pawn_struct, const float& knight, const float& king)
     return (
         pawn_struct * 1.2 +
         knight * -0.2 +
-        king * 0.3
+        king * -0.3
     );
 }
 
