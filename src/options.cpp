@@ -34,7 +34,7 @@ Options::Options() {
     UseHashTable = false;
 
     ABPassStart = 5;
-    ABPassMargin = 500;
+    ABPassMargin = 50;
     MoveTimeMult = 100;
 
     EvalMaterial   = 100;
