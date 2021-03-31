@@ -962,7 +962,7 @@ namespace Bitboard {
         const Location k_pos = first_bit(CK);
         const char kx = k_pos.x, ky = k_pos.y;
 
-        vector<Move> moves = king_moves(k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
+        vector<Move> moves;
         const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const char num_checkers = popcnt(checking_pieces);
         const char pawn_dir = pos.turn ? 1 : -1;
@@ -974,6 +974,9 @@ namespace Bitboard {
         } else {
             no_check_moves(moves, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         }
+        const vector<Move> k_moves = king_moves(k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
+        moves.insert(moves.end(), k_moves.begin(), k_moves.end());
+
         return moves;
     }
 
