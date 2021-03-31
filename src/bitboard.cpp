@@ -748,7 +748,7 @@ namespace Bitboard {
                         for (const auto& offset: {x-1, x+1}) {
                             if (0 <= offset && offset < 8) {
                                 const char char_move = (y<<3) + offset;
-                                if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square)) {
+                                if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || ((char_move == pos.ep_square) && pos.ep))) {
                                     if (promo) {
                                         for (const char& p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, char_move, true, p));
@@ -863,11 +863,11 @@ namespace Bitboard {
                     // Captures
                     y += pawn_dir;
                     if (0 <= y && y < 8) {
-                        bool promo = y == 0 || y == 7;
+                        bool promo = (y == 0) || (y == 7);
                         for (const auto& offset: {x-1, x+1}) {
                             if (0 <= offset && offset < 8) {
                                 const char char_move = (y<<3) + offset;
-                                if ((bit(pin, char_move) && (bit(OPPONENT, char_move) || char_move == pos.ep_square))) {
+                                if ((bit(pin, char_move) && (bit(OPPONENT, char_move) || ((char_move == pos.ep_square) && pos.ep)))) {
                                     if (promo) {
                                         for (const char& p: {0, 1, 2, 3}) {
                                             moves.push_back(Move(i, char_move, true, p));
