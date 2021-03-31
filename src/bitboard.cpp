@@ -962,7 +962,7 @@ namespace Bitboard {
         }
     }
 
-    void legal_moves(Move* moves, int& movecnt, const Position pos, const U64& attacks) {
+    vector<Move> legal_moves(const Position pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 CP, CN, CB, CR, CQ, CK, OP, ON, OB, OR, OQ, OK;
@@ -1004,12 +1004,15 @@ namespace Bitboard {
         const char num_checkers = popcnt(checking_pieces);
         const char pawn_dir = pos.turn ? 1 : -1;
 
+        int movecnt = 0;
+        Move moves[MAX_MOVES];
         if (num_checkers == 1) {
             single_check_moves(moves, movecnt, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         } else {
             no_check_moves(moves, movecnt, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         }
         king_moves(moves, movecnt, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
+        return vector<Move>(moves, moves+movecnt);
     }
 
 
