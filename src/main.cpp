@@ -23,6 +23,7 @@
 #include "uci.hpp"
 #include "bitboard.hpp"
 #include "hash.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
@@ -41,6 +42,7 @@ void print_info() {
 
 void init() {
     Hash::init();
+    Eval::init();
 }
 
 
