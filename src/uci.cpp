@@ -125,6 +125,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         else movetime = Search::move_time(options, pos, btime, binc);
     }
     movetime *= options.MoveTimeMult / 100;
+    movetime /= 1.5;
 
     const SearchInfo result = Search::search(options, pos, depth, movetime);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
