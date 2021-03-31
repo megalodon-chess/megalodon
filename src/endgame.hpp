@@ -32,11 +32,14 @@ using std::vector;
 using std::string;
 
 namespace Endgame {
-    const char W_KQvK[10] = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
-    const char B_KQvK[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+    const vector<char> W_KQvK = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+    const vector<char> B_KQvK = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
 
-    bool cnt_match(const char[10], const char[10]);
+    bool cnt_match(const vector<char>, const vector<char>);
+    vector<char> get_cnts(const Position&);
     int eg_type(const Position&);
+
+    Move bestmove(const Position&, const vector<Move>&, const int&);
 
     Move kqvk(const vector<Move>&, const U64&, const U64&, const U64&);
 }

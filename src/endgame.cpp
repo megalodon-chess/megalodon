@@ -31,14 +31,14 @@ using std::string;
 
 
 namespace Endgame {
-    bool cnt_match(const char c1[10], const char c2[10]) {
+    bool cnt_match(const vector<char> c1, const vector<char> c2) {
         for (char i = 0; i < 10; i++) {
             if (c1[i] != c2[i]) return false;
         }
         return true;
     }
 
-    int eg_type(const Position& pos) {
+    vector<char> get_cnts(const Position& pos) {
         const char wpc = Bitboard::popcnt(pos.wp);
         const char wnc = Bitboard::popcnt(pos.wn);
         const char wbc = Bitboard::popcnt(pos.wb);
@@ -49,7 +49,11 @@ namespace Endgame {
         const char bbc = Bitboard::popcnt(pos.bb);
         const char brc = Bitboard::popcnt(pos.br);
         const char bqc = Bitboard::popcnt(pos.bq);
-        const char counts[10] = {wpc, wnc, wbc, wrc, wqc, bpc, bnc, bbc, brc, bqc};
+        return {wpc, wnc, wbc, wrc, wqc, bpc, bnc, bbc, brc, bqc};
+    }
+
+    int eg_type(const Position& pos) {
+        const vector<char> counts = get_cnts(pos);
 
         if (pos.turn && cnt_match(W_KQvK, counts)) {
             return 1;
@@ -58,6 +62,20 @@ namespace Endgame {
         }
 
         return 0;
+    }
+
+
+    Move bestmove(const Position& pos, const vector<Move>& moves, const int& eg) {
+        const vector<char> counts = get_cnts(pos);
+        if (pos.turn) {
+            switch (eg) {
+                case 1: return kqvk(moves, pos.wk, pos.wq, pos.bk);
+            }
+        } else {
+            switch (eg) {
+                case 1: return kqvk(moves, pos.bk, pos.bq, pos.wk);
+            }
+        }
     }
 
 
@@ -78,6 +96,7 @@ namespace Endgame {
                 const char dx = abs(to.x-ok.x);
                 const char dy = abs(to.y-ok.y);
                 if ((dx==0 || dx==1) && (dy==0 || dy==1)) continue;  // If move goes to opponent's king
+                if (dx == 0 || dy == 0) continue;  // Don't check king
 
                 const char dist = dx + dy;
                 if (dist < best_dist) {
