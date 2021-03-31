@@ -37,6 +37,13 @@ using Bitboard::bit;
 
 
 namespace Eval {
+    char CENTER_DIST_MAP[64];
+
+    void init() {
+        for (auto i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
+    }
+
+
     float material(const Position& pos) {
         float value = 0;
         value += popcnt(pos.wp) * 1;
@@ -88,7 +95,6 @@ namespace Eval {
         else if (npm <= ENDGAME_LIM) return 0;
         else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
     }
-
 
     float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
@@ -221,7 +227,7 @@ namespace Eval {
             }
         }
 
-        return space / 5;
+        return space / 6;
     }
 
     float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {

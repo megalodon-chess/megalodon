@@ -37,6 +37,8 @@ namespace Eval {
     constexpr U64 INNER_CENTER = 103481868288ULL;
     constexpr U64 OUTER_CENTER = 66125924401152ULL;
 
+    void init();
+
     float material(const Position&);
     float total_mat(const Position&);
     float non_pawn_mat(const Position&);
