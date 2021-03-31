@@ -28,6 +28,7 @@
 #include "eval.hpp"
 #include "perft.hpp"
 #include "hash.hpp"
+#include "endgame.hpp"
 
 using std::cin;
 using std::cout;
@@ -259,6 +260,7 @@ int loop() {
             vector<string> parts = split(cmd, " ");
             perft_push(pos, std::stoi(parts[1]));
         }
+        else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
 
         else if (cmd == "ucinewgame") {
             pos = parse_pos("position startpos");
