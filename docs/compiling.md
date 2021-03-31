@@ -40,7 +40,7 @@ Requires g++.
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
 cd megalodon/src/
-g++ *.cpp -o Megalodon
+g++ -pthread *.cpp -o Megalodon
 ./Megalodon
 ```
 
