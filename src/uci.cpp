@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <thread>
 #include "utils.hpp"
 #include "bitboard.hpp"
 #include "search.hpp"
@@ -86,7 +87,7 @@ void chat(const Options& options, const bool& turn, const int& movect, const flo
     else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
 }
 
-float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval) {
+float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
     int mode = 0;
     int depth;
     double movetime;
@@ -127,7 +128,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     movetime *= options.MoveTimeMult / 100;
     movetime /= 1.5;
 
-    const SearchInfo result = Search::search(options, pos, depth, movetime);
+    const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -175,6 +176,7 @@ int loop() {
     Options options;
     Position pos = parse_pos("position startpos");
     float prev_eval = 0;
+    bool searching = false;
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
@@ -266,9 +268,12 @@ int loop() {
         else if (startswith(cmd, "go")) {
             vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
-            else prev_eval = go(options, pos, parts, prev_eval);
+            else {
+                searching = true;
+                std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+            }
         }
-        else if (cmd == "stop");
+        else if (cmd == "stop") searching = false;
         else if (cmd.size() > 0) std::cerr << "Unknown command: " << cmd << endl;
     }
 

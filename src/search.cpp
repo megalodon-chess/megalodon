@@ -101,7 +101,7 @@ namespace Search {
 
 
     SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta,
-            const bool& root, const double& endtime) {
+            const bool& root, const double& endtime, bool& searching) {
         U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
@@ -125,13 +125,15 @@ namespace Search {
         vector<Move> pv;
         bool full = true;
         for (auto i = 0; i < moves.size(); i++) {
-            if (depth >= 2 && get_time() >= endtime) {
-                full = false;
-                break;
+            if (depth >= 2) {
+                if (get_time() >= endtime || !searching) {
+                    full = false;
+                    break;
+                }
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime);
+            const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
 
             if (root && options.PrintCurrMove && (depth >= 5)) {
@@ -161,16 +163,17 @@ namespace Search {
         return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta, full);
     }
 
-    SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime) {
+    SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime, bool& searching) {
         SearchInfo result;
         float alpha = MIN, beta = MAX;
         const double start = get_time();
         const double end = start + movetime;
 
         for (auto d = 1; d <= depth; d++) {
+            if (!searching) break;
             if (get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, alpha, beta, true, end);
+            SearchInfo curr_result = dfs(options, pos, d, alpha, beta, true, end, searching);
             double elapse = get_time() - start;
 
             if (d >= options.ABPassStart) {
