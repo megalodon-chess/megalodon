@@ -37,4 +37,6 @@ namespace Endgame {
 
     bool cnt_match(const char[10], const char[10]);
     int eg_type(const Position&);
+
+    Move kqvk(const vector<Move>&, const U64&, const U64&, const U64&);
 }

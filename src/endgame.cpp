@@ -59,4 +59,34 @@ namespace Endgame {
 
         return 0;
     }
+
+
+    Move kqvk(const vector<Move>& moves, const U64& _ck, const U64& _cq, const U64& _ok) {
+        const Location ck = Bitboard::first_bit(_ck);
+        const Location cq = Bitboard::first_bit(_cq);
+        const Location ok = Bitboard::first_bit(_ok);
+        const char ckp = (ck.y<<3) + ck.x;
+        const char cqp = (cq.y<<3) + cq.x;
+        const char okp = (ok.y<<3) + ok.x;
+
+        // TODO avoid stalemate.
+        char best_dist = 16;
+        Move best_move = moves[0];
+        for (const auto& move: moves) {
+            if (move.from == cqp) {
+                const Location to = Location(move.to);
+                const char dx = abs(to.x-ok.x);
+                const char dy = abs(to.y-ok.y);
+                if ((dx==0 || dx==1) && (dy==0 || dy==1)) continue;  // If move goes to opponent's king
+
+                const char dist = dx + dy;
+                if (dist < best_dist) {
+                    best_move = move;
+                    best_dist = dist;
+                }
+            }
+        }
+
+        return best_move;
+    }
 }
