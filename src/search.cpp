@@ -174,8 +174,8 @@ namespace Search {
             double elapse = get_time() - start;
 
             if (d >= options.ABPassStart) {
-                alpha = result.alpha + options.ABPassMargin/100;
-                beta = result.beta - options.ABPassMargin/100;
+                alpha = result.alpha - options.ABPassMargin/100;
+                beta = result.beta + options.ABPassMargin/100;
             }
 
             curr_result.time = elapse;
