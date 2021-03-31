@@ -161,7 +161,7 @@ namespace Bitboard {
     char num_attacks(const vector<Move>&, const Location&);
     U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
-    vector<Move> king_moves(const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
+    void king_moves(vector<Move>&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
     void single_check_moves(vector<Move>&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const Location&, const U64&);

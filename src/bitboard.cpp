@@ -599,7 +599,7 @@ namespace Bitboard {
         return board;
     }
 
-    vector<Move> king_moves(const Location& k_pos, const char& castling, const bool& side, const U64& same,
+    void king_moves(vector<Move>& moves, const Location& k_pos, const char& castling, const bool& side, const U64& same,
             const U64& all, const U64& attacks) {
         /*
         Calculates all king moves.
@@ -610,7 +610,6 @@ namespace Bitboard {
         all: board of all pieces.
         attacks: attacks from enemy.
         */
-        vector<Move> moves;
         const char kx = k_pos.x, ky = k_pos.y;
         const char start = (ky<<3) + kx;
 
@@ -646,8 +645,6 @@ namespace Bitboard {
                 }
             }
         }
-
-        return moves;
     }
 
     void single_check_moves(vector<Move>& moves, const Position& pos, const U64& CP, const U64& CN, const U64& CB, const U64& CR,
@@ -974,8 +971,7 @@ namespace Bitboard {
         } else {
             no_check_moves(moves, pos, CP, CN, CB, CR, CQ, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         }
-        const vector<Move> k_moves = king_moves(k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
-        moves.insert(moves.end(), k_moves.begin(), k_moves.end());
+        king_moves(moves, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
 
         return moves;
     }
