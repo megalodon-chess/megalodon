@@ -104,8 +104,8 @@ Location::Location(char _x, char _y) {
 }
 
 Location::Location(char loc) {
-    x = loc&7;
-    y = loc>>3;
+    x = loc & 7;
+    y = loc >> 3;
 }
 
 
@@ -152,7 +152,7 @@ namespace Bitboard {
     }
 
     Location first_bit(const U64& board) {
-        char pos = log2(board & -board);
+        const char pos = log2(board & -board);
         return Location((pos&7), (pos>>3));
     }
 
