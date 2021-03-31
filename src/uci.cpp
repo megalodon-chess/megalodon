@@ -90,7 +90,7 @@ void chat(const Options& options, const bool& turn, const int& movect, const flo
 
 float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
     int mode = 0;
-    int depth;
+    int depth = 99;
     double movetime;
     const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
@@ -126,9 +126,10 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         if (pos.turn) movetime = Search::move_time(options, pos, wtime, winc);
         else movetime = Search::move_time(options, pos, btime, binc);
     }
-    movetime *= options.MoveTimeMult / 100;
-    movetime /= 1.5;
+    movetime *= (float)(options.MoveTimeMult) / 100;
+    if (mode == 2) movetime /= 1.5;
 
+    searching = true;
     const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
