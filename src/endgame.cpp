@@ -22,6 +22,7 @@
 #include <string>
 #include "bitboard.hpp"
 #include "endgame.hpp"
+#include "eval.hpp"
 
 using std::cin;
 using std::cout;
@@ -69,31 +70,36 @@ namespace Endgame {
         const vector<char> counts = get_cnts(pos);
         if (pos.turn) {
             switch (eg) {
-                case 1: return kqvk(moves, pos.wk, pos.wq, pos.bk);
+                case 1: return kqvk(moves, pos, pos.wk, pos.wq, pos.bk);
             }
         } else {
             switch (eg) {
-                case 1: return kqvk(moves, pos.bk, pos.bq, pos.wk);
+                case 1: return kqvk(moves, pos, pos.bk, pos.bq, pos.wk);
             }
         }
     }
 
 
-    Move kqvk(const vector<Move>& moves, const U64& _ck, const U64& _cq, const U64& _ok) {
+    Move kqvk(const vector<Move>& moves, const Position& pos, const U64& _ck, const U64& _cq, const U64& _ok) {
         const Location ck = Bitboard::first_bit(_ck);
         const Location cq = Bitboard::first_bit(_cq);
         const Location ok = Bitboard::first_bit(_ok);
         const char ckp = (ck.y<<3) + ck.x;
         const char cqp = (cq.y<<3) + cq.x;
         const char okp = (ok.y<<3) + ok.x;
-        cout << "AAAAAAA" << endl;
 
         // TODO avoid stalemate.
         char best_dist = 16;
-        char farthest_border = 0;
+        char least_move_dist = 16;
         Move best_move = moves[0];
         for (const auto& move: moves) {
             if (move.from == cqp) {
+                const Position new_pos = Bitboard::push(pos, move);
+                const vector<Move> new_moves = Bitboard::legal_moves(new_pos, Bitboard::attacked(new_pos, !new_pos.turn));
+                if (new_moves.size() == 0) {
+                    continue;  // Continue if move results in stalemate.
+                }
+
                 const Location to = Location(move.to);
                 const char dx = abs(to.x-ok.x);
                 const char dy = abs(to.y-ok.y);
@@ -101,17 +107,14 @@ namespace Endgame {
                 if (dx == 0 || dy == 0 || dx == dy) continue;  // Don't check king
 
                 const char dist = dx + dy;
-                char border_dist = 8;
-                if (to.x < border_dist) border_dist = to.x;
-                if (to.y < border_dist) border_dist = to.y;
-                if ((7-to.x) < border_dist) border_dist = 7 - to.x;
-                if ((7-to.y) < border_dist) border_dist = 7 - to.y;
+                const char move_dist = std::max(abs(to.x-cq.x), abs(to.y-cq.y));
 
                 if (dist < best_dist) {
                     best_move = move;
                     best_dist = dist;
-                } else if (dist == best_dist && border_dist > farthest_border) {
-                    farthest_border = border_dist;
+                    if (move_dist < least_move_dist) least_move_dist = move_dist;
+                } else if (dist <= best_dist && move_dist < least_move_dist) {
+                    least_move_dist = move_dist;
                     best_move = move;
                 }
             }

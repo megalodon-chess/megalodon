@@ -41,5 +41,5 @@ namespace Endgame {
 
     Move bestmove(const Position&, const vector<Move>&, const int&);
 
-    Move kqvk(const vector<Move>&, const U64&, const U64&, const U64&);
+    Move kqvk(const vector<Move>&, const Position&, const U64&, const U64&, const U64&);
 }
