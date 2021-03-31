@@ -246,8 +246,8 @@ namespace Eval {
     }
 
     float kings(const U64& wk, const U64& bk) {
-        const Location w = std::move(Bitboard::first_bit(wk));
-        const Location b = std::move(Bitboard::first_bit(bk));
+        const Location w = Bitboard::first_bit(wk);
+        const Location b = Bitboard::first_bit(bk);
         const char wdist = center_dist((w.y<<3)+w.x);
         const char bdist = center_dist((b.y<<3)+b.x);
         return wdist - bdist;

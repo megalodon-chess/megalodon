@@ -658,7 +658,7 @@ namespace Bitboard {
         const U64 capture_mask = checking_pieces;
         const char pawn_dir = pos.turn ? 1 : -1;
 
-        const Location check_pos = std::move(first_bit(checking_pieces));
+        const Location check_pos = first_bit(checking_pieces);
         const char check_x = check_pos.x, check_y = check_pos.y;
 
         const char kx = k_pos.x, ky = k_pos.y;
@@ -684,7 +684,7 @@ namespace Bitboard {
 
         // Go through all pieces and check if they can capture/block
         for (char i = 0; i < 64; i++) {
-            const Location curr_loc = std::move(Location(i&7, (i>>3)));
+            const Location curr_loc = Location(i&7, (i>>3));
             if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME) == FULL) {
                 if (bit(CP, i)) {
                     const char x = (i&7);
@@ -815,7 +815,7 @@ namespace Bitboard {
         */
         const char pawn_dir = pos.turn ? 1 : -1;
         for (auto i = 0; i < 64; i++) {
-            const Location curr_loc = std::move(Location(i&7, (i>>3)));
+            const Location curr_loc = Location(i&7, (i>>3));
             if (bit(SAME, i)) {
                 U64 pin = pinned(k_pos, curr_loc, OP, OK, OB, OR, OQ, SAME);
                 bool piece_pinned = (pin != FULL);
@@ -956,7 +956,7 @@ namespace Bitboard {
         const U64 OPPONENT = OP | ON | OB | OR | OQ | OK;
         const U64 ALL = SAME | OPPONENT;
 
-        const Location k_pos = std::move(first_bit(CK));
+        const Location k_pos = first_bit(CK);
         const char kx = k_pos.x, ky = k_pos.y;
 
         vector<Move> moves;
