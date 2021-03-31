@@ -26,6 +26,7 @@
 #include "options.hpp"
 #include "utils.hpp"
 #include "hash.hpp"
+#include "endgame.hpp"
 
 using std::cin;
 using std::cout;
@@ -164,6 +165,13 @@ namespace Search {
     }
 
     SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime, bool& searching) {
+        const int eg = Endgame::eg_type(pos);
+        if (eg != 0) {
+            const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+            const Move best_move = Endgame::bestmove(pos, moves, eg);
+            return SearchInfo(1, 1, false, pos.turn ? MAX : MIN, moves.size(), 0, 0, {best_move}, 0, 0, true);
+        }
+
         SearchInfo result;
         float alpha = MIN, beta = MAX;
         const double start = get_time();
