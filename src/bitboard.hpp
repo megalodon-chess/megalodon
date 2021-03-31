@@ -124,6 +124,7 @@ namespace Bitboard {
     const U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
 
     constexpr U64 BYTE_ALL_ONE = 255ULL;
+    constexpr int MAX_MOVES = 120;
 
     constexpr char DIR_R_SIZE = 4;
     constexpr char DIR_N_SIZE = 8;
@@ -161,11 +162,11 @@ namespace Bitboard {
     char num_attacks(const vector<Move>&, const Location&);
     U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
-    vector<Move> king_moves(const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
-    void single_check_moves(vector<Move>&, const Position&, const U64&, const U64&, const U64&, const U64&,
+    void king_moves(Move*, int&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
+    void single_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const Location&, const U64&);
-    void no_check_moves(vector<Move>&, const Position&, const U64&, const U64&, const U64&, const U64&,
+    void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
