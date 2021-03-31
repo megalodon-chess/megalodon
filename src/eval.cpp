@@ -239,10 +239,10 @@ namespace Eval {
         for (char i = 0; i < 64; i++) {
             if (wp_in_cent && bit(wn, i)) {
                 wcnt++;
-                wdist += 6 - center_dist(i);
+                wdist += 6 - CENTER_DIST_MAP[i];
             } else if (bp_in_cent && bit(bn, i)) {
                 bcnt++;
-                bdist += 6 - center_dist(i);
+                bdist += 6 - CENTER_DIST_MAP[i];
             }
         }
 
@@ -254,8 +254,8 @@ namespace Eval {
     float kings(const U64& wk, const U64& bk) {
         const Location w = Bitboard::first_bit(wk);
         const Location b = Bitboard::first_bit(bk);
-        const char wdist = center_dist((w.y<<3)+w.x);
-        const char bdist = center_dist((b.y<<3)+b.x);
+        const char wdist = CENTER_DIST_MAP[(w.y<<3)+w.x];
+        const char bdist = CENTER_DIST_MAP[(b.y<<3)+b.x];
         return wdist - bdist;
     }
 
