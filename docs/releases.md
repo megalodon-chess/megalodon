@@ -2,6 +2,17 @@
 
 This page contains release info.
 
+## [Megalodon 0.3.1][v0.3.1]
+
+This release has move generation improvements.
+The new algorithms reach 4.5 million nps, which is mostly due to using arrays instead of vectors.
+
+There are also small evaluation weight changes.
+
+The search function also runs in a different thread now, so the search can be stopped at any time with `stop`.
+
+Megalodon plays at an estimated 1000 ELO.
+
 ## [Megalodon 0.3.0][v0.3.0]
 
 This release features very fast move generation algorithms.
@@ -150,6 +161,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.3.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.1
 [v0.3.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.0
 [v0.2.6]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.5
