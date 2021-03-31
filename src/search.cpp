@@ -134,7 +134,7 @@ namespace Search {
             const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime);
             nodes += result.nodes;
 
-            if (root && options.PrintCurrMove && (depth >= 6)) {
+            if (root && options.PrintCurrMove && (depth >= 5)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
                     << " currmovenumber " << i+1 << endl;
             }

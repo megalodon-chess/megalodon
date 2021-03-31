@@ -34,14 +34,14 @@ Options::Options() {
     UseHashTable = false;
 
     ABPassStart = 5;
-    ABPassMargin   = 500;
-    MoveTimeMult   = 100;
+    ABPassMargin = 500;
+    MoveTimeMult = 100;
 
     EvalMaterial   = 100;
     EvalPawnStruct = 100;
     EvalSpace      = 100;
-    EvalKnights = 100;
-    EvalKings = 100;
+    EvalKnights    = 100;
+    EvalKings      = 100;
 
     PrintCurrMove = true;
     PrintPv = true;
