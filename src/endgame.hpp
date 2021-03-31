@@ -30,3 +30,11 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+namespace Endgame {
+    const char W_KQvK[10] = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+    const char B_KQvK[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+
+    bool cnt_match(const char[10], const char[10]);
+    int eg_type(const Position&);
+}
