@@ -978,23 +978,6 @@ namespace Bitboard {
     }
 
 
-    vector<U64*> bb_pointers(Position& pos) {
-        return {
-            &pos.wp,
-            &pos.wn,
-            &pos.wb,
-            &pos.wr,
-            &pos.wq,
-            &pos.wk,
-            &pos.bp,
-            &pos.bn,
-            &pos.bb,
-            &pos.br,
-            &pos.bq,
-            &pos.bk
-        };
-    }
-
     Position startpos() {
         Position pos;
         pos.wp = START_WP;
@@ -1017,7 +1000,8 @@ namespace Bitboard {
     }
 
     Position push(Position pos, const Move& move) {
-        const vector<U64*> pointers{bb_pointers(pos)};
+        U64* pointers[12] = {&pos.wp, &pos.wn, &pos.wb, &pos.wr, &pos.wq, &pos.wk,
+            &pos.bp, &pos.bn, &pos.bb, &pos.br, &pos.bq, &pos.bk};
         U64* to_board = pointers[0];
         bool is_king = false;
         bool is_pawn = false;
