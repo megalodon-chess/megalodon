@@ -2,6 +2,13 @@
 
 This page contains release info.
 
+## [Megalodon 0.3.0][v0.3.0]
+
+This release features very fast move generation algorithms.
+The move generation searches at 3.5 million NPS, a 50% improvement on 2.4 million in v0.2.6
+
+There are also minor evaluation changes.
+
 ## [Megalodon 0.2.6][v0.2.6]
 
 This release features many evaluation categories, including pawn structure, knights, kings, and space.
@@ -140,6 +147,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.3.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.0
 [v0.2.6]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.6
 [v0.2.5]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.5
 [v0.2.4]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.4
