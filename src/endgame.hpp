@@ -34,6 +34,7 @@ using std::string;
 namespace Endgame {
     const vector<char> W_KQvK = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
     const vector<char> B_KQvK = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+    const vector<char> CORNERS = {0, 7, 56, 63};
 
     bool cnt_match(const vector<char>, const vector<char>);
     vector<char> get_cnts(const Position&);
