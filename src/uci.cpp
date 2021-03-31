@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <thread>
 #include "utils.hpp"
 #include "bitboard.hpp"
 #include "search.hpp"
@@ -266,7 +267,7 @@ int loop() {
         else if (startswith(cmd, "go")) {
             vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
-            else prev_eval = go(options, pos, parts, prev_eval);
+            else std::thread(go, options, pos, parts, prev_eval).detach();
         }
         else if (cmd == "stop");
         else if (cmd.size() > 0) std::cerr << "Unknown command: " << cmd << endl;
