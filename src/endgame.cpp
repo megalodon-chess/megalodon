@@ -86,9 +86,11 @@ namespace Endgame {
         const char ckp = (ck.y<<3) + ck.x;
         const char cqp = (cq.y<<3) + cq.x;
         const char okp = (ok.y<<3) + ok.x;
+        cout << "AAAAAAA" << endl;
 
         // TODO avoid stalemate.
         char best_dist = 16;
+        char farthest_border = 0;
         Move best_move = moves[0];
         for (const auto& move: moves) {
             if (move.from == cqp) {
@@ -96,12 +98,21 @@ namespace Endgame {
                 const char dx = abs(to.x-ok.x);
                 const char dy = abs(to.y-ok.y);
                 if ((dx==0 || dx==1) && (dy==0 || dy==1)) continue;  // If move goes to opponent's king
-                if (dx == 0 || dy == 0) continue;  // Don't check king
+                if (dx == 0 || dy == 0 || dx == dy) continue;  // Don't check king
 
                 const char dist = dx + dy;
+                char border_dist = 8;
+                if (to.x < border_dist) border_dist = to.x;
+                if (to.y < border_dist) border_dist = to.y;
+                if ((7-to.x) < border_dist) border_dist = 7 - to.x;
+                if ((7-to.y) < border_dist) border_dist = 7 - to.y;
+
                 if (dist < best_dist) {
                     best_move = move;
                     best_dist = dist;
+                } else if (dist == best_dist && border_dist > farthest_border) {
+                    farthest_border = border_dist;
+                    best_move = move;
                 }
             }
         }
