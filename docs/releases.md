@@ -6,8 +6,11 @@ This page contains release info.
 
 This release features very fast move generation algorithms.
 The move generation searches at 3.5 million NPS, a 50% improvement on 2.4 million in v0.2.6
+The accuracy was also greatly improved, and agrees with the [Chess] module in python.
 
 There are also minor evaluation changes.
+
+[chess]: https://pypi.org/project/chess/
 
 ## [Megalodon 0.2.6][v0.2.6]
 
