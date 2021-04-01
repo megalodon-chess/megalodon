@@ -112,7 +112,7 @@ namespace Search {
         const bool computed = options.hash_table[idx].computed;
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
         vector<MoveEval> results;
-        if (computed && moves.size() < Bitboard::MAX_HASH_MOVES) {
+        if (options.UseHashTable && computed && moves.size() < Bitboard::MAX_HASH_MOVES) {
             const MoveOrder entry = options.hash_table[idx];
             moves = vector<Move>(entry.moves, entry.moves+entry.movecnt);
         }
@@ -166,7 +166,8 @@ namespace Search {
 
         // Sort moves
         const char movecnt = moves.size();
-        if (depth >= 3 && movecnt <= Bitboard::MAX_HASH_MOVES && !options.hash_table[idx].computed) {
+        if (options.UseHashTable && depth >= options.HashStart &&
+                movecnt <= Bitboard::MAX_HASH_MOVES && !options.hash_table[idx].computed) {
             if (pos.turn) std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second > y.second;});
             else std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second < y.second;});
 

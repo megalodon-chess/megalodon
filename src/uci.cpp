@@ -198,7 +198,8 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default false" << "\n";
+            cout << "option name UseHashTable type check default true" << "\n";
+            cout << "option name HashStart type spin default 3 min 1 max 6" << "\n";
 
             cout << "option name ABPassStart type spin default 5 min 1 max 100" << "\n";
             cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
@@ -226,6 +227,7 @@ int loop() {
                 options.set_hash();
             }
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
+            else if (name == "HashStart") options.HashStart = std::stoi(value);
 
             else if (name == "ABPassStart") options.ABPassStart = std::stoi(value);
             else if (name == "ABPassMargin") options.ABPassMargin = std::stoi(value);

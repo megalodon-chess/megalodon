@@ -36,7 +36,8 @@ MoveOrder::MoveOrder() {
 
 Options::Options() {
     Hash = 256;
-    UseHashTable = false;
+    UseHashTable = true;
+    HashStart = 3;
 
     ABPassStart = 5;
     ABPassMargin = 500;
