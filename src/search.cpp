@@ -104,7 +104,7 @@ namespace Search {
     }
 
 
-    SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta,
+    SearchInfo dfs(const Options& options, const Position& pos, const int& depth, const int& real_depth, float alpha, float beta,
             const bool& root, const double& endtime, bool& searching) {
         // Read moves from hash table, if exists
         const U64 idx = Hash::hash(pos) % options.hash_size;
@@ -137,8 +137,8 @@ namespace Search {
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const int new_depth = (options.UseHashTable && computed && depth >= 2 && i>prune_limit) ? depth-2 : depth-1;
-            const SearchInfo result = dfs(options, new_pos, new_depth, alpha, beta, false, endtime, searching);
+            const int new_depth = (options.UseHashTable && computed && depth >= 2 && real_depth >= 4 && i>prune_limit) ? depth-2 : depth-1;
+            const SearchInfo result = dfs(options, new_pos, new_depth, real_depth+1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
             if (options.UseHashTable) results.push_back(MoveEval(moves[i], result.score));
 
@@ -201,7 +201,7 @@ namespace Search {
             if (!searching) break;
             if (get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, alpha, beta, true, end, searching);
+            SearchInfo curr_result = dfs(options, pos, d, 0, alpha, beta, true, end, searching);
             double elapse = get_time() - start;
 
             if (d >= options.ABPassStart) {

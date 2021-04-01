@@ -58,5 +58,5 @@ namespace Search {
     float move_time(const Options&, const Position&, const float&, const float&);
 
     SearchInfo search(const Options&, const Position&, const int&, const double&, bool&);
-    SearchInfo dfs(const Options&, const Position&, const int&, float, float, const bool&, const double&, bool&);
+    SearchInfo dfs(const Options&, const Position&, const int&, const int&, float, float, const bool&, const double&, bool&);
 }
