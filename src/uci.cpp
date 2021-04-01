@@ -246,7 +246,7 @@ int loop() {
             else if (name == "PrintPv") options.PrintPv = (value == "true");
             else if (name == "Chat") options.Chat = (value == "true");
 
-            else cerr << "Unknown option: " << name << endl;
+            else std::cerr << "Unknown option: " << name << endl;
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
