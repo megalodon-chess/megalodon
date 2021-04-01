@@ -35,7 +35,7 @@ struct MoveOrder {
 
     bool computed;
     char movecnt;
-    Move moves[Bitboard::MAX_MOVES];
+    Move moves[Bitboard::MAX_HASH_MOVES];
 };
 
 class Options {
