@@ -58,6 +58,6 @@ Options::Options() {
 
 void Options::set_hash() {
     delete[] hash_table;
-    hash_size = Hash * 50000;
+    hash_size = Hash * 100000;
     hash_table = new MoveOrder[hash_size];
 }
