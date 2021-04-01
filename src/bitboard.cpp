@@ -1001,7 +1001,6 @@ namespace Bitboard {
 
         const Location k_pos = first_bit(CK);
         const char kx = k_pos.x, ky = k_pos.y;
-
         const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
         const char num_checkers = popcnt(checking_pieces);
         const char pawn_dir = pos.turn ? 1 : -1;
