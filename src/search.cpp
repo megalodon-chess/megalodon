@@ -171,7 +171,7 @@ namespace Search {
         if (options.UseHashTable && depth >= options.HashStart &&
                 movecnt <= Bitboard::MAX_HASH_MOVES && !options.hash_table[idx].computed) {
             if (pos.turn) std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second > y.second;});
-            else std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second < y.second;});
+            else          std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second < y.second;});
 
             options.hash_table[idx].computed = true;
             options.hash_table[idx].movecnt = movecnt;
@@ -208,7 +208,7 @@ namespace Search {
             if (get_time() >= end) break;
 
             SearchInfo curr_result = dfs(options, pos, d, 0, alpha, beta, true, end, searching);
-            double elapse = get_time() - start;
+            const double elapse = get_time() - start;
 
             if (d >= options.ABPassStart) {
                 alpha = result.alpha - options.ABPassMargin/100;
