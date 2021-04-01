@@ -103,8 +103,14 @@ namespace Search {
 
     SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta,
             const bool& root, const double& endtime, bool& searching) {
-        U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        const U64 idx = Hash::hash(pos) % options.hash_size;
+        const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        vector<Move> moves;
+        if (options.hash_table[idx].computed) {
+            const MoveOrder entry = options.hash_table[idx];
+            moves = vector<Move>(entry.moves, entry.moves+entry.movecnt);
+        }
+        else moves = Bitboard::legal_moves(pos, o_attacks);
 
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, depth, o_attacks);
