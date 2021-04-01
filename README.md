@@ -8,7 +8,7 @@ Play against Megalodon on [Lichess][lichess]!
 
 [Version 0.3.2][latest] was recently released!
 
-## Compiling
+# Compiling
 
 ## Requirements
 
