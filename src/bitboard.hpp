@@ -23,7 +23,6 @@
 #include <vector>
 #include <tuple>
 #include <string>
-#include "options.hpp"
 
 using std::cin;
 using std::cout;
