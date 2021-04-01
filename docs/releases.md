@@ -2,6 +2,12 @@
 
 This page contains release info.
 
+## [Megalodon 0.3.2][v0.3.2]
+
+There are many bug fixes in this release.
+
+A new queen checkmate algorithm was added, and Megalodon will now use that algorithm instead of a search in queen endgames.
+
 ## [Megalodon 0.3.1][v0.3.1]
 
 This release has move generation improvements.
@@ -161,6 +167,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.3.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.2
 [v0.3.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.1
 [v0.3.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.0
 [v0.2.6]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.2.6
