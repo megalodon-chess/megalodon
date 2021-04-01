@@ -535,13 +535,13 @@ namespace Bitboard {
             if (0 <= kx-1 && kx-1 < 8) {
                 if (bit(pawns, loc-1)) {
                     atk_cnt++;
-                    set_bit(board, loc);
+                    set_bit(board, loc-1);
                 }
             }
             if (0 <= kx+1 && kx+1 < 8) {
                 if (bit(pawns, loc+1)) {
                     atk_cnt++;
-                    set_bit(board, loc);
+                    set_bit(board, loc+1);
                 }
             }
         }
