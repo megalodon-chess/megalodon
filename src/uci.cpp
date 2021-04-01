@@ -183,7 +183,10 @@ int loop() {
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
 
-        if (cmd == "quit") break;
+        if (cmd == "quit") {
+            searching = false;
+            break;
+        }
         else if (cmd == "clear") {
             string str;
             for (char i: {27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74}) str += string(1, i);
