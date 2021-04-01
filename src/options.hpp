@@ -37,6 +37,7 @@ UseHashTable: type=check, default=false, whether the engine should use hash tabl
 ABPassStart: type=spin, default=5, min=1, max=100, start depth where alpha and beta values are passed to next iteration.
 ABPassMargin: type=spin, default=500, min=0, max=10000, add/sub offset of alpha and beta.
 MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
+UseEndgame: type=check, default=true, whether to use endgame algorithms.
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
@@ -62,6 +63,7 @@ public:
     int ABPassStart;
     int ABPassMargin;
     int MoveTimeMult;
+    bool UseEndgame;
 
     int EvalMaterial;
     int EvalPawnStruct;
