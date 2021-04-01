@@ -66,6 +66,7 @@ struct Location {
 
     char x;
     char y;
+    char loc;
 };
 
 constexpr char popcnt_tbl[256]{

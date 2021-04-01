@@ -95,16 +95,19 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
 Location::Location() {
     x = 0;
     y = 0;
+    loc = 0;
 }
 
 Location::Location(char _x, char _y) {
     x = _x;
     y = _y;
+    loc = _y<<3+x;
 }
 
-Location::Location(char loc) {
-    x = loc & 7;
-    y = loc >> 3;
+Location::Location(char _loc) {
+    x = _loc & 7;
+    y = _loc >> 3;
+    loc = _loc;
 }
 
 
