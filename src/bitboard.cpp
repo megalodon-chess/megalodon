@@ -876,7 +876,7 @@ namespace Bitboard {
                             const char loc = (cy<<3) + x;
                             if (bit(ALL, loc)) break;
                             if (bit(pin, loc)) {
-                                if (cy == 7) {
+                                if (cy == 0) {
                                     // Promotion
                                     for (const char& p: {0, 1, 2, 3}) {
                                         moves[movecnt] = Move(i, loc, true, p);
