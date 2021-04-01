@@ -61,7 +61,7 @@ saying that your project isn't related to Megalodon.
 
 ## The Name
 
-The name megalodon comes from a species of shark that lived millions of years ago.
+The name Megalodon comes from a species of shark that lived millions of years ago.
 
 ## Documentation
 
