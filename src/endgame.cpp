@@ -84,9 +84,9 @@ namespace Endgame {
         const Location ck = Bitboard::first_bit(_ck);
         const Location cq = Bitboard::first_bit(_cq);
         const Location ok = Bitboard::first_bit(_ok);
-        const char ckp = (ck.y<<3) + ck.x;
-        const char cqp = (cq.y<<3) + cq.x;
-        const char okp = (ok.y<<3) + ok.x;
+        const char ckp = ck.loc;
+        const char cqp = cq.loc;
+        const char okp = ok.loc;
 
         char corner_dist = 16;
         Location closest_corner = CORNERS[0];
