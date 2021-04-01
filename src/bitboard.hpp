@@ -23,7 +23,6 @@
 #include <vector>
 #include <tuple>
 #include <string>
-#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -125,6 +124,7 @@ namespace Bitboard {
 
     constexpr U64 BYTE_ALL_ONE = 255ULL;
     constexpr int MAX_MOVES = 120;
+    constexpr int MAX_HASH_MOVES = 30;
 
     constexpr char DIR_R_SIZE = 4;
     constexpr char DIR_N_SIZE = 8;

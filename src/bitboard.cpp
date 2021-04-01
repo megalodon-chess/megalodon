@@ -25,7 +25,6 @@
 #include <tuple>
 #include "bitboard.hpp"
 #include "utils.hpp"
-#include "options.hpp"
 #include "hash.hpp"
 
 using std::abs;

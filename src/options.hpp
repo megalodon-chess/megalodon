@@ -22,6 +22,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
@@ -29,10 +30,19 @@ using std::endl;
 using std::vector;
 using std::string;
 
+struct MoveOrder {
+    MoveOrder();
+
+    bool computed;
+    char movecnt;
+    Move moves[Bitboard::MAX_HASH_MOVES];
+};
+
 class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
-UseHashTable: type=check, default=false, whether the engine should use hash table.
+UseHashTable: type=check, default=true, whether the engine should use hash table.
+HashStart: type=spin, default=3, min=1, max=6, starting depth to read and write into hash table.
 
 ABPassStart: type=spin, default=5, min=1, max=100, start depth where alpha and beta values are passed to next iteration.
 ABPassMargin: type=spin, default=500, min=0, max=10000, add/sub offset of alpha and beta.
@@ -53,12 +63,12 @@ public:
     Options();
     void set_hash();
 
-    bool* hash_evaled = new bool[16];
-    float* hash_evals = new float[16];
+    MoveOrder* hash_table;
     int hash_size;
 
     int Hash;
     bool UseHashTable;
+    int HashStart;
 
     int ABPassStart;
     int ABPassMargin;

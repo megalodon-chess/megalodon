@@ -29,9 +29,15 @@ using std::vector;
 using std::string;
 
 
+MoveOrder::MoveOrder() {
+    computed = false;
+}
+
+
 Options::Options() {
-    Hash = 16;
-    UseHashTable = false;
+    Hash = 256;
+    UseHashTable = true;
+    HashStart = 3;
 
     ABPassStart = 5;
     ABPassMargin = 500;
@@ -52,14 +58,7 @@ Options::Options() {
 }
 
 void Options::set_hash() {
-    delete hash_evaled;
-    delete hash_evals;
-    hash_size = Hash * 125000;
-
-    hash_evaled = new bool[hash_size];
-    hash_evals = new float[hash_size];
-    for (int i = 0; i < hash_size; i++) {
-        hash_evaled[i] = false;
-        hash_evals[i] = 0;
-    }
+    delete[] hash_table;
+    hash_size = Hash * 8520;
+    hash_table = new MoveOrder[hash_size];
 }
