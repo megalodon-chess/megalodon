@@ -110,5 +110,5 @@ string rand_choice(vector<string> choices) {
 }
 
 U64 randull() {
-    return ((U64)rand()) * ((U64)rand());
+    return ((U64)rand()) + (((U64)rand())<<32);
 }
