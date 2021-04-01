@@ -43,6 +43,7 @@ Options::Options() {
     ABPassMargin = 500;
     MoveTimeMult = 100;
     UseEndgame = true;
+    BadBranchPrune = 0;
 
     EvalMaterial   = 100;
     EvalPawnStruct = 100;

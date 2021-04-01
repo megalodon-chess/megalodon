@@ -134,6 +134,7 @@ namespace Search {
                     break;
                 }
             }
+            if (computed && (float)i/moves.size()*100 > (100-options.BadBranchPrune)) break;
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
             const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime, searching);
