@@ -77,6 +77,7 @@ namespace Endgame {
                 case 1: return kqvk(moves, pos, pos.bk, pos.bq, pos.wk);
             }
         }
+        return Move();
     }
 
 
