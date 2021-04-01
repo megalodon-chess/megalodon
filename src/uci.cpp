@@ -284,7 +284,6 @@ int loop() {
         else if (cmd.size() > 0) std::cerr << "Unknown command: " << cmd << endl;
     }
 
-    delete options.hash_evaled;
-    delete options.hash_evals;
+    delete[] options.hash_table;
     return 0;
 }

@@ -22,12 +22,21 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+struct MoveOrder {
+    MoveOrder();
+
+    bool computed;
+    int movecnt;
+    Move moves[Bitboard::MAX_MOVES];
+};
 
 class Options {
 /*
@@ -53,8 +62,7 @@ public:
     Options();
     void set_hash();
 
-    bool* hash_evaled = new bool[16];
-    float* hash_evals = new float[16];
+    MoveOrder* hash_table;
     int hash_size;
 
     int Hash;

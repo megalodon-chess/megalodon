@@ -107,15 +107,6 @@ namespace Search {
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
         if (depth == 0 || moves.empty()) {
-            // const int idx = options.UseHashTable ? (Hash::hash(pos) % options.hash_size) : 0;
-            // float score;
-            // if (options.UseHashTable && options.hash_evaled[idx]) {
-            //     score = options.hash_evals[idx];
-            // } else {
-            //     score = eval(options, pos, moves, depth, o_attacks);
-            //     options.hash_evaled[idx] = true;
-            //     options.hash_evals[idx] = score;
-            // }
             const float score = Eval::eval(options, pos, moves, depth, o_attacks);
             return SearchInfo(depth, depth, false, score, 1, 0, 0, {}, alpha, beta, true);
         }
