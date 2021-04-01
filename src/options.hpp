@@ -63,6 +63,7 @@ Chat: type=check, default=true, whether the engine should chat with you.
 public:
     Options();
     void set_hash();
+    void clear_hash();
 
     MoveOrder* hash_table;
     int hash_size;

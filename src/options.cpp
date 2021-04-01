@@ -60,6 +60,12 @@ Options::Options() {
 
 void Options::set_hash() {
     delete[] hash_table;
-    hash_size = Hash * 8520;
+    hash_size = Hash * 8530;
     hash_table = new MoveOrder[hash_size];
+}
+
+void Options::clear_hash() {
+    for (auto i = 0; i < hash_size; i++) {
+        hash_table[i].computed = false;
+    }
 }
