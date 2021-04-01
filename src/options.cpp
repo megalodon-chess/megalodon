@@ -35,14 +35,14 @@ MoveOrder::MoveOrder() {
 
 
 Options::Options() {
-    Hash = 256;
-    UseHashTable = true;
-    HashStart = 3;
+    Hash           = 256;
+    UseHashTable   = true;
+    HashStart      = 3;
 
-    ABPassStart = 5;
-    ABPassMargin = 500;
-    MoveTimeMult = 100;
-    UseEndgame = true;
+    ABPassStart    = 5;
+    ABPassMargin   = 500;
+    MoveTimeMult   = 100;
+    UseEndgame     = true;
     BadBranchPrune = 0;
 
     EvalMaterial   = 100;
@@ -51,9 +51,9 @@ Options::Options() {
     EvalKnights    = 100;
     EvalKings      = 100;
 
-    PrintCurrMove = true;
-    PrintPv = true;
-    Chat = false;
+    PrintCurrMove  = true;
+    PrintPv        = true;
+    Chat           = false;
 
     set_hash();
 }
