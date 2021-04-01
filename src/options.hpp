@@ -48,7 +48,7 @@ ABPassStart: type=spin, default=5, min=1, max=100, start depth where alpha and b
 ABPassMargin: type=spin, default=500, min=0, max=10000, add/sub offset of alpha and beta.
 MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
 UseEndgame: type=check, default=true, whether to use endgame algorithms.
-BadBranchPrune: type=spin, default=0, min=0, max=100, percent of lowest branches to prune.
+LMRFactor: type=spin, default=30, min=0, max=100, percent of lowest branches to prune. ONLY WORKS IF USING HASH TABLE
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
@@ -75,7 +75,7 @@ public:
     int ABPassMargin;
     int MoveTimeMult;
     bool UseEndgame;
-    int BadBranchPrune;
+    int LMRFactor;
 
     int EvalMaterial;
     int EvalPawnStruct;

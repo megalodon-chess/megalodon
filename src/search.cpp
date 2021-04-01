@@ -127,7 +127,7 @@ namespace Search {
         float best_eval = pos.turn ? MIN : MAX;
         vector<Move> pv;
         bool full = true;
-        const char prune_limit = (100-options.BadBranchPrune) * moves.size() / 100;
+        const char prune_limit = (100-options.LMRFactor) * moves.size() / 100;
         for (char i = 0; i < moves.size(); i++) {
             if (depth >= 2) {
                 if (get_time() >= endtime || !searching) {
@@ -135,10 +135,10 @@ namespace Search {
                     break;
                 }
             }
-            if (computed && i > prune_limit) break;
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime, searching);
+            const int new_depth = (options.UseHashTable && computed && depth >= 2 && i>prune_limit) ? depth-2 : depth-1;
+            const SearchInfo result = dfs(options, new_pos, new_depth, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
             if (options.UseHashTable) results.push_back(MoveEval(moves[i], result.score));
 
