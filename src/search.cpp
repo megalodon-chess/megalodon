@@ -139,7 +139,7 @@ namespace Search {
             const Position new_pos = Bitboard::push(pos, moves[i]);
             const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
-            results.push_back(MoveEval(moves[i], result.score));
+            if (options.UseHashTable) results.push_back(MoveEval(moves[i], result.score));
 
             if (root && options.PrintCurrMove && (depth >= 5)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
