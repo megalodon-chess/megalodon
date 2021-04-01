@@ -203,6 +203,7 @@ int loop() {
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
 
@@ -228,6 +229,7 @@ int loop() {
 
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
+            else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
             else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
             else if (name == "EvalKings") options.EvalKings = std::stoi(value);
 
