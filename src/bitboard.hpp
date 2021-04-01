@@ -124,7 +124,7 @@ namespace Bitboard {
     const U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
 
     constexpr U64 BYTE_ALL_ONE = 255ULL;
-    constexpr int MAX_MOVES = 250;
+    constexpr int MAX_MOVES = 220;
     constexpr int MAX_HASH_MOVES = 30;
 
     constexpr char DIR_R_SIZE = 4;
