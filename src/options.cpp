@@ -44,6 +44,7 @@ Options::Options() {
     MoveTimeMult   = 100;
     UseEndgame     = true;
     LMRFactor      = 30;
+    QuickMove      = true;
 
     EvalMaterial   = 100;
     EvalPawnStruct = 100;

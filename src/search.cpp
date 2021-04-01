@@ -185,6 +185,12 @@ namespace Search {
     }
 
     SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime, bool& searching) {
+        if (options.QuickMove) {
+            const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+            if (moves.size() == 1) return SearchInfo(1, 1, false, 0, 1, 0, 0, {moves[0]}, 0, 0, true);
+            // TODO move when one of the next moves is mate
+        }
+
         const int eg = Endgame::eg_type(pos);
         if (options.UseEndgame && eg != 0) {
             const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));

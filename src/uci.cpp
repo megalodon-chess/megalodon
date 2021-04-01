@@ -206,6 +206,7 @@ int loop() {
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name UseEndgame type check default true" << "\n";
             cout << "option name LMRFactor type spin default 30 min 0 max 100" << "\n";
+            cout << "option name QuickMove type check default true" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
@@ -235,6 +236,7 @@ int loop() {
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "UseEndgame") options.UseEndgame = (value == "true");
             else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
+            else if (name == "QuickMove") options.QuickMove = (value == "true");
 
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
