@@ -100,7 +100,7 @@ namespace Eval {
         return (
             pawn_struct * 0.9 +
             knight      * 0.2 +
-            king        * 0.2 +
+            king        * 0.3 +
             space       * 1
         );
     }
@@ -255,7 +255,29 @@ namespace Eval {
         const char wdist = CENTER_DIST_MAP[(w.y<<3)+w.x];
         const char bdist = CENTER_DIST_MAP[(b.y<<3)+b.x];
 
-        return wdist - bdist;
+        // Pawn shield
+        float shield = 0;
+        for (char x = w.x-1; x <= w.x+1; x++) {
+            if (w.y <= 6) {
+                if ((wp & (1ULL<<(((w.y+1)<<3) + x))) != 0) shield += 1.2;
+            }
+            if (w.y <= 5) {
+                if ((wp & (1ULL<<(((w.y+2)<<3) + x))) != 0) shield += 0.6;
+            }
+        }
+        for (char x = b.x-1; x <= b.x+1; x++) {
+            if (b.y >= 1) {
+                if ((bp & (1ULL<<(((b.y-1)<<3) + x))) != 0) shield -= 1.2;
+            }
+            if (b.y >= 2) {
+                if ((bp & (1ULL<<(((b.y-2)<<3) + x))) != 0) shield -= 0.6;
+            }
+        }
+
+        return (
+            wdist-bdist +
+            shield * 2
+        );
     }
 
     float kings_eg(const U64& wk, const U64& bk) {
@@ -287,18 +309,18 @@ namespace Eval {
         const U64 bpieces = pos.bn | pos.bb | pos.br | pos.bq;
 
         const float mat = material(pos);
-        const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
-        const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn, pos.wp, pos.bp);
-        const float king_mg = ((float)options.EvalKings)/100 * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp);
-        const float king_eg = ((float)options.EvalKings)/100 * kings_eg(pos.wk, pos.bk);
-        const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
+        const float pawn_struct = (float)options.EvalPawnStruct/100.F * pawn_structure(pos.wp, pos.bp);
+        const float knight =      (float)options.EvalKnights/100.F *    knights(pos.wn, pos.bn, pos.wp, pos.bp);
+        const float king_mg =     (float)options.EvalKings/100.F *      kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp);
+        const float king_eg =     (float)options.EvalKings/100.F *      kings_eg(pos.wk, pos.bk);
+        const float sp =          (float)options.EvalSpace/100.F *      space(pos.wp, pos.bp);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king_mg, sp);
         const float eg = end_game(pawn_struct, knight, king_eg, sp);
         const float p = phase(pos);
-        const float score = mg*p + eg*(1-p);
+        const float imbalance = mg*p + eg*(1-p);
 
-        return mat + 0.4*score;
+        return mat + 0.5*imbalance;
     }
 }
