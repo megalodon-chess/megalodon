@@ -1,5 +1,8 @@
 ## Describe changes
-A clear and concise description of changes made.
+A clear description of changes made.
 
-## Additional info
-Information such as testing, bugs, etc.
+## Testing info
+Please do at least 2 tests before creating the pull request.
+
+## Other
+Any other information
