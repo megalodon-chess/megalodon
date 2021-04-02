@@ -5,7 +5,7 @@ It will calculate the best move to play from any legal position.
 
 ## ELO
 
-The ELO strength of Megalodon has not been tested yet.
+Megalodon plays at around 1300 ELO.
 
 ## Name
 
