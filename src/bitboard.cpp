@@ -619,9 +619,7 @@ namespace Bitboard {
             const char x = kx+dir[0], y = ky+dir[1];
             if (in_board(x, y)) {
                 const char loc = (y<<3) + x;
-                if (!bit(attacks, loc) && !bit(same, loc)) {
-                    moves[movecnt++] = Move(start, loc);
-                }
+                if (!bit(attacks, loc) && !bit(same, loc)) moves[movecnt++] = Move(start, loc);
             }
         }
 
@@ -629,31 +627,23 @@ namespace Bitboard {
         if (side) {
             if (bit(castling, 0)) {
                 if (!bit(all, 5) && !bit(all, 6)) {
-                    if ((CASTLING_WK & attacks) == EMPTY) {
-                        moves[movecnt++] = Move(start, 6);
-                    }
+                    if ((CASTLING_WK & attacks) == EMPTY) moves[movecnt++] = Move(start, 6);
                 }
             }
             if (bit(castling, 1)) {
                 if (!bit(all, 1) && !bit(all, 2) && !bit(all, 3)) {
-                    if ((CASTLING_WQ & attacks) == EMPTY) {
-                        moves[movecnt++] = Move(start, 2);
-                    }
+                    if ((CASTLING_WQ & attacks) == EMPTY) moves[movecnt++] = Move(start, 2);
                 }
             }
         } else {
             if (bit(castling, 2)) {
                 if (!bit(all, 61) && !bit(all, 62)) {
-                    if ((CASTLING_BK & attacks) == EMPTY) {
-                        moves[movecnt++] = Move(start, 62);
-                    }
+                    if ((CASTLING_BK & attacks) == EMPTY) moves[movecnt++] = Move(start, 62);
                 }
             }
             if (bit(castling, 3)) {
                 if (!bit(all, 57) && !bit(all, 58) && !bit(all, 59)) {
-                    if ((CASTLING_BQ & attacks) == EMPTY) {
-                        moves[movecnt++] = Move(start, 58);
-                    }
+                    if ((CASTLING_BQ & attacks) == EMPTY) moves[movecnt++] = Move(start, 58);
                 }
             }
         }
@@ -712,12 +702,8 @@ namespace Bitboard {
                             if (bit(block_mask, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) {
-                                        moves[movecnt++] = Move(i, loc, true, p);
-                                    }
-                                } else {
-                                    moves[movecnt++] = Move(i, loc);
-                                }
+                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                } else moves[movecnt++] = Move(i, loc);
                                 break;
                             }
                         }
@@ -728,12 +714,8 @@ namespace Bitboard {
                             if (bit(block_mask, loc)) {
                                 if (cy == 0) {
                                     // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) {
-                                        moves[movecnt++] = Move(i, loc, true, p);
-                                    }
-                                } else {
-                                    moves[movecnt++] = Move(i, loc);
-                                }
+                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                } else moves[movecnt++] = Move(i, loc);
                                 break;
                             }
                         }
@@ -760,12 +742,8 @@ namespace Bitboard {
                                 const char char_move = (y<<3) + offset;
                                 if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || ((char_move == pos.ep_square) && pos.ep))) {
                                     if (promo) {
-                                        for (const char& p: {0, 1, 2, 3}) {
-                                            moves[movecnt++] = Move(i, char_move, true, p);
-                                        }
-                                    } else {
-                                        moves[movecnt++] = Move(i, char_move);
-                                    }
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, char_move, true, p);
+                                    } else moves[movecnt++] = Move(i, char_move);
                                 }
                             }
                         }
@@ -776,9 +754,7 @@ namespace Bitboard {
                         char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
                         if (!in_board(cx, cy)) continue;
                         const char loc = (cy<<3) + cx;
-                        if (bit(full_mask, loc)) {
-                            moves[movecnt++] = Move(i, loc);
-                        }
+                        if (bit(full_mask, loc)) moves[movecnt++] = Move(i, loc);
                     }
                 } else if (bit(CB, i) || bit(CQ, i)) {
                     // Capture and block
@@ -848,12 +824,8 @@ namespace Bitboard {
                             if (bit(pin, loc)) {
                                 if (cy == 7) {
                                     // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) {
-                                        moves[movecnt++] = Move(i, loc, true, p);
-                                    }
-                                } else {
-                                    moves[movecnt++] = Move(i, loc);
-                                }
+                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                } else moves[movecnt++] = Move(i, loc);
                             }
                         }
                     } else {
@@ -863,12 +835,8 @@ namespace Bitboard {
                             if (bit(pin, loc)) {
                                 if (cy == 0) {
                                     // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) {
-                                        moves[movecnt++] = Move(i, loc, true, p);
-                                    }
-                                } else {
-                                    moves[movecnt++] = Move(i, loc);
-                                }
+                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                } else moves[movecnt++] = Move(i, loc);
                             }
                         }
                     }
@@ -881,12 +849,8 @@ namespace Bitboard {
                                 const char char_move = (y<<3) + offset;
                                 if ((bit(pin, char_move) && (bit(OPPONENT, char_move) || ((char_move == pos.ep_square) && pos.ep)))) {
                                     if (promo) {
-                                        for (const char& p: {0, 1, 2, 3}) {
-                                            moves[movecnt++] = Move(i, char_move, true, p);
-                                        }
-                                    } else {
-                                        moves[movecnt++] = Move(i, char_move);
-                                    }
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, char_move, true, p);
+                                    } else moves[movecnt++] = Move(i, char_move);
                                 }
                             }
                         }
@@ -899,9 +863,7 @@ namespace Bitboard {
                             const char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
                             if (!in_board(x, y)) continue;
                             const char loc = (y<<3) + x;
-                            if (!bit(SAME, loc)) {
-                                moves[movecnt++] = Move(i, loc);
-                            }
+                            if (!bit(SAME, loc)) moves[movecnt++] = Move(i, loc);
                         }
                     }
                 } else if (bit(CB, i) || bit(CQ, i)) {
@@ -914,9 +876,7 @@ namespace Bitboard {
                             if (!in_board(cx, cy)) break;
                             const char loc = (cy<<3) + cx;
                             if (bit(SAME, loc)) break;
-                            if (bit(pin, loc)) {
-                                moves[movecnt++] = Move(i, loc);
-                            }
+                            if (bit(pin, loc)) moves[movecnt++] = Move(i, loc);
                             if (bit(OPPONENT, loc)) break;
                         }
                     }
@@ -931,9 +891,7 @@ namespace Bitboard {
                             if (!in_board(cx, cy)) break;
                             const char loc = (cy<<3) + cx;
                             if (bit(SAME, loc)) break;
-                            if (bit(pin, loc)) {
-                                moves[movecnt++] = Move(i, loc);
-                            }
+                            if (bit(pin, loc)) moves[movecnt++] = Move(i, loc);
                             if (bit(OPPONENT, loc)) break;
                         }
                     }
