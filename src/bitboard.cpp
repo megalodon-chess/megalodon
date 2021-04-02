@@ -280,7 +280,8 @@ namespace Bitboard {
         else str += "-";
         str += " ";
 
-        str += "0 ";
+        str += std::to_string(pos.draw50/2);
+        str += " ";
         str += std::to_string(pos.move_cnt/2 + 1);
 
         return str;
@@ -337,6 +338,8 @@ namespace Bitboard {
             pos.ep = true;
             pos.ep_square = ((std::stoi(string(1, parts[3][1]))-1)<<3) + (parts[3][0] - 97);
         }
+        pos.draw50 = std::stoi(parts[4])*2;
+        pos.move_cnt = std::stoi(parts[4])*2-1;
 
         return pos;
     }
