@@ -85,8 +85,8 @@ namespace Search {
     float moves_left(const Options& options, const Position& pos) {
         // Estimates moves left based on material and move stack.
         //float mat_left = 0.9 * (total_mat(pos)-7);
-        float abs_left = 55 - pos.move_cnt;
-        if (abs_left < 5) abs_left = 5;
+        float abs_left = 120 - pos.move_cnt;
+        if (abs_left < 10) abs_left = 10;
         //if (mat_left < 0) mat_left = 0;
 
         //float final_left = (mat_left+abs_left) / 2;
@@ -97,9 +97,10 @@ namespace Search {
 
     float move_time(const Options& options, const Position& pos, const float& time, const float& inc) {
         // Calculates move time based on moves left and game evaluation.
-        float moves = moves_left(options, pos);
-        float time_left = time + inc*moves;
-        return time_left / moves;
+        const float moves = moves_left(options, pos);
+        const float time_left = time + inc*moves;
+        const float movetime = time_left / moves;
+        return (movetime < time) ? time : movetime;
         //float mat = eval(options, pos, false);
         //if (!pos.turn) mat *= -1;
         //float mat_offset = mat * -0.3;
