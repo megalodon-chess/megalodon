@@ -273,6 +273,7 @@ namespace Eval {
             }
             return 0;
         }
+        if (pos.draw50 >= 50) return 0;
 
         const float mat = material(pos);
         const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
