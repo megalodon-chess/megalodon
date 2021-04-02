@@ -112,7 +112,7 @@ namespace Search {
         const bool computed = options.hash_table[idx].computed;
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
         vector<MoveEval> results;
-        if (options.UseHashTable && computed && moves.size() < Bitboard::MAX_HASH_MOVES) {
+        if (options.UseHashTable && computed && moves.size() <= Bitboard::MAX_HASH_MOVES) {
             const MoveOrder entry = options.hash_table[idx];
             moves = vector<Move>(entry.moves, entry.moves+entry.movecnt);
         }
