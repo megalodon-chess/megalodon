@@ -125,6 +125,10 @@ namespace Eval {
         return dist;
     }
 
+    char manhattan_dist(const char& x1, const char& y1, const char& x2, const char& y2) {
+        return abs(x1-x2) + abs(y1-y2);
+    }
+
 
     float pawn_structure(const U64& wp, const U64& bp) {
         // Values represent white - black
@@ -274,9 +278,35 @@ namespace Eval {
             }
         }
 
+        // Piece attacking and defending
+        float attack = 0;
+        //float defend = 0;
+        char wcnt = 0, bcnt = 0;
+        for (char x = 0; x < 8; x++) {
+            for (char y = 0; y < 8; y++) {
+                const char loc = (y<<3) + x;
+                const char wdist = manhattan_dist(x, y, w.x, w.y);
+                const char bdist = manhattan_dist(x, y, b.x, b.y);
+                if (bit(wpieces, loc)) {
+                    //defend += 16 - wdist;
+                    attack += 16 - bdist;
+                    wcnt++;
+                } else if (bit(bpieces, loc)) {
+                    //defend -= 16 - bdist;
+                    attack -= 16 - wdist;
+                    bcnt++;
+                }
+            }
+        }
+        if (wcnt+bcnt > 0) {
+            attack /= (wcnt+bcnt);
+            //defend /= (wcnt+bcnt);
+        }
+
         return (
             wdist-bdist +
-            shield * 2
+            shield * 2 +
+            attack
         );
     }
 

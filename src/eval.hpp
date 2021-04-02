@@ -48,6 +48,7 @@ namespace Eval {
     float end_game(const float&, const float&, const float&);
 
     char center_dist(const char&);
+    char manhattan_dist(const char&, const char&, const char&, const char&);
 
     float pawn_structure(const U64&, const U64&);
     float space(const U64&, const U64&);
