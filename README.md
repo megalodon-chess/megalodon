@@ -10,12 +10,6 @@ Play against Megalodon on [Lichess][lichess]!
 
 # Compiling
 
-## Requirements
-
-* GNU Make
-* CMake
-* g++
-
 ## Compiling With Automated Bash Script
 
 Requires g++, CMake, and GNU Make.
