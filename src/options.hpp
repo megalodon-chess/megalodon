@@ -57,7 +57,7 @@ EvalKnights: type=spin, default=100, min=0, max=1000, weight (percent) of knight
 EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
 
 PrintCurrMove: type=check, default=true, whether the engine should print currmove info.
-PrintPv: type=check, default=true, whether the engine should print prinipal variation.
+PrintPv: type=check, default=true, whether the engine should print principal variation.
 Chat: type=check, default=true, whether the engine should chat with you.
 */
 
