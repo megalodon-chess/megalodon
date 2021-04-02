@@ -42,7 +42,7 @@ Options::Options() {
     ABPassStart    = 5;
     ABPassMargin   = 500;
     MoveTimeMult   = 100;
-    UseEndgame     = true;
+    UseEndgame     = false;
     LMRFactor      = 30;
     QuickMove      = true;
 
