@@ -56,6 +56,7 @@ Options::Options() {
     PrintPv        = true;
     Chat           = false;
 
+    hash_table = new MoveOrder[16];
     set_hash();
 }
 
