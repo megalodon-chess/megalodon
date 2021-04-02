@@ -98,19 +98,19 @@ namespace Eval {
 
     float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
-            pawn_struct *  0.9 +
-            knight      *  0.2 +
-            king        *  0.2 +
-            space       *  1
+            pawn_struct * 0.9 +
+            knight      * 0.2 +
+            king        * 0.2 +
+            space       * 1
         );
     }
 
     float end_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
-            pawn_struct *  1.2 +
-            knight      *  0.1 +
-            king        * -0.3 +
-            space       *  0        // Space encourages pawns in the center, which discourages promotion.
+            pawn_struct * 1.2 +
+            knight      * 0.1 +
+            king        * 0.2 +
+            space       * 0        // Space encourages pawns in the center, which discourages promotion.
         );
     }
 
@@ -123,6 +123,10 @@ namespace Eval {
         if (y <= 3) dist += 3-y;
         else dist += y-4;
         return dist;
+    }
+
+    char manhattan_dist(const char& x1, const char& y1, const char& x2, const char& y2) {
+        return abs(x1-x2) + abs(y1-y2);
     }
 
 
@@ -216,13 +220,10 @@ namespace Eval {
         float space = 0;
 
         for (char x = 2; x < 6; x++) {
-            // White
-            for (char y = 1; y < 5; y++) {
+            for (char y = 1; y < 5; y++) {  // White
                 if (bit(wp, (y<<3)+x)) space += y-1;
             }
-
-            // Black
-            for (char y = 3; y < 7; y++) {
+            for (char y = 3; y < 7; y++) {  // Black
                 if (bit(bp, (y<<3)+x)) space -= 6-y;
             }
         }
@@ -251,11 +252,71 @@ namespace Eval {
         return wdist - bdist;
     }
 
-    float kings(const U64& wk, const U64& bk) {
+    float kings_mg(const U64& wk, const U64& bk, const U64& wpieces, const U64& bpieces, const U64& wp, const U64& bp) {
+        // Distance to center
         const Location w = Bitboard::first_bit(wk);
         const Location b = Bitboard::first_bit(bk);
         const char wdist = CENTER_DIST_MAP[(w.y<<3)+w.x];
         const char bdist = CENTER_DIST_MAP[(b.y<<3)+b.x];
+
+        // Pawn shield
+        float shield = 0;
+        for (char x = w.x-1; x <= w.x+1; x++) {
+            if (w.y <= 6) {
+                if ((wp & (1ULL<<(((w.y+1)<<3) + x))) != 0) shield += 1.2;
+            }
+            if (w.y <= 5) {
+                if ((wp & (1ULL<<(((w.y+2)<<3) + x))) != 0) shield += 0.6;
+            }
+        }
+        for (char x = b.x-1; x <= b.x+1; x++) {
+            if (b.y >= 1) {
+                if ((bp & (1ULL<<(((b.y-1)<<3) + x))) != 0) shield -= 1.2;
+            }
+            if (b.y >= 2) {
+                if ((bp & (1ULL<<(((b.y-2)<<3) + x))) != 0) shield -= 0.6;
+            }
+        }
+
+        // Piece attacking and defending
+        float attack = 0;
+        //float defend = 0;
+        char wcnt = 0, bcnt = 0;
+        for (char x = 0; x < 8; x++) {
+            for (char y = 0; y < 8; y++) {
+                const char loc = (y<<3) + x;
+                const char wdist = manhattan_dist(x, y, w.x, w.y);
+                const char bdist = manhattan_dist(x, y, b.x, b.y);
+                if (bit(wpieces, loc)) {
+                    //defend += 16 - wdist;
+                    attack += 16 - bdist;
+                    wcnt++;
+                } else if (bit(bpieces, loc)) {
+                    //defend -= 16 - bdist;
+                    attack -= 16 - wdist;
+                    bcnt++;
+                }
+            }
+        }
+        if (wcnt+bcnt > 0) {
+            attack /= (wcnt+bcnt);
+            //defend /= (wcnt+bcnt);
+        }
+
+        return (
+            wdist-bdist +
+            shield * 1.2 +
+            attack / 1.7
+        );
+    }
+
+    float kings_eg(const U64& wk, const U64& bk) {
+        // Distance to center
+        const Location w = Bitboard::first_bit(wk);
+        const Location b = Bitboard::first_bit(bk);
+        const char wdist = 8 - CENTER_DIST_MAP[(w.y<<3)+w.x];
+        const char bdist = 8 - CENTER_DIST_MAP[(b.y<<3)+b.x];
+
         return wdist - bdist;
     }
 
@@ -274,18 +335,22 @@ namespace Eval {
             return 0;
         }
 
+        const U64 wpieces = pos.wn | pos.wb | pos.wr | pos.wq;
+        const U64 bpieces = pos.bn | pos.bb | pos.br | pos.bq;
+
         const float mat = material(pos);
-        const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
-        const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn, pos.wp, pos.bp);
-        const float king = ((float)options.EvalKings)/100 * kings(pos.wk, pos.bk);
-        const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
+        const float pawn_struct = (float)options.EvalPawnStruct/100.F * pawn_structure(pos.wp, pos.bp);
+        const float knight =      (float)options.EvalKnights/100.F *    knights(pos.wn, pos.bn, pos.wp, pos.bp);
+        const float king_mg =     (float)options.EvalKings/100.F *      kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp);
+        const float king_eg =     (float)options.EvalKings/100.F *      kings_eg(pos.wk, pos.bk);
+        const float sp =          (float)options.EvalSpace/100.F *      space(pos.wp, pos.bp);
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, knight, king, sp);
-        const float eg = end_game(pawn_struct, knight, king, sp);
+        const float mg = middle_game(pawn_struct, knight, king_mg, sp);
+        const float eg = end_game(pawn_struct, knight, king_eg, sp);
         const float p = phase(pos);
-        const float score = mg*p + eg*(1-p);
+        const float imbalance = mg*p + eg*(1-p);
 
-        return mat + 0.4*score;
+        return mat + 0.5*imbalance;
     }
 }
