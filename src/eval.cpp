@@ -100,7 +100,7 @@ namespace Eval {
         return (
             pawn_struct * 0.9 +
             knight      * 0.2 +
-            king        * 0.3 +
+            king        * 0.2 +
             space       * 1
         );
     }
@@ -109,7 +109,7 @@ namespace Eval {
         return (
             pawn_struct * 1.2 +
             knight      * 0.1 +
-            king        * 0.3 +
+            king        * 0.2 +
             space       * 0        // Space encourages pawns in the center, which discourages promotion.
         );
     }
@@ -305,8 +305,8 @@ namespace Eval {
 
         return (
             wdist-bdist +
-            shield * 2 +
-            attack
+            shield * 1.2 +
+            attack / 1.7
         );
     }
 
