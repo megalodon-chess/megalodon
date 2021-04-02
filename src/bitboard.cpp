@@ -741,7 +741,8 @@ namespace Bitboard {
                     // Capture
                     U64 new_capture = capture_mask;
                     if (pos.ep) {
-                        char start, end, ep_x = pos.ep_square % 8;
+                        char start, end;
+                        const char ep_x = pos.ep_square % 8;
                         if (pos.turn) {
                             start = 4;
                             end = 5;
@@ -753,7 +754,7 @@ namespace Bitboard {
                     }
                     y += pawn_dir;
                     if (0 <= y && y < 8) {
-                        bool promo = y == 7 || y == 0;
+                        const bool promo = y == 7 || y == 0;
                         for (const auto& offset: {x-1, x+1}) {
                             if (0 <= offset && offset < 8) {
                                 const char char_move = (y<<3) + offset;
@@ -770,7 +771,7 @@ namespace Bitboard {
                         }
                     }
                 } else if (bit(CN, i)) {
-                    char x = (i&7), y = (i>>3);
+                    const char x = (i&7), y = (i>>3);
                     for (const auto& dir: DIR_N) {
                         char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
                         if (!in_board(cx, cy)) continue;
@@ -874,7 +875,7 @@ namespace Bitboard {
                     // Captures
                     y += pawn_dir;
                     if (0 <= y && y < 8) {
-                        bool promo = (y == 0) || (y == 7);
+                        const bool promo = (y == 0) || (y == 7);
                         for (const auto& offset: {x-1, x+1}) {
                             if (0 <= offset && offset < 8) {
                                 const char char_move = (y<<3) + offset;
@@ -895,7 +896,7 @@ namespace Bitboard {
                     if (piece_pinned) continue;
                     else {
                         for (const auto& dir: DIR_N) {
-                            char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
+                            const char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
                             if (!in_board(x, y)) continue;
                             const char loc = (y<<3) + x;
                             if (!bit(SAME, loc)) {
