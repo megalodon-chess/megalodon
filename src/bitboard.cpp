@@ -89,6 +89,7 @@ Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp
     ep = _ep;
     ep_square = _ep_square;
     move_cnt = 0;
+    draw50 = 0;
 }
 
 
@@ -970,6 +971,7 @@ namespace Bitboard {
         pos.turn = true;
         pos.castling = 15;
         pos.ep = false;
+        pos.draw50 = 0;
 
         return pos;
     }
@@ -978,8 +980,7 @@ namespace Bitboard {
         U64* pointers[12] = {&pos.wp, &pos.wn, &pos.wb, &pos.wr, &pos.wq, &pos.wk,
             &pos.bp, &pos.bn, &pos.bb, &pos.br, &pos.bq, &pos.bk};
         U64* to_board = pointers[0];
-        bool is_king = false;
-        bool is_pawn = false;
+        bool is_king = false, is_pawn = false;
 
         // Find to_board and set bits.
         for (char i = 0; i < 12; i++) {
@@ -987,7 +988,7 @@ namespace Bitboard {
             if (bit(*p, move.from)) {
                 to_board = p;
                 if ((i == 5) || (i == 11)) is_king = true;
-                if ((i == 0) || (i == 6)) is_pawn = true;
+                if ((i == 0) || (i == 6))  is_pawn = true;
                 unset_bit(*p, move.from);
             }
             unset_bit(*p, move.to);

@@ -57,6 +57,7 @@ struct Position {
     float eval;
     Position* parent;
     int move_cnt;
+    char draw50;
 };
 
 struct Location {
