@@ -217,8 +217,11 @@ namespace Search {
 
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
-            if (curr_result.full) cout << curr_result.as_string(options.PrintPv) << endl;
-            if (curr_result.full) result = curr_result;
+            if (curr_result.full) {
+                if (!pos.turn) curr_result.score *= -1;   // UCI uses relative score, and Megalodon uses absolute score.
+                cout << curr_result.as_string(options.PrintPv) << endl;
+                result = curr_result;
+            }
         }
 
         return result;
