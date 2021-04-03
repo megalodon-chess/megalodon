@@ -101,12 +101,12 @@ Location::Location() {
 Location::Location(char _x, char _y) {
     x = _x;
     y = _y;
-    loc = _y<<3+x;
+    loc = (_y<<3)+x;
 }
 
 Location::Location(char _loc) {
-    x = _loc & 7;
-    y = _loc >> 3;
+    x = _loc&7;
+    y = _loc>>3;
     loc = _loc;
 }
 
