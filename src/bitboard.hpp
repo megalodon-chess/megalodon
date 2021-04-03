@@ -172,6 +172,10 @@ namespace Bitboard {
         const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
 
+    U64 get_white(const Position&);
+    U64 get_black(const Position&);
+    U64 get_all(const Position&);
+
     Position startpos();
     Position push(Position, const Move&);
     Position push(Position, string);

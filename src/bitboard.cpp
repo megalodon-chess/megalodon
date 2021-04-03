@@ -953,6 +953,19 @@ namespace Bitboard {
     }
 
 
+    U64 get_white(const Position& pos) {
+        return pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq;
+    }
+
+    U64 get_black(const Position& pos) {
+        return pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
+    }
+
+    U64 get_all(const Position& pos) {
+        return get_white(pos) | get_black(pos);
+    }
+
+
     Position startpos() {
         Position pos;
         pos.wp = START_WP;
