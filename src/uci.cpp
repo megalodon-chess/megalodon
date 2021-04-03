@@ -213,6 +213,7 @@ int loop() {
             cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalRooks type spin default 100 min 0 max 1000" << "\n";
 
             cout << "option name PrintCurrMove type check default true" << "\n";
             cout << "option name PrintPv type check default true" << "\n";
@@ -243,6 +244,7 @@ int loop() {
             else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
             else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
             else if (name == "EvalKings") options.EvalKings = std::stoi(value);
+            else if (name == "EvalRooks") options.EvalRooks = std::stoi(value);
 
             else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
             else if (name == "PrintPv") options.PrintPv = (value == "true");
