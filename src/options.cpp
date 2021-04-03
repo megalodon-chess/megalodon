@@ -51,6 +51,7 @@ Options::Options() {
     EvalSpace      = 100;
     EvalKnights    = 100;
     EvalKings      = 100;
+    EvalRooks      = 100;
 
     PrintCurrMove  = true;
     PrintPv        = true;
