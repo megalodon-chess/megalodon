@@ -374,8 +374,8 @@ namespace Eval {
             return 0;
         }
 
-        const U64 wpieces = Bitboard::get_white(pos);
-        const U64 bpieces = Bitboard::get_black(pos);
+        const U64 wpieces = pos.wp | pos.wn | pos.wb | pos.wr | pos.wq;
+        const U64 bpieces = pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
         U64 wp_files[8], bp_files[8];
 
         const float mat = material(pos);
