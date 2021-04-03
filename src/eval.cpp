@@ -40,7 +40,7 @@ namespace Eval {
     char CENTER_DIST_MAP[64];
 
     void init() {
-        for (auto i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
+        for (char i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
     }
 
 
@@ -90,7 +90,7 @@ namespace Eval {
 
     float phase(const Position& pos) {
         // 1 = full middlegame, 0 = full endgame.
-        float npm = non_pawn_mat(pos);
+        const float npm = non_pawn_mat(pos);
         if (npm >= MIDGAME_LIM) return 1;
         else if (npm <= ENDGAME_LIM) return 0;
         else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
@@ -148,7 +148,7 @@ namespace Eval {
             const U64 w = (wp & Bitboard::FILES[i]) >> i;
             bool found = false;
             for (char j = 7; j > -1; j--) {
-                if ((w & (1ULL<<(j*8))) != 0) {
+                if (bit(w, j<<3)) {
                     if (!found) w_adv[i] = j;
                     w_back[i] = j;
                     found = true;
@@ -162,7 +162,7 @@ namespace Eval {
             const U64 b = (bp & Bitboard::FILES[i]) >> i;
             found = false;
             for (char j = 7; j > -1; j--) {
-                if ((b & (1ULL<<(j*8))) != 0) {
+                if (bit(b, j<<3)) {
                     if (!found) b_adv[i] = j;
                     b_back[i] = j;
                     found = true;
@@ -256,32 +256,32 @@ namespace Eval {
         // Distance to center
         const Location w = Bitboard::first_bit(wk);
         const Location b = Bitboard::first_bit(bk);
-        const char wdist = CENTER_DIST_MAP[(w.y<<3)+w.x];
-        const char bdist = CENTER_DIST_MAP[(b.y<<3)+b.x];
+        const char wdist = CENTER_DIST_MAP[w.loc];
+        const char bdist = CENTER_DIST_MAP[b.loc];
 
         // Pawn shield
         float shield = 0;
         for (char x = w.x-1; x <= w.x+1; x++) {
             if (w.y <= 6) {
-                if ((wp & (1ULL<<(((w.y+1)<<3) + x))) != 0) shield += 1.2;
-            }
-            if (w.y <= 5) {
-                if ((wp & (1ULL<<(((w.y+2)<<3) + x))) != 0) shield += 0.6;
+                if (bit(wp, w.loc+8)) shield += 1.2;
+                if (w.y <= 5) {
+                    if (bit(wp, w.loc+16)) shield += 0.6;
+                }
             }
         }
         for (char x = b.x-1; x <= b.x+1; x++) {
             if (b.y >= 1) {
-                if ((bp & (1ULL<<(((b.y-1)<<3) + x))) != 0) shield -= 1.2;
-            }
-            if (b.y >= 2) {
-                if ((bp & (1ULL<<(((b.y-2)<<3) + x))) != 0) shield -= 0.6;
+                if (bit(bp, b.loc-8)) shield -= 1.2;
+                if (b.y >= 2) {
+                    if (bit(bp, b.loc-16)) shield -= 0.6;
+                }
             }
         }
 
         // Piece attacking and defending
         float attack = 0;
         //float defend = 0;
-        char wcnt = 0, bcnt = 0;
+        const char wcnt = popcnt(wpieces), bcnt = popcnt(bpieces);
         for (char x = 0; x < 8; x++) {
             for (char y = 0; y < 8; y++) {
                 const char loc = (y<<3) + x;
@@ -290,11 +290,9 @@ namespace Eval {
                 if (bit(wpieces, loc)) {
                     //defend += 16 - wdist;
                     attack += 16 - bdist;
-                    wcnt++;
                 } else if (bit(bpieces, loc)) {
                     //defend -= 16 - bdist;
                     attack -= 16 - wdist;
-                    bcnt++;
                 }
             }
         }
@@ -314,8 +312,8 @@ namespace Eval {
         // Distance to center
         const Location w = Bitboard::first_bit(wk);
         const Location b = Bitboard::first_bit(bk);
-        const char wdist = 8 - CENTER_DIST_MAP[(w.y<<3)+w.x];
-        const char bdist = 8 - CENTER_DIST_MAP[(b.y<<3)+b.x];
+        const char wdist = 8 - CENTER_DIST_MAP[w.loc];
+        const char bdist = 8 - CENTER_DIST_MAP[b.loc];
 
         return wdist - bdist;
     }
@@ -340,10 +338,10 @@ namespace Eval {
 
         const float mat = material(pos);
         const float pawn_struct = (float)options.EvalPawnStruct/100.F * pawn_structure(pos.wp, pos.bp);
-        const float knight =      (float)options.EvalKnights/100.F *    knights(pos.wn, pos.bn, pos.wp, pos.bp);
-        const float king_mg =     (float)options.EvalKings/100.F *      kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp);
-        const float king_eg =     (float)options.EvalKings/100.F *      kings_eg(pos.wk, pos.bk);
-        const float sp =          (float)options.EvalSpace/100.F *      space(pos.wp, pos.bp);
+        const float knight      = (float)options.EvalKnights/100.F    * knights(pos.wn, pos.bn, pos.wp, pos.bp);
+        const float king_mg     = (float)options.EvalKings/100.F      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp);
+        const float king_eg     = (float)options.EvalKings/100.F      * kings_eg(pos.wk, pos.bk);
+        const float sp          = (float)options.EvalSpace/100.F      * space(pos.wp, pos.bp);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king_mg, sp);
