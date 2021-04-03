@@ -360,7 +360,7 @@ namespace Eval {
 
 
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks,
-            bool print) {
+            const bool& print) {
         if (moves.empty()) {
             bool checked;
             if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;

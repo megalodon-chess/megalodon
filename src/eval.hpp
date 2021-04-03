@@ -59,5 +59,5 @@ namespace Eval {
 
     char center_dist(const char&);
 
-    float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&, bool=false);
+    float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&, const bool& = false);
 }
