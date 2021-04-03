@@ -96,21 +96,25 @@ namespace Eval {
         else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
     }
 
-    float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
+    float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& rook,
+            const float& sp) {
         return (
             pawn_struct * 0.9 +
             knight      * 0.2 +
             king        * 0.2 +
-            space       * 1
+            rook        * 0.7 +
+            sp          * 1
         );
     }
 
-    float end_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
+    float end_game(const float& pawn_struct, const float& knight, const float& king, const float& rook,
+            const float& sp) {
         return (
             pawn_struct * 1.2 +
             knight      * 0.1 +
             king        * 0.2 +
-            space       * 0        // Space encourages pawns in the center, which discourages promotion.
+            rook        * 0.8 +
+            sp          * 0        // Space encourages pawns in the center, which discourages promotion.
         );
     }
 
@@ -130,7 +134,7 @@ namespace Eval {
     }
 
 
-    float pawn_structure(const U64& wp, const U64& bp) {
+    float pawn_structure(const U64& wp, const U64& bp, U64 (&w_files)[8], U64 (&b_files)[8]) {
         // Values represent white - black
         char stacked = 0;
         char islands = 0;
@@ -140,7 +144,6 @@ namespace Eval {
         // Generate file values
         char w_adv[8], b_adv[8];     // Position of most advanced pawn, side dependent (-1 if no pawn)
         char w_back[8], b_back[8];   // Position of least advanced pawn, side dependent (-1 if no pawn)
-        U64 w_files[8], b_files[8];  // Bitboards of pawns on each file
         for (char i = 0; i < 8; i++) {
             w_files[i] = wp & Bitboard::FILES[i];
             b_files[i] = bp & Bitboard::FILES[i];
@@ -318,6 +321,43 @@ namespace Eval {
         return wdist - bdist;
     }
 
+    float rooks(const U64& wr, const U64& br, const U64 (&wp_files)[8], const U64 (&bp_files)[8]) {
+        // TODO rooks behind passed pawns
+        // TODO connected rooks
+        // TODO rooks on the seventh
+        float w_open = 0;
+        float b_open = 0;
+        float w_semiopen = 0;
+        float b_semiopen = 0;
+        const char wcnt = popcnt(wr);
+        const char bcnt = popcnt(br);
+
+        for (char i = 0; i < 8; i++) {
+            if ((wr&Bitboard::FILES[i]) != 0) {
+                if (wp_files[i] == 0 && bp_files[i] == 0) w_open++;
+                else if (!(wp_files[i] != 0 && bp_files[i] != 0)) w_semiopen++;
+            }
+            if ((br&Bitboard::FILES[i]) != 0) {
+                if (wp_files[i] == 0 && bp_files[i] == 0) b_open++;
+                else if (!(wp_files[i] != 0 && bp_files[i] != 0)) b_semiopen++;
+            }
+        }
+
+        if (wcnt > 0) {
+            w_open /= wcnt;
+            w_semiopen /= wcnt;
+        }
+        if (bcnt > 0) {
+            b_open /= wcnt;
+            b_semiopen /= wcnt;
+        }
+
+        return (
+            (w_open-b_open) +
+            (w_semiopen-b_semiopen) * 0.5
+        );
+    }
+
 
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
         if (moves.empty()) {
@@ -335,6 +375,7 @@ namespace Eval {
 
         const U64 wpieces = pos.wn | pos.wb | pos.wr | pos.wq;
         const U64 bpieces = pos.bn | pos.bb | pos.br | pos.bq;
+        U64 wp_files[8], bp_files[8];
 
         const float mat = material(pos);
         const float pawn_struct = (float)options.EvalPawnStruct/100.F * pawn_structure(pos.wp, pos.bp);
@@ -342,10 +383,11 @@ namespace Eval {
         const float king_mg     = (float)options.EvalKings/100.F      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp);
         const float king_eg     = (float)options.EvalKings/100.F      * kings_eg(pos.wk, pos.bk);
         const float sp          = (float)options.EvalSpace/100.F      * space(pos.wp, pos.bp);
+        const float rook        = (float)options.EvalRooks/100.F      * rooks(pos.wr, pos.br, wp_files, bp_files);
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, knight, king_mg, sp);
-        const float eg = end_game(pawn_struct, knight, king_eg, sp);
+        const float mg = middle_game(pawn_struct, knight, king_mg, rook, sp);
+        const float eg = end_game(pawn_struct, knight, king_eg, rook, sp);
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
 

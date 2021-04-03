@@ -53,8 +53,10 @@ QuickMove: type=check, default=true, whether to move immediately when there is o
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
+EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
 EvalKnights: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
-EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
+EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of king eval.
+EvalRooks: type=spin, default=100, min=0, max=1000, weight (percent) of rook eval.
 
 PrintCurrMove: type=check, default=true, whether the engine should print currmove info.
 PrintPv: type=check, default=true, whether the engine should print principal variation.
@@ -85,6 +87,7 @@ public:
     int EvalSpace;
     int EvalKnights;
     int EvalKings;
+    int EvalRooks;
 
     bool PrintCurrMove;
     bool PrintPv;
