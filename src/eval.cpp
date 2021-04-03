@@ -361,7 +361,8 @@ namespace Eval {
     }
 
 
-    float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
+    float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks,
+            bool print) {
         if (moves.empty()) {
             bool checked;
             if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
@@ -392,6 +393,21 @@ namespace Eval {
         const float eg = end_game(pawn_struct, knight, king_eg, rook, sp);
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
+
+        if (print) {
+            cout << "      Material: " << mat << endl;
+            cout << "Pawn Structure: " << pawn_struct << endl;
+            cout << "       Knights: " << knight << endl;
+            cout << "       King MG: " << king_mg << endl;
+            cout << "       King EG: " << king_eg << endl;
+            cout << "         Rooks: " << rook << endl;
+            cout << "         Space: " << sp << endl;
+            cout << endl;
+            cout << "    Middlegame: " << mg << endl;
+            cout << "       Endgame: " << eg << endl;
+            cout << "         Phase: " << p << endl;
+            cout << "     Imbalance: " << imbalance << endl;
+        }
 
         return mat + 0.5*imbalance;
     }
