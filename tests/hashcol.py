@@ -35,7 +35,7 @@ def randpos():
     for i in range(num_moves):
         moves = list(board.generate_legal_moves())
         if len(moves) == 0:
-            break
+            return randpos()
         board.push(random.choice(moves))
     return board
 
