@@ -262,52 +262,52 @@ namespace Eval {
         const char wdist = CENTER_DIST_MAP[w.loc];
         const char bdist = CENTER_DIST_MAP[b.loc];
 
-        // Pawn shield
-        float shield = 0;
-        for (char x = w.x-1; x <= w.x+1; x++) {
-            if (w.y <= 6) {
-                if (bit(wp, w.loc+8)) shield += 1.2;
-                if (w.y <= 5) {
-                    if (bit(wp, w.loc+16)) shield += 0.6;
-                }
-            }
-        }
-        for (char x = b.x-1; x <= b.x+1; x++) {
-            if (b.y >= 1) {
-                if (bit(bp, b.loc-8)) shield -= 1.2;
-                if (b.y >= 2) {
-                    if (bit(bp, b.loc-16)) shield -= 0.6;
-                }
-            }
-        }
+        // // Pawn shield
+        // float shield = 0;
+        // for (char x = w.x-1; x <= w.x+1; x++) {
+        //     if (w.y <= 6) {
+        //         if (bit(wp, w.loc+8)) shield += 1.2;
+        //         if (w.y <= 5) {
+        //             if (bit(wp, w.loc+16)) shield += 0.6;
+        //         }
+        //     }
+        // }
+        // for (char x = b.x-1; x <= b.x+1; x++) {
+        //     if (b.y >= 1) {
+        //         if (bit(bp, b.loc-8)) shield -= 1.2;
+        //         if (b.y >= 2) {
+        //             if (bit(bp, b.loc-16)) shield -= 0.6;
+        //         }
+        //     }
+        // }
 
-        // Piece attacking and defending
-        float attack = 0;
-        //float defend = 0;
-        const char wcnt = popcnt(wpieces), bcnt = popcnt(bpieces);
-        for (char x = 0; x < 8; x++) {
-            for (char y = 0; y < 8; y++) {
-                const char loc = (y<<3) + x;
-                const char wdist = manhattan_dist(x, y, w.x, w.y);
-                const char bdist = manhattan_dist(x, y, b.x, b.y);
-                if (bit(wpieces, loc)) {
-                    //defend += 16 - wdist;
-                    attack += 16 - bdist;
-                } else if (bit(bpieces, loc)) {
-                    //defend -= 16 - bdist;
-                    attack -= 16 - wdist;
-                }
-            }
-        }
-        if (wcnt+bcnt > 0) {
-            attack /= (wcnt+bcnt);
-            //defend /= (wcnt+bcnt);
-        }
+        // // Piece attacking and defending
+        // float attack = 0;
+        // //float defend = 0;
+        // const char wcnt = popcnt(wpieces), bcnt = popcnt(bpieces);
+        // for (char x = 0; x < 8; x++) {
+        //     for (char y = 0; y < 8; y++) {
+        //         const char loc = (y<<3) + x;
+        //         const char wdist = manhattan_dist(x, y, w.x, w.y);
+        //         const char bdist = manhattan_dist(x, y, b.x, b.y);
+        //         if (bit(wpieces, loc)) {
+        //             //defend += 16 - wdist;
+        //             attack += 16 - bdist;
+        //         } else if (bit(bpieces, loc)) {
+        //             //defend -= 16 - bdist;
+        //             attack -= 16 - wdist;
+        //         }
+        //     }
+        // }
+        // if (wcnt+bcnt > 0) {
+        //     attack /= (wcnt+bcnt);
+        //     //defend /= (wcnt+bcnt);
+        // }
 
         return (
-            wdist-bdist +
-            shield / 3 +
-            attack / 4
+            wdist-bdist// +
+            // shield / 3 +
+            // attack / 4
         );
     }
 
@@ -384,7 +384,7 @@ namespace Eval {
         const float king_mg     = options.EvalKings      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp) / 5;
         const float king_eg     = options.EvalKings      * kings_eg(pos.wk, pos.bk) / 5;
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 2;
-        const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, wp_files, bp_files);
+        const float rook        = 0;//options.EvalRooks      * rooks(pos.wr, pos.br, wp_files, bp_files);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king_mg, rook, sp);
