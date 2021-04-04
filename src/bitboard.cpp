@@ -101,12 +101,12 @@ Location::Location() {
 Location::Location(char _x, char _y) {
     x = _x;
     y = _y;
-    loc = (_y<<3)+x;
+    loc = _y<<3+x;
 }
 
 Location::Location(char _loc) {
-    x = _loc&7;
-    y = _loc>>3;
+    x = _loc & 7;
+    y = _loc >> 3;
     loc = _loc;
 }
 
@@ -950,19 +950,6 @@ namespace Bitboard {
         }
         king_moves(moves, movecnt, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
         return vector<Move>(moves, moves+movecnt);
-    }
-
-
-    U64 get_white(const Position& pos) {
-        return pos.wk | pos.wp | pos.wn | pos.wb | pos.wr | pos.wq;
-    }
-
-    U64 get_black(const Position& pos) {
-        return pos.bk | pos.bp | pos.bn | pos.bb | pos.br | pos.bq;
-    }
-
-    U64 get_all(const Position& pos) {
-        return get_white(pos) | get_black(pos);
     }
 
 

@@ -34,19 +34,21 @@ using std::string;
 
 
 namespace Perft {
-    long long movegen(const Position& pos, const int& depth) {
-        if (depth == 0) return 1;
-
-        long long count = 0;
-        for (const auto& move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))) {
-            const Position new_pos = Bitboard::push(pos, move);
-            count += movegen(new_pos, depth-1);
+    int movegen(const Position& pos, const int& depth) {
+        if (depth == 0) {
+            return 1;
+        } else {
+            int count = 1;
+            for (auto move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))) {
+                Position new_pos = Bitboard::push(pos, move);
+                count += movegen(new_pos, depth-1);
+            }
+            return count;
         }
-        return count;
     }
 
     double hash_perft(const Position& pos, const int& knodes) {
-        const double start = get_time();
+        double start = get_time();
         for (auto i = 0; i < knodes*1000; i++) Hash::hash(pos);
         return get_time() - start;
     }
@@ -61,8 +63,8 @@ namespace Perft {
     }
 
     double push_perft(const Position& pos, const int& knodes) {
-        const Move move = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))[0];
-        const double start = get_time();
+        Move move = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))[0];
+        double start = get_time();
         for (auto i = 0; i < knodes*1000; i++) Bitboard::push(pos, move);
         return get_time() - start;
     }

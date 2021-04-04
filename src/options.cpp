@@ -36,23 +36,21 @@ MoveOrder::MoveOrder() {
 
 Options::Options() {
     Hash           = 256;
-    UseHashTable   = false;
+    UseHashTable   = true;
     HashStart      = 3;
 
     ABPassStart    = 5;
     ABPassMargin   = 500;
     MoveTimeMult   = 100;
-    UseEndgame     = false;
-    LMRFactor      = 65;
+    UseEndgame     = true;
+    LMRFactor      = 30;
     QuickMove      = true;
 
-    EvalMaterial   = 1;
-    EvalImbalance  = 1;
-    EvalPawnStruct = 1;
-    EvalSpace      = 1;
-    EvalKnights    = 1;
-    EvalKings      = 1;
-    EvalRooks      = 1;
+    EvalMaterial   = 100;
+    EvalPawnStruct = 100;
+    EvalSpace      = 100;
+    EvalKnights    = 100;
+    EvalKings      = 100;
 
     PrintCurrMove  = true;
     PrintPv        = true;

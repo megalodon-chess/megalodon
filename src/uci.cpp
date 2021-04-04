@@ -127,7 +127,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         else movetime = Search::move_time(options, pos, btime, binc);
     }
     movetime *= (float)(options.MoveTimeMult) / 100;
-    if (mode == 2) movetime /= 1.1;
+    if (mode == 2) movetime /= 1.5;
 
     searching = true;
     const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
@@ -183,7 +183,10 @@ int loop() {
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
 
-        if (cmd == "quit") break;
+        if (cmd == "quit") {
+            searching = false;
+            break;
+        }
         else if (cmd == "clear") {
             string str;
             for (char i: {27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74}) str += string(1, i);
@@ -195,14 +198,14 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default false" << "\n";
+            cout << "option name UseHashTable type check default true" << "\n";
             cout << "option name HashStart type spin default 3 min 1 max 6" << "\n";
 
             cout << "option name ABPassStart type spin default 5 min 1 max 100" << "\n";
             cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
-            cout << "option name UseEndgame type check default false" << "\n";
-            cout << "option name LMRFactor type spin default 65 min 0 max 100" << "\n";
+            cout << "option name UseEndgame type check default true" << "\n";
+            cout << "option name LMRFactor type spin default 30 min 0 max 100" << "\n";
             cout << "option name QuickMove type check default true" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
@@ -210,7 +213,6 @@ int loop() {
             cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalRooks type spin default 100 min 0 max 1000" << "\n";
 
             cout << "option name PrintCurrMove type check default true" << "\n";
             cout << "option name PrintPv type check default true" << "\n";
@@ -236,13 +238,11 @@ int loop() {
             else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
             else if (name == "QuickMove") options.QuickMove = (value == "true");
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100.F;
-            else if (name == "EvalImbalance") options.EvalImbalance = std::stof(value) / 100.F;
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100.F;
-            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100.F;
-            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100.F;
-            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100.F;
-            else if (name == "EvalRooks") options.EvalRooks = std::stof(value) / 100.F;
+            else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
+            else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
+            else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
+            else if (name == "EvalKings") options.EvalKings = std::stoi(value);
 
             else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
             else if (name == "PrintPv") options.PrintPv = (value == "true");
@@ -264,7 +264,7 @@ int loop() {
             vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true) << endl;
+                cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
@@ -294,7 +294,6 @@ int loop() {
         else if (cmd.size() > 0) std::cerr << "Unknown command: " << cmd << endl;
     }
 
-    searching = false;
     delete[] options.hash_table;
     return 0;
 }
