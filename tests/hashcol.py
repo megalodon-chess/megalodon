@@ -19,6 +19,7 @@
 
 # Tries random positions until two with the same hash is found.
 
+import sys
 import os
 import time
 import subprocess
@@ -26,7 +27,7 @@ import random
 import chess
 
 PARENT = os.path.dirname(os.path.realpath(__file__))
-ENG_PATH = "build/Megalodon"
+ENG_PATH = "./build/Megalodon"
 
 
 def randpos():
@@ -68,6 +69,7 @@ def main():
             print(f"Found collision, tried {len(hashes)} positions.")
             break
         print(f"Tried {len(hashes)} positions.")
+        sys.stdout.flush()
 
 
 main()
