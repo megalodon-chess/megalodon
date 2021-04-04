@@ -46,13 +46,13 @@ Options::Options() {
     LMRFactor      = 30;
     QuickMove      = true;
 
-    EvalMaterial   = 100;
-    EvalImbalance  = 100;
-    EvalPawnStruct = 100;
-    EvalSpace      = 100;
-    EvalKnights    = 100;
-    EvalKings      = 100;
-    EvalRooks      = 100;
+    EvalMaterial   = 1;
+    EvalImbalance  = 1;
+    EvalPawnStruct = 1;
+    EvalSpace      = 1;
+    EvalKnights    = 1;
+    EvalKings      = 1;
+    EvalRooks      = 1;
 
     PrintCurrMove  = true;
     PrintPv        = true;

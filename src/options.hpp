@@ -83,13 +83,13 @@ public:
     int LMRFactor;
     bool QuickMove;
 
-    int EvalMaterial;
-    int EvalImbalance;
-    int EvalPawnStruct;
-    int EvalSpace;
-    int EvalKnights;
-    int EvalKings;
-    int EvalRooks;
+    float EvalMaterial;
+    float EvalImbalance;
+    float EvalPawnStruct;
+    float EvalSpace;
+    float EvalKnights;
+    float EvalKings;
+    float EvalRooks;
 
     bool PrintCurrMove;
     bool PrintPv;

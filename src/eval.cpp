@@ -379,12 +379,12 @@ namespace Eval {
         U64 wp_files[8], bp_files[8];
 
         const float mat = material(pos);
-        const float pawn_struct = (float)options.EvalPawnStruct/100.F * pawn_structure(pos.wp, pos.bp, wp_files, bp_files);
-        const float knight      = (float)options.EvalKnights/100.F    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 5;
-        const float king_mg     = (float)options.EvalKings/100.F      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp) / 10;
-        const float king_eg     = (float)options.EvalKings/100.F      * kings_eg(pos.wk, pos.bk) / 10;
-        const float sp          = (float)options.EvalSpace/100.F      * space(pos.wp, pos.bp);
-        const float rook        = (float)options.EvalRooks/100.F      * rooks(pos.wr, pos.br, wp_files, bp_files);
+        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp, wp_files, bp_files);
+        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 5;
+        const float king_mg     = options.EvalKings      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp) / 10;
+        const float king_eg     = options.EvalKings      * kings_eg(pos.wk, pos.bk) / 10;
+        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp);
+        const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, wp_files, bp_files);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king_mg, rook, sp);
@@ -407,6 +407,6 @@ namespace Eval {
             cout << "     Imbalance: " << imbalance << endl;
         }
 
-        return mat + 0.3*imbalance*(float)options.EvalImbalance/100.F;
+        return mat + 0.3*imbalance*options.EvalImbalance;
     }
 }

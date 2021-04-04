@@ -239,13 +239,13 @@ int loop() {
             else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
             else if (name == "QuickMove") options.QuickMove = (value == "true");
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
-            else if (name == "EvalImbalance") options.EvalImbalance = std::stoi(value);
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
-            else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
-            else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
-            else if (name == "EvalKings") options.EvalKings = std::stoi(value);
-            else if (name == "EvalRooks") options.EvalRooks = std::stoi(value);
+            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100.F;
+            else if (name == "EvalImbalance") options.EvalImbalance = std::stof(value) / 100.F;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100.F;
+            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100.F;
+            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100.F;
+            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100.F;
+            else if (name == "EvalRooks") options.EvalRooks = std::stof(value) / 100.F;
 
             else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
             else if (name == "PrintPv") options.PrintPv = (value == "true");
