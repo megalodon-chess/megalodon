@@ -127,7 +127,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         else movetime = Search::move_time(options, pos, btime, binc);
     }
     movetime *= (float)(options.MoveTimeMult) / 100;
-    if (mode == 2) movetime /= 1.5;
+    if (mode == 2) movetime /= 1.1;
 
     searching = true;
     const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
@@ -183,10 +183,7 @@ int loop() {
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
 
-        if (cmd == "quit") {
-            searching = false;
-            break;
-        }
+        if (cmd == "quit") break;
         else if (cmd == "clear") {
             string str;
             for (char i: {27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74}) str += string(1, i);
@@ -205,7 +202,7 @@ int loop() {
             cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name UseEndgame type check default false" << "\n";
-            cout << "option name LMRFactor type spin default 30 min 0 max 100" << "\n";
+            cout << "option name LMRFactor type spin default 65 min 0 max 100" << "\n";
             cout << "option name QuickMove type check default true" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
@@ -297,6 +294,7 @@ int loop() {
         else if (cmd.size() > 0) std::cerr << "Unknown command: " << cmd << endl;
     }
 
+    searching = false;
     delete[] options.hash_table;
     return 0;
 }
