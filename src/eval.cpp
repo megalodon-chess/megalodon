@@ -100,8 +100,8 @@ namespace Eval {
             const float& sp) {
         return (
             pawn_struct * 0.9 +
-            knight      * 0.2 +
-            king        * 0.2 +
+            knight      * 1 +
+            king        * 0.7 +
             rook        * 0.7 +
             sp          * 1
         );
@@ -111,8 +111,8 @@ namespace Eval {
             const float& sp) {
         return (
             pawn_struct * 1.2 +
-            knight      * 0.1 +
-            king        * 0.2 +
+            knight      * 0.7 +
+            king        * 0.8 +
             rook        * 0.8 +
             sp          * 0        // Space encourages pawns in the center, which discourages promotion.
         );
@@ -380,9 +380,9 @@ namespace Eval {
 
         const float mat = material(pos);
         const float pawn_struct = (float)options.EvalPawnStruct/100.F * pawn_structure(pos.wp, pos.bp, wp_files, bp_files);
-        const float knight      = (float)options.EvalKnights/100.F    * knights(pos.wn, pos.bn, pos.wp, pos.bp);
-        const float king_mg     = (float)options.EvalKings/100.F      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp);
-        const float king_eg     = (float)options.EvalKings/100.F      * kings_eg(pos.wk, pos.bk);
+        const float knight      = (float)options.EvalKnights/100.F    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 5;
+        const float king_mg     = (float)options.EvalKings/100.F      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp) / 10;
+        const float king_eg     = (float)options.EvalKings/100.F      * kings_eg(pos.wk, pos.bk) / 10;
         const float sp          = (float)options.EvalSpace/100.F      * space(pos.wp, pos.bp);
         const float rook        = (float)options.EvalRooks/100.F      * rooks(pos.wr, pos.br, wp_files, bp_files);
 
