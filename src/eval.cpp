@@ -407,6 +407,6 @@ namespace Eval {
             cout << "     Imbalance: " << imbalance << endl;
         }
 
-        return mat + 0.3*imbalance;
+        return mat + 0.3*imbalance*(float)options.EvalImbalance/100.F;
     }
 }

@@ -47,6 +47,7 @@ Options::Options() {
     QuickMove      = true;
 
     EvalMaterial   = 100;
+    EvalImbalance  = 100;
     EvalPawnStruct = 100;
     EvalSpace      = 100;
     EvalKnights    = 100;

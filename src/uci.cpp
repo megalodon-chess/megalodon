@@ -240,6 +240,7 @@ int loop() {
             else if (name == "QuickMove") options.QuickMove = (value == "true");
 
             else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
+            else if (name == "EvalImbalance") options.EvalImbalance = std::stoi(value);
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
             else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
             else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
