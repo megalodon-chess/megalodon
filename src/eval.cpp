@@ -390,7 +390,7 @@ namespace Eval {
         const float mg = middle_game(pawn_struct, knight, king_mg, rook, sp);
         const float eg = end_game(pawn_struct, knight, king_eg, rook, sp);
         const float p = phase(pos);
-        const float imbalance = mg*p + eg*(1-p);
+        const float imbalance = (mg*p + eg*(1-p)) / 10;
 
         if (print) {
             cout << "      Material: " << mat << endl;
@@ -407,6 +407,6 @@ namespace Eval {
             cout << "     Imbalance: " << imbalance << endl;
         }
 
-        return mat + 0.1*imbalance*options.EvalImbalance;
+        return mat + 0.4*imbalance*options.EvalImbalance;
     }
 }
