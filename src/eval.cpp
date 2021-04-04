@@ -306,8 +306,8 @@ namespace Eval {
 
         return (
             wdist-bdist +
-            shield * 1.2 +
-            attack / 1.7
+            shield / 3 +
+            attack / 4
         );
     }
 
@@ -353,8 +353,8 @@ namespace Eval {
         }
 
         return (
-            (w_open-b_open) +
-            (w_semiopen-b_semiopen) * 0.5
+            (w_open-b_open) * 0.4 +
+            (w_semiopen-b_semiopen) * 0.2
         );
     }
 
@@ -381,8 +381,8 @@ namespace Eval {
         const float mat = material(pos);
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp, wp_files, bp_files);
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 5;
-        const float king_mg     = options.EvalKings      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp) / 10;
-        const float king_eg     = options.EvalKings      * kings_eg(pos.wk, pos.bk) / 10;
+        const float king_mg     = options.EvalKings      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp) / 5;
+        const float king_eg     = options.EvalKings      * kings_eg(pos.wk, pos.bk) / 5;
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 2;
         const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, wp_files, bp_files);
 
@@ -390,7 +390,7 @@ namespace Eval {
         const float mg = middle_game(pawn_struct, knight, king_mg, rook, sp);
         const float eg = end_game(pawn_struct, knight, king_eg, rook, sp);
         const float p = phase(pos);
-        const float imbalance = (mg*p + eg*(1-p)) / 10;
+        const float imbalance = (mg*p + eg*(1-p)) / 5;
 
         if (print) {
             cout << "      Material: " << mat << endl;
@@ -407,6 +407,6 @@ namespace Eval {
             cout << "     Imbalance: " << imbalance << endl;
         }
 
-        return mat + 0.4*imbalance*options.EvalImbalance;
+        return mat + imbalance*options.EvalImbalance;
     }
 }
