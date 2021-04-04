@@ -103,7 +103,7 @@ namespace Eval {
             knight      * 1 +
             king        * 0.7 +
             rook        * 0.7 +
-            sp          * 1
+            sp          * 0.8
         );
     }
 
@@ -383,7 +383,7 @@ namespace Eval {
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 5;
         const float king_mg     = options.EvalKings      * kings_mg(pos.wk, pos.bk, wpieces, bpieces, pos.wp, pos.bp) / 10;
         const float king_eg     = options.EvalKings      * kings_eg(pos.wk, pos.bk) / 10;
-        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp);
+        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 2;
         const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, wp_files, bp_files);
 
         // Endgame and middle game are for weighting categories.
@@ -407,6 +407,6 @@ namespace Eval {
             cout << "     Imbalance: " << imbalance << endl;
         }
 
-        return mat + 0.3*imbalance*options.EvalImbalance;
+        return mat + 0.1*imbalance*options.EvalImbalance;
     }
 }
