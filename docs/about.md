@@ -5,7 +5,7 @@ It will calculate the best move to play from any legal position.
 
 ## ELO
 
-Megalodon plays at around 1300 ELO.
+Please look at the [ELO][elo] page for ELO score information.
 
 ## Name
 
@@ -23,3 +23,4 @@ Megalodon's team contains of three students and one consultant.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[elo]: https://megalodon-chess.github.io/megalodon/elo
