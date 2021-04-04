@@ -34,10 +34,10 @@ using std::string;
 
 
 namespace Perft {
-    int movegen(const Position& pos, const int& depth) {
+    long long movegen(const Position& pos, const int& depth) {
         if (depth == 0) return 1;
 
-        int count = 0;
+        long long count = 0;
         for (const auto& move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))) {
             const Position new_pos = Bitboard::push(pos, move);
             count += movegen(new_pos, depth-1);
