@@ -127,7 +127,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         else movetime = Search::move_time(options, pos, btime, binc);
     }
     movetime *= (float)(options.MoveTimeMult) / 100;
-    if (mode == 2) movetime /= 1.5;
+    if (mode == 2) movetime /= 1.1;
 
     searching = true;
     const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
