@@ -110,6 +110,17 @@ Location::Location(const char _loc) {
 
 
 namespace Bitboard {
+    constexpr char POPCNT_TBL[256]{
+        0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+        1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+        1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+        1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+        2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+        3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8,
+    };
+
     bool bit(const U64& board, const char& pos) {
         return ((1ULL << pos) & board) != 0;
     }
@@ -119,16 +130,16 @@ namespace Bitboard {
     }
 
     char popcnt(const U64& num) {
-        char count = 0;
-        count += popcnt_tbl[ num      & 255ULL];
-        count += popcnt_tbl[(num>>8)  & 255ULL];
-        count += popcnt_tbl[(num>>16) & 255ULL];
-        count += popcnt_tbl[(num>>24) & 255ULL];
-        count += popcnt_tbl[(num>>32) & 255ULL];
-        count += popcnt_tbl[(num>>40) & 255ULL];
-        count += popcnt_tbl[(num>>48) & 255ULL];
-        count += popcnt_tbl[(num>>56) & 255ULL];
-        return count;
+        return (
+            POPCNT_TBL[ num      & 255ULL] +
+            POPCNT_TBL[(num>>8)  & 255ULL] +
+            POPCNT_TBL[(num>>16) & 255ULL] +
+            POPCNT_TBL[(num>>24) & 255ULL] +
+            POPCNT_TBL[(num>>32) & 255ULL] +
+            POPCNT_TBL[(num>>40) & 255ULL] +
+            POPCNT_TBL[(num>>48) & 255ULL] +
+            POPCNT_TBL[(num>>56) & 255ULL]
+        );
     }
 
     void set_bit(U64& board, const char& pos) {
