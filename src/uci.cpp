@@ -140,21 +140,21 @@ float go(const Options& options, const Position& pos, const vector<string>& part
 void perft(const Options& options, const Position& pos, const int& depth) {
     const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     const double start = get_time();
-    int nodes = 0;
+    long long nodes = 0;
 
     if (moves.size() > 0) {
         int move_num = 1;
         for (const auto& move: moves) {
             Position new_pos = Bitboard::push(pos, move);
-            int curr_nodes = Perft::movegen(new_pos, depth-1);
+            long long curr_nodes = Perft::movegen(new_pos, depth-1);
             nodes += curr_nodes;
             cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
             move_num++;
         }
     }
 
-    double elapse = get_time() - start + 0.001;  // Add 1 ms to prevent divide by 0
-    cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
+    const double elapse = get_time() - start + 0.001;  // Add 1 ms to prevent divide by 0
+    cout << "info depth " << depth << " nodes " << nodes << " nps " << (long long)(nodes/elapse) << " time " << (long long)(elapse*1000) << endl;
 }
 
 void perft_hash(const Options& options, const Position& pos, const int& knodes) {
