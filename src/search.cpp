@@ -107,15 +107,15 @@ namespace Search {
     SearchInfo dfs(const Options& options, const Position& pos, const int& depth, const int& real_depth, float alpha, float beta,
             const bool& root, const double& endtime, bool& searching) {
         // Read moves from hash table, if exists
-        const U64 idx = Hash::hash(pos) % options.hash_size;
+        //const U64 idx = Hash::hash(pos) % options.hash_size;
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        const bool computed = options.hash_table[idx].computed;
-        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
-        vector<MoveEval> results;
-        if (options.UseHashTable && computed && moves.size() <= Bitboard::MAX_HASH_MOVES) {
-            const MoveOrder entry = options.hash_table[idx];
-            moves = vector<Move>(entry.moves, entry.moves+entry.movecnt);
-        }
+        //const bool computed = options.hash_table[idx].computed;
+        const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        // vector<MoveEval> results;
+        // if (options.UseHashTable && computed && moves.size() <= Bitboard::MAX_HASH_MOVES) {
+        //     const MoveOrder entry = options.hash_table[idx];
+        //     moves = vector<Move>(entry.moves, entry.moves+entry.movecnt);
+        // }
 
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, depth, o_attacks);
@@ -127,7 +127,7 @@ namespace Search {
         float best_eval = pos.turn ? MIN : MAX;
         vector<Move> pv;
         bool full = true;
-        const char prune_limit = (100-options.LMRFactor) * moves.size() / 100;
+        //const char prune_limit = (100-options.LMRFactor) * moves.size() / 100;
         for (char i = 0; i < moves.size(); i++) {
             if (depth >= 2) {
                 if (get_time() >= endtime || !searching) {
@@ -135,12 +135,12 @@ namespace Search {
                     break;
                 }
             }
-            if (i > prune_limit) break;
+            //if (i > prune_limit) break;
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
             const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
-            if (options.UseHashTable) results.push_back(MoveEval(moves[i], result.score));
+            //if (options.UseHashTable) results.push_back(MoveEval(moves[i], result.score));
 
             if (root && options.PrintCurrMove && (depth >= 5)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
@@ -166,19 +166,19 @@ namespace Search {
             }
         }
 
-        // Sort moves
-        const char movecnt = moves.size();
-        if (options.UseHashTable && depth >= options.HashStart &&
-                movecnt <= Bitboard::MAX_HASH_MOVES && !options.hash_table[idx].computed) {
-            if (pos.turn) std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second > y.second;});
-            else          std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second < y.second;});
+        // // Sort moves
+        // const char movecnt = moves.size();
+        // if (options.UseHashTable && depth >= options.HashStart &&
+        //         movecnt <= Bitboard::MAX_HASH_MOVES && !options.hash_table[idx].computed) {
+        //     if (pos.turn) std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second > y.second;});
+        //     else          std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second < y.second;});
 
-            options.hash_table[idx].computed = true;
-            options.hash_table[idx].movecnt = movecnt;
-            for (char i = 0; i < movecnt; i++) {
-                options.hash_table[idx].moves[i] = results[i].first;
-            }
-        }
+        //     options.hash_table[idx].computed = true;
+        //     options.hash_table[idx].movecnt = movecnt;
+        //     for (char i = 0; i < movecnt; i++) {
+        //         options.hash_table[idx].moves[i] = results[i].first;
+        //     }
+        // }
 
         pv.insert(pv.begin(), moves[best_ind]);
         return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta, full);
