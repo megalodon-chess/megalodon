@@ -37,13 +37,13 @@ MoveOrder::MoveOrder() {
 Options::Options() {
     Hash           = 256;
     UseHashTable   = true;
-    HashStart      = 3;
+    HashStart      = 5;
 
     ABPassStart    = 5;
     ABPassMargin   = 500;
     MoveTimeMult   = 100;
     UseEndgame     = true;
-    LMRFactor      = 30;
+    LMRFactor      = 0;
     QuickMove      = true;
 
     EvalMaterial   = 100;

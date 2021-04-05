@@ -42,13 +42,13 @@ class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
 UseHashTable: type=check, default=true, whether the engine should use hash table.
-HashStart: type=spin, default=4, min=1, max=6, starting depth to read and write into hash table.
+HashStart: type=spin, default=5, min=1, max=8, starting depth to read and write into hash table.
 
 ABPassStart: type=spin, default=5, min=1, max=100, start depth where alpha and beta values are passed to next iteration.
 ABPassMargin: type=spin, default=500, min=0, max=10000, add/sub offset of alpha and beta.
 MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
 UseEndgame: type=check, default=true, whether to use endgame algorithms.
-LMRFactor: type=spin, default=30, min=0, max=100, percent of lowest branches to prune. ONLY WORKS IF USING HASH TABLE
+LMRFactor: type=spin, default=0, min=0, max=100, percent of lowest branches to prune. ONLY WORKS IF USING HASH TABLE
 QuickMove: type=check, default=true, whether to move immediately when there is only one legal move (output will be missing eval info).
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
