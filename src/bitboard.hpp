@@ -34,7 +34,7 @@ typedef unsigned long long U64;
 
 struct Move {
     Move();
-    Move(char, char, bool=false, char=0);
+    Move(const char, const char, const bool=false, const char=0);
 
     char from;
     char to;
@@ -44,7 +44,8 @@ struct Move {
 
 struct Position {
     Position();
-    Position(U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, bool, char, bool, char);
+    Position(const U64, const U64, const U64, const U64, const U64, const U64, const U64, const U64, const U64,
+        const U64, const U64, const U64, const bool, const char, const bool, const char);
 
     U64 wp, wn, wb, wr, wq, wk, bp, bn, bb, br, bq, bk;
     bool turn;
@@ -59,8 +60,8 @@ struct Position {
 
 struct Location {
     Location();
-    Location(char, char);
-    Location(char);
+    Location(const char, const char);
+    Location(const char);
 
     char x;
     char y;

@@ -37,7 +37,7 @@ using std::string;
 Move::Move() {
 }
 
-Move::Move(char _from, char _to, bool _is_promo, char _promo) {
+Move::Move(const char _from, const char _to, const bool _is_promo, const char _promo) {
     from = _from;
     to = _to;
     is_promo = _is_promo;
@@ -66,8 +66,9 @@ Position::Position() {
     move_cnt = 0;
 }
 
-Position::Position(U64 _wp, U64 _wn, U64 _wb, U64 _wr, U64 _wq, U64 _wk, U64 _bp, U64 _bn, U64 _bb, U64 _br, U64 _bq, U64 _bk,
-        bool _turn, char _castling, bool _ep, char _ep_square) {
+Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, const U64 _wq, const U64 _wk,
+        const U64 _bp, const U64 _bn, const U64 _bb, const U64 _br, const U64 _bq, const U64 _bk,
+        const bool _turn, const char _castling, const bool _ep, const char _ep_square) {
     wp = _wp;
     wn = _wn;
     wb = _wb;
@@ -95,15 +96,15 @@ Location::Location() {
     loc = 0;
 }
 
-Location::Location(char _x, char _y) {
+Location::Location(const char _x, const char _y) {
     x = _x;
     y = _y;
-    loc = (_y<<3)+x;
+    loc = (_y<<3) + x;
 }
 
-Location::Location(char _loc) {
-    x = _loc&7;
-    y = _loc>>3;
+Location::Location(const char _loc) {
+    x = _loc & 7;
+    y = _loc >> 3;
     loc = _loc;
 }
 
