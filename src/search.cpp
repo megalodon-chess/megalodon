@@ -184,7 +184,7 @@ namespace Search {
         return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta, full);
     }
 
-    float dfs2(const Options& options, const Position& pos, const int& depth, float alpha, float beta,
+    float dfs2(const Options& options, const Position& pos, const int& depth, float& alpha, float& beta,
             const double& endtime, bool& searching, U64& nodes) {
         // Load best move from transposition table
         const U64 idx = Hash::hash(pos) % options.hash_size;
@@ -208,7 +208,8 @@ namespace Search {
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const float result = dfs2(options, new_pos, depth-1, alpha, beta, endtime, searching, nodes);
+            float new_alpha = alpha, new_beta = beta;
+            const float result = dfs2(options, new_pos, depth-1, new_alpha, new_beta, endtime, searching, nodes);
 
             if (pos.turn) {
                 if (result > best_eval) {
@@ -293,6 +294,7 @@ namespace Search {
             U64 nodes = 0;
             int best_ind = 0;
             float best_eval = pos.turn ? MIN : MAX;
+            float alpha = MIN, beta = MAX;
             bool full = true;
             const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
 
@@ -303,7 +305,9 @@ namespace Search {
                 }
 
                 const Position new_pos = Bitboard::push(pos, moves[i]);
-                const float result = dfs2(options, new_pos, d-1, MIN, MAX, end, searching, nodes);
+                const float result = dfs2(options, new_pos, d-1, alpha, beta, end, searching, nodes);
+                alpha -= 1;
+                beta += 1;
 
                 if (pos.turn) {
                     if (result > best_eval) {
