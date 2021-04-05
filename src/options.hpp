@@ -30,12 +30,11 @@ using std::endl;
 using std::vector;
 using std::string;
 
-struct MoveOrder {
-    MoveOrder();
+struct Transposition {
+    Transposition();
 
     bool computed;
-    char movecnt;
-    Move moves[Bitboard::MAX_HASH_MOVES];
+    Move best;
 };
 
 class Options {
@@ -66,7 +65,7 @@ public:
     void set_hash();
     void clear_hash();
 
-    MoveOrder* hash_table;
+    Transposition* hash_table;
     int hash_size;
 
     int Hash;
