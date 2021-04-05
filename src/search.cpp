@@ -191,6 +191,7 @@ namespace Search {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         const bool computed = options.hash_table[idx].computed;
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        const char movecnt = moves.size();
         if (options.UseHashTable && computed) {
             moves.insert(moves.begin(), options.hash_table[idx].best);
         }
@@ -227,10 +228,9 @@ namespace Search {
                 if (beta < alpha) break;
             }
         }
-        nodes += moves.size();
+        nodes += movecnt;
 
         // Sort moves
-        const char movecnt = moves.size();
         if (options.UseHashTable && !computed && depth >= 2) {
             options.hash_table[idx].computed = true;
             options.hash_table[idx].best = best_move;
