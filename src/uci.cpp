@@ -140,7 +140,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
 void perft(const Options& options, const Position& pos, const int& depth) {
     const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     const double start = get_time();
-    int nodes = 1;
+    int nodes = 0;
 
     if (moves.size() > 0) {
         int move_num = 1;
