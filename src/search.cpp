@@ -225,8 +225,7 @@ namespace Search {
 
         // Sort moves
         const char movecnt = moves.size();
-        if (options.UseHashTable && depth >= options.HashStart &&
-                movecnt <= Bitboard::MAX_HASH_MOVES && !computed) {
+        if (options.UseHashTable && movecnt <= Bitboard::MAX_HASH_MOVES && !computed) {
             if (pos.turn) std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second > y.second;});
             else          std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second < y.second;});
 
