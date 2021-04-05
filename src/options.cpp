@@ -36,7 +36,7 @@ Transposition::Transposition() {
 
 Options::Options() {
     Hash           = 256;
-    UseHashTable   = true;
+    UseHashTable   = false;
     HashStart      = 5;
 
     ABPassStart    = 5;

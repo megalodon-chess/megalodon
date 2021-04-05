@@ -40,7 +40,7 @@ struct Transposition {
 class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
-UseHashTable: type=check, default=true, whether the engine should use hash table.
+UseHashTable: type=check, default=false, whether the engine should use hash table.
 HashStart: type=spin, default=5, min=1, max=8, starting depth to read and write into hash table.
 
 ABPassStart: type=spin, default=5, min=1, max=100, start depth where alpha and beta values are passed to next iteration.
