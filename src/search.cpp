@@ -186,8 +186,15 @@ namespace Search {
 
     float dfs2(const Options& options, const Position& pos, const int& depth, float alpha, float beta,
             const double& endtime, bool& searching, U64& nodes) {
+        const U64 idx = Hash::hash(pos) % options.hash_size;
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        const bool computed = options.hash_table[idx].computed;
+        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        vector<MoveEval> results;
+        if (options.UseHashTable && computed && moves.size() <= Bitboard::MAX_HASH_MOVES) {
+            const MoveOrder entry = options.hash_table[idx];
+            moves = vector<Move>(entry.moves, entry.moves+entry.movecnt);
+        }
 
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, depth, o_attacks);
@@ -202,6 +209,7 @@ namespace Search {
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
             const float result = dfs2(options, new_pos, depth-1, alpha, beta, endtime, searching, nodes);
+            if (options.UseHashTable) results.push_back(MoveEval(moves[i], result));
 
             if (pos.turn) {
                 if (result > best_eval) best_eval = result;
@@ -214,6 +222,20 @@ namespace Search {
             }
         }
         nodes += moves.size();
+
+        // Sort moves
+        const char movecnt = moves.size();
+        if (options.UseHashTable && depth >= options.HashStart &&
+                movecnt <= Bitboard::MAX_HASH_MOVES && !computed) {
+            if (pos.turn) std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second > y.second;});
+            else          std::sort(results.begin(), results.end(), [](MoveEval x, MoveEval y){return x.second < y.second;});
+
+            options.hash_table[idx].computed = true;
+            options.hash_table[idx].movecnt = movecnt;
+            for (char i = 0; i < movecnt; i++) {
+                options.hash_table[idx].moves[i] = results[i].first;
+            }
+        }
 
         return best_eval;
     }
