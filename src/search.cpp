@@ -135,10 +135,10 @@ namespace Search {
                     break;
                 }
             }
+            if (i > prune_limit) break;
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const int new_depth = (options.UseHashTable && computed && depth >= 2 && real_depth >= 4 && i>prune_limit) ? depth-2 : depth-1;
-            const SearchInfo result = dfs(options, new_pos, new_depth, real_depth+1, alpha, beta, false, endtime, searching);
+            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
             if (options.UseHashTable) results.push_back(MoveEval(moves[i], result.score));
 
