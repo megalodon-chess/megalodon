@@ -19,7 +19,6 @@
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
 #include <string>
 #include "bitboard.hpp"
 #include "utils.hpp"

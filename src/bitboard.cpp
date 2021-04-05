@@ -22,17 +22,14 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
-#include <tuple>
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "hash.hpp"
 
 using std::abs;
 using std::cin;
-using std::get;
 using std::cout;
 using std::endl;
-using std::tuple;
 using std::vector;
 using std::string;
 

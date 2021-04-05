@@ -19,7 +19,6 @@
 
 #include <iostream>
 #include <vector>
-#include <queue>
 #include <string>
 #include "bitboard.hpp"
 #include "options.hpp"
