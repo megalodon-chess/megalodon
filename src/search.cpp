@@ -41,11 +41,10 @@ typedef std::pair<Move, float> MoveEval;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U64 _nodes, int _nps,
+SearchInfo::SearchInfo(int _depth, int _seldepth, float _score, U64 _nodes, int _nps,
         double _time, vector<Move> _pv, float _alpha, float _beta, bool _full) {
     depth = _depth;
     seldepth = _seldepth;
-    is_mate_score = !(Search::MIN+20 <= score && score <= Search::MAX-20);
     score = _score;
     nodes = _nodes;
     nps = _nps;
@@ -57,12 +56,16 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U
 }
 
 string SearchInfo::as_string() {
+    const bool is_mate_score = !(Search::MIN+20 <= score && score <= Search::MAX-20);
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
     str += " multipv 1 score ";
     if (is_mate_score) {
         str += "mate ";
-        str += std::to_string((int)(Search::MAX-abs(score)+1));
+        char moves;
+        if (score < 0) moves = (score-Search::MIN+1) / 2;
+        else moves = (Search::MAX-score+1) / 2;
+        str += std::to_string(moves);
     } else {
         str += "cp ";
         str += std::to_string((int)(100*score));
@@ -77,48 +80,26 @@ string SearchInfo::as_string() {
 
 namespace Search {
     float moves_left(const Options& options, const Position& pos) {
-        // Estimates moves left based on material and move stack.
-        //float mat_left = 0.9 * (total_mat(pos)-7);
         float abs_left = 55 - pos.move_cnt;
         if (abs_left < 5) abs_left = 5;
-        //if (mat_left < 0) mat_left = 0;
-
-        //float final_left = (mat_left+abs_left) / 2;
-        //if (final_left < 1) final_left = 1;
-
         return abs_left;
     }
 
     float move_time(const Options& options, const Position& pos, const float& time, const float& inc) {
-        // Calculates move time based on moves left and game evaluation.
-        float moves = moves_left(options, pos);
-        float time_left = time + inc*moves;
+        const float moves = moves_left(options, pos);
+        const float time_left = time + inc*moves;
         return time_left / moves;
-        //float mat = eval(options, pos, false);
-        //if (!pos.turn) mat *= -1;
-        //float mat_offset = mat * -0.3;
-
-        //return (time_left/moves) + mat_offset;
     }
 
 
-    SearchInfo dfs(const Options& options, const Position& pos, const int& depth, float alpha, float beta,
-            const bool& root, const double& endtime, bool& searching) {
+    SearchInfo dfs(const Options& options, const Position& pos, const int& depth, const int& real_depth,
+            float alpha, float beta, const bool& root, const double& endtime, bool& searching) {
         U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
         if (depth == 0 || moves.empty()) {
-            // const int idx = options.UseHashTable ? (Hash::hash(pos) % options.hash_size) : 0;
-            // float score;
-            // if (options.UseHashTable && options.hash_evaled[idx]) {
-            //     score = options.hash_evals[idx];
-            // } else {
-            //     score = eval(options, pos, moves, depth, o_attacks);
-            //     options.hash_evaled[idx] = true;
-            //     options.hash_evals[idx] = score;
-            // }
-            const float score = Eval::eval(options, pos, moves, depth, o_attacks);
-            return SearchInfo(depth, depth, false, score, 1, 0, 0, {}, alpha, beta, true);
+            const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
+            return SearchInfo(depth, depth, score, 1, 0, 0, {}, alpha, beta, true);
         }
 
         U64 nodes = 1;
@@ -135,7 +116,7 @@ namespace Search {
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const SearchInfo result = dfs(options, new_pos, depth-1, alpha, beta, false, endtime, searching);
+            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
 
             if (root && (depth >= 5)) {
@@ -162,7 +143,7 @@ namespace Search {
             }
         }
         pv.insert(pv.begin(), moves[best_ind]);
-        return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta, full);
+        return SearchInfo(depth, depth, best_eval, nodes, 0, 0, pv, alpha, beta, full);
     }
 
     SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime, bool& searching) {
@@ -170,7 +151,7 @@ namespace Search {
         if (options.UseEndgame && eg != 0) {
             const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
             const Move best_move = Endgame::bestmove(pos, moves, eg);
-            return SearchInfo(1, 1, false, pos.turn ? MAX : MIN, moves.size(), 0, 0, {best_move}, 0, 0, true);
+            return SearchInfo(1, 1, pos.turn ? MAX : MIN, moves.size(), 0, 0, {best_move}, 0, 0, true);
         }
 
         SearchInfo result;
@@ -182,7 +163,7 @@ namespace Search {
             if (!searching) break;
             if (get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, alpha, beta, true, end, searching);
+            SearchInfo curr_result = dfs(options, pos, d, 0, alpha, beta, true, end, searching);
             double elapse = get_time() - start;
 
             if (d >= 3) {
@@ -192,6 +173,7 @@ namespace Search {
 
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
+            if (!pos.turn) curr_result.score *= -1;
             if (curr_result.full) cout << curr_result.as_string() << endl;
             if (curr_result.full) result = curr_result;
         }
