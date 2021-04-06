@@ -25,6 +25,11 @@
 #include "eval.hpp"
 #include "search.hpp"
 
+#define MCTS_N  0    // Not game over
+#define MCTS_W  1    // White wins
+#define MCTS_B  2    // Black wins
+#define MCTS_D  3    // Draw
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -287,13 +292,19 @@ namespace Eval {
         3 if draw
         */
 
+        // Insufficient material
+        if ((Bitboard::get_all(pos) ^ pos.wk) ^ pos.bk) {
+            return MCTS_D;
+        }
+
+        // Checkmate and stalemate
         if (moves.size() == 0) {
             if (pos.turn) {
-                if ((pos.wk & o_attacks) == 0) return 3;
-                else return 2;
+                if ((pos.wk & o_attacks) == 0) return MCTS_D;
+                else return MCTS_B;
             } else {
-                if ((pos.bk & o_attacks) == 0) return 3;
-                else return 1;
+                if ((pos.bk & o_attacks) == 0) return MCTS_D;
+                else return MCTS_W;
             }
         } else {
             return 0;
