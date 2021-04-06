@@ -471,7 +471,7 @@ namespace Bitboard {
         same: Bitboard of all same side pieces.
         */
         U64 pin_ray = EMPTY;
-        const U64 all = pawns | knights | bishops | rooks | queens | same;
+        const U64 all = pawns | knights | bishops | rooks | queens | kings | same;
         const char kx = k_pos.x, ky = k_pos.y;
         const char px = piece_pos.x, py = piece_pos.y;
         char dx = px - kx, dy = py - ky;
