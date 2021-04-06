@@ -64,6 +64,9 @@ Position::Position() {
     ep = false;
     ep_square = 0;
     move_cnt = 0;
+
+    child_count = 0;
+    move_ind = 0;
 }
 
 Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, const U64 _wq, const U64 _wk,
@@ -87,6 +90,9 @@ Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, c
     ep = _ep;
     ep_square = _ep_square;
     move_cnt = 0;
+
+    child_count = 0;
+    move_ind = 0;
 }
 
 

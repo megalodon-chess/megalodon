@@ -54,8 +54,13 @@ struct Position {
     char ep_square;
 
     float eval;
-    Position* parent;
     int move_cnt;
+
+    int child_count;
+    int move_ind;
+    Position* parent;
+    Position* children[Bitboard::MCTS_MAX_CHILDREN];
+    vector<Move> moves;
 };
 
 struct Location {
@@ -114,6 +119,7 @@ namespace Bitboard {
     constexpr U64 BYTE_ALL_ONE = 255ULL;
     constexpr int MAX_MOVES = 220;
     constexpr int MAX_HASH_MOVES = 30;
+    constexpr int MCTS_MAX_CHILDREN = 10;
 
     constexpr char DIR_R_SIZE = 4;
     constexpr char DIR_N_SIZE = 8;
