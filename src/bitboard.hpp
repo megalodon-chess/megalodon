@@ -24,6 +24,8 @@
 #include <tuple>
 #include <string>
 
+#define MCTS_MAX  10
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -56,10 +58,13 @@ struct Position {
     float eval;
     int move_cnt;
 
+    // Used by MCTS
+    bool is_root;
     int child_count;
     int move_ind;
+    int score;
     Position* parent;
-    Position* children[Bitboard::MCTS_MAX_CHILDREN];
+    Position* children[MCTS_MAX];
     vector<Move> moves;
 };
 
@@ -119,7 +124,7 @@ namespace Bitboard {
     constexpr U64 BYTE_ALL_ONE = 255ULL;
     constexpr int MAX_MOVES = 220;
     constexpr int MAX_HASH_MOVES = 30;
-    constexpr int MCTS_MAX_CHILDREN = 10;
+    constexpr int MCTS_MAX_CHILDREN = MCTS_MAX;
 
     constexpr char DIR_R_SIZE = 4;
     constexpr char DIR_N_SIZE = 8;

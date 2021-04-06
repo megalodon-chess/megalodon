@@ -174,8 +174,10 @@ namespace Search {
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
             if (!pos.turn) curr_result.score *= -1;
-            if (curr_result.full) cout << curr_result.as_string() << endl;
-            if (curr_result.full) result = curr_result;
+            if (curr_result.full) {
+                cout << curr_result.as_string() << endl;
+                result = curr_result;
+            }
         }
 
         return result;
@@ -202,7 +204,12 @@ namespace Search {
                 if (n >= curr_node->child_count) break;
                 else curr_node = curr_node->children[n];
             }
-            if (curr_depth > depth) depth = curr_depth;
+            if (curr_depth > depth) {
+                depth = curr_depth;
+                const double elapse = get_time() - start;
+                SearchInfo result(depth, depth, 0, nodes, nodes/elapse, elapse, {}, 0, 0, true);
+                cout << result.as_string() << endl;
+            }
 
             // Expansion
             if (curr_node->move_ind >= curr_node->moves.size()) continue;
@@ -220,27 +227,28 @@ namespace Search {
             nodes++;
 
             // Simulation
-            Position curr_sim = new_node;
             char result;
-            while (true) {
-                const U64 o_attacks = Bitboard::attacked(curr_sim, !curr_sim.turn);
-                const vector<Move> moves = Bitboard::legal_moves(curr_sim, o_attacks);
-                const char curr_result = Eval::eval_end(curr_sim, o_attacks, moves);
-                if (curr_result != 0) {
-                    result = curr_result;
-                    break;
+            for (auto i = 0; i < options.MCTST; i++) {
+                Position curr_sim = new_node;
+                while (true) {
+                    const U64 o_attacks = Bitboard::attacked(curr_sim, !curr_sim.turn);
+                    const vector<Move> moves = Bitboard::legal_moves(curr_sim, o_attacks);
+                    const char curr_result = Eval::eval_end(curr_sim, o_attacks, moves);
+                    if (curr_result != 0) {
+                        if (curr_result == 1) result++;
+                        else if (curr_result == 2) result--;
+                        break;
+                    }
+                    const int ind = rand() % moves.size();
+                    curr_sim = Bitboard::push(curr_sim, moves[ind]);
                 }
-                const int ind = rand() % moves.size();
-                curr_sim = Bitboard::push(curr_sim, moves[ind]);
             }
 
             // Backpropagation
-            Position* node = &curr_sim;
+            Position* node = &new_node;
             while (true) {
                 if (node->is_root) break;
-
-                if (result == 1) node->score += 1;
-                else if (result == 2) node->score -= 1;
+                node->score += result;
                 node = node->parent;
             }
         }

@@ -67,6 +67,8 @@ Position::Position() {
 
     child_count = 0;
     move_ind = 0;
+    score = 0;
+    is_root = false;
 }
 
 Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, const U64 _wq, const U64 _wk,
@@ -93,6 +95,8 @@ Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, c
 
     child_count = 0;
     move_ind = 0;
+    score = 0;
+    is_root = false;
 }
 
 
