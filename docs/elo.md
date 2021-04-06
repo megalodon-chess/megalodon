@@ -12,9 +12,6 @@ These scores are relative to version 0.3.0
 
 ## ELO Table
 
-|        | 0.3.0  | 0.3.1  | 0.3.2  |
-| 0.3.0  |        | -133.3 | -168.7 |
-| 0.3.1  | +133.3 |        | -35.4  |
-| 0.3.2  | +168.7 | +35.4  |        |
+![elotable](https://raw.githubusercontent.com/megalodon-chess/megalodon/main/docs/elo.png)
 
 [wiki]: https://en.wikipedia.org/wiki/Elo_rating_system
