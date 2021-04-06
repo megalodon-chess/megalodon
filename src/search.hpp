@@ -34,7 +34,7 @@ using std::string;
 struct SearchInfo {
     SearchInfo();
     SearchInfo(int, int, bool, float, U64, int, double, vector<Move>, float, float, bool);
-    string as_string(bool);
+    string as_string();
 
     int depth;
     int seldepth;
@@ -58,5 +58,5 @@ namespace Search {
     float move_time(const Options&, const Position&, const float&, const float&);
 
     SearchInfo search(const Options&, const Position&, const int&, const double&, bool&);
-    SearchInfo dfs(const Options&, const Position&, const int&, const int&, float, float, const bool&, const double&, bool&);
+    SearchInfo search2(const Options&, const Position&, const int&, const double&, bool&);
 }

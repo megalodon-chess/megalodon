@@ -79,8 +79,7 @@ void print_legal_moves(const Position& pos) {
 }
 
 void chat(const Options& options, const bool& turn, const int& movect, const float& score, const float& prev_score) {
-    if (!options.Chat) return;
-
+    return;  //! CHAT IS DISABLED
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
     else if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
     else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
@@ -130,7 +129,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
+    const SearchInfo result = Search::search2(options, pos, depth, movetime, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -198,11 +197,9 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default true" << "\n";
-            cout << "option name HashStart type spin default 5 min 1 max 8" << "\n";
+            cout << "option name UseHashTable type check default false" << "\n";
+            //cout << "option name HashStart type spin default 5 min 1 max 8" << "\n";
 
-            cout << "option name ABPassStart type spin default 5 min 1 max 100" << "\n";
-            cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name UseEndgame type check default true" << "\n";
             cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
@@ -214,9 +211,6 @@ int loop() {
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
 
-            cout << "option name PrintCurrMove type check default true" << "\n";
-            cout << "option name PrintPv type check default true" << "\n";
-            cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
@@ -231,22 +225,16 @@ int loop() {
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
             else if (name == "HashStart") options.HashStart = std::stoi(value);
 
-            else if (name == "ABPassStart") options.ABPassStart = std::stoi(value);
-            else if (name == "ABPassMargin") options.ABPassMargin = std::stoi(value);
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "UseEndgame") options.UseEndgame = (value == "true");
             else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
             else if (name == "QuickMove") options.QuickMove = (value == "true");
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
-            else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
-            else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
-            else if (name == "EvalKings") options.EvalKings = std::stoi(value);
-
-            else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
-            else if (name == "PrintPv") options.PrintPv = (value == "true");
-            else if (name == "Chat") options.Chat = (value == "true");
+            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
+            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
+            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
+            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
