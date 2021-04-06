@@ -57,5 +57,5 @@ namespace Search {
     float move_time(const Options&, const Position&, const float&, const float&);
 
     SearchInfo search(const Options&, const Position&, const int&, const double&, bool&);
-    SearchInfo mcts(const Options&, Position, const double&, const bool&);
+    SearchInfo mcts(const Options&, Position, const double&, bool&);
 }

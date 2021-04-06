@@ -185,16 +185,24 @@ namespace Search {
         pos.moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         pos.is_root = true;
 
+        U64 nodes = 1;
+        int depth = 0;
+        const double start = get_time();
+        const double end = start + movetime;
+
         while (true) {
-            if (get_time() >= movetime || !searching) break;
+            if ((get_time() >= end) || !searching) break;
 
             // Selection
             Position* curr_node = &pos;
+            int curr_depth = 0;
             while (true) {
+                curr_depth++;
                 const char n = rand() % Bitboard::MCTS_MAX_CHILDREN;
-                if (n > curr_node->child_count) break;
+                if (n >= curr_node->child_count) break;
                 else curr_node = curr_node->children[n];
             }
+            if (curr_depth > depth) depth = curr_depth;
 
             // Expansion
             if (curr_node->move_ind >= curr_node->moves.size()) continue;
@@ -209,6 +217,7 @@ namespace Search {
 
             curr_node->children[curr_node->child_count] = &new_node;
             curr_node->child_count++;
+            nodes++;
 
             // Simulation
             Position curr_sim = new_node;
@@ -228,12 +237,31 @@ namespace Search {
             // Backpropagation
             Position* node = &curr_sim;
             while (true) {
-                if (!node->is_root) break;
+                if (node->is_root) break;
 
                 if (result == 1) node->score += 1;
                 else if (result == 2) node->score -= 1;
                 node = node->parent;
             }
         }
+
+        int best_ind = 0;
+        int best_eval = pos.turn ? MIN : MAX;
+        for (char i = 0; i < pos.child_count; i++) {
+            const int score = pos.children[i]->score;
+            if (pos.turn && (score > best_eval)) {
+                best_eval = score;
+                best_ind = i;
+            } else if (!pos.turn && (score < best_eval)) {
+                best_eval = score;
+                best_ind = i;
+            }
+        }
+
+        const double elapse = get_time() - start;
+        const Move best_move = pos.moves[best_ind];
+        SearchInfo result(depth, depth, 0, nodes, nodes/elapse, elapse, {best_move}, 0, 0, true);
+        cout << result.as_string() << endl;
+        return result;
     }
 }
