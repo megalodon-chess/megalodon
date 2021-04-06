@@ -167,8 +167,8 @@ namespace Search {
             double elapse = get_time() - start;
 
             if (d >= 3) {
-                alpha = result.alpha - 300;
-                beta = result.beta + 300;
+                alpha = result.alpha - 100;
+                beta = result.beta + 100;
             }
 
             curr_result.time = elapse;
