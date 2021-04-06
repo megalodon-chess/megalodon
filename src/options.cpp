@@ -43,6 +43,8 @@ Options::Options() {
     UseEndgame     = true;
     LMRFactor      = 0;
     QuickMove      = true;
+    UseMCTS        = false;
+    MCTST          = 10;
 
     EvalMaterial   = 1;
     EvalPawnStruct = 1;

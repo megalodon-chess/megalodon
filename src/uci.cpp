@@ -129,7 +129,9 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
+    SearchInfo result;
+    if (options.UseMCTS) result = Search::mcts(options, pos, movetime, searching);
+    else result = Search::search(options, pos, depth, movetime, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -201,6 +203,8 @@ int loop() {
             cout << "option name UseEndgame type check default true" << "\n";
             cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
             cout << "option name QuickMove type check default true" << "\n";
+            cout << "option name UseMCTS type check default false" << "\n";
+            cout << "option name MCTST type spin default 10 min 1 max 100" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
@@ -226,6 +230,8 @@ int loop() {
             else if (name == "UseEndgame") options.UseEndgame = (value == "true");
             else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
             else if (name == "QuickMove") options.QuickMove = (value == "true");
+            else if (name == "UseMCTS") options.UseMCTS = (value == "true");
+            else if (name == "MCTST") options.MCTST = std::stoi(value);
 
             else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;

@@ -47,6 +47,8 @@ MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of 
 UseEndgame: type=check, default=true, whether to use endgame algorithms.
 LMRFactor: type=spin, default=0, min=0, max=100, percent of lowest branches to prune. ONLY WORKS IF USING HASH TABLE
 QuickMove: type=check, default=true, whether to move immediately when there is only one legal move (output will be missing eval info).
+UseMCTS: type=check, default=false, whether to use MCTS search.
+MCTST: type=spin, default=10, min=1, max=100, T value of MCTS.
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
@@ -71,6 +73,8 @@ public:
     bool UseEndgame;
     int LMRFactor;
     bool QuickMove;
+    bool UseMCTS;
+    int MCTST;
 
     float EvalMaterial;
     float EvalSpace;
