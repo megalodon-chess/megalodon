@@ -273,7 +273,7 @@ namespace Eval {
             return 0;
         }
 
-        const float mat = material(pos);
+        const float mat         = material(pos);
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp);
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp);
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk);
