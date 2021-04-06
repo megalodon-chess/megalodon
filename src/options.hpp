@@ -30,18 +30,17 @@ using std::endl;
 using std::vector;
 using std::string;
 
-struct MoveOrder {
-    MoveOrder();
+struct Transposition {
+    Transposition();
 
     bool computed;
-    char movecnt;
-    Move moves[Bitboard::MAX_HASH_MOVES];
+    Move best;
 };
 
 class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
-UseHashTable: type=check, default=true, whether the engine should use hash table.
+UseHashTable: type=check, default=false, whether the engine should use hash table.
 HashStart: type=spin, default=5, min=1, max=8, starting depth to read and write into hash table.
 
 MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
@@ -64,7 +63,7 @@ public:
     void set_hash();
     void clear_hash();
 
-    MoveOrder* hash_table;
+    Transposition* hash_table;
     int hash_size;
 
     int Hash;

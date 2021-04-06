@@ -29,14 +29,14 @@ using std::vector;
 using std::string;
 
 
-MoveOrder::MoveOrder() {
+Transposition::Transposition() {
     computed = false;
 }
 
 
 Options::Options() {
     Hash           = 256;
-    UseHashTable   = true;
+    UseHashTable   = false;
     HashStart      = 5;
 
     MoveTimeMult   = 100;
@@ -54,14 +54,14 @@ Options::Options() {
     PrintPv        = true;
     Chat           = false;
 
-    hash_table = new MoveOrder[16];
+    hash_table = new Transposition[16];
     set_hash();
 }
 
 void Options::set_hash() {
     delete[] hash_table;
-    hash_size = Hash * 8530;
-    hash_table = new MoveOrder[hash_size];
+    hash_size = Hash * 209000;
+    hash_table = new Transposition[hash_size];
 }
 
 void Options::clear_hash() {

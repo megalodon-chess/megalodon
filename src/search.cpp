@@ -113,7 +113,7 @@ namespace Search {
         const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
         // vector<MoveEval> results;
         // if (options.UseHashTable && computed && moves.size() <= Bitboard::MAX_HASH_MOVES) {
-        //     const MoveOrder entry = options.hash_table[idx];
+        //     const Transposition entry = options.hash_table[idx];
         //     moves = vector<Move>(entry.moves, entry.moves+entry.movecnt);
         // }
 
@@ -184,6 +184,61 @@ namespace Search {
         return SearchInfo(depth, depth, false, best_eval, nodes, 0, 0, pv, alpha, beta, full);
     }
 
+    float dfs2(const Options& options, const Position& pos, const int& depth, float& alpha, float& beta,
+            const double& endtime, bool& searching, U64& nodes) {
+        // Load best move from transposition table
+        const U64 idx = Hash::hash(pos) % options.hash_size;
+        const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        const bool computed = options.hash_table[idx].computed;
+        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        const char movecnt = moves.size();
+        if (options.UseHashTable && computed) {
+            moves.insert(moves.begin(), options.hash_table[idx].best);
+        }
+
+        if (depth == 0 || moves.empty()) {
+            const float score = Eval::eval(options, pos, moves, depth, o_attacks);
+            return score;
+        }
+
+        float best_eval = pos.turn ? MIN : MAX;
+        Move best_move = moves[0];
+        for (char i = 0; i < moves.size(); i++) {
+            if (depth >= 2) {
+                if (get_time() >= endtime || !searching) break;
+            }
+
+            const Position new_pos = Bitboard::push(pos, moves[i]);
+            float new_alpha = alpha, new_beta = beta;
+            const float result = dfs2(options, new_pos, depth-1, new_alpha, new_beta, endtime, searching, nodes);
+
+            if (pos.turn) {
+                if (result > best_eval) {
+                    best_eval = result;
+                    best_move = moves[i];
+                }
+                if (result > alpha) alpha = result;
+                if (beta < alpha) break;
+            } else {
+                if (result < best_eval) {
+                    best_eval = result;
+                    best_move = moves[i];
+                }
+                if (result < beta) beta = result;
+                if (beta < alpha) break;
+            }
+        }
+        nodes += movecnt;
+
+        // Sort moves
+        if (options.UseHashTable && !computed && depth >= 2) {
+            options.hash_table[idx].computed = true;
+            options.hash_table[idx].best = best_move;
+        }
+
+        return best_eval;
+    }
+
     SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime, bool& searching) {
         if (options.QuickMove) {
             const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
@@ -225,5 +280,57 @@ namespace Search {
         }
 
         return result;
+    }
+
+    SearchInfo search2(const Options& options, const Position& pos, const int& depth, const double& movetime, bool& searching) {
+        const double start = get_time();
+        const double end = start + movetime;
+        SearchInfo final_result;
+
+        for (char d = 2; d <= depth; d++) {
+            if (!searching) break;
+            if (get_time() >= end) break;
+
+            U64 nodes = 0;
+            int best_ind = 0;
+            float best_eval = pos.turn ? MIN : MAX;
+            float alpha = MIN, beta = MAX;
+            bool full = true;
+            const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+
+            for (auto i = 0; i < moves.size(); i++) {
+                if (get_time() >= end || !searching) {
+                    full = false;
+                    break;
+                }
+
+                const Position new_pos = Bitboard::push(pos, moves[i]);
+                const float result = dfs2(options, new_pos, d-1, alpha, beta, end, searching, nodes);
+                alpha -= 1;
+                beta += 1;
+
+                if (pos.turn) {
+                    if (result > best_eval) {
+                        best_eval = result;
+                        best_ind = i;
+                    }
+                } else {
+                    if (result < best_eval) {
+                        best_eval = result;
+                        best_ind = i;
+                    }
+                }
+            }
+
+            if (full) {
+                Move move = moves[best_ind];
+                const double elapse = get_time() - start;
+                SearchInfo result = SearchInfo(d, d, false, best_eval, nodes, nodes/elapse, elapse, {move}, 0, 0, true);
+                cout << result.as_string(options.PrintPv) << endl;
+                final_result = result;
+            }
+        }
+
+        return final_result;
     }
 }

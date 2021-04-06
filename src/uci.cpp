@@ -130,7 +130,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
+    const SearchInfo result = Search::search2(options, pos, depth, movetime, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -198,8 +198,8 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default true" << "\n";
-            cout << "option name HashStart type spin default 5 min 1 max 8" << "\n";
+            cout << "option name UseHashTable type check default false" << "\n";
+            //cout << "option name HashStart type spin default 5 min 1 max 8" << "\n";
 
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name UseEndgame type check default true" << "\n";
