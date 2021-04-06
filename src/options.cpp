@@ -39,18 +39,16 @@ Options::Options() {
     UseHashTable   = true;
     HashStart      = 5;
 
-    ABPassStart    = 5;
-    ABPassMargin   = 500;
     MoveTimeMult   = 100;
     UseEndgame     = true;
     LMRFactor      = 0;
     QuickMove      = true;
 
-    EvalMaterial   = 100;
-    EvalPawnStruct = 100;
-    EvalSpace      = 100;
-    EvalKnights    = 100;
-    EvalKings      = 100;
+    EvalMaterial   = 1;
+    EvalPawnStruct = 1;
+    EvalSpace      = 1;
+    EvalKnights    = 1;
+    EvalKings      = 1;
 
     PrintCurrMove  = true;
     PrintPv        = true;

@@ -201,8 +201,6 @@ int loop() {
             cout << "option name UseHashTable type check default true" << "\n";
             cout << "option name HashStart type spin default 5 min 1 max 8" << "\n";
 
-            cout << "option name ABPassStart type spin default 5 min 1 max 100" << "\n";
-            cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name UseEndgame type check default true" << "\n";
             cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
@@ -231,18 +229,16 @@ int loop() {
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
             else if (name == "HashStart") options.HashStart = std::stoi(value);
 
-            else if (name == "ABPassStart") options.ABPassStart = std::stoi(value);
-            else if (name == "ABPassMargin") options.ABPassMargin = std::stoi(value);
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "UseEndgame") options.UseEndgame = (value == "true");
             else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
             else if (name == "QuickMove") options.QuickMove = (value == "true");
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
-            else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
-            else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
-            else if (name == "EvalKings") options.EvalKings = std::stoi(value);
+            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
+            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
+            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
+            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
 
             else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
             else if (name == "PrintPv") options.PrintPv = (value == "true");

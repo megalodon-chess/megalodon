@@ -274,17 +274,17 @@ namespace Eval {
         }
 
         const float mat = material(pos);
-        const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
-        const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn, pos.wp, pos.bp);
-        const float king = ((float)options.EvalKings)/100 * kings(pos.wk, pos.bk);
-        const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
+        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp);
+        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp);
+        const float king        = options.EvalKings      * kings(pos.wk, pos.bk);
+        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king, sp);
         const float eg = end_game(pawn_struct, knight, king, sp);
         const float p = phase(pos);
-        const float score = mg*p + eg*(1-p);
+        const float imbalance = mg*p + eg*(1-p);
 
-        return mat + 0.4*score;
+        return mat + 0.4*imbalance;
     }
 }
