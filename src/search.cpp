@@ -265,9 +265,9 @@ namespace Search {
             SearchInfo curr_result = dfs(options, pos, d, 0, alpha, beta, true, end, searching);
             const double elapse = get_time() - start;
 
-            if (d >= options.ABPassStart) {
-                alpha = result.alpha - options.ABPassMargin/100;
-                beta = result.beta + options.ABPassMargin/100;
+            if (d >= 3) {
+                alpha = result.alpha - 5;
+                beta = result.beta + 5;
             }
 
             curr_result.time = elapse;
