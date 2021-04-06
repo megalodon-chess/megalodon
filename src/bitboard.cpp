@@ -1059,14 +1059,14 @@ namespace Bitboard {
                 if ((move.to-move.from) == 16) {
                     pos.ep = true;
                     pos.ep_square = move.from + 8;
-                } else if (ep && (((move.to-move.from) == 7) || ((move.to-move.from) == 9))) {
+                } else if (ep && move.to == pos.ep_square) {
                     unset_bit(pos.bp, move.to-8);
                 }
             } else {
                 if ((move.from-move.to) == 16) {
                     pos.ep = true;
                     pos.ep_square = move.from - 8;
-                } else if (ep && (((move.from-move.to) == 7) || ((move.from-move.to) == 9))) {
+                } else if (ep && move.to == pos.ep_square) {
                     unset_bit(pos.wp, move.to+8);
                 }
             }
