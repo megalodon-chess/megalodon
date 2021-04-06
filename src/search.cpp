@@ -94,8 +94,8 @@ namespace Search {
 
     SearchInfo dfs(const Options& options, const Position& pos, const int& depth, const int& real_depth,
             float alpha, float beta, const bool& root, const double& endtime, bool& searching) {
-        U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
