@@ -1044,7 +1044,13 @@ namespace Bitboard {
                 unset_bit(*pointers[9], x+56);
                 set_bit(*pointers[9], new_x+56);
             }
-            pos.castling = 0;
+            if (pos.turn) {
+                unset_bit(pos.castling, 0);
+                unset_bit(pos.castling, 1);
+            } else {
+                unset_bit(pos.castling, 2);
+                unset_bit(pos.castling, 3);
+            }
         } else {
             switch (move.from) {
                 case  0: unset_bit(pos.castling, 1);                             break;
