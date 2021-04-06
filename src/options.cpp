@@ -50,10 +50,6 @@ Options::Options() {
     EvalKnights    = 1;
     EvalKings      = 1;
 
-    PrintCurrMove  = true;
-    PrintPv        = true;
-    Chat           = false;
-
     hash_table = new Transposition[16];
     set_hash();
 }

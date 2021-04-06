@@ -56,7 +56,7 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, bool _is_mate, float _score, U
     full = _full;
 }
 
-string SearchInfo::as_string(bool PrintPv) {
+string SearchInfo::as_string() {
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
     str += " multipv 1 score ";
@@ -70,9 +70,7 @@ string SearchInfo::as_string(bool PrintPv) {
     str += " nodes " + std::to_string(nodes) + " nps " + std::to_string(nps);
     str += " tbhits 0 time " + std::to_string((int)(1000*time));
     str += " pv ";
-    if (PrintPv) {
-        for (const auto& move: pv) str += Bitboard::move_str(move) + " ";
-    }
+    for (const auto& move: pv) str += Bitboard::move_str(move) + " ";
     return str;
 }
 
@@ -142,7 +140,7 @@ namespace Search {
             nodes += result.nodes;
             //if (options.UseHashTable) results.push_back(MoveEval(moves[i], result.score));
 
-            if (root && options.PrintCurrMove && (depth >= 5)) {
+            if (root && (depth >= 5)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
                     << " currmovenumber " << i+1 << endl;
             }
@@ -211,6 +209,7 @@ namespace Search {
             const Position new_pos = Bitboard::push(pos, moves[i]);
             float new_alpha = alpha, new_beta = beta;
             const float result = dfs2(options, new_pos, depth-1, new_alpha, new_beta, endtime, searching, nodes);
+            nodes++;
 
             if (pos.turn) {
                 if (result > best_eval) {
@@ -228,7 +227,6 @@ namespace Search {
                 if (beta < alpha) break;
             }
         }
-        nodes += movecnt;
 
         // Sort moves
         if (options.UseHashTable && !computed && depth >= 2) {
@@ -274,7 +272,7 @@ namespace Search {
             curr_result.nps = curr_result.nodes / (elapse+0.001);
             if (curr_result.full) {
                 if (!pos.turn) curr_result.score *= -1;   // UCI uses relative score, and Megalodon uses absolute score.
-                cout << curr_result.as_string(options.PrintPv) << endl;
+                cout << curr_result.as_string() << endl;
                 result = curr_result;
             }
         }
@@ -303,6 +301,7 @@ namespace Search {
                     full = false;
                     break;
                 }
+                cout << "info depth " << +d << " currmove " << Bitboard::move_str(moves[i]) << " currmovenumber " << i+1 << endl;
 
                 const Position new_pos = Bitboard::push(pos, moves[i]);
                 const float result = dfs2(options, new_pos, d-1, alpha, beta, end, searching, nodes);
@@ -326,7 +325,7 @@ namespace Search {
                 Move move = moves[best_ind];
                 const double elapse = get_time() - start;
                 SearchInfo result = SearchInfo(d, d, false, best_eval, nodes, nodes/elapse, elapse, {move}, 0, 0, true);
-                cout << result.as_string(options.PrintPv) << endl;
+                cout << result.as_string() << endl;
                 final_result = result;
             }
         }

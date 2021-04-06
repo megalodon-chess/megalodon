@@ -53,10 +53,6 @@ EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space ev
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
 EvalKnights: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
 EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
-
-PrintCurrMove: type=check, default=true, whether the engine should print currmove info.
-PrintPv: type=check, default=true, whether the engine should print principal variation.
-Chat: type=check, default=true, whether the engine should chat with you.
 */
 
 public:
@@ -81,8 +77,4 @@ public:
     float EvalPawnStruct;
     float EvalKnights;
     float EvalKings;
-
-    bool PrintCurrMove;
-    bool PrintPv;
-    bool Chat;
 };

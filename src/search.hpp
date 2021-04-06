@@ -34,7 +34,7 @@ using std::string;
 struct SearchInfo {
     SearchInfo();
     SearchInfo(int, int, bool, float, U64, int, double, vector<Move>, float, float, bool);
-    string as_string(bool);
+    string as_string();
 
     int depth;
     int seldepth;

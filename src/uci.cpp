@@ -79,8 +79,7 @@ void print_legal_moves(const Position& pos) {
 }
 
 void chat(const Options& options, const bool& turn, const int& movect, const float& score, const float& prev_score) {
-    if (!options.Chat) return;
-
+    return;  //! CHAT IS DISABLED
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
     else if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
     else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
@@ -212,9 +211,6 @@ int loop() {
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
 
-            cout << "option name PrintCurrMove type check default true" << "\n";
-            cout << "option name PrintPv type check default true" << "\n";
-            cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
@@ -239,10 +235,6 @@ int loop() {
             else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
             else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
             else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
-
-            else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
-            else if (name == "PrintPv") options.PrintPv = (value == "true");
-            else if (name == "Chat") options.Chat = (value == "true");
 
             else std::cerr << "Unknown option: " << name << endl;
         }
