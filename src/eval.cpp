@@ -293,7 +293,7 @@ namespace Eval {
         */
 
         // Insufficient material
-        if ((Bitboard::get_all(pos) ^ pos.wk) ^ pos.bk) {
+        if (((Bitboard::get_all(pos) ^ pos.wk) ^ pos.bk) == 0) {
             return MCTS_D;
         }
 
@@ -307,7 +307,7 @@ namespace Eval {
                 else return MCTS_W;
             }
         } else {
-            return 0;
+            return MCTS_N;
         }
     }
 }
