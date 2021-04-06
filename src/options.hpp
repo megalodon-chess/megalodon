@@ -49,6 +49,7 @@ LMRFactor: type=spin, default=0, min=0, max=100, percent of lowest branches to p
 QuickMove: type=check, default=true, whether to move immediately when there is only one legal move (output will be missing eval info).
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
+EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
 EvalKnights: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
 EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
@@ -76,8 +77,8 @@ public:
     bool QuickMove;
 
     float EvalMaterial;
-    float EvalPawnStruct;
     float EvalSpace;
+    float EvalPawnStruct;
     float EvalKnights;
     float EvalKings;
 
