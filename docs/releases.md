@@ -2,6 +2,16 @@
 
 This page contains release info.
 
+## [Megalodon 0.4.0][v0.4.0]
+
+This release contains many bug fixes in move generation.
+Thanks to Guenther Simon (@rwbc) for reporting bugs.
+
+The speed of everything was increased by about 5 times!
+This was achieved by adding the `-O3` flag when compiling, which allows g++ to do optimization.
+
+The v0.4.x releases will be focused on fixing bugs and evaluation algorithms.
+
 ## [Megalodon 0.3.2][v0.3.2]
 
 There are many bug fixes in this release.
@@ -167,6 +177,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.4.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.0
 [v0.3.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.2
 [v0.3.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.1
 [v0.3.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.0
