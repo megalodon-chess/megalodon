@@ -180,4 +180,60 @@ namespace Search {
 
         return result;
     }
+
+    SearchInfo mcts(const Options& options, Position pos, const double& movetime, bool& searching) {
+        pos.moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+        pos.is_root = true;
+
+        while (true) {
+            if (get_time() >= movetime || !searching) break;
+
+            // Selection
+            Position* curr_node = &pos;
+            while (true) {
+                const char n = rand() % Bitboard::MCTS_MAX_CHILDREN;
+                if (n > curr_node->child_count) break;
+                else curr_node = curr_node->children[n];
+            }
+
+            // Expansion
+            if (curr_node->move_ind >= curr_node->moves.size()) continue;
+            const Move move = curr_node->moves[curr_node->move_ind];
+            curr_node->move_ind++;
+
+            Position new_node = Bitboard::push(*curr_node, move);
+            new_node.moves = Bitboard::legal_moves(new_node, Bitboard::attacked(new_node, !new_node.turn));
+            new_node.move_ind = 0;
+            new_node.child_count = 0;
+            new_node.parent = curr_node;
+
+            curr_node->children[curr_node->child_count] = &new_node;
+            curr_node->child_count++;
+
+            // Simulation
+            Position curr_sim = new_node;
+            char result;
+            while (true) {
+                const U64 o_attacks = Bitboard::attacked(curr_sim, !curr_sim.turn);
+                const vector<Move> moves = Bitboard::legal_moves(curr_sim, o_attacks);
+                const char curr_result = Eval::eval_end(curr_sim, o_attacks, moves);
+                if (curr_result != 0) {
+                    result = curr_result;
+                    break;
+                }
+                const int ind = rand() % moves.size();
+                curr_sim = Bitboard::push(curr_sim, moves[ind]);
+            }
+
+            // Backpropagation
+            Position* node = &curr_sim;
+            while (true) {
+                if (!node->is_root) break;
+
+                if (result == 1) node->score += 1;
+                else if (result == 2) node->score -= 1;
+                node = node->parent;
+            }
+        }
+    }
 }
