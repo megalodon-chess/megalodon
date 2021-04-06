@@ -277,4 +277,26 @@ namespace Eval {
 
         return mat + 0.4*imbalance;
     }
+
+    char eval_end(const Position& pos, const U64& o_attacks, const vector<Move>& moves) {
+        /*
+        Returns:
+        0 if not end
+        1 if white wins
+        2 if black wins
+        3 if draw
+        */
+
+        if (moves.size() == 0) {
+            if (pos.turn) {
+                if ((pos.wk & o_attacks) == 0) return 3;
+                else return 2;
+            } else {
+                if ((pos.bk & o_attacks) == 0) return 3;
+                else return 1;
+            }
+        } else {
+            return 0;
+        }
+    }
 }
