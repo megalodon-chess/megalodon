@@ -47,10 +47,8 @@ def main():
                 eng1, score1 = results[x]
                 eng2, score2 = results[y]
                 diff = score1 - score2
-                if diff > max_diff:
-                    max_diff = diff
-                if diff < min_diff:
-                    min_diff = diff
+                max_diff = max(diff, max_diff)
+                min_diff = min(diff, min_diff)
 
     # Draw squares
     for x in range(len(results)):
