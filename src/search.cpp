@@ -149,7 +149,8 @@ namespace Search {
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, pv, alpha, beta, full);
     }
 
-    SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime, bool& searching) {
+    SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime,
+            const bool& infinite, bool& searching) {
         const int eg = Endgame::eg_type(pos);
         if (options.UseEndgame && eg != 0) {
             const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
@@ -179,7 +180,7 @@ namespace Search {
             if (!pos.turn) curr_result.score *= -1;
             if (curr_result.full) cout << curr_result.as_string() << endl;
             if (curr_result.full) result = curr_result;
-            if (curr_result.is_mate() && (curr_result.score > 0)) break;
+            if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) break;
         }
 
         return result;

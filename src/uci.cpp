@@ -93,6 +93,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     double movetime;
     const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
+    bool infinite = false;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
             mode = 1;
@@ -112,6 +113,8 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         } else if (parts[i] == "movetime") {
             mode = 3;
             movetime = std::stof(parts[i+1]) / 1000;
+        } else if (parts[i] == "infinite") {
+            infinite = true;
         }
     }
 
@@ -129,7 +132,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
+    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
