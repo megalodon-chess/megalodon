@@ -179,7 +179,7 @@ namespace Search {
             if (!pos.turn) curr_result.score *= -1;
             if (curr_result.full) cout << curr_result.as_string() << endl;
             if (curr_result.full) result = curr_result;
-            if (curr_result.is_mate()) break;
+            if (curr_result.is_mate() && (curr_result.score > 0)) break;
         }
 
         return result;
