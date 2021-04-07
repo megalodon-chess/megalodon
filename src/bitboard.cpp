@@ -524,7 +524,7 @@ namespace Bitboard {
     }
 
     U64 checkers(const Location& k_pos, const U64& pawns, const U64& knights, const U64& bishops,
-            const U64& rooks, const U64& queens, const U64& same_side, const U64& attackers, const bool& side) {
+            const U64& rooks, const U64& queens, const U64& kings, const U64& same_side, const U64& attackers, const bool& side) {
         /*
         Calculates bitboard of checking pieces.
         k_pos: King position.
@@ -537,7 +537,7 @@ namespace Bitboard {
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
         const char kx = k_pos.x, ky = k_pos.y;
         if (!bit(attackers, (ky<<3)+kx)) return board;
-        const U64 pieces = pawns | knights | bishops | rooks | queens;
+        const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         const char pawn_dir = side ? -1 : 1;
 
         // Pawns
@@ -955,7 +955,7 @@ namespace Bitboard {
 
         const Location k_pos = first_bit(CK);
         const char kx = k_pos.x, ky = k_pos.y;
-        const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, SAME, attacks, pos.turn);
+        const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, OK, SAME, attacks, pos.turn);
         const char num_checkers = popcnt(checking_pieces);
         const char pawn_dir = pos.turn ? 1 : -1;
 
