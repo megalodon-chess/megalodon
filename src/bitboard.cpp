@@ -733,7 +733,7 @@ namespace Bitboard {
                     U64 new_capture = capture_mask;
                     if (pos.ep) {
                         char start, end;
-                        const char ep_x = pos.ep_square % 8;
+                        const char ep_x = pos.ep_square&7;
                         if (pos.turn) {
                             start = 4;
                             end = 5;
