@@ -731,12 +731,7 @@ namespace Bitboard {
                     }
                     // Capture
                     U64 new_capture = capture_mask;
-                    if (pos.ep) {
-                        const char ep_x = pos.ep_square&7;
-                        const char start = pos.turn ? 4 : 3;
-                        const char end   = pos.turn ? 5 : 2;
-                        if (y == start && bit(OP, (start<<3) + ep_x)) set_bit(new_capture, (end<<3) + ep_x);
-                    }
+                    if (pos.ep) set_bit(new_capture, pos.ep_square);
                     y += pawn_dir;
                     if (0 <= y && y < 8) {
                         const bool promo = y == 7 || y == 0;
