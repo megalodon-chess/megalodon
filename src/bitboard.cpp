@@ -732,15 +732,9 @@ namespace Bitboard {
                     // Capture
                     U64 new_capture = capture_mask;
                     if (pos.ep) {
-                        char start, end;
-                        const char ep_x = pos.ep_square % 8;
-                        if (pos.turn) {
-                            start = 4;
-                            end = 5;
-                        } else {
-                            start = 3;
-                            end = 2;
-                        }
+                        const char start = pos.turn ? 4 : 3;
+                        const char end = pos.turn ? 5 : 2;
+                        const char ep_x = pos.ep_square & 7;
                         if (y == start && bit(OP, (start<<3) + ep_x)) set_bit(new_capture, (end<<3) + ep_x);
                     }
                     y += pawn_dir;
@@ -748,11 +742,11 @@ namespace Bitboard {
                         const bool promo = y == 7 || y == 0;
                         for (const auto& offset: {x-1, x+1}) {
                             if (0 <= offset && offset < 8) {
-                                const char char_move = (y<<3) + offset;
-                                if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || ((char_move == pos.ep_square) && pos.ep))) {
+                                const char to = (y<<3) + offset;
+                                if (bit(new_capture, to) && (bit(OPPONENT, to) || ((to==pos.ep_square) && pos.ep))) {
                                     if (promo) {
-                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, char_move, true, p);
-                                    } else moves[movecnt++] = Move(i, char_move);
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, to, true, p);
+                                    } else moves[movecnt++] = Move(i, to);
                                 }
                             }
                         }
