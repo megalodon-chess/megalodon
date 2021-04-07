@@ -56,11 +56,10 @@ SearchInfo::SearchInfo(int _depth, int _seldepth, float _score, U64 _nodes, int 
 }
 
 string SearchInfo::as_string() {
-    const bool is_mate_score = !(Search::MIN+20 <= score && score <= Search::MAX-20);
     string str = "";
     str += "info depth " + std::to_string(depth) + " seldepth " + std::to_string(seldepth);
     str += " multipv 1 score ";
-    if (is_mate_score) {
+    if (is_mate()) {
         str += "mate ";
         char moves;
         if (score < 0) moves = (score-Search::MIN+1) / 2;
@@ -75,6 +74,10 @@ string SearchInfo::as_string() {
     str += " pv ";
     for (const auto& move: pv) str += Bitboard::move_str(move) + " ";
     return str;
+}
+
+bool SearchInfo::is_mate() {
+    return !(Search::MIN+20 <= score && score <= Search::MAX-20);
 }
 
 
@@ -176,6 +179,7 @@ namespace Search {
             if (!pos.turn) curr_result.score *= -1;
             if (curr_result.full) cout << curr_result.as_string() << endl;
             if (curr_result.full) result = curr_result;
+            if (curr_result.is_mate()) break;
         }
 
         return result;

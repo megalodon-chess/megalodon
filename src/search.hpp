@@ -35,6 +35,7 @@ struct SearchInfo {
     SearchInfo();
     SearchInfo(int, int, float, U64, int, double, vector<Move>, float, float, bool);
     string as_string();
+    bool is_mate();
 
     int depth;
     int seldepth;
