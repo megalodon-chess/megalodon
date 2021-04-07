@@ -668,6 +668,7 @@ namespace Bitboard {
         U64 block_mask = EMPTY;
         const U64 capture_mask = checking_pieces;
         const char pawn_dir = pos.turn ? 1 : -1;
+        const bool pawn_check = (OP & checking_pieces) != EMPTY;
 
         const Location check_pos = first_bit(checking_pieces);
         const char check_x = check_pos.x, check_y = check_pos.y;
@@ -730,18 +731,20 @@ namespace Bitboard {
                         }
                     }
                     // Capture
-                    U64 new_capture = capture_mask;
-                    if (pos.ep) set_bit(new_capture, pos.ep_square);
                     y += pawn_dir;
                     if (0 <= y && y < 8) {
                         const bool promo = y == 7 || y == 0;
                         for (const auto& offset: {x-1, x+1}) {
                             if (0 <= offset && offset < 8) {
-                                const char char_move = (y<<3) + offset;
-                                if (bit(new_capture, char_move) && (bit(OPPONENT, char_move) || ((char_move == pos.ep_square) && pos.ep))) {
+                                const char move_loc = (y<<3) + offset;
+                                if (bit(capture_mask, move_loc) && bit(OPPONENT, move_loc)) {
                                     if (promo) {
-                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, char_move, true, p);
-                                    } else moves[movecnt++] = Move(i, char_move);
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, move_loc, true, p);
+                                    } else moves[movecnt++] = Move(i, move_loc);
+                                }
+                                if (pos.ep && (move_loc == pos.ep_square)) {
+                                    if (bit(block_mask, move_loc)) moves[movecnt++] = Move(i, move_loc);  // If ep capture can block check.
+                                    else if (pawn_check) moves[movecnt++] = Move(i, move_loc);  // If the king is in check by pawn with possible ep capture.
                                 }
                             }
                         }
