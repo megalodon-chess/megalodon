@@ -87,6 +87,7 @@ Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, c
     ep = _ep;
     ep_square = _ep_square;
     move_cnt = 0;
+    draw50 = 0;
 }
 
 
@@ -288,7 +289,8 @@ namespace Bitboard {
         else str += "-";
         str += " ";
 
-        str += "0 ";
+        str += std::to_string(pos.draw50/2);
+        str += " ";
         str += std::to_string(pos.move_cnt/2 + 1);
 
         return str;
@@ -345,6 +347,8 @@ namespace Bitboard {
             pos.ep = true;
             pos.ep_square = ((std::stoi(string(1, parts[3][1]))-1)<<3) + (parts[3][0] - 97);
         }
+        pos.draw50 = std::stoi(parts[4])*2;
+        pos.move_cnt = std::stoi(parts[4])*2-1;
 
         return pos;
     }
@@ -993,6 +997,7 @@ namespace Bitboard {
         pos.turn = true;
         pos.castling = 15;
         pos.ep = false;
+        pos.draw50 = 0;
 
         return pos;
     }
@@ -1001,8 +1006,7 @@ namespace Bitboard {
         U64* pointers[12] = {&pos.wp, &pos.wn, &pos.wb, &pos.wr, &pos.wq, &pos.wk,
             &pos.bp, &pos.bn, &pos.bb, &pos.br, &pos.bq, &pos.bk};
         U64* to_board = pointers[0];
-        bool is_king = false;
-        bool is_pawn = false;
+        bool is_king = false, is_pawn = false;
 
         // Find to_board and set bits.
         for (char i = 0; i < 12; i++) {
@@ -1010,11 +1014,16 @@ namespace Bitboard {
             if (bit(*p, move.from)) {
                 to_board = p;
                 if ((i == 5) || (i == 11)) is_king = true;
-                if ((i == 0) || (i == 6)) is_pawn = true;
+                if ((i == 0) || (i == 6))  is_pawn = true;
                 unset_bit(*p, move.from);
             }
             unset_bit(*p, move.to);
         }
+
+        // 50 move rule
+        if (is_pawn || bit(get_all(pos), move.to)) pos.draw50 = 0;
+        else pos.draw50++;
+
         if (move.is_promo) {
             if (pos.turn) {
                 switch (move.promo) {
