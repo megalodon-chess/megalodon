@@ -40,7 +40,7 @@ Options::Options() {
     HashStart      = 5;
 
     MoveTimeMult   = 100;
-    UseEndgame     = true;
+    UseEndgame     = false;
     LMRFactor      = 0;
     QuickMove      = true;
 

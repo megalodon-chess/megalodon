@@ -159,7 +159,6 @@ namespace Search {
         }
 
         SearchInfo result;
-        float alpha = MIN, beta = MAX;
         const double start = get_time();
         const double end = start + movetime;
 
@@ -167,13 +166,8 @@ namespace Search {
             if (!searching) break;
             if (get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, 0, alpha, beta, true, end, searching);
+            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
             const double elapse = get_time() - start;
-
-            if (d > 2) {
-                alpha = result.alpha - 100;
-                beta = result.beta + 100;
-            }
 
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);

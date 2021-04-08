@@ -198,10 +198,9 @@ int loop() {
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
             cout << "option name UseHashTable type check default false" << "\n";
-            //cout << "option name HashStart type spin default 5 min 1 max 8" << "\n";
 
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
-            cout << "option name UseEndgame type check default true" << "\n";
+            cout << "option name UseEndgame type check default false" << "\n";
             cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
             cout << "option name QuickMove type check default true" << "\n";
 
