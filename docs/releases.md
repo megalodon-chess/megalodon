@@ -11,6 +11,8 @@ The move generation is perfect when compared to [these results](https://www.ches
 There are many projects going on about search, multithreading, eval, and Monte Carlo Tree Search.
 Those may be merged shortly.
 
+Bench: 2196682
+
 ## [Megalodon 0.4.0][v0.4.0]
 
 This release contains many bug fixes in move generation.
