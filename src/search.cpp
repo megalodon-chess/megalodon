@@ -234,13 +234,14 @@ namespace Search {
                     const U64 o_attacks = Bitboard::attacked(curr_sim, !curr_sim.turn);
                     const vector<Move> moves = Bitboard::legal_moves(curr_sim, o_attacks);
                     const char curr_result = Eval::eval_end(curr_sim, o_attacks, moves);
-                    if (curr_result != 0) {
+                    if ((curr_result != 0) || (curr_sim.move_cnt > 100)) {
                         if (curr_result == 1) result++;
                         else if (curr_result == 2) result--;
                         break;
                     }
-                    const int ind = rand() % moves.size();
-                    curr_sim = Bitboard::push(curr_sim, moves[ind]);
+                    bool searching = true;
+                    const Move move = dfs(options, curr_sim, 2, 0, MIN, MAX, false, end, searching).pv[0];
+                    curr_sim = Bitboard::push(curr_sim, move);
                 }
             }
 
