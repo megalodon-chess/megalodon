@@ -77,7 +77,7 @@ string SearchInfo::as_string() {
 }
 
 bool SearchInfo::is_mate() {
-    return !(Search::MIN+20 <= score && score <= Search::MAX-20);
+    return !(Search::MIN+30 <= score && score <= Search::MAX-30);
 }
 
 
@@ -111,7 +111,7 @@ namespace Search {
         vector<Move> pv;
         bool full = true;
         for (auto i = 0; i < moves.size(); i++) {
-            if (depth >= 2) {
+            if (depth > 1) {
                 if (get_time() >= endtime || !searching) {
                     full = false;
                     break;
@@ -168,9 +168,9 @@ namespace Search {
             if (get_time() >= end) break;
 
             SearchInfo curr_result = dfs(options, pos, d, 0, alpha, beta, true, end, searching);
-            double elapse = get_time() - start;
+            const double elapse = get_time() - start;
 
-            if (d >= 3) {
+            if (d > 2) {
                 alpha = result.alpha - 100;
                 beta = result.beta + 100;
             }
@@ -178,8 +178,10 @@ namespace Search {
             curr_result.time = elapse;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
             if (!pos.turn) curr_result.score *= -1;
-            if (curr_result.full) cout << curr_result.as_string() << endl;
-            if (curr_result.full) result = curr_result;
+            if (curr_result.full) {
+                cout << curr_result.as_string() << endl;
+                result = curr_result;
+            }
             if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) break;
         }
 
