@@ -19,7 +19,6 @@
 
 #include <iostream>
 #include <vector>
-#include <queue>
 #include <string>
 #include "bitboard.hpp"
 #include "options.hpp"
@@ -90,7 +89,7 @@ namespace Eval {
 
     float phase(const Position& pos) {
         // 1 = full middlegame, 0 = full endgame.
-        float npm = non_pawn_mat(pos);
+        const float npm = non_pawn_mat(pos);
         if (npm >= MIDGAME_LIM) return 1;
         else if (npm <= ENDGAME_LIM) return 0;
         else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
@@ -98,31 +97,28 @@ namespace Eval {
 
     float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
-            pawn_struct *  0.9 +
-            knight      *  0.2 +
-            king        *  0.2 +
-            space       *  1
+            pawn_struct *  0.9F +
+            knight      *  0.2F +
+            king        *  0.2F +
+            space       *  1.F
         );
     }
 
     float end_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
-            pawn_struct *  1.2 +
-            knight      *  0.1 +
-            king        * -0.3 +
-            space       *  0        // Space encourages pawns in the center, which discourages promotion.
+            pawn_struct *  1.2F +
+            knight      *  0.1F +
+            king        * -0.3F +
+            space       *  0.F        // Space encourages pawns in the center, which discourages promotion.
         );
     }
 
 
     char center_dist(const char& i) {
         const char x = i&7, y = i>>3;
-        char dist = 0;
-        if (x <= 3) dist += 3-x;
-        else dist += x-4;
-        if (y <= 3) dist += 3-y;
-        else dist += y-4;
-        return dist;
+        const char xdist = (x<=3) ? 3-x : x-4;
+        const char ydist = (y<=3) ? 3-y : y-4;
+        return xdist + ydist;
     }
 
 
@@ -141,32 +137,34 @@ namespace Eval {
             w_files[i] = wp & Bitboard::FILES[i];
             b_files[i] = bp & Bitboard::FILES[i];
 
-            const U64 w = (wp & Bitboard::FILES[i]) >> i;
-            bool found = false;
-            for (char j = 7; j > -1; j--) {
-                if ((w & (1ULL<<(j*8))) != 0) {
-                    if (!found) w_adv[i] = j;
-                    w_back[i] = j;
-                    found = true;
-                }
-            }
-            if (!found) {
+            const U64 w = w_files[i] >> i;
+            if (w == 0) {
                 w_adv[i] = -1;
                 w_back[i] = -1;
-            }
-
-            const U64 b = (bp & Bitboard::FILES[i]) >> i;
-            found = false;
-            for (char j = 7; j > -1; j--) {
-                if ((b & (1ULL<<(j*8))) != 0) {
-                    if (!found) b_adv[i] = j;
-                    b_back[i] = j;
-                    found = true;
+            } else {
+                bool found = false;
+                for (char j = 7; j > -1; j--) {
+                    if ((w & (1ULL<<(j*8))) != 0) {
+                        if (!found) w_adv[i] = j;
+                        w_back[i] = j;
+                        found = true;
+                    }
                 }
             }
-            if (!found) {
+
+            const U64 b = b_files[i] >> i;
+            if (b == 0) {
                 b_adv[i] = -1;
                 b_back[i] = -1;
+            } else {
+                bool found = false;
+                for (char j = 7; j > -1; j--) {
+                    if ((b & (1ULL<<(j*8))) != 0) {
+                        if (!found) b_adv[i] = j;
+                        b_back[i] = j;
+                        found = true;
+                    }
+                }
             }
         }
 
@@ -213,35 +211,26 @@ namespace Eval {
     }
 
     float space(const U64& wp, const U64& bp) {
-        float space = 0;
+        float sp = 0;
 
         for (char x = 2; x < 6; x++) {
-            // White
-            for (char y = 1; y < 5; y++) {
-                if (bit(wp, (y<<3)+x)) space += y-1;
-            }
-
-            // Black
-            for (char y = 3; y < 7; y++) {
-                if (bit(bp, (y<<3)+x)) space -= 6-y;
-            }
+            for (char y = 1; y < 5; y++) if (bit(wp, (y<<3)+x)) sp += y-1;
+            for (char y = 3; y < 7; y++) if (bit(bp, (y<<3)+x)) sp -= 6-y;
         }
 
-        return space / 6;
+        return sp / 6;
     }
 
     float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {
         float wdist = 0, bdist = 0;
-        char wcnt = 0, bcnt = 0;
+        const char wcnt = popcnt(wn), bcnt = popcnt(bn);
         const bool wp_in_cent = ((INNER_CENTER|OUTER_CENTER) & wp) != 0;
         const bool bp_in_cent = ((INNER_CENTER|OUTER_CENTER) & bp) != 0;
 
         for (char i = 0; i < 64; i++) {
             if (wp_in_cent && bit(wn, i)) {
-                wcnt++;
                 wdist += 6 - CENTER_DIST_MAP[i];
             } else if (bp_in_cent && bit(bn, i)) {
-                bcnt++;
                 bdist += 6 - CENTER_DIST_MAP[i];
             }
         }
@@ -262,31 +251,31 @@ namespace Eval {
 
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
         if (moves.empty()) {
-            bool checked;
-            if (pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
+            bool checked = false;
+            if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
             else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
             if (checked) {
                 // Increment value by depth to encourage sooner mate.
-                // The smaller depth is, the closer it is to the leaf nodes.
-                if (pos.turn) return Search::MIN - depth;  // Mate by black
-                else return Search::MAX + depth;           // Mate by white
+                // The larger depth is, the closer it is to the leaf nodes.
+                if (pos.turn) return Search::MIN + depth;  // Mate by black
+                else return Search::MAX - depth;           // Mate by white
             }
             return 0;
         }
         if (pos.draw50 >= 100) return 0;
 
-        const float mat = material(pos);
-        const float pawn_struct = (float)options.EvalPawnStruct/100 * pawn_structure(pos.wp, pos.bp);
-        const float knight = ((float)options.EvalKnights)/100 * knights(pos.wn, pos.bn, pos.wp, pos.bp);
-        const float king = ((float)options.EvalKings)/100 * kings(pos.wk, pos.bk);
-        const float sp = (float)options.EvalSpace/100 * space(pos.wp, pos.bp);
+        const float mat         = material(pos);
+        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp);
+        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp);
+        const float king        = options.EvalKings      * kings(pos.wk, pos.bk);
+        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king, sp);
         const float eg = end_game(pawn_struct, knight, king, sp);
         const float p = phase(pos);
-        const float score = mg*p + eg*(1-p);
+        const float imbalance = mg*p + eg*(1-p);
 
-        return mat + 0.4*score;
+        return mat + 0.4*imbalance;
     }
 }

@@ -79,8 +79,7 @@ void print_legal_moves(const Position& pos) {
 }
 
 void chat(const Options& options, const bool& turn, const int& movect, const float& score, const float& prev_score) {
-    if (!options.Chat) return;
-
+    return;  //! CHAT IS DISABLED
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
     else if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
     else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
@@ -94,6 +93,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     double movetime;
     const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
+    bool infinite = false;
     for (auto i = 0; i < parts.size(); i++) {
         if (parts[i] == "depth") {
             mode = 1;
@@ -113,6 +113,8 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         } else if (parts[i] == "movetime") {
             mode = 3;
             movetime = std::stof(parts[i+1]) / 1000;
+        } else if (parts[i] == "infinite") {
+            infinite = true;
         }
     }
 
@@ -130,7 +132,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, searching);
+    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -140,21 +142,21 @@ float go(const Options& options, const Position& pos, const vector<string>& part
 void perft(const Options& options, const Position& pos, const int& depth) {
     const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     const double start = get_time();
-    int nodes = 1;
+    long long nodes = 0;
 
     if (moves.size() > 0) {
         int move_num = 1;
         for (const auto& move: moves) {
             Position new_pos = Bitboard::push(pos, move);
-            int curr_nodes = Perft::movegen(new_pos, depth-1);
+            long long curr_nodes = Perft::movegen(new_pos, depth-1);
             nodes += curr_nodes;
             cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
             move_num++;
         }
     }
 
-    double elapse = get_time() - start + 0.001;  // Add 1 ms to prevent divide by 0
-    cout << "info depth " << depth << " nodes " << nodes << " nps " << (int)(nodes/elapse) << " time " << (int)(elapse*1000) << endl;
+    const double elapse = get_time() - start + 0.001;  // Add 1 ms to prevent divide by 0
+    cout << "info depth " << depth << " nodes " << nodes << " nps " << (long long)(nodes/elapse) << " time " << (long long)(elapse*1000) << endl;
 }
 
 void perft_hash(const Options& options, const Position& pos, const int& knodes) {
@@ -183,10 +185,7 @@ int loop() {
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
 
-        if (cmd == "quit") {
-            searching = false;
-            break;
-        }
+        if (cmd == "quit") break;
         else if (cmd == "clear") {
             string str;
             for (char i: {27, 91, 51, 74, 27, 91, 72, 27, 91, 50, 74}) str += string(1, i);
@@ -198,14 +197,11 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default true" << "\n";
-            cout << "option name HashStart type spin default 3 min 1 max 6" << "\n";
+            cout << "option name UseHashTable type check default false" << "\n";
 
-            cout << "option name ABPassStart type spin default 5 min 1 max 100" << "\n";
-            cout << "option name ABPassMargin type spin default 500 min 0 max 10000" << "\n";
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
-            cout << "option name UseEndgame type check default true" << "\n";
-            cout << "option name LMRFactor type spin default 30 min 0 max 100" << "\n";
+            cout << "option name UseEndgame type check default false" << "\n";
+            cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
             cout << "option name QuickMove type check default true" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
@@ -214,9 +210,6 @@ int loop() {
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
 
-            cout << "option name PrintCurrMove type check default true" << "\n";
-            cout << "option name PrintPv type check default true" << "\n";
-            cout << "option name Chat type check default true" << "\n";
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
@@ -231,22 +224,16 @@ int loop() {
             else if (name == "UseHashTable") options.UseHashTable = (value == "true");
             else if (name == "HashStart") options.HashStart = std::stoi(value);
 
-            else if (name == "ABPassStart") options.ABPassStart = std::stoi(value);
-            else if (name == "ABPassMargin") options.ABPassMargin = std::stoi(value);
             else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
             else if (name == "UseEndgame") options.UseEndgame = (value == "true");
             else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
             else if (name == "QuickMove") options.QuickMove = (value == "true");
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stoi(value);
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stoi(value);
-            else if (name == "EvalSpace") options.EvalSpace = std::stoi(value);
-            else if (name == "EvalKnights") options.EvalKnights = std::stoi(value);
-            else if (name == "EvalKings") options.EvalKings = std::stoi(value);
-
-            else if (name == "PrintCurrMove") options.PrintCurrMove = (value == "true");
-            else if (name == "PrintPv") options.PrintPv = (value == "true");
-            else if (name == "Chat") options.Chat = (value == "true");
+            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
+            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
+            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
+            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
@@ -294,6 +281,7 @@ int loop() {
         else if (cmd.size() > 0) std::cerr << "Unknown command: " << cmd << endl;
     }
 
+    searching = false;
     delete[] options.hash_table;
     return 0;
 }

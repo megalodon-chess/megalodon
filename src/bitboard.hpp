@@ -27,8 +27,6 @@
 using std::cin;
 using std::cout;
 using std::endl;
-using std::pair;
-using std::tuple;
 using std::vector;
 using std::string;
 
@@ -36,7 +34,7 @@ typedef unsigned long long U64;
 
 struct Move {
     Move();
-    Move(char, char, bool=false, char=0);
+    Move(const char, const char, const bool=false, const char=0);
 
     char from;
     char to;
@@ -46,7 +44,8 @@ struct Move {
 
 struct Position {
     Position();
-    Position(U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, U64, bool, char, bool, char);
+    Position(const U64, const U64, const U64, const U64, const U64, const U64, const U64, const U64, const U64,
+        const U64, const U64, const U64, const bool, const char, const bool, const char);
 
     U64 wp, wn, wb, wr, wq, wk, bp, bn, bb, br, bq, bk;
     bool turn;
@@ -62,23 +61,12 @@ struct Position {
 
 struct Location {
     Location();
-    Location(char, char);
-    Location(char);
+    Location(const char, const char);
+    Location(const char);
 
     char x;
     char y;
     char loc;
-};
-
-constexpr char popcnt_tbl[256]{
-    0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
-    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
-    1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
-    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
-    2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
-    3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8,
 };
 
 namespace Bitboard {
@@ -162,20 +150,20 @@ namespace Bitboard {
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
     char num_attacks(const vector<Move>&, const Location&);
-    U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
-    U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
+    U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
+    U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     void king_moves(Move*, int&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
     void single_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
-        const U64&, const U64&, const Location&, const U64&);
+        const U64&, const U64&, const U64&, const Location&, const U64&);
     void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
-        const U64&, const U64&, const Location&, const U64&);
+        const U64&, const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
 
-    U64 get_all(const Position&);
     U64 get_white(const Position&);
     U64 get_black(const Position&);
+    U64 get_all(const Position&);
 
     Position startpos();
     Position push(Position, const Move&);

@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <vector>
-#include <tuple>
 #include <string>
 #include "bitboard.hpp"
 

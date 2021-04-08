@@ -41,13 +41,13 @@ print(f"Using depth {DEPTH}")
 def real_result(pos: chess.Board, depth):
     if depth == 0:
         return 1
-    else:
-        count = 1
-        for move in pos.generate_legal_moves():
-            new_pos = pos.copy(stack=False)
-            new_pos.push(move)
-            count += real_result(new_pos, depth-1)
-        return count
+
+    count = 0
+    for move in pos.generate_legal_moves():
+        new_pos = pos.copy(stack=False)
+        new_pos.push(move)
+        count += real_result(new_pos, depth-1)
+    return count
 
 
 def engine_result():

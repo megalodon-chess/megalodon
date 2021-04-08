@@ -25,6 +25,8 @@
 #include "hash.hpp"
 #include "eval.hpp"
 
+#define VERSION  "0.4.0"
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -33,7 +35,7 @@ using std::string;
 
 
 void print_info() {
-    cout << "Megalodon v0.3.2 - UCI chess engine" << "\n";
+    cout << "Megalodon v" << VERSION << " - UCI chess engine" << "\n";
     cout << "Copyright the Megalodon developers (in AUTHORS file)" << "\n";
     cout << "https://github.com/megalodon-chess/megalodon" << "\n";
     cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << endl;
@@ -46,9 +48,13 @@ void init() {
 }
 
 
-int main() {
-    srand(1234);
-    init();
-    print_info();
-    return loop();
+int main(const int argc, const char* argv[]) {
+    if (argc >= 2) {
+        if (argv[1] == string("--version")) cout << VERSION << endl;
+    } else {
+        srand(1234);
+        init();
+        print_info();
+        return loop();
+    }
 }

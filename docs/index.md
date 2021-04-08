@@ -6,7 +6,7 @@ UCI chess engine
 
 Play against Megalodon on [Lichess][lichess]!
 
-[Version 0.3.2][latest] was recently released!
+[Version 0.4.0][latest] was recently released!
 
 ## Table of Contents
 
@@ -14,6 +14,7 @@ Play against Megalodon on [Lichess][lichess]!
 * [Releases][releases]
 * [Quick Start][quickstart]
 * [Compiling][compiling]
+* [ELO][elo]
 * [Contributing][contrib]
 
 ## Version 1.0.0
@@ -43,4 +44,5 @@ Megalodon 1.0.0 release date has been pushed back to April 14th.
 [releases]: https://megalodon-chess.github.io/megalodon/releases
 [quickstart]: https://megalodon-chess.github.io/megalodon/quick-start
 [compiling]: https://megalodon-chess.github.io/megalodon/compiling
+[elo]: https://megalodon-chess.github.io/megalodon/elo
 [contrib]: https://github.com/megalodon-chess/megalodon/blob/main/CONTRIBUTING.md
