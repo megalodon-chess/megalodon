@@ -52,8 +52,8 @@ void init() {
 
 void bench() {
     const Options options;
-    const int num_pos = 10;
-    const int depth = 4;
+    constexpr char num_pos = 10;
+    constexpr char depth = 4;
     const string fens[num_pos] = {
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         "r2q1rk1/ppp2pp1/2np1n1p/2b1p3/2B1P1b1/2NPBN2/PPPQ1PPP/R3R1K1 b Qq - 0 1",
@@ -69,12 +69,12 @@ void bench() {
 
     U64 nodes = 0;
     const double start = get_time();
+    bool searching = true;
 
-    for (auto i = 0; i < num_pos; i++) {
+    for (char i = 0; i < num_pos; i++) {
         cout << "Position " << i+1 << " of " << num_pos << endl;
         cout << "Fen: " << fens[i] << endl;
 
-        bool searching = true;
         const Position pos = Bitboard::parse_fen(fens[i]);
         const SearchInfo result = Search::search(options, pos, depth, 10000, false, searching);
         nodes += result.nodes;

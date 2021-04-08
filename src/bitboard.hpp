@@ -108,8 +108,8 @@ namespace Bitboard {
     constexpr U64 FILE6 = 2314885530818453536ULL;
     constexpr U64 FILE7 = 4629771061636907072ULL;
     constexpr U64 FILE8 = 9259542123273814144ULL;
-    const U64 RANKS[8] = {RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8};
-    const U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
+    constexpr U64 RANKS[8] = {RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8};
+    constexpr U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
 
     constexpr U64 BYTE_ALL_ONE = 255ULL;
     constexpr int MAX_MOVES = 220;
@@ -120,11 +120,11 @@ namespace Bitboard {
     constexpr char DIR_B_SIZE = 4;
     constexpr char DIR_Q_SIZE = 8;
     constexpr char DIR_K_SIZE = 8;
-    const char DIR_R[DIR_R_SIZE][2] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const char DIR_N[DIR_N_SIZE][2] = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
-    const char DIR_B[DIR_B_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
-    const char DIR_Q[DIR_Q_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+    constexpr char DIR_R[DIR_R_SIZE][2] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    constexpr char DIR_N[DIR_N_SIZE][2] = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
+    constexpr char DIR_B[DIR_B_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    constexpr char DIR_Q[DIR_Q_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    constexpr char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(const U64&, const char&);
     bool bit(const char&, const char&);
