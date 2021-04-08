@@ -2,6 +2,15 @@
 
 This page contains release info.
 
+## [Megalodon 0.4.1][v0.4.1]
+
+This release contains many bug fixes.
+The move generation is perfect when compared to [these results](https://www.chessprogramming.org/Perft_Results).
+
+50 move draw has been implemented.
+There are many projects going on about search, multithreading, eval, and Monte Carlo Tree Search.
+Those may be merged shortly.
+
 ## [Megalodon 0.4.0][v0.4.0]
 
 This release contains many bug fixes in move generation.
@@ -177,6 +186,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.4.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.1
 [v0.4.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.0
 [v0.3.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.2
 [v0.3.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.1
