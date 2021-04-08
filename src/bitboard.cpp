@@ -21,7 +21,6 @@
 #include <vector>
 #include <string>
 #include <cmath>
-#include <algorithm>
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "hash.hpp"

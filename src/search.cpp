@@ -35,8 +35,6 @@ using std::endl;
 using std::vector;
 using std::string;
 
-typedef std::pair<Move, float> MoveEval;
-
 
 SearchInfo::SearchInfo() {
 }
