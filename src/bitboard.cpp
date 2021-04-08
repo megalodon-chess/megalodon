@@ -1011,7 +1011,7 @@ namespace Bitboard {
         }
 
         // 50 move rule
-        if (is_pawn || (move.to & get_all(pos) != EMPTY)) pos.draw50 = 0;
+        if (is_pawn || bit(get_all(pos), move.to)) pos.draw50 = 0;
         else pos.draw50++;
 
         if (move.is_promo) {
