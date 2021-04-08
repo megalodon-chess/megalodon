@@ -163,8 +163,7 @@ namespace Search {
         const double end = start + movetime;
 
         for (auto d = 1; d <= depth; d++) {
-            if (!searching) break;
-            if (get_time() >= end) break;
+            if (!searching || get_time() >= end) break;
 
             SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
             const double elapse = get_time() - start;
