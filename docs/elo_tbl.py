@@ -20,6 +20,7 @@
 import os
 import pygame
 import json
+import colorsys
 pygame.init()
 
 PARENT = os.path.dirname(os.path.realpath(__file__))
@@ -61,7 +62,7 @@ def main():
                 eng2, score2 = results[y]
                 diff = int(10*(score1-score2)) / 10
                 fac = (diff-min_diff) / (max_diff-min_diff)
-                color = (255 * (1-fac), 255 * fac, 100)
+                color = [x*255 for x in colorsys.hsv_to_rgb(fac/3, 0.8, 1)]
                 text = str(diff)
                 if diff >= 0:
                     text = "+" + text
