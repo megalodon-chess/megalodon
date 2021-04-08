@@ -5,6 +5,6 @@ Please look at [this Wikipedia article][wiki] for more information.
 
 ## ELO Table
 
-![elotable](https://raw.githubusercontent.com/megalodon-chess/megalodon/main/docs/elo.png)
+![elotable](https://raw.githubusercontent.com/megalodon-chess/megalodon/main/docs/elo.jpg)
 
 [wiki]: https://en.wikipedia.org/wiki/Elo_rating_system

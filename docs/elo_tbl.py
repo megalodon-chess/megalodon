@@ -25,7 +25,7 @@ pygame.init()
 
 PARENT = os.path.dirname(os.path.realpath(__file__))
 ELO_PATH = os.path.join(PARENT, "elo.json")
-OUT = os.path.join(PARENT, "elo.png")
+OUT = os.path.join(PARENT, "elo.jpg")
 
 WIDTH, HEIGHT = 120, 60
 
