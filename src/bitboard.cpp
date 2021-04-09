@@ -456,9 +456,8 @@ namespace Bitboard {
         // Returns the number of attackers attacking a certain square.
 
         char cnt = 0;
-        const char loc = (sq.y<<3) + sq.x;
         for (const auto& move: moves) {
-            if (move.to == loc) cnt++;
+            if (move.to == sq.loc) cnt++;
         }
         return cnt;
     }
@@ -475,18 +474,16 @@ namespace Bitboard {
         */
         U64 pin_ray = EMPTY;
         const U64 all = pawns | knights | bishops | rooks | queens | kings | same;
-        const char kx = k_pos.x, ky = k_pos.y;
-        const char px = piece_pos.x, py = piece_pos.y;
-        char dx = px - kx, dy = py - ky;
-        bool found = false;  // true = piece is pinned, false = piece is not pinned.
+        char dx = piece_pos.x - k_pos.x, dy = piece_pos.y - k_pos.y;
+        bool found = false;  // true = piece is found on ray, false = piece is not found on ray.
 
-        if (dx > 0) dx = 1;
+        if      (dx > 0) dx =  1;
         else if (dx < 0) dx = -1;
-        if (dy > 0) dy = 1;
+        if      (dy > 0) dy =  1;
         else if (dy < 0) dy = -1;
 
         if (!(dx == 0 && dy == 0) && (dx == 0 && dy != 0) || (dx != 0 && dy == 0)) {
-            char cx = kx, cy = ky;   // Current (x, y)
+            char cx = k_pos.x, cy = k_pos.y;   // Current (x, y)
             while (true) {
                 cx += dx;
                 cy += dy;
@@ -496,7 +493,7 @@ namespace Bitboard {
                 }
                 const char loc = (cy<<3) + cx;
                 set_bit(pin_ray, loc);
-                if (cx==px && cy==py) found = true;
+                if (cx==piece_pos.x && cy==piece_pos.y) found = true;
                 else if (bit(rooks, loc) || bit(queens, loc)) break;
                 else if (bit(all, loc)) {
                     found = false;
@@ -504,7 +501,7 @@ namespace Bitboard {
                 }
             }
         } else if (!(dx == 0 && dy == 0) && (abs(dx) == abs(dy))) {
-            char cx = kx, cy = ky;   // Current (x, y)
+            char cx = k_pos.x, cy = k_pos.y;   // Current (x, y)
             while (true) {
                 cx += dx;
                 cy += dy;
@@ -514,7 +511,7 @@ namespace Bitboard {
                 }
                 const char loc = (cy<<3) + cx;
                 set_bit(pin_ray, loc);
-                if (cx==px && cy==py) found = true;
+                if (cx==piece_pos.x && cy==piece_pos.y) found = true;
                 else if (bit(bishops, loc) || bit(queens, loc)) break;
                 else if (bit(all, loc)) {
                     found = false;
@@ -538,22 +535,21 @@ namespace Bitboard {
         */
         U64 board = EMPTY;
         char atk_cnt = 0;  // Attacker count, can also be thought of as number of attackers.
-        const char kx = k_pos.x, ky = k_pos.y;
-        if (!bit(attackers, (ky<<3)+kx)) return board;
+        if (!bit(attackers, k_pos.loc)) return board;
         const U64 pieces = pawns | knights | bishops | rooks | queens | kings;
         const char pawn_dir = side ? -1 : 1;
 
         // Pawns
-        const char y = ky - pawn_dir;
+        const char y = k_pos.y - pawn_dir;
         if (0 <= y && y < 8) {
-            const char loc = (y<<3) + kx;
-            if (0 <= kx-1 && kx-1 < 8) {
+            const char loc = (y<<3) + k_pos.x;
+            if (0 <= k_pos.x-1 && k_pos.x-1 < 8) {
                 if (bit(pawns, loc-1)) {
                     atk_cnt++;
                     set_bit(board, loc-1);
                 }
             }
-            if (0 <= kx+1 && kx+1 < 8) {
+            if (0 <= k_pos.x+1 && k_pos.x+1 < 8) {
                 if (bit(pawns, loc+1)) {
                     atk_cnt++;
                     set_bit(board, loc+1);
@@ -563,7 +559,7 @@ namespace Bitboard {
 
         // Knights
         for (const auto& dir: DIR_N) {
-            const char x = kx + dir[0], y = ky + dir[1];
+            const char x = k_pos.x + dir[0], y = k_pos.y + dir[1];
             if (in_board(x, y)) {
                 const char loc = (y<<3) + x;
                 if (bit(knights, loc)) {
@@ -576,7 +572,7 @@ namespace Bitboard {
 
         // Bishops and part queens
         for (const auto& dir: DIR_B) {
-            char x = kx, y = ky;
+            char x = k_pos.x, y = k_pos.y;
             while (true) {
                 x += dir[0];
                 y += dir[1];
@@ -594,7 +590,7 @@ namespace Bitboard {
 
         // Rooks and part queens
         for (const auto& dir: DIR_R) {
-            char x = kx, y = ky;
+            char x = k_pos.x, y = k_pos.y;
             while (true) {
                 x += dir[0];
                 y += dir[1];
@@ -624,11 +620,10 @@ namespace Bitboard {
         all: board of all pieces.
         attacks: attacks from enemy.
         */
-        const char kx = k_pos.x, ky = k_pos.y;
-        const char start = (ky<<3) + kx;
+        const char start = k_pos.loc;
 
         for (const auto& dir: DIR_K) {
-            const char x = kx+dir[0], y = ky+dir[1];
+            const char x = k_pos.x+dir[0], y = k_pos.y+dir[1];
             if (in_board(x, y)) {
                 const char loc = (y<<3) + x;
                 if (!bit(attacks, loc) && !bit(same, loc)) moves[movecnt++] = Move(start, loc);
@@ -680,9 +675,9 @@ namespace Bitboard {
         char dx = check_x - kx, dy = check_y - ky;
         // If not a knight move create the mask
         if (!((abs(dx)==2 && abs(dy)==1) || (abs(dy)==2 && abs(dx)==1))) {
-            if (dx > 0) dx = 1;
+            if      (dx > 0) dx =  1;
             else if (dx < 0) dx = -1;
-            if (dy > 0) dy = 1;
+            if      (dy > 0) dy =  1;
             else if (dy < 0) dy = -1;
 
             char cx = kx, cy = ky;   // Current (x, y)
@@ -699,18 +694,17 @@ namespace Bitboard {
 
         // Go through all pieces and check if they can capture/block
         for (char i = 0; i < 64; i++) {
-            const Location curr_loc = Location(i&7, (i>>3));
+            const Location curr_loc = Location(i);
             if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME) == FULL) {
                 if (bit(SP, i)) {
-                    const char x = (i&7);
                     char y;
 
                     // Block
-                    y = (i>>3);
+                    y = curr_loc.y;
                     const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
                     if (pos.turn) {
                         for (char cy = y + 1; cy < y + speed + 1; cy++) {
-                            const char loc = (cy<<3) + x;
+                            const char loc = (cy<<3) + curr_loc.x;
                             if (bit(ALL, loc)) break;
                             if (bit(block_mask, loc)) {
                                 if (cy == 7) {
@@ -722,7 +716,7 @@ namespace Bitboard {
                         }
                     } else {
                         for (char cy = y - 1; cy > y - speed - 1; cy--) {
-                            const char loc = (cy<<3) + x;
+                            const char loc = (cy<<3) + curr_loc.x;
                             if (bit(ALL, loc)) break;
                             if (bit(block_mask, loc)) {
                                 if (cy == 0) {
@@ -737,7 +731,7 @@ namespace Bitboard {
                     y += pawn_dir;
                     if (0 <= y && y < 8) {
                         const bool promo = y == 7 || y == 0;
-                        for (const auto& offset: {x-1, x+1}) {
+                        for (const auto& offset: {curr_loc.x-1, curr_loc.x+1}) {
                             if (0 <= offset && offset < 8) {
                                 const char move_loc = (y<<3) + offset;
                                 if (bit(capture_mask, move_loc) && bit(OPPONENT, move_loc)) {
@@ -753,9 +747,8 @@ namespace Bitboard {
                         }
                     }
                 } else if (bit(SN, i)) {
-                    const char x = (i&7), y = (i>>3);
                     for (const auto& dir: DIR_N) {
-                        char cx = x + dir[0], cy = y + dir[1];   // Current (x, y)
+                        char cx = curr_loc.x + dir[0], cy = curr_loc.y + dir[1];   // Current (x, y)
                         if (!in_board(cx, cy)) continue;
                         const char loc = (cy<<3) + cx;
                         if (bit(full_mask, loc)) moves[movecnt++] = Move(i, loc);
@@ -763,7 +756,7 @@ namespace Bitboard {
                 } else if (bit(SB, i) || bit(SQ, i)) {
                     // Capture and block
                     for (const auto& dir: DIR_B) {
-                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
                         const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                         while (true) {
                             cx += dx;
@@ -782,7 +775,7 @@ namespace Bitboard {
                 if (bit(SR, i) || bit(SQ, i)) {
                     // Capture and block
                     for (const auto& dir: DIR_R) {
-                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
                         const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                         while (true) {
                             cx += dx;
@@ -812,20 +805,17 @@ namespace Bitboard {
         const U64 o_horiz_pieces = OQ | OR;
 
         for (auto i = 0; i < 64; i++) {
-            const Location curr_loc = Location(i&7, (i>>3));
+            const Location curr_loc = Location(i);
             if (bit(SAME, i)) {
                 U64 pin = pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
                 bool piece_pinned = (pin != FULL);
 
                 if (bit(SP, i)) {
-                    const char x = (i&7);
-                    const char y = i>>3;
-
                     // Forward
-                    const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
+                    const char speed = (curr_loc.y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
                     if (pos.turn) {
-                        for (char cy = y + 1; cy < y + speed + 1; cy++) {
-                            const char loc = (cy<<3) + x;
+                        for (char cy = curr_loc.y + 1; cy < curr_loc.y + speed + 1; cy++) {
+                            const char loc = (cy<<3) + curr_loc.x;
                             if (bit(ALL, loc)) break;
                             if (bit(pin, loc)) {
                                 if (cy == 7) {
@@ -835,8 +825,8 @@ namespace Bitboard {
                             }
                         }
                     } else {
-                        for (char cy = y - 1; cy > y - speed - 1; cy--) {
-                            const char loc = (cy<<3) + x;
+                        for (char cy = curr_loc.y - 1; cy > curr_loc.y - speed - 1; cy--) {
+                            const char loc = (cy<<3) + curr_loc.x;
                             if (bit(ALL, loc)) break;
                             if (bit(pin, loc)) {
                                 if (cy == 0) {
@@ -847,10 +837,10 @@ namespace Bitboard {
                         }
                     }
                     // Captures
-                    const char new_y = y + pawn_dir;
+                    const char new_y = curr_loc.y + pawn_dir;
                     if (0 <= new_y && new_y < 8) {
                         const bool promo = (new_y == 0) || (new_y == 7);
-                        for (const auto& offset: {x-1, x+1}) {
+                        for (const auto& offset: {curr_loc.x-1, curr_loc.x+1}) {
                             if (0 <= offset && offset < 8) {
                                 const char loc_move = (new_y<<3) + offset;
                                 if (bit(pin, loc_move) && bit(OPPONENT, loc_move)) {
@@ -859,7 +849,7 @@ namespace Bitboard {
                                     } else moves[movecnt++] = Move(i, loc_move);
                                 }
                                 if (pos.ep && (loc_move == pos.ep_square)) {
-                                    if (!piece_pinned && ((o_horiz_pieces & RANKS[y]) != EMPTY) && ((SK & RANKS[y]) != EMPTY)) {
+                                    if (!piece_pinned && ((o_horiz_pieces & RANKS[curr_loc.y]) != EMPTY) && ((SK & RANKS[curr_loc.y]) != EMPTY)) {
                                         U64 tmp_op = OP;
                                         unset_bit(tmp_op, pos.ep_square-pawn_dir*8);
                                         if (pinned(k_pos, Location(i), tmp_op, ON, OB, OR, OQ, OK, SAME) == FULL) moves[movecnt++] = Move(i, loc_move);
@@ -873,7 +863,7 @@ namespace Bitboard {
                     if (piece_pinned) continue;
                     else {
                         for (const auto& dir: DIR_N) {
-                            const char x = (i&7) + dir[0], y = (i>>3) + dir[1];   // Current (x, y)
+                            const char x = curr_loc.x + dir[0], y = curr_loc.y + dir[1];   // Current (x, y)
                             if (!in_board(x, y)) continue;
                             const char loc = (y<<3) + x;
                             if (!bit(SAME, loc)) moves[movecnt++] = Move(i, loc);
@@ -881,7 +871,7 @@ namespace Bitboard {
                     }
                 } else if (bit(SB, i) || bit(SQ, i)) {
                     for (const auto& dir: DIR_B) {
-                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
                         const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                         while (true) {
                             cx += dx;
@@ -896,7 +886,7 @@ namespace Bitboard {
                 }
                 if (bit(SR, i) || bit(SQ, i)) {
                     for (const auto& dir: DIR_R) {
-                        char cx = (i&7), cy = (i>>3);             // Current (x, y)
+                        char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
                         const char dx = dir[0], dy = dir[1];      // Delta (x, y)
                         while (true) {
                             cx += dx;

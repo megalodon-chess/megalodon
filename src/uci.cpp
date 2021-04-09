@@ -37,14 +37,14 @@ using std::vector;
 using std::string;
 using std::to_string;
 
-const vector<string> GREETINGS{"Hello!", "Lets play!", "Are you ready for a game?"};
-const vector<string> WINNING{"Looks like I'm playing well!", "Wow!", "This is great!"};
-const vector<string> LOSING{"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
-const vector<string> GAME_END{"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
+const vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
+const vector<string> WINNING   = {"Looks like I'm playing well!", "Wow!", "This is great!"};
+const vector<string> LOSING    = {"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
+const vector<string> GAME_END  = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
 Position parse_pos(const string& str) {
-    vector<string> parts = split(str, " ");
+    const vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
         Position pos = Bitboard::startpos();
         if (parts.size() > 3 && parts[2] == "moves") {
@@ -73,7 +73,7 @@ Position parse_pos(const string& str) {
 
 
 void print_legal_moves(const Position& pos) {
-    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
     for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
 }
@@ -147,8 +147,8 @@ void perft(const Options& options, const Position& pos, const int& depth) {
     if (moves.size() > 0) {
         int move_num = 1;
         for (const auto& move: moves) {
-            Position new_pos = Bitboard::push(pos, move);
-            long long curr_nodes = Perft::movegen(new_pos, depth-1);
+            const Position new_pos = Bitboard::push(pos, move);
+            const long long curr_nodes = Perft::movegen(new_pos, depth-1);
             nodes += curr_nodes;
             cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
             move_num++;
@@ -213,34 +213,34 @@ int loop() {
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
-            vector<string> parts = split(cmd, " ");
-            string name = parts[2];
-            string value = parts[4];
+            const vector<string> parts = split(cmd, " ");
+            const string name = parts[2];
+            const string value = parts[4];
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
-            else if (name == "UseHashTable") options.UseHashTable = (value == "true");
-            else if (name == "HashStart") options.HashStart = std::stoi(value);
+            else if (name == "UseHashTable")   options.UseHashTable   = (value == "true");
+            else if (name == "HashStart")      options.HashStart      = std::stoi(value);
 
-            else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
-            else if (name == "UseEndgame") options.UseEndgame = (value == "true");
-            else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
-            else if (name == "QuickMove") options.QuickMove = (value == "true");
+            else if (name == "MoveTimeMult")   options.MoveTimeMult   = std::stoi(value);
+            else if (name == "UseEndgame")     options.UseEndgame     = (value == "true");
+            else if (name == "LMRFactor")      options.LMRFactor      = std::stoi(value);
+            else if (name == "QuickMove")      options.QuickMove      = (value == "true");
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
+            else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value) / 100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
-            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
-            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
-            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
+            else if (name == "EvalSpace")      options.EvalSpace      = std::stof(value) / 100;
+            else if (name == "EvalKnights")    options.EvalKnights    = std::stof(value) / 100;
+            else if (name == "EvalKings")      options.EvalKings      = std::stof(value) / 100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
         else if (startswith(cmd, "hash")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 cout << Hash::hash(pos) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
@@ -248,9 +248,9 @@ int loop() {
             }
         }
         else if (startswith(cmd, "eval")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
-                U64 attacked = Bitboard::attacked(pos, !pos.turn);
+                const U64 attacked = Bitboard::attacked(pos, !pos.turn);
                 cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
@@ -258,7 +258,7 @@ int loop() {
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
         else if (startswith(cmd, "pushperft")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             perft_push(pos, std::stoi(parts[1]));
         }
         else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
@@ -269,7 +269,7 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
                 options.clear_hash();

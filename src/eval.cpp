@@ -144,7 +144,7 @@ namespace Eval {
             } else {
                 bool found = false;
                 for (char j = 7; j > -1; j--) {
-                    if ((w & (1ULL<<(j*8))) != 0) {
+                    if (bit(w, j*8)) {
                         if (!found) w_adv[i] = j;
                         w_back[i] = j;
                         found = true;
@@ -159,7 +159,7 @@ namespace Eval {
             } else {
                 bool found = false;
                 for (char j = 7; j > -1; j--) {
-                    if ((b & (1ULL<<(j*8))) != 0) {
+                    if (bit(b, j*8)) {
                         if (!found) b_adv[i] = j;
                         b_back[i] = j;
                         found = true;
@@ -224,8 +224,8 @@ namespace Eval {
     float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {
         float wdist = 0, bdist = 0;
         const char wcnt = popcnt(wn), bcnt = popcnt(bn);
-        const bool wp_in_cent = ((INNER_CENTER|OUTER_CENTER) & wp) != 0;
-        const bool bp_in_cent = ((INNER_CENTER|OUTER_CENTER) & bp) != 0;
+        const bool wp_in_cent = ((INNER_CENTER|OUTER_CENTER) & wp) != Bitboard::EMPTY;
+        const bool bp_in_cent = ((INNER_CENTER|OUTER_CENTER) & bp) != Bitboard::EMPTY;
 
         for (char i = 0; i < 64; i++) {
             if (wp_in_cent && bit(wn, i)) {
@@ -243,8 +243,8 @@ namespace Eval {
     float kings(const U64& wk, const U64& bk) {
         const Location w = Bitboard::first_bit(wk);
         const Location b = Bitboard::first_bit(bk);
-        const char wdist = CENTER_DIST_MAP[(w.y<<3)+w.x];
-        const char bdist = CENTER_DIST_MAP[(b.y<<3)+b.x];
+        const char wdist = CENTER_DIST_MAP[w.loc];
+        const char bdist = CENTER_DIST_MAP[b.loc];
         return wdist - bdist;
     }
 
@@ -252,8 +252,8 @@ namespace Eval {
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
         if (moves.empty()) {
             bool checked = false;
-            if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
-            else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
+            if      ( pos.turn && ((o_attacks & pos.wk) != Bitboard::EMPTY)) checked = true;
+            else if (!pos.turn && ((o_attacks & pos.bk) != Bitboard::EMPTY)) checked = true;
             if (checked) {
                 // Increment value by depth to encourage sooner mate.
                 // The larger depth is, the closer it is to the leaf nodes.
