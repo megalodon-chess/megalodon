@@ -281,11 +281,11 @@ namespace Eval {
         if (pos.draw50 >= 100) return 0;
 
         const float mat         =                          material(pos);
-        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 3.F;
-        const float p_attacks   =                          pawn_attacks(pos);
-        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 11.F;
-        const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 11.F;
-        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 3.F;
+        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 5.F;
+        const float p_attacks   =                          pawn_attacks(pos) / 2.F;
+        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
+        const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 16.F;
+        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 5.F;
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, p_attacks, knight, king, sp);
