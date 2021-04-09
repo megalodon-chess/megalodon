@@ -96,22 +96,24 @@ namespace Eval {
     }
 
     float middle_game(const float& pawn_struct, const float& p_attacks, const float& knight,
-            const float& king, const float& space) {
+            const float& rook, const float& king, const float& space) {
         return (
             pawn_struct *  0.9F +
             p_attacks   *  0.9F +
             knight      *  1.F +
+            rook        *  1.F +
             king        *  1.F +
             space       *  1.F
         );
     }
 
     float end_game(const float& pawn_struct, const float& p_attacks, const float& knight,
-            const float& king, const float& space) {
+            const float& rook, const float& king, const float& space) {
         return (
             pawn_struct *  1.2F +
             p_attacks   *  0.8F +
             knight      *  0.7F +
+            rook        *  1.1F +
             king        * -1.3F +
             space       *  0.F        // Space encourages pawns in the center, which discourages promotion.
         );
@@ -125,6 +127,17 @@ namespace Eval {
         return xdist + ydist;
     }
 
+
+    float space(const U64& wp, const U64& bp) {
+        float sp = 0;
+
+        for (char x = 2; x < 6; x++) {
+            for (char y = 1; y < 5; y++) if (bit(wp, (y<<3)+x)) sp += y-1;
+            for (char y = 3; y < 7; y++) if (bit(bp, (y<<3)+x)) sp -= 6-y;
+        }
+
+        return sp / 4;
+    }
 
     float pawn_structure(const U64& wp, const U64& bp) {
         // Values represent white - black
@@ -225,17 +238,6 @@ namespace Eval {
         return 0.25 * (w_cnt-b_cnt);
     }
 
-    float space(const U64& wp, const U64& bp) {
-        float sp = 0;
-
-        for (char x = 2; x < 6; x++) {
-            for (char y = 1; y < 5; y++) if (bit(wp, (y<<3)+x)) sp += y-1;
-            for (char y = 3; y < 7; y++) if (bit(bp, (y<<3)+x)) sp -= 6-y;
-        }
-
-        return sp / 4;
-    }
-
     float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {
         float wdist = 0, bdist = 0;
         const char wcnt = popcnt(wn), bcnt = popcnt(bn);
@@ -253,6 +255,28 @@ namespace Eval {
         if (wcnt > 0) wdist /= wcnt;
         if (bcnt > 0) bdist /= bcnt;
         return wdist - bdist;
+    }
+
+    float rooks(const U64& wr, const U64& br, const U64& wp, const U64& bp) {
+        float score = 0;
+
+        for (char i = 0; i < 64; i++) {
+            const char x = i&7, y = i>>3;
+            const U64 w = wp & Bitboard::FILES[x];
+            const U64 b = bp & Bitboard::FILES[x];
+            const bool open = (w == 0) && (b == 0);
+            const bool semi_open = !((w != 0) && (b != 0));
+
+            if (bit(wr, i)) {
+                if (open) score += 0.4;
+                else if (semi_open) score += 0.15;
+            } else if (bit(br, i)) {
+                if (open) score -= 0.4;
+                else if (semi_open) score -= 0.15;
+            }
+        }
+
+        return score;
     }
 
     float kings(const U64& wk, const U64& bk) {
@@ -281,15 +305,16 @@ namespace Eval {
         if (pos.draw50 >= 100) return 0;
 
         const float mat         =                          material(pos);
+        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 5.F;
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 5.F;
         const float p_attacks   =                          pawn_attacks(pos) / 2.F;
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
+        const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp) / 2.F;
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 16.F;
-        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 5.F;
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, p_attacks, knight, king, sp);
-        const float eg = end_game(pawn_struct, p_attacks, knight, king, sp);
+        const float mg = middle_game(pawn_struct, p_attacks, knight, rook, king, sp);
+        const float eg = end_game(pawn_struct, p_attacks, knight, rook, king, sp);
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
 
@@ -298,6 +323,7 @@ namespace Eval {
             cout << " Pawn Structure | " << pawn_struct << "\n";
             cout << "   Pawn Attacks | " << p_attacks << "\n";
             cout << "        Knights | " << knight << "\n";
+            cout << "          Rooks | " << rook << "\n";
             cout << "          Kings | " << king << "\n";
             cout << "          Space | " << sp << "\n\n";
             cout << "    Middle Game | " << mg << "\n";
