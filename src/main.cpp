@@ -38,16 +38,10 @@ using std::string;
 
 void print_info() {
     cout << "Megalodon v" << VERSION << " - UCI chess engine" << "\n";
+    cout << "Built on " << __DATE__ << ", " << __TIME__ << endl;
     cout << "Copyright the Megalodon developers (in AUTHORS file)" << "\n";
     cout << "https://github.com/megalodon-chess/megalodon" << "\n";
     cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << "\n";
-    cout << "Built on " << __DATE__ << ", " << __TIME__ << endl;
-}
-
-
-void init() {
-    Hash::init();
-    Eval::init();
 }
 
 
@@ -92,12 +86,16 @@ void bench() {
 
 
 int main(const int argc, const char* argv[]) {
+    cout << std::fixed;
+    srand(1234);
+
     if (argc >= 2) {
         if      (argv[1] == string("--version")) cout << VERSION << endl;
         else if (argv[1] == string("bench")) bench();
     } else {
-        srand(1234);
-        init();
+        Hash::init();
+        Eval::init();
+
         print_info();
         return loop();
     }
