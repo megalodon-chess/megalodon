@@ -71,7 +71,7 @@ void bench() {
         cout << "Fen: " << fens[i] << endl;
 
         const Position pos = Bitboard::parse_fen(fens[i]);
-        const SearchInfo result = Search::search(options, pos, depth, 10000, false, searching);
+        const SearchInfo result = Search::search(options, pos, depth, 10000, false, searching, false);
         nodes += result.nodes;
     }
 
