@@ -98,8 +98,8 @@ namespace Eval {
     float middle_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
             pawn_struct *  0.9F +
-            knight      *  0.2F +
-            king        *  0.2F +
+            knight      *  1.F +
+            king        *  1.F +
             space       *  1.F
         );
     }
@@ -107,8 +107,8 @@ namespace Eval {
     float end_game(const float& pawn_struct, const float& knight, const float& king, const float& space) {
         return (
             pawn_struct *  1.2F +
-            knight      *  0.1F +
-            king        * -0.3F +
+            knight      *  0.7F +
+            king        * -1.3F +
             space       *  0.F        // Space encourages pawns in the center, which discourages promotion.
         );
     }
@@ -218,14 +218,14 @@ namespace Eval {
             for (char y = 3; y < 7; y++) if (bit(bp, (y<<3)+x)) sp -= 6-y;
         }
 
-        return sp / 6;
+        return sp / 4;
     }
 
     float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {
         float wdist = 0, bdist = 0;
         const char wcnt = popcnt(wn), bcnt = popcnt(bn);
-        const bool wp_in_cent = ((INNER_CENTER|OUTER_CENTER) & wp) != 0;
-        const bool bp_in_cent = ((INNER_CENTER|OUTER_CENTER) & bp) != 0;
+        const bool wp_in_cent = true;//((INNER_CENTER|OUTER_CENTER) & wp) != 0;
+        const bool bp_in_cent = true;//((INNER_CENTER|OUTER_CENTER) & bp) != 0;
 
         for (char i = 0; i < 64; i++) {
             if (wp_in_cent && bit(wn, i)) {
@@ -249,7 +249,8 @@ namespace Eval {
     }
 
 
-    float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks) {
+    float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks,
+            const bool print) {
         if (moves.empty()) {
             bool checked = false;
             if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
@@ -266,16 +267,29 @@ namespace Eval {
 
         const float mat         = material(pos);
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp);
-        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp);
-        const float king        = options.EvalKings      * kings(pos.wk, pos.bk);
+        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 7.F;
+        const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 6.F;
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp);
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, knight, king, sp);
         const float eg = end_game(pawn_struct, knight, king, sp);
         const float p = phase(pos);
-        const float imbalance = mg*p + eg*(1-p);
+        const float imbalance = 0.4 * (mg*p + eg*(1-p));
 
-        return mat + 0.4*imbalance;
+        if (print) {
+            cout << "       Material | " << mat << "\n";
+            cout << " Pawn Structure | " << pawn_struct << "\n";
+            cout << "        Knights | " << knight << "\n";
+            cout << "          Kings | " << king << "\n";
+            cout << "          Space | " << sp << "\n\n";
+            cout << "    Middle Game | " << mg << "\n";
+            cout << "       End Game | " << eg << "\n";
+            cout << "          Phase | " << p << "\n";
+            cout << "      Imbalance | " << imbalance << "\n";
+            cout << "          Final | " << mat+imbalance << "\n";
+        }
+
+        return mat + imbalance;
     }
 }
