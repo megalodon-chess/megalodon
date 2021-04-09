@@ -99,7 +99,7 @@ namespace Eval {
             const float& king, const float& space) {
         return (
             pawn_struct *  0.9F +
-            p_attacks   *  1.F +
+            p_attacks   *  0.9F +
             knight      *  1.F +
             king        *  1.F +
             space       *  1.F
@@ -110,7 +110,7 @@ namespace Eval {
             const float& king, const float& space) {
         return (
             pawn_struct *  1.2F +
-            p_attacks   *  0.9F +
+            p_attacks   *  0.8F +
             knight      *  0.7F +
             king        * -1.3F +
             space       *  0.F        // Space encourages pawns in the center, which discourages promotion.
@@ -280,18 +280,18 @@ namespace Eval {
         }
         if (pos.draw50 >= 100) return 0;
 
-        const float mat         = material(pos);
-        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp);
-        const float p_attacks   = pawn_attacks(pos);
-        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 7.F;
-        const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 6.F;
-        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp);
+        const float mat         =                          material(pos);
+        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 3.F;
+        const float p_attacks   =                          pawn_attacks(pos);
+        const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 11.F;
+        const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 11.F;
+        const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 3.F;
 
         // Endgame and middle game are for weighting categories.
         const float mg = middle_game(pawn_struct, p_attacks, knight, king, sp);
         const float eg = end_game(pawn_struct, p_attacks, knight, king, sp);
         const float p = phase(pos);
-        const float imbalance = 0.3 * (mg*p + eg*(1-p));
+        const float imbalance = mg*p + eg*(1-p);
 
         if (print) {
             cout << "       Material | " << mat << "\n";
