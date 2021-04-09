@@ -37,6 +37,7 @@ using Bitboard::bit;
 
 namespace Eval {
     char CENTER_DIST_MAP[64];
+    const char FILE_DIST_MAP[8] = {3, 2, 1, 0, 0, 1, 2, 3};
 
     void init() {
         for (auto i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
@@ -266,13 +267,16 @@ namespace Eval {
             const U64 b = bp & Bitboard::FILES[x];
             const bool open = (w == 0) && (b == 0);
             const bool semi_open = !((w != 0) && (b != 0));
+            const char dist = 3 - FILE_DIST_MAP[x];
 
             if (bit(wr, i)) {
                 if (open) score += 0.4;
                 else if (semi_open) score += 0.15;
+                score += (float)(dist) / 20;
             } else if (bit(br, i)) {
                 if (open) score -= 0.4;
                 else if (semi_open) score -= 0.15;
+                score -= (float)(dist) / 20;
             }
         }
 
