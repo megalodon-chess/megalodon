@@ -56,6 +56,7 @@ struct Position {
     Position* parent;
     int move_cnt;
     char draw50;
+    char pieces[64];
 };
 
 struct Location {

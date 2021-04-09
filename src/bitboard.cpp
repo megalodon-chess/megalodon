@@ -63,6 +63,7 @@ Position::Position() {
     ep = false;
     ep_square = 0;
     move_cnt = 0;
+    std::fill_n(pieces, 64, -1);
 }
 
 Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, const U64 _wq, const U64 _wk,
@@ -87,6 +88,13 @@ Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, c
     ep_square = _ep_square;
     move_cnt = 0;
     draw50 = 0;
+
+    std::fill_n(pieces, 64, -1);
+
+    char j = 0;
+    for (char i = 0; i < 64; i++) {
+        if (Bitboard::bit(i, wp|wn|wb|wr|wq|wk|bp|bn|bb|br|bq|bk)) pieces[j++] = i;
+    }
 }
 
 
