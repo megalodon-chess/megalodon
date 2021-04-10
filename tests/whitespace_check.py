@@ -21,22 +21,32 @@
 
 import os
 
-PARENT = os.path.dirname(os.path.realpath(__file__))
-FILE_DIR = os.path.join(os.path.dirname(PARENT), "src")
+PARENT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+FILE_DIRS = [
+    os.path.join(PARENT, "docs"),
+    os.path.join(PARENT, "src"),
+    os.path.join(PARENT, "tests"),
+    PARENT,
+]
 
 
 def main():
     exitcode = 0
 
-    for f in os.listdir(FILE_DIR):
-        path = os.path.join(FILE_DIR, f)
-        relpath = os.path.join("src", f)
-        with open(path, "r") as file:
-            lines = file.read().split("\n")
-            for i, l in enumerate(lines):
-                if l.endswith(" "):
-                    print(f"Trailing whitespace in file {relpath}, line {i+1}")
-                    exitcode = 1
+    for fdir in FILE_DIRS:
+        for f in os.listdir(fdir):
+            path = os.path.join(fdir, f)
+            relpath = os.path.join("src", f)
+            if os.path.isfile(path):
+                try:
+                    with open(path, "r") as file:
+                        lines = file.read().split("\n")
+                        for i, l in enumerate(lines):
+                            if l.endswith(" "):
+                                print(f"Trailing whitespace in file {relpath}, line {i+1}")
+                                exitcode = 1
+                except UnicodeDecodeError:
+                    pass
 
     return exitcode
 
