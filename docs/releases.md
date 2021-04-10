@@ -2,6 +2,12 @@
 
 This page contains release info.
 
+## [Megalodon 0.4.2][v0.4.2]
+
+This release features improved evaluation functions.
+
+New evaluation categories include queens, rooks, pawn attacks, and weights.
+
 ## [Megalodon 0.4.1][v0.4.1]
 
 This release contains many bug fixes.
