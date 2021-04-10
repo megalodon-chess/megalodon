@@ -26,4 +26,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: Whitespace
         run: |
-          python3 ./tests/whitespace_check.py
+          python3 ./tests/formatting_check.py

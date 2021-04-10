@@ -40,11 +40,15 @@ def main():
             if os.path.isfile(path):
                 try:
                     with open(path, "r") as file:
-                        lines = file.read().split("\n")
-                        for i, l in enumerate(lines):
+                        data = file.read()
+                        for i, l in enumerate(data.split("\n")):
                             if l.endswith(" "):
                                 print(f"Trailing whitespace in file {relpath}, line {i+1}")
                                 exitcode = 1
+                        if not data.endswith("\n"):
+                            print(f"No blank line at the end of file {relpath}")
+                            exitcode = 1
+
                 except UnicodeDecodeError:
                     pass
 
