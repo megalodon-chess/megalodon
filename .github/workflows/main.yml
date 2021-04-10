@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bench
+        run: |
+          mkdir ./build/
+          cd ./build/
+          cmake ..
+          make -j
+          ./Megalodon bench
+
+  whitespace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Whitespace
+        run: |
+          python3 ./tests/whitespace_check.py

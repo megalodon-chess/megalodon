@@ -52,7 +52,9 @@ EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of mater
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
 EvalKnights: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
-EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
+EvalRooks: type=spin, default=100, min=0, max=1000, weight (percent) of rook eval.
+EvalQueens: type=spin, default=100, min=0, max=1000, weight (percent) of queen eval.
+EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of king eval.
 */
 
 public:
@@ -76,5 +78,7 @@ public:
     float EvalSpace;
     float EvalPawnStruct;
     float EvalKnights;
+    float EvalRooks;
+    float EvalQueens;
     float EvalKings;
 };
