@@ -1,32 +1,32 @@
 name: CI
 
 on:
-    push:
-        branches: [ main ]
-    pull_request:
-        branches: [ main ]
-    workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+      branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-    setup-dir:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Setup directory
-            run: mkdir ./build/
-            run: cd ./build/
+  setup-dir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup directory
+        run: mkdir ./build/
+        run: cd ./build/
 
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Build
-            run: cmake ..
-            run: make -j
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: cmake ..
+        run: make -j
 
-    bench:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Bench
-            run: ./Megalodon bench
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bench
+        run: ./Megalodon bench
