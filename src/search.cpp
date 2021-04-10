@@ -39,8 +39,8 @@ using std::string;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(int _depth, int _seldepth, float _score, U64 _nodes, int _nps,
-        double _time, vector<Move> _pv, float _alpha, float _beta, bool _full) {
+SearchInfo::SearchInfo(const int& _depth, const int& _seldepth, const float& _score, const U64& _nodes, const int& _nps,
+        const double& _time, const vector<Move>& _pv, const float& _alpha, const float& _beta, const bool& _full) {
     depth = _depth;
     seldepth = _seldepth;
     score = _score;
