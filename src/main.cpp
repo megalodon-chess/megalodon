@@ -73,7 +73,7 @@ void bench() {
     bool searching = true;
 
     for (char i = 0; i < num_pos; i++) {
-        cout << "Position " << i+1 << " of " << num_pos << endl;
+        cout << "Position " << i+1 << " of " << +num_pos << endl;
         cout << "Fen: " << fens[i] << endl;
 
         const Position pos = Bitboard::parse_fen(fens[i]);
