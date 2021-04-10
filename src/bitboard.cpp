@@ -757,7 +757,7 @@ namespace Bitboard {
                     // Capture and block
                     for (const auto& dir: DIR_B) {
                         char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
-                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        const char dx = dir[0], dy = dir[1];               // Delta (x, y)
                         while (true) {
                             cx += dx;
                             cy += dy;
@@ -776,7 +776,7 @@ namespace Bitboard {
                     // Capture and block
                     for (const auto& dir: DIR_R) {
                         char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
-                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        const char dx = dir[0], dy = dir[1];               // Delta (x, y)
                         while (true) {
                             cx += dx;
                             cy += dy;
@@ -872,7 +872,7 @@ namespace Bitboard {
                 } else if (bit(SB, i) || bit(SQ, i)) {
                     for (const auto& dir: DIR_B) {
                         char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
-                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        const char dx = dir[0], dy = dir[1];               // Delta (x, y)
                         while (true) {
                             cx += dx;
                             cy += dy;
@@ -887,7 +887,7 @@ namespace Bitboard {
                 if (bit(SR, i) || bit(SQ, i)) {
                     for (const auto& dir: DIR_R) {
                         char cx = curr_loc.x, cy = curr_loc.y;             // Current (x, y)
-                        const char dx = dir[0], dy = dir[1];      // Delta (x, y)
+                        const char dx = dir[0], dy = dir[1];               // Delta (x, y)
                         while (true) {
                             cx += dx;
                             cy += dy;
