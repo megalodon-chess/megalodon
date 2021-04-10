@@ -60,6 +60,7 @@ void Options::set_hash() {
     delete[] hash_table;
     hash_size = Hash * 209000;
     hash_table = new Transposition[hash_size];
+    clear_hash();
 }
 
 void Options::clear_hash() {

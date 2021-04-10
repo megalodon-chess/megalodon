@@ -96,7 +96,12 @@ namespace Search {
     SearchInfo dfs(const Options& options, const Position& pos, const int& depth, const int& real_depth,
             float alpha, float beta, const bool& root, const double& endtime, bool& searching) {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+
+        const bool use_hash = (depth >= 2);
+        const U64 idx = use_hash ? Hash::hash(pos) % options.hash_size : 0;
+        Transposition& entry = options.hash_table[idx];
+        if (entry.computed) moves.insert(moves.begin(), entry.best);
 
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
@@ -104,9 +109,9 @@ namespace Search {
         }
 
         U64 nodes = 1;
+        vector<Move> pv;
         int best_ind = 0;
         float best_eval = pos.turn ? MIN : MAX;
-        vector<Move> pv;
         bool full = true;
         for (auto i = 0; i < moves.size(); i++) {
             if (depth > 1) {
@@ -144,6 +149,12 @@ namespace Search {
             }
         }
         pv.insert(pv.begin(), moves[best_ind]);
+
+        if (use_hash && (!entry.computed)) {
+            entry.computed = true;
+            entry.best = moves[best_ind];
+        }
+
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, pv, alpha, beta, full);
     }
 
