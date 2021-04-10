@@ -36,7 +36,7 @@ def main():
     for fdir in FILE_DIRS:
         for f in os.listdir(fdir):
             path = os.path.join(fdir, f)
-            relpath = os.path.join("src", f)
+            relpath = os.path.join(os.path.basename(fdir), f)
             if os.path.isfile(path):
                 try:
                     with open(path, "r") as file:
