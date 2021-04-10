@@ -13,16 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup directory
-        run: mkdir ./build/
-        run: cd ./build/
+        run: |
+          mkdir ./build/
+          cd ./build/
 
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: cmake ..
-        run: make -j
+        run: |
+          cmake ..
+          make -j
 
   bench:
     runs-on: ubuntu-latest
