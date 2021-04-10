@@ -132,7 +132,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching);
+    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching, (mode==2));
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -208,6 +208,8 @@ int loop() {
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalRooks type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalQueens type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
 
             cout << "uciok" << endl;
@@ -233,6 +235,8 @@ int loop() {
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
             else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
             else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
+            else if (name == "EvalRooks") options.EvalRooks = std::stof(value) / 100;
+            else if (name == "EvalQueens") options.EvalQueens = std::stof(value) / 100;
             else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
 
             else std::cerr << "Unknown option: " << name << endl;
@@ -251,7 +255,7 @@ int loop() {
             vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
+                cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }

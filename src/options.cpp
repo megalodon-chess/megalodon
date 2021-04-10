@@ -48,6 +48,8 @@ Options::Options() {
     EvalPawnStruct = 1;
     EvalSpace      = 1;
     EvalKnights    = 1;
+    EvalRooks      = 1;
+    EvalQueens     = 1;
     EvalKings      = 1;
 
     hash_table = new Transposition[16];

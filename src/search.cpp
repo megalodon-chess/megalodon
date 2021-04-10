@@ -148,7 +148,7 @@ namespace Search {
     }
 
     SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime,
-            const bool& infinite, bool& searching) {
+            const bool& infinite, bool& searching, const bool& stop_early) {
         const int eg = Endgame::eg_type(pos);
         if (options.UseEndgame && eg != 0) {
             const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
@@ -174,6 +174,10 @@ namespace Search {
                 result = curr_result;
             }
             if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) break;
+
+            if (stop_early && ((elapse/movetime) >= 0.6)) {    // Won't finish next depth so no point
+                break;
+            }
         }
 
         return result;
