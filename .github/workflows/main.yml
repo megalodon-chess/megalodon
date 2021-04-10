@@ -4,31 +4,18 @@ on:
   push:
     branches: [ main ]
   pull_request:
-      branches: [ main ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
-  setup-dir:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Setup directory
-        run: |
-          mkdir ./build/
-          cd ./build/
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        run: |
-          cmake ..
-          make -j
-
   bench:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Bench
-        run: ./Megalodon bench
+        run: |
+          mkdir ./build/
+          cd ./build/
+          cmake ..
+          make -j
+          ./Megalodon bench
