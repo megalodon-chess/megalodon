@@ -194,6 +194,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.4.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.2
 [v0.4.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.1
 [v0.4.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.0
 [v0.3.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.3.2
