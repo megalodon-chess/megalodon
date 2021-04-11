@@ -101,15 +101,14 @@ namespace Search {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-        const bool use_hash = (depth >= 1);
-        const U64 idx = use_hash ? Hash::hash(pos) % options.hash_size : 0;
-        Transposition& entry = options.hash_table[idx];
-        if (use_hash && entry.computed) moves.insert(moves.begin(), entry.best);
-
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
             return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
         }
+
+        const U64 idx = Hash::hash(pos) % options.hash_size;
+        Transposition& entry = options.hash_table[idx];
+        if (entry.computed) moves.insert(moves.begin(), entry.best);
 
         U64 nodes = 1;
         vector<Move> pv;
@@ -124,7 +123,7 @@ namespace Search {
                     break;
                 }
             }
-            if (use_hash && (i != 0)) {
+            if ((i != 0) && entry.computed) {
                 const Move& best = entry.best;
                 const Move& curr = moves[i];
                 if ((best.from == curr.from) && (best.to == curr.to) && (best.is_promo == curr.is_promo) &&
@@ -161,7 +160,7 @@ namespace Search {
         }
         pv.insert(pv.begin(), moves[best_ind]);
 
-        if (use_hash && (!entry.computed)) {
+        if (!entry.computed) {
             entry.computed = true;
             entry.best = moves[best_ind];
             hash_filled++;
