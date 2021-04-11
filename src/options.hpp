@@ -24,6 +24,8 @@
 #include <string>
 #include "bitboard.hpp"
 
+#define HASH_FACTOR  209000
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -63,7 +65,7 @@ public:
     void clear_hash();
 
     Transposition* hash_table;
-    int hash_size;
+    U64 hash_size;
 
     int Hash;
     bool UseHashTable;
