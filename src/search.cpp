@@ -150,7 +150,7 @@ namespace Search {
                     pv = result.pv;
                 }
                 if (result.score > alpha) alpha = result.score;
-                if (beta <= alpha) break;
+                if (beta < alpha) break;
             } else {
                 if (result.score < best_eval) {
                     best_ind = i;
@@ -158,7 +158,7 @@ namespace Search {
                     pv = result.pv;
                 }
                 if (result.score < beta) beta = result.score;
-                if (beta <= alpha) break;
+                if (beta < alpha) break;
             }
         }
         pv.insert(pv.begin(), moves[best_ind]);
