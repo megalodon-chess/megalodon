@@ -2,6 +2,16 @@
 
 This page contains release info.
 
+## [Megalodon 0.4.3][v0.4.3]
+
+This release contains a transposition table. It has a default size of 256 MB, and stores about 50 million positions.
+Consider increasing this size for a deep search.
+
+It plays almost 300 ELO stronger than the previous release.
+This is due to a much deeper search in most positions.
+
+Bench: 765969
+
 ## [Megalodon 0.4.2][v0.4.2]
 
 This release features improved evaluation functions.
@@ -194,6 +204,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v0.4.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.3
 [v0.4.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.2
 [v0.4.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.1
 [v0.4.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.0
