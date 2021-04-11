@@ -101,7 +101,7 @@ namespace Search {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-        const bool use_hash = false;//(depth >= 3);
+        const bool use_hash = (depth >= 3);
         const U64 idx = use_hash ? Hash::hash(pos) % options.hash_size : 0;
         Transposition& entry = options.hash_table[idx];
         if (use_hash && entry.computed) moves.insert(moves.begin(), entry.best);
@@ -117,6 +117,7 @@ namespace Search {
         int best_ind = 0;
         float best_eval = pos.turn ? MIN : MAX;
         bool full = true;
+        int movecnt = 0;  // Need to use this bc will skip a repeated best move so i != movecnt
         for (auto i = 0; i < moves.size(); i++) {
             if (depth >= 3) {
                 if ((get_time() >= endtime) || !searching) {
@@ -124,6 +125,13 @@ namespace Search {
                     break;
                 }
             }
+            if (use_hash && (i != 0)) {
+                const Move& best = entry.best;
+                const Move& curr = moves[i];
+                if ((best.from == curr.from) && (best.to == curr.to) && (best.is_promo == curr.is_promo) &&
+                        (best.promo == curr.promo)) continue;
+            }
+            movecnt++;
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
             const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
@@ -132,7 +140,7 @@ namespace Search {
 
             if (root && (depth >= 5)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
-                    << " currmovenumber " << i+1 << endl;
+                    << " currmovenumber " << movecnt << endl;
             }
 
             if (pos.turn) {
