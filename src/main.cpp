@@ -38,7 +38,7 @@ using std::string;
 
 void print_info() {
     cout << "Megalodon v" << VERSION << " - UCI chess engine" << "\n";
-    cout << "Built on " << __DATE__ << ", " << __TIME__ << endl;
+    cout << "Build date: " << __DATE__ << ", " << __TIME__ << endl;
     cout << "Copyright the Megalodon developers (in AUTHORS file)" << "\n";
     cout << "https://github.com/megalodon-chess/megalodon" << "\n";
     cout << "Licensed under GNU GPL v3: https://www.gnu.org/licenses/" << "\n";
