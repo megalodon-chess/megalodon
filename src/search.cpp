@@ -175,7 +175,7 @@ namespace Search {
         const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         if (options.QuickMove && moves.size() == 1) {
-            return SearchInfo(1, 1, Eval::eval(options, pos, moves, 1, o_attacks), 1, 1, 0, {moves[0]}, 0, 0, true);
+            return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
         }
         if (options.UseEndgame && eg != 0) {
             const Move best_move = Endgame::bestmove(pos, moves, eg);
