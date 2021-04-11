@@ -24,8 +24,6 @@
 #include <string>
 #include "bitboard.hpp"
 
-#define HASH_FACTOR  209000
-
 using std::cin;
 using std::cout;
 using std::endl;
@@ -35,7 +33,7 @@ using std::string;
 struct Transposition {
     Transposition();
 
-    bool computed;
+    char depth;
     Move best;
 };
 
