@@ -180,6 +180,7 @@ namespace Search {
 
         SearchInfo result;
         U64 hash_filled = 0;
+        U64 nodes = 0;
         const double start = get_time();
         const double end = start + movetime;
 
@@ -188,8 +189,10 @@ namespace Search {
 
             SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching, hash_filled);
             const double elapse = get_time() - start;
+            nodes += curr_result.nodes;
 
             curr_result.time = elapse;
+            curr_result.nodes = nodes;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
             curr_result.hashfull = 1000 * hash_filled / options.hash_size;
             if (!pos.turn) curr_result.score *= -1;
