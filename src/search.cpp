@@ -101,7 +101,7 @@ namespace Search {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-        const bool use_hash = (depth >= 3);
+        const bool use_hash = false;//(depth >= 3);
         const U64 idx = use_hash ? Hash::hash(pos) % options.hash_size : 0;
         Transposition& entry = options.hash_table[idx];
         if (use_hash && entry.computed) moves.insert(moves.begin(), entry.best);
@@ -142,7 +142,7 @@ namespace Search {
                     pv = result.pv;
                 }
                 if (result.score > alpha) alpha = result.score;
-                if (beta < alpha) break;
+                if (beta <= alpha) break;
             } else {
                 if (result.score < best_eval) {
                     best_ind = i;
@@ -150,7 +150,7 @@ namespace Search {
                     pv = result.pv;
                 }
                 if (result.score < beta) beta = result.score;
-                if (beta < alpha) break;
+                if (beta <= alpha) break;
             }
         }
         pv.insert(pv.begin(), moves[best_ind]);
