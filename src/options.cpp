@@ -22,6 +22,8 @@
 #include <string>
 #include "options.hpp"
 
+#define HASH_FACTOR  209000
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -30,7 +32,6 @@ using std::string;
 
 
 Transposition::Transposition() {
-    computed = false;
 }
 
 
@@ -58,12 +59,13 @@ Options::Options() {
 
 void Options::set_hash() {
     delete[] hash_table;
-    hash_size = Hash * 209000;
+    hash_size = Hash * HASH_FACTOR;
     hash_table = new Transposition[hash_size];
+    clear_hash();
 }
 
 void Options::clear_hash() {
     for (auto i = 0; i < hash_size; i++) {
-        hash_table[i].computed = false;
+        hash_table[i].depth = 0;
     }
 }

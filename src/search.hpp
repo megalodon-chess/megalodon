@@ -33,7 +33,8 @@ using std::string;
 
 struct SearchInfo {
     SearchInfo();
-    SearchInfo(int, int, float, U64, int, double, vector<Move>, float, float, bool);
+    SearchInfo(const int&, const int&, const float&, const U64&, const int&, const int&, const double&, const vector<Move>&,
+        const float&, const float&, const bool&);
     string as_string();
     bool is_mate();
 
@@ -42,6 +43,7 @@ struct SearchInfo {
     float score;
     U64 nodes;
     int nps;
+    int hashfull;
     double time;
     vector<Move> pv;
 

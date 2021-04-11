@@ -33,13 +33,13 @@ using std::string;
 struct Transposition {
     Transposition();
 
-    bool computed;
+    char depth;
     Move best;
 };
 
 class Options {
 /*
-Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
+Hash: type=spin, default=256, min=1, max=65536, hash table size (megabytes)
 UseHashTable: type=check, default=false, whether the engine should use hash table.
 HashStart: type=spin, default=5, min=1, max=8, starting depth to read and write into hash table.
 
@@ -63,7 +63,7 @@ public:
     void clear_hash();
 
     Transposition* hash_table;
-    int hash_size;
+    U64 hash_size;
 
     int Hash;
     bool UseHashTable;
