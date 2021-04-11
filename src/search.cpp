@@ -118,8 +118,8 @@ namespace Search {
         float best_eval = pos.turn ? MIN : MAX;
         bool full = true;
         for (auto i = 0; i < moves.size(); i++) {
-            if (depth > 1) {
-                if (get_time() >= endtime || !searching) {
+            if (depth >= 3) {
+                if ((get_time() >= endtime) || !searching) {
                     full = false;
                     break;
                 }
