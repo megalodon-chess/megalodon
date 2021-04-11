@@ -20,10 +20,10 @@ jobs:
           make -j
           ./Megalodon bench
 
-  whitespace:
+  formatting:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Whitespace
+      - name: Formatting
         run: |
           python3 ./tests/formatting_check.py
