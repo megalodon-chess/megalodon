@@ -272,7 +272,7 @@ int loop() {
             prev_eval = 0;
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
-        else if (startswith(cmd, "go")) {
+        else if (startswith(cmd, "go") && !searching) {
             vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
