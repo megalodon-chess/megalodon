@@ -275,6 +275,33 @@ namespace Eval {
         return wdist - bdist;
     }
 
+    float bishops(const U64& wb, const U64& bb) {
+        float wscore = 0, bscore = 0;
+        const char wcnt = popcnt(wb);
+        const char bcnt = popcnt(bb);
+
+        // wscore += popcnt(wb & (DIAGONALS_R[0] | DIAGONALS_L[0])) * 0;
+        // bscore += popcnt(bb & (DIAGONALS_R[0] | DIAGONALS_L[0])) * 0;
+        // wscore += popcnt(wb & (DIAGONALS_R[1] | DIAGONALS_L[1])) * 1;
+        // bscore += popcnt(bb & (DIAGONALS_R[1] | DIAGONALS_L[1])) * 1;
+        // wscore += popcnt(wb & (DIAGONALS_R[2] | DIAGONALS_L[2])) * 2;
+        // bscore += popcnt(bb & (DIAGONALS_R[2] | DIAGONALS_L[2])) * 2;
+        // wscore += popcnt(wb & (DIAGONALS_R[3] | DIAGONALS_L[3])) * 3;
+        // bscore += popcnt(bb & (DIAGONALS_R[3] | DIAGONALS_L[3])) * 3;
+        // wscore += popcnt(wb & (DIAGONALS_R[4] | DIAGONALS_L[4])) * 3;
+        // bscore += popcnt(bb & (DIAGONALS_R[4] | DIAGONALS_L[4])) * 3;
+        // wscore += popcnt(wb & (DIAGONALS_R[5] | DIAGONALS_L[5])) * 2;
+        // bscore += popcnt(bb & (DIAGONALS_R[5] | DIAGONALS_L[5])) * 2;
+        // wscore += popcnt(wb & (DIAGONALS_R[6] | DIAGONALS_L[6])) * 1;
+        // bscore += popcnt(bb & (DIAGONALS_R[6] | DIAGONALS_L[6])) * 1;
+        // wscore += popcnt(wb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 0;
+        // bscore += popcnt(bb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 0;
+
+        if (wcnt > 0) wscore /= wcnt;
+        if (bcnt > 0) bscore /= bcnt;
+        return wscore - bscore;
+    }
+
     float rooks(const U64& wr, const U64& br, const U64& wp, const U64& bp) {
         float score = 0;
 
