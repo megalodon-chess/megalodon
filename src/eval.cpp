@@ -318,8 +318,10 @@ namespace Eval {
         const char bcnt = popcnt(bb);
 
         for (char i = 0; i < 15; i++) {
-            wscore += popcnt(wb & (DIAGONALS_R[i]|DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
-            bscore += popcnt(bb & (DIAGONALS_R[i]|DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
+            wscore += popcnt(wb&DIAGONALS_L[i]) * BISHOP_WEIGHTS[i];
+            wscore += popcnt(wb&DIAGONALS_R[i]) * BISHOP_WEIGHTS[i];
+            bscore += popcnt(bb&DIAGONALS_L[i]) * BISHOP_WEIGHTS[i];
+            bscore += popcnt(bb&DIAGONALS_R[i]) * BISHOP_WEIGHTS[i];
         }
 
         if (wcnt != 0) wscore /= wcnt;
@@ -402,7 +404,7 @@ namespace Eval {
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 5.F;
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 5.F;
         const float p_attacks   =                          pawn_attacks(pos) / 2.F;
-        const float bishop      = options.EvalBishops    * bishops(pos.wb, pos.bb) / 10.F;
+        const float bishop      = options.EvalBishops    * bishops(pos.wb, pos.bb) / 12.F;
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
         const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp) / 2.F;
         const float queen       = options.EvalQueens     * queens(pos) / 3.F;
