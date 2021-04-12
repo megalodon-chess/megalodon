@@ -37,13 +37,6 @@ Transposition::Transposition() {
 
 Options::Options() {
     Hash           = 256;
-    UseHashTable   = false;
-    HashStart      = 5;
-
-    MoveTimeMult   = 100;
-    UseEndgame     = false;
-    LMRFactor      = 0;
-    QuickMove      = false;
 
     EvalMaterial   = 1;
     EvalPawnStruct = 1;
