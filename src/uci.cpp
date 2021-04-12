@@ -272,13 +272,17 @@ int loop() {
             prev_eval = 0;
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
-        else if (startswith(cmd, "go") && !searching) {
-            vector<string> parts = split(cmd, " ");
-            if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
-            else {
-                options.clear_hash();
-                searching = true;
-                std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+        else if (startswith(cmd, "go")) {
+            if (!searching) {
+                vector<string> parts = split(cmd, " ");
+                if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
+                else {
+                    options.clear_hash();
+                    searching = true;
+                    std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+                }
+            } else {
+                cout << "Already searching" << endl;
             }
         }
         else if (cmd == "stop") searching = false;
