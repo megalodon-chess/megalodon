@@ -262,15 +262,12 @@ namespace Eval {
     float knights(const U64& wn, const U64& bn, const U64& wp, const U64& bp) {
         float wdist = 0, bdist = 0;
         const char wcnt = popcnt(wn), bcnt = popcnt(bn);
-        const bool wp_in_cent = true;//((INNER_CENTER|OUTER_CENTER) & wp) != 0;
-        const bool bp_in_cent = true;//((INNER_CENTER|OUTER_CENTER) & bp) != 0;
+        const bool wp_in_cent = true;
+        const bool bp_in_cent = true;
 
         for (char i = 0; i < 64; i++) {
-            if (wp_in_cent && bit(wn, i)) {
-                wdist += 6 - CENTER_DIST_MAP[i];
-            } else if (bp_in_cent && bit(bn, i)) {
-                bdist += 6 - CENTER_DIST_MAP[i];
-            }
+            if      (bit(wn, i)) wdist += 6 - CENTER_DIST_MAP[i];
+            else if (bit(bn, i)) bdist += 6 - CENTER_DIST_MAP[i];
         }
 
         if (wcnt > 0) wdist /= wcnt;
