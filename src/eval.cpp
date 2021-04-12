@@ -353,15 +353,24 @@ namespace Eval {
     }
 
     float queens(const Position& pos) {
-        const char wq = Bitboard::first_bit(pos.wq).loc, bq = Bitboard::first_bit(pos.bq).loc;
+        float wscore = 0, bscore = 0;
+        const char wcnt = popcnt(pos.wq), bcnt = popcnt(pos.bq);
         const U64 white = Bitboard::get_white(pos), black = Bitboard::get_black(pos);
 
-        float score = 0;
-        score += (float)(6-CENTER_DIST_MAP[wq]) / 15;
-        score -= (float)(6-CENTER_DIST_MAP[bq]) / 15;
-        score += (float)(popcnt(SURROUNDINGS[wq]&white)) / 35;
-        score -= (float)(popcnt(SURROUNDINGS[bq]&black)) / 35;
-        return score;
+        for (char i = 0; i < 64; i++) {
+            if (bit(pos.wq, i)) {
+                wscore += (float)(6-CENTER_DIST_MAP[i]) / 15;
+                wscore += (float)(popcnt(SURROUNDINGS[i]&white)) / 35;
+            }
+            if (bit(pos.bq, i)) {
+                bscore += (float)(6-CENTER_DIST_MAP[i]) / 15;
+                bscore += (float)(popcnt(SURROUNDINGS[i]&black)) / 35;
+            }
+        }
+
+        if (wcnt != 0) wscore /= wcnt;
+        if (bcnt != 0) bscore /= bcnt;
+        return wscore - bscore;
     }
 
     float kings(const U64& wk, const U64& bk) {
@@ -396,7 +405,7 @@ namespace Eval {
         const float bishop      = options.EvalBishops    * bishops(pos.wb, pos.bb) / 10.F;
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
         const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp) / 2.F;
-        const float queen       = options.EvalQueens     * queens(pos) / 6.F;
+        const float queen       = options.EvalQueens     * queens(pos) / 3.F;
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 16.F;
 
         // Endgame and middle game are for weighting categories.
