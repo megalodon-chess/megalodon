@@ -208,9 +208,9 @@ int loop() {
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
-            vector<string> parts = split(cmd, " ");
-            string name = parts[2];
-            string value = parts[4];
+            const vector<string> parts = split(cmd, " ");
+            const string name = parts[2];
+            const string value = parts[4];
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
@@ -230,7 +230,7 @@ int loop() {
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
         else if (startswith(cmd, "hash")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 cout << Hash::hash(pos) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
@@ -238,7 +238,7 @@ int loop() {
             }
         }
         else if (startswith(cmd, "eval")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 U64 attacked = Bitboard::attacked(pos, !pos.turn);
                 cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true) << endl;
@@ -248,7 +248,7 @@ int loop() {
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
         else if (startswith(cmd, "pushperft")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             perft_push(pos, std::stoi(parts[1]));
         }
         else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
@@ -259,7 +259,7 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
                 options.clear_hash();
