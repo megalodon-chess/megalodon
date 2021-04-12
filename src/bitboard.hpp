@@ -38,7 +38,7 @@ struct Move {
     char from;
     char to;
     bool is_promo;
-    char promo;
+    char promo;  // 0, 1, 2, 3
 };
 
 struct Position {

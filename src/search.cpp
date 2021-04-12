@@ -101,9 +101,11 @@ namespace Search {
             return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
         }
 
+        // Parse and store best move
         const U64 idx = Hash::hash(pos) % options.hash_size;
         Transposition& entry = options.hash_table[idx];
-        if (entry.depth > 0) moves.insert(moves.begin(), entry.best);
+        const Move best(entry.from&63, entry.to&63, entry.to&64, (entry.from&192)>>6);
+        if (entry.depth > 0) moves.insert(moves.begin(), best);
 
         U64 nodes = 1;
         vector<Move> pv;
@@ -119,7 +121,6 @@ namespace Search {
                 }
             }
             if ((i != 0) && (entry.depth > 0)) {  // Don't search best move twice
-                const Move& best = entry.best;
                 const Move& curr = moves[i];
                 if ((best.from == curr.from) && (best.to == curr.to) && (best.is_promo == curr.is_promo) &&
                         (best.promo == curr.promo)) continue;
@@ -157,7 +158,10 @@ namespace Search {
 
         if (depth > entry.depth) {
             if (entry.depth == 0) hash_filled++;
-            entry.best = moves[best_ind];
+
+            const Move& best_move = moves[best_ind];
+            entry.from = best_move.from + (best_move.promo<<6);
+            entry.to = best_move.to + (best_move.is_promo<<6);
             entry.depth = depth;
         }
 
