@@ -202,7 +202,7 @@ int loop() {
             cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
             cout << "option name UseEndgame type check default false" << "\n";
             cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
-            cout << "option name QuickMove type check default true" << "\n";
+            cout << "option name QuickMove type check default false" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";

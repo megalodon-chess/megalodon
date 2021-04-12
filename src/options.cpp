@@ -22,7 +22,7 @@
 #include <string>
 #include "options.hpp"
 
-#define HASH_FACTOR  209000
+#define HASH_FACTOR  348000
 
 using std::cin;
 using std::cout;
@@ -43,7 +43,7 @@ Options::Options() {
     MoveTimeMult   = 100;
     UseEndgame     = false;
     LMRFactor      = 0;
-    QuickMove      = true;
+    QuickMove      = false;
 
     EvalMaterial   = 1;
     EvalPawnStruct = 1;
