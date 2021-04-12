@@ -56,7 +56,6 @@ namespace Search {
     constexpr float MAX = 10000;
     constexpr float MIN = -10000;
 
-    float moves_left(const Options&, const Position&);
     float move_time(const Options&, const Position&, const float&, const float&);
 
     SearchInfo search(const Options&, const Position&, const int&, const double&, const bool&,

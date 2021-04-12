@@ -83,16 +83,11 @@ bool SearchInfo::is_mate() {
 
 
 namespace Search {
-    float moves_left(const Options& options, const Position& pos) {
-        float abs_left = 55 - pos.move_cnt;
-        if (abs_left < 5) abs_left = 5;
-        return abs_left;
-    }
-
     float move_time(const Options& options, const Position& pos, const float& time, const float& inc) {
-        const float moves = moves_left(options, pos);
+        const int moves = std::max(55-pos.move_cnt, 5);
         const float time_left = time + inc*moves;
-        return time_left / moves;
+        const float move_time = time_left / moves;
+        return std::min(move_time, time/2);
     }
 
 
