@@ -136,7 +136,7 @@ namespace Eval {
             rook        *  1.1F +
             queen       *  0.8F +
             king        * -1.3F +
-            space       *  0.F        // Space encourages pawns in the center, which discourages promotion.
+            space       *  0.0F        // Space encourages pawns in the center, which discourages promotion.
         );
     }
 
@@ -157,7 +157,7 @@ namespace Eval {
             for (char y = 3; y < 7; y++) if (bit(bp, (y<<3)+x)) sp -= 6-y;
         }
 
-        return sp / 4;
+        return sp / 4.0F;
     }
 
     float pawn_structure(const U64& wp, const U64& bp) {
@@ -290,12 +290,12 @@ namespace Eval {
             const char dist = 3 - FILE_DIST_MAP[x];
 
             if (bit(wr, i)) {
-                if (open) score += 0.4;
-                else if (semi_open) score += 0.15;
+                if (open) score += 0.4F;
+                else if (semi_open) score += 0.15F;
                 score += (float)(dist) / 20;
             } else if (bit(br, i)) {
-                if (open) score -= 0.4;
-                else if (semi_open) score -= 0.15;
+                if (open) score -= 0.4F;
+                else if (semi_open) score -= 0.15F;
                 score -= (float)(dist) / 20;
             }
         }
@@ -318,8 +318,8 @@ namespace Eval {
     float kings(const U64& wk, const U64& bk) {
         const Location w = Bitboard::first_bit(wk);
         const Location b = Bitboard::first_bit(bk);
-        const char wdist = CENTER_DIST_MAP[(w.y<<3)+w.x];
-        const char bdist = CENTER_DIST_MAP[(b.y<<3)+b.x];
+        const char wdist = CENTER_DIST_MAP[w.loc];
+        const char bdist = CENTER_DIST_MAP[b.loc];
         return wdist - bdist;
     }
 
