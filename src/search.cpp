@@ -173,10 +173,10 @@ namespace Search {
         const int eg = Endgame::eg_type(pos);
         const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        if (options.QuickMove && moves.size() == 1) {
+        if (false && (moves.size() == 1)) {
             return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
         }
-        if (options.UseEndgame && eg != 0) {
+        if (false && (eg != 0)) {
             const Move best_move = Endgame::bestmove(pos, moves, eg);
             return SearchInfo(1, 1, pos.turn ? MAX : MIN, moves.size(), 0, 0, 0, {best_move}, 0, 0, true);
         }

@@ -128,7 +128,6 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         if (pos.turn) movetime = Search::move_time(options, pos, wtime, winc);
         else movetime = Search::move_time(options, pos, btime, binc);
     }
-    movetime *= (float)(options.MoveTimeMult) / 100;
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
@@ -197,12 +196,6 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default false" << "\n";
-
-            cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
-            cout << "option name UseEndgame type check default false" << "\n";
-            cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
-            cout << "option name QuickMove type check default false" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
@@ -223,13 +216,6 @@ int loop() {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
-            else if (name == "UseHashTable") options.UseHashTable = (value == "true");
-            else if (name == "HashStart") options.HashStart = std::stoi(value);
-
-            else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
-            else if (name == "UseEndgame") options.UseEndgame = (value == "true");
-            else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
-            else if (name == "QuickMove") options.QuickMove = (value == "true");
 
             else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
