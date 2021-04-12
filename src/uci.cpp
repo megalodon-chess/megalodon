@@ -208,6 +208,7 @@ int loop() {
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalBishops type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalRooks type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalQueens type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
@@ -235,6 +236,7 @@ int loop() {
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
             else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
             else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
+            else if (name == "EvalBishops") options.EvalBishops = std::stof(value) / 100;
             else if (name == "EvalRooks") options.EvalRooks = std::stof(value) / 100;
             else if (name == "EvalQueens") options.EvalQueens = std::stof(value) / 100;
             else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;

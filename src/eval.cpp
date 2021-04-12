@@ -150,24 +150,26 @@ namespace Eval {
     }
 
     float middle_game(const float& pawn_struct, const float& p_attacks, const float& knight,
-            const float& rook, const float& queen, const float& king, const float& space) {
+            const float& bishop, const float& rook, const float& queen, const float& king, const float& space) {
         return (
             pawn_struct *  0.9F +
             p_attacks   *  0.9F +
-            knight      *  1.F +
-            rook        *  1.F +
-            queen       *  1.F +
-            king        *  1.F +
-            space       *  1.F
+            knight      *  1.0F +
+            bishop      *  1.0F +
+            rook        *  1.0F +
+            queen       *  1.0F +
+            king        *  1.0F +
+            space       *  1.0F
         );
     }
 
     float end_game(const float& pawn_struct, const float& p_attacks, const float& knight,
-            const float& rook, const float& queen, const float& king, const float& space) {
+            const float& bishop, const float& rook, const float& queen, const float& king, const float& space) {
         return (
             pawn_struct *  1.2F +
             p_attacks   *  0.8F +
             knight      *  0.7F +
+            bishop      *  1.0F +
             rook        *  1.1F +
             queen       *  0.8F +
             king        * -1.3F +
@@ -316,8 +318,8 @@ namespace Eval {
         const char bcnt = popcnt(bb);
 
         for (char i = 0; i < 15; i++) {
-            wscore += popcnt(wb & (DIAGONALS_R[i] | DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
-            bscore += popcnt(bb & (DIAGONALS_R[i] | DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
+            wscore += popcnt(wb & (DIAGONALS_R[i]|DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
+            bscore += popcnt(bb & (DIAGONALS_R[i]|DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
         }
 
         if (wcnt != 0) wscore /= wcnt;
@@ -391,14 +393,15 @@ namespace Eval {
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 5.F;
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 5.F;
         const float p_attacks   =                          pawn_attacks(pos) / 2.F;
+        const float bishop      = options.EvalBishops    * bishops(pos.wb, pos.bb) / 10.F;
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
         const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp) / 2.F;
         const float queen       = options.EvalQueens     * queens(pos) / 6.F;
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 16.F;
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
-        const float eg = end_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        const float mg = middle_game(pawn_struct, p_attacks, knight, bishop, rook, queen, king, sp);
+        const float eg = end_game(pawn_struct, p_attacks, knight, bishop, rook, queen, king, sp);
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
 
@@ -407,6 +410,7 @@ namespace Eval {
             cout << " Pawn Structure | " << pawn_struct << "\n";
             cout << "   Pawn Attacks | " << p_attacks << "\n";
             cout << "        Knights | " << knight << "\n";
+            cout << "        Bishops | " << bishop << "\n";
             cout << "          Rooks | " << rook << "\n";
             cout << "         Queens | " << queen << "\n";
             cout << "          Kings | " << king << "\n";
