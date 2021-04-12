@@ -281,21 +281,37 @@ namespace Eval {
         const char bcnt = popcnt(bb);
 
         // wscore += popcnt(wb & (DIAGONALS_R[0] | DIAGONALS_L[0])) * 0;
+        // wscore += popcnt(wb & (DIAGONALS_R[1] | DIAGONALS_L[1])) * 0;
+        // wscore += popcnt(wb & (DIAGONALS_R[2] | DIAGONALS_L[2])) * 1;
+        // wscore += popcnt(wb & (DIAGONALS_R[3] | DIAGONALS_L[3])) * 1;
+        // wscore += popcnt(wb & (DIAGONALS_R[4] | DIAGONALS_L[4])) * 2;
+        // wscore += popcnt(wb & (DIAGONALS_R[5] | DIAGONALS_L[5])) * 3;
+        // wscore += popcnt(wb & (DIAGONALS_R[6] | DIAGONALS_L[6])) * 3;
+        // wscore += popcnt(wb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 4;
+        // wscore += popcnt(wb & (DIAGONALS_R[8] | DIAGONALS_L[8])) * 3;
+        // wscore += popcnt(wb & (DIAGONALS_R[9] | DIAGONALS_L[9])) * 3;
+        // wscore += popcnt(wb & (DIAGONALS_R[10] | DIAGONALS_L[10])) * 2;
+        // wscore += popcnt(wb & (DIAGONALS_R[11] | DIAGONALS_L[11])) * 1;
+        // wscore += popcnt(wb & (DIAGONALS_R[12] | DIAGONALS_L[12])) * 1;
+        // wscore += popcnt(wb & (DIAGONALS_R[13] | DIAGONALS_L[13])) * 0;
+        // wscore += popcnt(wb & (DIAGONALS_R[14] | DIAGONALS_L[14])) * 0;
+
         // bscore += popcnt(bb & (DIAGONALS_R[0] | DIAGONALS_L[0])) * 0;
-        // wscore += popcnt(wb & (DIAGONALS_R[1] | DIAGONALS_L[1])) * 1;
-        // bscore += popcnt(bb & (DIAGONALS_R[1] | DIAGONALS_L[1])) * 1;
-        // wscore += popcnt(wb & (DIAGONALS_R[2] | DIAGONALS_L[2])) * 2;
-        // bscore += popcnt(bb & (DIAGONALS_R[2] | DIAGONALS_L[2])) * 2;
-        // wscore += popcnt(wb & (DIAGONALS_R[3] | DIAGONALS_L[3])) * 3;
-        // bscore += popcnt(bb & (DIAGONALS_R[3] | DIAGONALS_L[3])) * 3;
-        // wscore += popcnt(wb & (DIAGONALS_R[4] | DIAGONALS_L[4])) * 3;
-        // bscore += popcnt(bb & (DIAGONALS_R[4] | DIAGONALS_L[4])) * 3;
-        // wscore += popcnt(wb & (DIAGONALS_R[5] | DIAGONALS_L[5])) * 2;
-        // bscore += popcnt(bb & (DIAGONALS_R[5] | DIAGONALS_L[5])) * 2;
-        // wscore += popcnt(wb & (DIAGONALS_R[6] | DIAGONALS_L[6])) * 1;
-        // bscore += popcnt(bb & (DIAGONALS_R[6] | DIAGONALS_L[6])) * 1;
-        // wscore += popcnt(wb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 0;
-        // bscore += popcnt(bb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 0;
+        // bscore += popcnt(bb & (DIAGONALS_R[1] | DIAGONALS_L[1])) * 0;
+        // bscore += popcnt(bb & (DIAGONALS_R[2] | DIAGONALS_L[2])) * 1;
+        // bscore += popcnt(bb & (DIAGONALS_R[3] | DIAGONALS_L[3])) * 1;
+        // bscore += popcnt(bb & (DIAGONALS_R[4] | DIAGONALS_L[4])) * 2;
+        // bscore += popcnt(bb & (DIAGONALS_R[5] | DIAGONALS_L[5])) * 3;
+        // bscore += popcnt(bb & (DIAGONALS_R[6] | DIAGONALS_L[6])) * 3;
+        // bscore += popcnt(bb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 4;
+        // bscore += popcnt(bb & (DIAGONALS_R[8] | DIAGONALS_L[8])) * 3;
+        // bscore += popcnt(bb & (DIAGONALS_R[9] | DIAGONALS_L[9])) * 3;
+        // bscore += popcnt(bb & (DIAGONALS_R[10] | DIAGONALS_L[10])) * 2;
+        // bscore += popcnt(bb & (DIAGONALS_R[11] | DIAGONALS_L[11])) * 1;
+        // bscore += popcnt(bb & (DIAGONALS_R[12] | DIAGONALS_L[12])) * 1;
+        // bscore += popcnt(bb & (DIAGONALS_R[13] | DIAGONALS_L[13])) * 0;
+        // bscore += popcnt(bb & (DIAGONALS_R[14] | DIAGONALS_L[14])) * 0;
+
 
         if (wcnt != 0) wscore /= wcnt;
         if (bcnt != 0) bscore /= bcnt;
