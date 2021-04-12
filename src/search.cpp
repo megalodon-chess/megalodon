@@ -206,9 +206,9 @@ namespace Search {
             }
             if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) break;
 
-            if (stop_early && ((elapse/movetime) >= 0.6)) {    // Won't finish next depth so no point
-                break;
-            }
+            // if (stop_early && ((elapse/movetime) >= 0.6)) {    // Won't finish next depth so no point
+            //     break;
+            // }
         }
 
         return result;
