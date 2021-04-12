@@ -145,8 +145,8 @@ namespace Eval {
         // 1 = full middlegame, 0 = full endgame.
         const float npm = non_pawn_mat(pos);
         if (npm >= MIDGAME_LIM) return 1;
-        else if (npm <= ENDGAME_LIM) return 0;
-        else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
+        if (npm <= ENDGAME_LIM) return 0;
+        return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
     }
 
     float middle_game(const float& pawn_struct, const float& p_attacks, const float& knight,
@@ -401,7 +401,7 @@ namespace Eval {
                 // Increment value by depth to encourage sooner mate.
                 // The larger depth is, the closer it is to the leaf nodes.
                 if (pos.turn) return Search::MIN + depth;  // Mate by black
-                else return Search::MAX - depth;           // Mate by white
+                else          return Search::MAX - depth;  // Mate by white
             }
             return 0;
         }
