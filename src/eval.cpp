@@ -202,7 +202,7 @@ namespace Eval {
         char stacked = 0;
         char islands = 0;
         char passed = 0;
-        char backwards = 0;
+        char advance = 0;
 
         // Generate file values
         char w_adv[8], b_adv[8];     // Position of most advanced pawn, side dependent (-1 if no pawn)
@@ -278,10 +278,17 @@ namespace Eval {
             }
         }
 
+        // Advancement
+        for (char i = 0; i < 8; i++) {
+            if (w_adv[i] != -1) advance += w_adv[i];
+            if (b_adv[i] != -1) advance -= 7 - b_adv[i];
+        }
+
         return (
-            -0.3 * islands +
-            -0.2 * stacked +
-            0.6 * passed
+            -0.3F * islands +
+            -0.2F * stacked +
+            +0.6F * passed +
+            +0.9F * advance
         );
     }
 
