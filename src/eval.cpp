@@ -56,6 +56,41 @@ namespace Eval {
         506381179683864576ULL, 1085102527893995520ULL, 2242545224314257408ULL, 4485090448628514816ULL,
         8970180897257029632ULL, 17940361794514059264ULL, 17361640446303928320ULL, 16204197749883666432ULL
     };
+    const U64 DIAGONALS_R[15] = {
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    };
+    const U64 DIAGONALS_L[15] = {
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+    };
+    const U64 BISHOP_WEIGHTS[15] = {0, 0, 1, 1, 2, 3, 3, 4, 3, 3, 2, 1, 1, 0, 0};
 
     void init() {
         for (auto i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
@@ -280,38 +315,10 @@ namespace Eval {
         const char wcnt = popcnt(wb);
         const char bcnt = popcnt(bb);
 
-        // wscore += popcnt(wb & (DIAGONALS_R[ 0] | DIAGONALS_L[ 0])) * 0;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 1] | DIAGONALS_L[ 1])) * 0;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 2] | DIAGONALS_L[ 2])) * 1;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 3] | DIAGONALS_L[ 3])) * 1;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 4] | DIAGONALS_L[ 4])) * 2;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 5] | DIAGONALS_L[ 5])) * 3;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 6] | DIAGONALS_L[ 6])) * 3;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 7] | DIAGONALS_L[ 7])) * 4;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 8] | DIAGONALS_L[ 8])) * 3;
-        // wscore += popcnt(wb & (DIAGONALS_R[ 9] | DIAGONALS_L[ 9])) * 3;
-        // wscore += popcnt(wb & (DIAGONALS_R[10] | DIAGONALS_L[10])) * 2;
-        // wscore += popcnt(wb & (DIAGONALS_R[11] | DIAGONALS_L[11])) * 1;
-        // wscore += popcnt(wb & (DIAGONALS_R[12] | DIAGONALS_L[12])) * 1;
-        // wscore += popcnt(wb & (DIAGONALS_R[13] | DIAGONALS_L[13])) * 0;
-        // wscore += popcnt(wb & (DIAGONALS_R[14] | DIAGONALS_L[14])) * 0;
-
-        // bscore += popcnt(bb & (DIAGONALS_R[ 0] | DIAGONALS_L[ 0])) * 0;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 1] | DIAGONALS_L[ 1])) * 0;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 2] | DIAGONALS_L[ 2])) * 1;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 3] | DIAGONALS_L[ 3])) * 1;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 4] | DIAGONALS_L[ 4])) * 2;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 5] | DIAGONALS_L[ 5])) * 3;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 6] | DIAGONALS_L[ 6])) * 3;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 7] | DIAGONALS_L[ 7])) * 4;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 8] | DIAGONALS_L[ 8])) * 3;
-        // bscore += popcnt(bb & (DIAGONALS_R[ 9] | DIAGONALS_L[ 9])) * 3;
-        // bscore += popcnt(bb & (DIAGONALS_R[10] | DIAGONALS_L[10])) * 2;
-        // bscore += popcnt(bb & (DIAGONALS_R[11] | DIAGONALS_L[11])) * 1;
-        // bscore += popcnt(bb & (DIAGONALS_R[12] | DIAGONALS_L[12])) * 1;
-        // bscore += popcnt(bb & (DIAGONALS_R[13] | DIAGONALS_L[13])) * 0;
-        // bscore += popcnt(bb & (DIAGONALS_R[14] | DIAGONALS_L[14])) * 0;
-
+        for (char i = 0; i < 15; i++) {
+            wscore += popcnt(wb & (DIAGONALS_R[i] | DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
+            bscore += popcnt(bb & (DIAGONALS_R[i] | DIAGONALS_L[i])) * BISHOP_WEIGHTS[i];
+        }
 
         if (wcnt != 0) wscore /= wcnt;
         if (bcnt != 0) bscore /= bcnt;
