@@ -44,7 +44,7 @@ const vector<string> GAME_END{"Good game!", "I look forward to playing again.", 
 
 
 Position parse_pos(const string& str) {
-    vector<string> parts = split(str, " ");
+    const vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
         Position pos = Bitboard::startpos();
         if (parts.size() > 3 && parts[2] == "moves") {
@@ -73,7 +73,7 @@ Position parse_pos(const string& str) {
 
 
 void print_legal_moves(const Position& pos) {
-    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
     for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
 }
