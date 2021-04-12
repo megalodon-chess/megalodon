@@ -146,8 +146,8 @@ void perft(const Options& options, const Position& pos, const int& depth) {
     if (moves.size() > 0) {
         int move_num = 1;
         for (const auto& move: moves) {
-            Position new_pos = Bitboard::push(pos, move);
-            long long curr_nodes = Perft::movegen(new_pos, depth-1);
+            const Position new_pos = Bitboard::push(pos, move);
+            const long long curr_nodes = Perft::movegen(new_pos, depth-1);
             nodes += curr_nodes;
             cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
             move_num++;
