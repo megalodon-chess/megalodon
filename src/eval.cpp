@@ -270,8 +270,8 @@ namespace Eval {
             else if (bit(bn, i)) bdist += 6 - CENTER_DIST_MAP[i];
         }
 
-        if (wcnt > 0) wdist /= wcnt;
-        if (bcnt > 0) bdist /= bcnt;
+        if (wcnt != 0) wdist /= wcnt;
+        if (bcnt != 0) bdist /= bcnt;
         return wdist - bdist;
     }
 
@@ -297,8 +297,8 @@ namespace Eval {
         // wscore += popcnt(wb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 0;
         // bscore += popcnt(bb & (DIAGONALS_R[7] | DIAGONALS_L[7])) * 0;
 
-        if (wcnt > 0) wscore /= wcnt;
-        if (bcnt > 0) bscore /= bcnt;
+        if (wcnt != 0) wscore /= wcnt;
+        if (bcnt != 0) bscore /= bcnt;
         return wscore - bscore;
     }
 
