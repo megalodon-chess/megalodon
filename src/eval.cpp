@@ -288,7 +288,7 @@ namespace Eval {
             -0.3F * islands +
             -0.2F * stacked +
             +0.6F * passed +
-            +0.9F * advance
+            +0.6F * advance
         );
     }
 
