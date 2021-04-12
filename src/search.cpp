@@ -195,6 +195,22 @@ namespace Search {
         while (true) {
             if ((get_time() >= end) || !searching) break;
 
+            int best_ind = 0;
+            int best_eval = pos.turn ? MIN : MAX;
+            for (char i = 0; i < pos.child_count; i++) {
+                const int score = pos.children[i]->score;
+                if (pos.turn && (score > best_eval)) {
+                    best_eval = score;
+                    best_ind = i;
+                } else if (!pos.turn && (score < best_eval)) {
+                    best_eval = score;
+                    best_ind = i;
+                }
+            }
+            const double elapse = get_time() - start;
+            SearchInfo search_result(depth, depth, 0, nodes, nodes/elapse, elapse, {pos.moves[best_ind]}, 0, 0, true);
+            cout << search_result.as_string() << endl;
+
             // Selection
             Position* curr_node = &pos;
             int curr_depth = 0;
@@ -206,9 +222,6 @@ namespace Search {
             }
             if (curr_depth > depth) {
                 depth = curr_depth;
-                const double elapse = get_time() - start;
-                SearchInfo result(depth, depth, 0, nodes, nodes/elapse, elapse, {}, 0, 0, true);
-                cout << result.as_string() << endl;
             }
 
             // Expansion
@@ -239,8 +252,8 @@ namespace Search {
                         else if (curr_result == 2) result--;
                         break;
                     }
-                    bool searching = true;
-                    const Move move = dfs(options, curr_sim, 2, 0, MIN, MAX, false, end, searching).pv[0];
+                    bool b = true;
+                    const Move move = dfs(options, curr_sim, 2, 0, MIN, MAX, false, end, b).pv[0];
                     curr_sim = Bitboard::push(curr_sim, move);
                 }
             }
