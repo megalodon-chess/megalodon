@@ -161,9 +161,9 @@ namespace Search {
         pv.insert(pv.begin(), moves[best_ind]);
 
         if (depth > entry.depth) {
+            if (entry.depth == 0) hash_filled++;
             entry.best = moves[best_ind];
             entry.depth = depth;
-            hash_filled++;
         }
 
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
