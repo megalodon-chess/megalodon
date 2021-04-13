@@ -24,6 +24,7 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "hash.hpp"
+#include "debug.hpp"
 
 using std::abs;
 using std::cin;
@@ -229,7 +230,9 @@ namespace Bitboard {
             case 4611686018427387904ULL: return 62;
             case 9223372036854775808ULL: return 63;
         }
-        //std::cerr << "WARNING: bitboard.cpp, first_bit_char: Bitboard does not have one bit set in" << endl;
+        #if DEBUG_MODE
+            std::cerr << "DEBUG: bitboard.cpp, first_bit_char: Bitboard does not have one bit set." << endl;
+        #endif
         return 0;
     }
 
