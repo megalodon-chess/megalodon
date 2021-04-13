@@ -132,8 +132,7 @@ namespace Search {
             nodes += result.nodes;
 
             if (root && (depth >= 5)) {
-                cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
-                    << " currmovenumber " << movecnt << endl;
+                cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i]) << " currmovenumber " << movecnt << endl;
             }
 
             if (pos.turn) {

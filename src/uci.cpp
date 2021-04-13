@@ -126,7 +126,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     } else if (mode == 2) {
         depth = 99;
         if (pos.turn) movetime = Search::move_time(options, pos, wtime, winc);
-        else movetime = Search::move_time(options, pos, btime, binc);
+        else          movetime = Search::move_time(options, pos, btime, binc);
     }
     if (mode == 2) movetime /= 1.5;
 
@@ -217,13 +217,13 @@ int loop() {
                 options.set_hash();
             }
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
-            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
-            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
-            else if (name == "EvalRooks") options.EvalRooks = std::stof(value) / 100;
-            else if (name == "EvalQueens") options.EvalQueens = std::stof(value) / 100;
-            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
+            else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value)/100;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value)/100;
+            else if (name == "EvalSpace")      options.EvalSpace      = std::stof(value)/100;
+            else if (name == "EvalKnights")    options.EvalKnights    = std::stof(value)/100;
+            else if (name == "EvalRooks")      options.EvalRooks      = std::stof(value)/100;
+            else if (name == "EvalQueens")     options.EvalQueens     = std::stof(value)/100;
+            else if (name == "EvalKings")      options.EvalKings      = std::stof(value)/100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
