@@ -133,7 +133,7 @@ namespace Bitboard {
     void unset_bit(U64&, const char&);
     void set_bit(char&, const char&);
     void unset_bit(char&, const char&);
-    bool in_board(const char& x, const char& y);
+    bool in_board(const char&, const char&);
     Location first_bit(const U64&);
 
     string piece_at(const Position&, const char&);
@@ -166,5 +166,5 @@ namespace Bitboard {
 
     Position startpos();
     Position push(Position, const Move&);
-    Position push(Position, string);
+    Position push(Position, const string&);
 }

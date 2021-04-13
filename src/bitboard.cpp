@@ -1005,15 +1005,14 @@ namespace Bitboard {
         U64* pointers[12] = {&pos.wp, &pos.wn, &pos.wb, &pos.wr, &pos.wq, &pos.wk,
             &pos.bp, &pos.bn, &pos.bb, &pos.br, &pos.bq, &pos.bk};
         U64* to_board = pointers[0];
-        bool is_king = false, is_pawn = false;
+        const bool is_king = bit(pos.wk|pos.bk, move.from);
+        const bool is_pawn = bit(pos.wp|pos.bp, move.from);
 
         // Find to_board and set bits.
         for (char i = 0; i < 12; i++) {
             U64* p = pointers[i];
             if (bit(*p, move.from)) {
                 to_board = p;
-                if ((i == 5) || (i == 11)) is_king = true;
-                if ((i == 0) || (i == 6))  is_pawn = true;
                 unset_bit(*p, move.from);
             }
             unset_bit(*p, move.to);
@@ -1103,7 +1102,7 @@ namespace Bitboard {
         return pos;
     }
 
-    Position push(Position pos, string uci) {
+    Position push(Position pos, const string& uci) {
         return push(pos, parse_uci(uci));
     }
 }
