@@ -37,10 +37,10 @@ using std::vector;
 using std::string;
 using std::to_string;
 
-const vector<string> GREETINGS{"Hello!", "Lets play!", "Are you ready for a game?"};
-const vector<string> WINNING{"Looks like I'm playing well!", "Wow!", "This is great!"};
-const vector<string> LOSING{"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
-const vector<string> GAME_END{"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
+const vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
+const vector<string> WINNING = {"Looks like I'm playing well!", "Wow!", "This is great!"};
+const vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
+const vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
 Position parse_pos(const string& str) {
@@ -75,16 +75,16 @@ Position parse_pos(const string& str) {
 void print_legal_moves(const Position& pos) {
     const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
-    for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
+    for (const auto& m: moves) cout << Bitboard::move_str(m) << "\n";
 }
 
 void chat(const Options& options, const bool& turn, const int& movect, const float& score, const float& prev_score) {
     return;  //! CHAT IS DISABLED
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    else if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    else if (turn  && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
     else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    else if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
-    else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+    else if (turn  && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
+    else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
 }
 
 float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
@@ -94,7 +94,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
     bool infinite = false;
-    for (auto i = 0; i < parts.size(); i++) {
+    for (auto i = 0; i < parts.size()-1; i++) {
         if (parts[i] == "depth") {
             mode = 1;
             depth = std::stoi(parts[i+1]);
