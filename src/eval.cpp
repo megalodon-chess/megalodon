@@ -325,10 +325,9 @@ namespace Eval {
         const char bcnt = popcnt(bb);
 
         for (char i = 0; i < 15; i++) {
-            wscore += popcnt(wb&DIAGONALS_L[i]) * BISHOP_WEIGHTS[i];
-            wscore += popcnt(wb&DIAGONALS_R[i]) * BISHOP_WEIGHTS[i];
-            bscore += popcnt(bb&DIAGONALS_L[i]) * BISHOP_WEIGHTS[i];
-            bscore += popcnt(bb&DIAGONALS_R[i]) * BISHOP_WEIGHTS[i];
+            const U64 diagonal = DIAGONALS_R[i] | DIAGONALS_L[i];
+            wscore += popcnt(wb&diagonal) * BISHOP_WEIGHTS[i];
+            bscore += popcnt(bb&diagonal) * BISHOP_WEIGHTS[i];
         }
 
         if (wcnt != 0) wscore /= wcnt;
