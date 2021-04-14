@@ -83,16 +83,11 @@ bool SearchInfo::is_mate() {
 
 
 namespace Search {
-    float moves_left(const Options& options, const Position& pos) {
-        float abs_left = 55 - pos.move_cnt;
-        if (abs_left < 5) abs_left = 5;
-        return abs_left;
-    }
-
     float move_time(const Options& options, const Position& pos, const float& time, const float& inc) {
-        const float moves = moves_left(options, pos);
+        const int moves = std::max(55-pos.move_cnt, 5);
         const float time_left = time + inc*moves;
-        return time_left / moves;
+        const float move_time = time_left / moves;
+        return std::min(move_time, time/2);
     }
 
 
@@ -106,9 +101,11 @@ namespace Search {
             return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
         }
 
+        // Parse and store best move
         const U64 idx = Hash::hash(pos) % options.hash_size;
         Transposition& entry = options.hash_table[idx];
-        if (entry.depth > 0) moves.insert(moves.begin(), entry.best);
+        const Move best(entry.from&63, entry.to&63, entry.to&64, (entry.from&192)>>6);
+        if (entry.depth > 0) moves.insert(moves.begin(), best);
 
         U64 nodes = 1;
         vector<Move> pv;
@@ -124,7 +121,6 @@ namespace Search {
                 }
             }
             if ((i != 0) && (entry.depth > 0)) {  // Don't search best move twice
-                const Move& best = entry.best;
                 const Move& curr = moves[i];
                 if ((best.from == curr.from) && (best.to == curr.to) && (best.is_promo == curr.is_promo) &&
                         (best.promo == curr.promo)) continue;
@@ -136,8 +132,7 @@ namespace Search {
             nodes += result.nodes;
 
             if (root && (depth >= 5)) {
-                cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i])
-                    << " currmovenumber " << movecnt << endl;
+                cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i]) << " currmovenumber " << movecnt << endl;
             }
 
             if (pos.turn) {
@@ -161,9 +156,12 @@ namespace Search {
         pv.insert(pv.begin(), moves[best_ind]);
 
         if (depth > entry.depth) {
-            entry.best = moves[best_ind];
+            if (entry.depth == 0) hash_filled++;
+
+            const Move& best_move = moves[best_ind];
+            entry.from = best_move.from + (best_move.promo<<6);
+            entry.to = best_move.to + (best_move.is_promo<<6);
             entry.depth = depth;
-            hash_filled++;
         }
 
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
@@ -174,10 +172,10 @@ namespace Search {
         const int eg = Endgame::eg_type(pos);
         const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        if (options.QuickMove && moves.size() == 1) {
+        if (false && (moves.size() == 1)) {
             return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
         }
-        if (options.UseEndgame && eg != 0) {
+        if (false && (eg != 0)) {
             const Move best_move = Endgame::bestmove(pos, moves, eg);
             return SearchInfo(1, 1, pos.turn ? MAX : MIN, moves.size(), 0, 0, 0, {best_move}, 0, 0, true);
         }
@@ -206,9 +204,9 @@ namespace Search {
             }
             if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) break;
 
-            if (stop_early && ((elapse/movetime) >= 0.6)) {    // Won't finish next depth so no point
-                break;
-            }
+            // if (stop_early && ((elapse/movetime) >= 0.6)) {    // Won't finish next depth so no point
+            //     break;
+            // }
         }
 
         return result;

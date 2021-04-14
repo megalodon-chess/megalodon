@@ -34,19 +34,13 @@ struct Transposition {
     Transposition();
 
     char depth;
-    Move best;
+    char from;  // First six bits = square, last two = promo piece
+    char to;    // First six bits = square, seventh = is_promo
 };
 
 class Options {
 /*
 Hash: type=spin, default=256, min=1, max=65536, hash table size (megabytes)
-UseHashTable: type=check, default=false, whether the engine should use hash table.
-HashStart: type=spin, default=5, min=1, max=8, starting depth to read and write into hash table.
-
-MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
-UseEndgame: type=check, default=false, whether to use endgame algorithms.
-LMRFactor: type=spin, default=0, min=0, max=100, percent of lowest branches to prune. ONLY WORKS IF USING HASH TABLE
-QuickMove: type=check, default=true, whether to move immediately when there is only one legal move (output will be missing eval info).
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
@@ -67,13 +61,6 @@ public:
     U64 hash_size;
 
     int Hash;
-    bool UseHashTable;
-    int HashStart;
-
-    int MoveTimeMult;
-    bool UseEndgame;
-    int LMRFactor;
-    bool QuickMove;
 
     float EvalMaterial;
     float EvalSpace;

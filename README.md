@@ -16,7 +16,7 @@ Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
-cd megalodon/
+cd ./megalodon/
 ./build.sh
 ./build/Megalodon
 ```
@@ -27,9 +27,9 @@ Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
-cd megalodon/
-mkdir build
-cd build/
+cd ./megalodon/
+mkdir ./build/
+cd ./build/
 cmake ..
 make -j
 ./Megalodon
@@ -41,7 +41,7 @@ Requires g++.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
-cd megalodon/src/
+cd ./megalodon/src/
 g++ -pthread -Ofast *.cpp -o Megalodon
 ./Megalodon
 ```

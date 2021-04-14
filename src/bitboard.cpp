@@ -24,6 +24,7 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 #include "hash.hpp"
+#include "debug.hpp"
 
 using std::abs;
 using std::cin;
@@ -162,8 +163,81 @@ namespace Bitboard {
         return (0 <= x && x < 8 && 0 <= y && y < 8);
     }
 
+    char first_bit_char(const U64& board) {
+        switch (board) {
+            case 1ULL:                   return 0;
+            case 2ULL:                   return 1;
+            case 4ULL:                   return 2;
+            case 8ULL:                   return 3;
+            case 16ULL:                  return 4;
+            case 32ULL:                  return 5;
+            case 64ULL:                  return 6;
+            case 128ULL:                 return 7;
+            case 256ULL:                 return 8;
+            case 512ULL:                 return 9;
+            case 1024ULL:                return 10;
+            case 2048ULL:                return 11;
+            case 4096ULL:                return 12;
+            case 8192ULL:                return 13;
+            case 16384ULL:               return 14;
+            case 32768ULL:               return 15;
+            case 65536ULL:               return 16;
+            case 131072ULL:              return 17;
+            case 262144ULL:              return 18;
+            case 524288ULL:              return 19;
+            case 1048576ULL:             return 20;
+            case 2097152ULL:             return 21;
+            case 4194304ULL:             return 22;
+            case 8388608ULL:             return 23;
+            case 16777216ULL:            return 24;
+            case 33554432ULL:            return 25;
+            case 67108864ULL:            return 26;
+            case 134217728ULL:           return 27;
+            case 268435456ULL:           return 28;
+            case 536870912ULL:           return 29;
+            case 1073741824ULL:          return 30;
+            case 2147483648ULL:          return 31;
+            case 4294967296ULL:          return 32;
+            case 8589934592ULL:          return 33;
+            case 17179869184ULL:         return 34;
+            case 34359738368ULL:         return 35;
+            case 68719476736ULL:         return 36;
+            case 137438953472ULL:        return 37;
+            case 274877906944ULL:        return 38;
+            case 549755813888ULL:        return 39;
+            case 1099511627776ULL:       return 40;
+            case 2199023255552ULL:       return 41;
+            case 4398046511104ULL:       return 42;
+            case 8796093022208ULL:       return 43;
+            case 17592186044416ULL:      return 44;
+            case 35184372088832ULL:      return 45;
+            case 70368744177664ULL:      return 46;
+            case 140737488355328ULL:     return 47;
+            case 281474976710656ULL:     return 48;
+            case 562949953421312ULL:     return 49;
+            case 1125899906842624ULL:    return 50;
+            case 2251799813685248ULL:    return 51;
+            case 4503599627370496ULL:    return 52;
+            case 9007199254740992ULL:    return 53;
+            case 18014398509481984ULL:   return 54;
+            case 36028797018963968ULL:   return 55;
+            case 72057594037927936ULL:   return 56;
+            case 144115188075855872ULL:  return 57;
+            case 288230376151711744ULL:  return 58;
+            case 576460752303423488ULL:  return 59;
+            case 1152921504606846976ULL: return 60;
+            case 2305843009213693952ULL: return 61;
+            case 4611686018427387904ULL: return 62;
+            case 9223372036854775808ULL: return 63;
+        }
+        #if DEBUG_MODE
+            std::cerr << "DEBUG: bitboard.cpp, first_bit_char: Bitboard does not have one bit set." << endl;
+        #endif
+        return 0;
+    }
+
     Location first_bit(const U64& board) {
-        const char pos = log2(board & -board);
+        const char pos = first_bit_char(board);
         return Location((pos&7), (pos>>3));
     }
 
@@ -1005,15 +1079,14 @@ namespace Bitboard {
         U64* pointers[12] = {&pos.wp, &pos.wn, &pos.wb, &pos.wr, &pos.wq, &pos.wk,
             &pos.bp, &pos.bn, &pos.bb, &pos.br, &pos.bq, &pos.bk};
         U64* to_board = pointers[0];
-        bool is_king = false, is_pawn = false;
+        const bool is_king = bit(pos.wk|pos.bk, move.from);
+        const bool is_pawn = bit(pos.wp|pos.bp, move.from);
 
         // Find to_board and set bits.
         for (char i = 0; i < 12; i++) {
             U64* p = pointers[i];
             if (bit(*p, move.from)) {
                 to_board = p;
-                if ((i == 5) || (i == 11)) is_king = true;
-                if ((i == 0) || (i == 6))  is_pawn = true;
                 unset_bit(*p, move.from);
             }
             unset_bit(*p, move.to);
@@ -1103,7 +1176,7 @@ namespace Bitboard {
         return pos;
     }
 
-    Position push(Position pos, string uci) {
+    Position push(Position pos, const string& uci) {
         return push(pos, parse_uci(uci));
     }
 }

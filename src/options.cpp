@@ -22,7 +22,7 @@
 #include <string>
 #include "options.hpp"
 
-#define HASH_FACTOR  209000
+#define HASH_FACTOR  348000
 
 using std::cin;
 using std::cout;
@@ -37,13 +37,6 @@ Transposition::Transposition() {
 
 Options::Options() {
     Hash           = 256;
-    UseHashTable   = false;
-    HashStart      = 5;
-
-    MoveTimeMult   = 100;
-    UseEndgame     = false;
-    LMRFactor      = 0;
-    QuickMove      = true;
 
     EvalMaterial   = 1;
     EvalPawnStruct = 1;
