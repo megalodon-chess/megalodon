@@ -27,7 +27,7 @@
 #include "search.hpp"
 #include "utils.hpp"
 
-#define VERSION  "0.4.3"
+#define VERSION  "1.0.0"
 
 using std::cin;
 using std::cout;

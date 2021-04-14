@@ -2,6 +2,63 @@
 
 This page contains release info.
 
+## [Megalodon 1.0.0][v1.0.0]
+
+Megalodon is a UCI chess engine with features like alpha-beta search, evaluation functions, and transposition tables.
+Version 1.0.0 plays at an estimated 1600 ELO on Lichess. View it's profile [here](https://lichess.org/@/megalodon-chess).
+
+### Features
+* Bitboard move generation
+* Minimax search with alpha-beta pruning
+* Iterative deepening
+* Evaluation on material, pawns, knights, queens, and kings.
+* Transposition table
+* Zobrist hashing
+* UCI protocol
+
+### Speed Stats
+Tested on `Intel i7-9700K 3.6GHz` at starting chess position.
+* Move generation at depth 6: 119,060,324 nodes, 20.8 million NPS
+* Search for 2 seconds: Depth 5, 165,804 nodes, 565,884 nps
+* Search to depth 6: 2,036,286 nodes, 566,736 nps, 3,592 ms
+
+### UCI Options
+Use these options to customize Megalodon's behavior.
+
+#### Hash
+This is the size of Megalodon's internal table, in megabytes. The longer you wish to run a search, the larger this value should be. The default value of 256 can hold 89 million positions, which is good for more than one hour of analysis.
+
+#### EvalMaterial, EvalPawnStruct, EvalSpace, EvalKnights, EvalRooks, EvalQueens, EvalKings
+These are weights (percent) of each evaluation category. You can use these to change Megalodon's behavior.
+
+### Goals
+
+#### Goals set for v1.0.0
+
+- [x] ELO: 1200
+- [x] Nodes per second: 30000
+- [x] Bitboard move generation
+- [x] Breadth first search (kind of)
+- [x] Minimax move picking with alpha-beta pruning
+- [ ] Prune lowest N% branches (late move reductions)
+
+#### Goals for v2.0.0
+
+* 2000 ELO
+* 1 million NPS
+* Late move reductions and null move pruning
+* Monte carlo tree search
+* More customization options
+* Multithreaded search
+* Syzygy tablebase support (hopefully)
+* Neural networks (hopefully)
+* Variants (hopefully)
+
+### Changes from v0.4.3
+* Small optimizations
+* Bug fixes
+* Hash table capacity was increased by 60%
+
 ## [Megalodon 0.4.3][v0.4.3]
 
 This release contains a transposition table. It has a default size of 256 MB, and stores about 50 million positions.
@@ -204,6 +261,7 @@ Megalodon uses a minimax search with material and piece maps as evaluation.
 [Back to documentation home][home]
 
 [home]: https://megalodon-chess.github.io/megalodon/
+[v1.0.0]: https://github.com/megalodon-chess/megalodon/releases/tag/v1.0.0
 [v0.4.3]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.3
 [v0.4.2]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.2
 [v0.4.1]: https://github.com/megalodon-chess/megalodon/releases/tag/v0.4.1

@@ -6,7 +6,7 @@ UCI chess engine
 
 Play against Megalodon on [Lichess][lichess]!
 
-[Version 0.4.3][latest] was recently released!
+[Version 1.0.0][latest] was recently released!
 
 ## Table of Contents
 
