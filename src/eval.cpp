@@ -382,10 +382,8 @@ namespace Eval {
     }
 
     float kings(const U64& wk, const U64& bk) {
-        const Location w = Bitboard::first_bit(wk);
-        const Location b = Bitboard::first_bit(bk);
-        const char wdist = CENTER_DIST_MAP[w.loc];
-        const char bdist = CENTER_DIST_MAP[b.loc];
+        const char wdist = CENTER_DIST_MAP[Bitboard::first_bit_char(wk)];
+        const char bdist = CENTER_DIST_MAP[Bitboard::first_bit_char(bk)];
         return wdist - bdist;
     }
 
@@ -408,28 +406,28 @@ namespace Eval {
 
         const float mat         =                          material(pos);
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp) / 5.F;
-        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 5.F;
+        // const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp) / 5.F;
         const float p_attacks   =                          pawn_attacks(pos) / 2.F;
-        const float bishop      = options.EvalBishops    * bishops(pos.wb, pos.bb) / 12.F;
+        // const float bishop      = options.EvalBishops    * bishops(pos.wb, pos.bb) / 12.F;
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
-        const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp) / 2.F;
-        const float queen       = options.EvalQueens     * queens(pos) / 3.F;
+        // const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp) / 2.F;
+        // const float queen       = options.EvalQueens     * queens(pos) / 3.F;
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk) / 16.F;
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, p_attacks, knight, bishop, rook, queen, king, sp);
-        const float eg = end_game(pawn_struct, p_attacks, knight, bishop, rook, queen, king, sp);
+        const float mg = middle_game(0, p_attacks, knight, 0, 0, 0, king, sp);
+        const float eg = end_game(0, p_attacks, knight, 0, 0, 0, king, sp);
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
 
         if (print) {
             cout << "       Material | " << mat << "\n";
-            cout << " Pawn Structure | " << pawn_struct << "\n";
+            // cout << " Pawn Structure | " << pawn_struct << "\n";
             cout << "   Pawn Attacks | " << p_attacks << "\n";
             cout << "        Knights | " << knight << "\n";
-            cout << "        Bishops | " << bishop << "\n";
-            cout << "          Rooks | " << rook << "\n";
-            cout << "         Queens | " << queen << "\n";
+            // cout << "        Bishops | " << bishop << "\n";
+            // cout << "          Rooks | " << rook << "\n";
+            // cout << "         Queens | " << queen << "\n";
             cout << "          Kings | " << king << "\n";
             cout << "          Space | " << sp << "\n\n";
             cout << "    Middle Game | " << mg << "\n";
