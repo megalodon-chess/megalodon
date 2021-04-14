@@ -815,7 +815,7 @@ namespace Bitboard {
                                 }
                                 if (pos.ep && (move_loc == pos.ep_square)) {
                                     if (bit(block_mask, move_loc)) moves[movecnt++] = Move(i, move_loc);  // If ep capture can block check.
-                                    else if (pawn_check) moves[movecnt++] = Move(i, move_loc);  // If the king is in check by pawn with possible ep capture.
+                                    else if (pawn_check) moves[movecnt++] = Move(i, move_loc);  // If in check by pawn with possible ep capture.
                                 }
                             }
                         }
