@@ -51,10 +51,10 @@ namespace Perft {
     }
 
     double eval_perft(const Options& options, const Position& pos, const int& knodes) {
-        U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
+        const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-        double start = get_time();
+        const double start = get_time();
         for (auto i = 0; i < knodes*1000; i++) Eval::eval(options, pos, moves, 0, o_attacks);
         return get_time() - start;
     }
