@@ -33,14 +33,17 @@ using std::string;
 
 struct SearchInfo {
     SearchInfo();
-    SearchInfo(int, int, float, U64, int, double, vector<Move>, float, float, bool);
+    SearchInfo(const int&, const int&, const float&, const U64&, const int&, const int&, const double&, const vector<Move>&,
+        const float&, const float&, const bool&);
     string as_string();
+    bool is_mate();
 
     int depth;
     int seldepth;
     float score;
     U64 nodes;
     int nps;
+    int hashfull;
     double time;
     vector<Move> pv;
 
@@ -53,9 +56,9 @@ namespace Search {
     constexpr float MAX = 10000;
     constexpr float MIN = -10000;
 
-    float moves_left(const Options&, const Position&);
     float move_time(const Options&, const Position&, const float&, const float&);
 
-    SearchInfo search(const Options&, const Position&, const int&, const double&, bool&);
     SearchInfo mcts(const Options&, Position, const double&, bool&);
+    SearchInfo search(const Options&, const Position&, const int&, const double&, const bool&,
+        bool&, const bool&);
 }

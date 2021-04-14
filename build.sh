@@ -19,8 +19,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-if [ ! -d "./build" ]; then
-    mkdir build
+if [ ! -d "./build/" ]; then
+    mkdir ./build/
 fi
 
-cd build && cmake .. && make -j
+cd ./build/ && cmake .. && make -j

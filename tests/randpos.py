@@ -31,6 +31,7 @@ ENG_PATH = "build/Megalodon"
 
 
 def main():
+    n = 0
     while True:
         board = chess.Board()
         num_moves = random.randint(10, 60)
@@ -68,6 +69,8 @@ def main():
                 print(m.uci(), end=" ")
             print()
             break
+        print(f"Position {n+1} correct")
+        n += 1
 
 
 main()

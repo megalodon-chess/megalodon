@@ -20,11 +20,12 @@
 import os
 import pygame
 import json
+import colorsys
 pygame.init()
 
 PARENT = os.path.dirname(os.path.realpath(__file__))
 ELO_PATH = os.path.join(PARENT, "elo.json")
-OUT = os.path.join(PARENT, "elo.png")
+OUT = os.path.join(PARENT, "elo.jpg")
 
 WIDTH, HEIGHT = 120, 60
 
@@ -47,10 +48,8 @@ def main():
                 eng1, score1 = results[x]
                 eng2, score2 = results[y]
                 diff = score1 - score2
-                if diff > max_diff:
-                    max_diff = diff
-                if diff < min_diff:
-                    min_diff = diff
+                max_diff = max(diff, max_diff)
+                min_diff = min(diff, min_diff)
 
     # Draw squares
     for x in range(len(results)):
@@ -63,7 +62,7 @@ def main():
                 eng2, score2 = results[y]
                 diff = int(10*(score1-score2)) / 10
                 fac = (diff-min_diff) / (max_diff-min_diff)
-                color = (255 * (1-fac), 255 * fac, 100)
+                color = [x*255 for x in colorsys.hsv_to_rgb(fac/3, 0.8, 1)]
                 text = str(diff)
                 if diff >= 0:
                     text = "+" + text

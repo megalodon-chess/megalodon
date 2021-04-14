@@ -37,14 +37,14 @@ using std::vector;
 using std::string;
 using std::to_string;
 
-const vector<string> GREETINGS{"Hello!", "Lets play!", "Are you ready for a game?"};
-const vector<string> WINNING{"Looks like I'm playing well!", "Wow!", "This is great!"};
-const vector<string> LOSING{"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
-const vector<string> GAME_END{"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
+const vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
+const vector<string> WINNING = {"Looks like I'm playing well!", "Wow!", "This is great!"};
+const vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!", "Great job!", "*sigh*. You're good."};
+const vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
 Position parse_pos(const string& str) {
-    vector<string> parts = split(str, " ");
+    const vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
         Position pos = Bitboard::startpos();
         if (parts.size() > 3 && parts[2] == "moves") {
@@ -73,18 +73,18 @@ Position parse_pos(const string& str) {
 
 
 void print_legal_moves(const Position& pos) {
-    vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     cout << moves.size() << endl;
-    for (auto m: moves) cout << Bitboard::move_str(m) << "\n";
+    for (const auto& m: moves) cout << Bitboard::move_str(m) << "\n";
 }
 
 void chat(const Options& options, const bool& turn, const int& movect, const float& score, const float& prev_score) {
     return;  //! CHAT IS DISABLED
     if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    else if (turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
+    else if (turn  && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
     else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    else if (turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING) << endl;
-    else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING) << endl;
+    else if (turn  && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
+    else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
 }
 
 float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
@@ -93,7 +93,8 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     double movetime;
     const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
-    for (auto i = 0; i < parts.size(); i++) {
+    bool infinite = false;
+    for (auto i = 0; i < parts.size()-1; i++) {
         if (parts[i] == "depth") {
             mode = 1;
             depth = std::stoi(parts[i+1]);
@@ -112,6 +113,8 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         } else if (parts[i] == "movetime") {
             mode = 3;
             movetime = std::stof(parts[i+1]) / 1000;
+        } else if (parts[i] == "infinite") {
+            infinite = true;
         }
     }
 
@@ -123,15 +126,14 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     } else if (mode == 2) {
         depth = 99;
         if (pos.turn) movetime = Search::move_time(options, pos, wtime, winc);
-        else movetime = Search::move_time(options, pos, btime, binc);
+        else          movetime = Search::move_time(options, pos, btime, binc);
     }
-    movetime *= (float)(options.MoveTimeMult) / 100;
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
     SearchInfo result;
     if (options.UseMCTS) result = Search::mcts(options, pos, movetime, searching);
-    else result = Search::search(options, pos, depth, movetime, searching);
+    else result = Search::search(options, pos, depth, movetime, infinite, searching, (mode==2));
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -146,8 +148,8 @@ void perft(const Options& options, const Position& pos, const int& depth) {
     if (moves.size() > 0) {
         int move_num = 1;
         for (const auto& move: moves) {
-            Position new_pos = Bitboard::push(pos, move);
-            long long curr_nodes = Perft::movegen(new_pos, depth-1);
+            const Position new_pos = Bitboard::push(pos, move);
+            const long long curr_nodes = Perft::movegen(new_pos, depth-1);
             nodes += curr_nodes;
             cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
             move_num++;
@@ -196,13 +198,7 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
-            cout << "option name UseHashTable type check default false" << "\n";
-            //cout << "option name HashStart type spin default 5 min 1 max 8" << "\n";
 
-            cout << "option name MoveTimeMult type spin default 100 min 10 max 1000" << "\n";
-            cout << "option name UseEndgame type check default true" << "\n";
-            cout << "option name LMRFactor type spin default 0 min 0 max 100" << "\n";
-            cout << "option name QuickMove type check default true" << "\n";
             cout << "option name UseMCTS type check default false" << "\n";
             cout << "option name MCTST type spin default 10 min 1 max 100" << "\n";
 
@@ -210,41 +206,39 @@ int loop() {
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalRooks type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalQueens type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
 
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
-            vector<string> parts = split(cmd, " ");
-            string name = parts[2];
-            string value = parts[4];
+            const vector<string> parts = split(cmd, " ");
+            const string name = parts[2];
+            const string value = parts[4];
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
-            else if (name == "UseHashTable") options.UseHashTable = (value == "true");
-            else if (name == "HashStart") options.HashStart = std::stoi(value);
 
-            else if (name == "MoveTimeMult") options.MoveTimeMult = std::stoi(value);
-            else if (name == "UseEndgame") options.UseEndgame = (value == "true");
-            else if (name == "LMRFactor") options.LMRFactor = std::stoi(value);
-            else if (name == "QuickMove") options.QuickMove = (value == "true");
             else if (name == "UseMCTS") options.UseMCTS = (value == "true");
             else if (name == "MCTST") options.MCTST = std::stoi(value);
 
-            else if (name == "EvalMaterial") options.EvalMaterial = std::stof(value) / 100;
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value) / 100;
-            else if (name == "EvalSpace") options.EvalSpace = std::stof(value) / 100;
-            else if (name == "EvalKnights") options.EvalKnights = std::stof(value) / 100;
-            else if (name == "EvalKings") options.EvalKings = std::stof(value) / 100;
+            else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value)/100;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value)/100;
+            else if (name == "EvalSpace")      options.EvalSpace      = std::stof(value)/100;
+            else if (name == "EvalKnights")    options.EvalKnights    = std::stof(value)/100;
+            else if (name == "EvalRooks")      options.EvalRooks      = std::stof(value)/100;
+            else if (name == "EvalQueens")     options.EvalQueens     = std::stof(value)/100;
+            else if (name == "EvalKings")      options.EvalKings      = std::stof(value)/100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
         else if (startswith(cmd, "hash")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 cout << Hash::hash(pos) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
@@ -252,17 +246,17 @@ int loop() {
             }
         }
         else if (startswith(cmd, "eval")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
-                U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                cout << Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked) << endl;
+                const U64 attacked = Bitboard::attacked(pos, !pos.turn);
+                Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true);
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
         else if (startswith(cmd, "pushperft")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             perft_push(pos, std::stoi(parts[1]));
         }
         else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
@@ -273,7 +267,7 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            vector<string> parts = split(cmd, " ");
+            const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
                 options.clear_hash();

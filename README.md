@@ -6,7 +6,7 @@ UCI chess engine.
 
 Play against Megalodon on [Lichess][lichess]!
 
-[Version 0.4.0][latest] was recently released!
+[Version 1.0.0][latest] was recently released!
 
 # Compiling
 
@@ -16,7 +16,7 @@ Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
-cd megalodon/
+cd ./megalodon/
 ./build.sh
 ./build/Megalodon
 ```
@@ -27,9 +27,9 @@ Requires g++, CMake, and GNU Make.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
-cd megalodon/
-mkdir build
-cd build/
+cd ./megalodon/
+mkdir ./build/
+cd ./build/
 cmake ..
 make -j
 ./Megalodon
@@ -41,8 +41,8 @@ Requires g++.
 
 ``` bash
 git clone https://github.com/megalodon-chess/megalodon.git
-cd megalodon/src/
-g++ -pthread -O3 *.cpp -o Megalodon
+cd ./megalodon/src/
+g++ -pthread -Ofast *.cpp -o Megalodon
 ./Megalodon
 ```
 

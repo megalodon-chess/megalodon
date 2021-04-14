@@ -38,6 +38,7 @@ namespace Eval {
     constexpr U64 OUTER_CENTER = 66125924401152ULL;
 
     void init();
+    char center_dist(const char&);
 
     float material(const Position&);
     float total_mat(const Position&);
@@ -56,6 +57,6 @@ namespace Eval {
 
     char center_dist(const char&);
 
-    float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&);
     char eval_end(const Position&, const U64&, const vector<Move>&);
+    float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&, const bool=false);
 }

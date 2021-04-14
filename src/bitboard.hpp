@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <vector>
-#include <tuple>
 #include <string>
 
 #define MCTS_MAX  10
@@ -41,7 +40,7 @@ struct Move {
     char from;
     char to;
     bool is_promo;
-    char promo;
+    char promo;  // 0, 1, 2, 3
 };
 
 struct Position {
@@ -66,6 +65,7 @@ struct Position {
     Position* parent;
     Position* children[MCTS_MAX];
     vector<Move> moves;
+    char draw50;
 };
 
 struct Location {
@@ -118,8 +118,8 @@ namespace Bitboard {
     constexpr U64 FILE6 = 2314885530818453536ULL;
     constexpr U64 FILE7 = 4629771061636907072ULL;
     constexpr U64 FILE8 = 9259542123273814144ULL;
-    const U64 RANKS[8] = {RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8};
-    const U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
+    constexpr U64 RANKS[8] = {RANK1, RANK2, RANK3, RANK4, RANK5, RANK6, RANK7, RANK8};
+    constexpr U64 FILES[8] = {FILE1, FILE2, FILE3, FILE4, FILE5, FILE6, FILE7, FILE8};
 
     constexpr U64 BYTE_ALL_ONE = 255ULL;
     constexpr int MAX_MOVES = 220;
@@ -131,11 +131,11 @@ namespace Bitboard {
     constexpr char DIR_B_SIZE = 4;
     constexpr char DIR_Q_SIZE = 8;
     constexpr char DIR_K_SIZE = 8;
-    const char DIR_R[DIR_R_SIZE][2] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const char DIR_N[DIR_N_SIZE][2] = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
-    const char DIR_B[DIR_B_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
-    const char DIR_Q[DIR_Q_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
-    const char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+    constexpr char DIR_R[DIR_R_SIZE][2] = {{0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    constexpr char DIR_N[DIR_N_SIZE][2] = {{-2, 1}, {2, 1}, {-2, -1}, {2, -1}, {1, -2}, {-1, 2}, {-1, -2}, {1, 2}};
+    constexpr char DIR_B[DIR_B_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
+    constexpr char DIR_Q[DIR_Q_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
+    constexpr char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(const U64&, const char&);
     bool bit(const char&, const char&);
@@ -144,7 +144,8 @@ namespace Bitboard {
     void unset_bit(U64&, const char&);
     void set_bit(char&, const char&);
     void unset_bit(char&, const char&);
-    bool in_board(const char& x, const char& y);
+    bool in_board(const char&, const char&);
+    char first_bit_char(const U64&);
     Location first_bit(const U64&);
 
     string piece_at(const Position&, const char&);
@@ -161,14 +162,14 @@ namespace Bitboard {
     U64 attacked(const Position&, const bool&);
     char num_attacks(const vector<Move>&, const Location&);
     U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
-    U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
+    U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     void king_moves(Move*, int&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
     void single_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
-        const U64&, const U64&, const Location&, const U64&);
+        const U64&, const U64&, const U64&, const Location&, const U64&);
     void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
-        const U64&, const U64&, const Location&, const U64&);
+        const U64&, const U64&, const U64&, const Location&, const U64&);
     vector<Move> legal_moves(Position, const U64&);
 
     U64 get_white(const Position&);
@@ -177,5 +178,5 @@ namespace Bitboard {
 
     Position startpos();
     Position push(Position, const Move&);
-    Position push(Position, string);
+    Position push(Position, const string&);
 }

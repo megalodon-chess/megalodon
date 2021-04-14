@@ -33,20 +33,14 @@ using std::string;
 struct Transposition {
     Transposition();
 
-    bool computed;
-    Move best;
+    char depth;
+    char from;  // First six bits = square, last two = promo piece
+    char to;    // First six bits = square, seventh = is_promo
 };
 
 class Options {
 /*
 Hash: type=spin, default=16, min=1, max=65536, hash table size (megabytes)
-UseHashTable: type=check, default=false, whether the engine should use hash table.
-HashStart: type=spin, default=5, min=1, max=8, starting depth to read and write into hash table.
-
-MoveTimeMult: type=spin, default=100, min=10, max=1000, multiplier (percent) of move time.
-UseEndgame: type=check, default=true, whether to use endgame algorithms.
-LMRFactor: type=spin, default=0, min=0, max=100, percent of lowest branches to prune. ONLY WORKS IF USING HASH TABLE
-QuickMove: type=check, default=true, whether to move immediately when there is only one legal move (output will be missing eval info).
 UseMCTS: type=check, default=false, whether to use MCTS search.
 MCTST: type=spin, default=10, min=1, max=100, T value of MCTS.
 
@@ -54,7 +48,9 @@ EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of mater
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
 EvalKnights: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
-EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of knight eval.
+EvalRooks: type=spin, default=100, min=0, max=1000, weight (percent) of rook eval.
+EvalQueens: type=spin, default=100, min=0, max=1000, weight (percent) of queen eval.
+EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of king eval.
 */
 
 public:
@@ -63,16 +59,9 @@ public:
     void clear_hash();
 
     Transposition* hash_table;
-    int hash_size;
+    U64 hash_size;
 
     int Hash;
-    bool UseHashTable;
-    int HashStart;
-
-    int MoveTimeMult;
-    bool UseEndgame;
-    int LMRFactor;
-    bool QuickMove;
     bool UseMCTS;
     int MCTST;
 
@@ -80,5 +69,7 @@ public:
     float EvalSpace;
     float EvalPawnStruct;
     float EvalKnights;
+    float EvalRooks;
+    float EvalQueens;
     float EvalKings;
 };
