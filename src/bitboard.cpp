@@ -257,11 +257,6 @@ namespace Bitboard {
         else return " ";
     }
 
-    U64 color(const Position& pos, const bool& color) {
-        if (color) return pos.wp | pos.wn | pos.wb | pos.wr | pos.wq | pos.wk;
-        else return pos.bp | pos.bn | pos.bb | pos.br | pos.bq | pos.bk;
-    }
-
     string board_str(const U64& board, const string on, const string off) {
         vector<string> rows;
         string repr = "";
