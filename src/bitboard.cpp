@@ -237,8 +237,7 @@ namespace Bitboard {
     }
 
     Location first_bit(const U64& board) {
-        const char pos = first_bit_char(board);
-        return Location(pos);
+        return Location(first_bit_char(board));
     }
 
 
