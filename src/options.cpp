@@ -22,7 +22,7 @@
 #include <string>
 #include "options.hpp"
 
-#define HASH_FACTOR  348000
+#define HASH_FACTOR  130500
 
 using std::cin;
 using std::cout;
