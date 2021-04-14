@@ -194,7 +194,7 @@ namespace Eval {
             for (char y = 3; y < 7; y++) if (bit(bp, (y<<3)+x)) sp -= 6-y;
         }
 
-        return sp / 4;
+        return sp / 4.0F;
     }
 
     float pawn_structure(const U64& wp, const U64& bp) {
@@ -367,12 +367,12 @@ namespace Eval {
 
         for (char i = 0; i < 64; i++) {
             if (bit(pos.wq, i)) {
-                wscore += (float)(6-CENTER_DIST_MAP[i]) / 15;
-                wscore += (float)(popcnt(SURROUNDINGS[i]&white)) / 35;
+                wscore += (float)(6-CENTER_DIST_MAP[i]) / 15.0F;
+                wscore += (float)(popcnt(SURROUNDINGS[i]&white)) / 35.0F;
             }
             if (bit(pos.bq, i)) {
-                bscore += (float)(6-CENTER_DIST_MAP[i]) / 15;
-                bscore += (float)(popcnt(SURROUNDINGS[i]&black)) / 35;
+                bscore += (float)(6-CENTER_DIST_MAP[i]) / 15.0F;
+                bscore += (float)(popcnt(SURROUNDINGS[i]&black)) / 35.0F;
             }
         }
 
