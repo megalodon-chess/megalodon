@@ -216,6 +216,7 @@ namespace Search {
         pos.moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         pos.is_root = true;
 
+        Move best_move;
         U64 nodes = 1;
         int depth = 0;
         const double start = get_time();
@@ -228,6 +229,7 @@ namespace Search {
             int best_eval = pos.turn ? MIN : MAX;
             for (char i = 0; i < pos.child_count; i++) {
                 const int score = pos.children[i]->score;
+                cout << Bitboard::move_str(pos.moves[i]) << ": " << score << endl;
                 if (pos.turn && (score > best_eval)) {
                     best_eval = score;
                     best_ind = i;
@@ -236,8 +238,9 @@ namespace Search {
                     best_ind = i;
                 }
             }
+            best_move = pos.moves[best_ind];
             const double elapse = get_time() - start;
-            SearchInfo search_result(depth, depth, 0, nodes, nodes/elapse, 0, elapse, {pos.moves[best_ind]}, 0, 0, true);
+            SearchInfo search_result(depth, depth, 0, nodes, nodes/elapse, 0, elapse, {best_move}, 0, 0, true);
             cout << search_result.as_string() << endl;
 
             // Selection
@@ -255,8 +258,7 @@ namespace Search {
 
             // Expansion
             if (curr_node->move_ind >= curr_node->moves.size()) continue;
-            const Move move = curr_node->moves[curr_node->move_ind];
-            curr_node->move_ind++;
+            const Move move = curr_node->moves[curr_node->move_ind++];
 
             Position new_node = Bitboard::push(*curr_node, move);
             new_node.moves = Bitboard::legal_moves(new_node, Bitboard::attacked(new_node, !new_node.turn));
@@ -264,8 +266,7 @@ namespace Search {
             new_node.child_count = 0;
             new_node.parent = curr_node;
 
-            curr_node->children[curr_node->child_count] = &new_node;
-            curr_node->child_count++;
+            curr_node->children[curr_node->child_count++] = &new_node;
             nodes++;
 
             // Simulation
@@ -283,7 +284,7 @@ namespace Search {
                     }
                     bool b = true;
                     U64 h = 0;
-                    const Move move = dfs(options, curr_sim, 2, 0, MIN, MAX, false, end, b, h).pv[0];
+                    const Move move = dfs(options, curr_sim, 4, 0, MIN, MAX, false, end, b, h).pv[0];
                     curr_sim = Bitboard::push(curr_sim, move);
                 }
             }
@@ -297,21 +298,7 @@ namespace Search {
             }
         }
 
-        int best_ind = 0;
-        int best_eval = pos.turn ? MIN : MAX;
-        for (char i = 0; i < pos.child_count; i++) {
-            const int score = pos.children[i]->score;
-            if (pos.turn && (score > best_eval)) {
-                best_eval = score;
-                best_ind = i;
-            } else if (!pos.turn && (score < best_eval)) {
-                best_eval = score;
-                best_ind = i;
-            }
-        }
-
         const double elapse = get_time() - start;
-        const Move best_move = pos.moves[best_ind];
         SearchInfo result(depth, depth, 0, nodes, nodes/elapse, 0, elapse, {best_move}, 0, 0, true);
         cout << result.as_string() << endl;
         return result;
