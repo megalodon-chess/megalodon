@@ -105,7 +105,8 @@ namespace Search {
         const U64 idx = Hash::hash(pos) % options.hash_size;
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to&64, (entry.from&192)>>6);
-        if (entry.depth > 0) moves.insert(moves.begin(), best);
+        if (entry.depth >= depth) return SearchInfo(depth, depth, entry.eval, 0, 0, 0, 0, {best}, alpha, beta, true);
+        else if (entry.depth > 0) moves.insert(moves.begin(), best);
 
         U64 nodes = 1;
         vector<Move> pv;
@@ -162,6 +163,7 @@ namespace Search {
             entry.from = best_move.from + (best_move.promo<<6);
             entry.to = best_move.to + (best_move.is_promo<<6);
             entry.depth = depth;
+            entry.eval = best_eval;
         }
 
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);

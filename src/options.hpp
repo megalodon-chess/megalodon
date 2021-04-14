@@ -36,6 +36,7 @@ struct Transposition {
     char depth;
     char from;  // First six bits = square, last two = promo piece
     char to;    // First six bits = square, seventh = is_promo
+    float eval;
 };
 
 class Options {
