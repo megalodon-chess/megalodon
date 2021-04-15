@@ -187,11 +187,13 @@ namespace Search {
         const double start = get_time();
         const double end = start + movetime;
         const int total_mat = Eval::total_mat(pos);
+        const bool lookup = total_mat <= options.TableLookupThres;
 
+        if (lookup) options.set_hash();
         for (auto d = 1; d <= depth; d++) {
             if (!searching || get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, (total_mat<=options.TableLookupThres), searching);
+            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, lookup, searching);
             const double elapse = get_time() - start;
             nodes += curr_result.nodes;
 
