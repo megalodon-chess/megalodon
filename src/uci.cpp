@@ -262,6 +262,7 @@ int loop() {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
+                if ((100*options.hash_filled/options.hash_size) >= options.HashClearThres) options.set_hash();
                 searching = true;
                 std::thread(go, std::ref(options), pos, parts, prev_eval, std::ref(searching)).detach();
             }
