@@ -10,7 +10,7 @@ Play against Megalodon on [Lichess][lichess]!
 
 ## Compiling
 
-### Compiling With Automated Bash Script
+### Compiling with automated Bash Script
 
 Requires g++, CMake, and GNU Make.
 
@@ -21,7 +21,7 @@ cd ./megalodon/
 ./build/Megalodon
 ```
 
-### Compiling With CMake and GNU Make
+### Compiling with CMake and GNU Make
 
 Requires g++, CMake, and GNU Make.
 
