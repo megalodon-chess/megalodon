@@ -125,7 +125,7 @@ namespace Search {
                     break;
                 }
             }
-            if ((i != 0) && (entry.depth > 0)) {  // Don't search best move twice
+            if ((i != 0) && (entry.depth > 0) && match) {  // Don't search best move twice
                 const Move& curr = moves[i];
                 if ((best.from == curr.from) && (best.to == curr.to) && (best.is_promo == curr.is_promo) &&
                         (best.promo == curr.promo)) continue;
