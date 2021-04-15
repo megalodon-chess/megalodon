@@ -75,10 +75,10 @@ void bench() {
     U64 nodes = 0;
     const double start = get_time();
     bool searching = true;
-    options.Hash = 256;
 
+    options.Hash = 256;
+    options.TableLookupThres = 0;
     for (char i = 0; i < num_pos; i++) {
-        options.set_hash();
         cout << "Position " << i+1 << " of " << +num_pos << endl;
         cout << "Fen: " << fens[i] << endl;
 
