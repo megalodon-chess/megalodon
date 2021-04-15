@@ -92,7 +92,7 @@ namespace Search {
 
 
     SearchInfo dfs(Options& options, const Position& pos, const int& depth, const int& real_depth,
-            float alpha, float beta, const bool& root, const double& endtime, bool& searching) {
+            float alpha, float beta, const bool& root, const double& endtime, const bool& lookup, bool& searching) {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
@@ -105,7 +105,7 @@ namespace Search {
         const U64 idx = Hash::hash(pos) % options.hash_size;
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
-        if (entry.depth >= depth) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
+        if (lookup && (entry.depth >= depth)) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
         else if (entry.depth > 0) moves.insert(moves.begin(), best);
 
         U64 nodes = 1;
@@ -129,7 +129,7 @@ namespace Search {
             movecnt++;
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
+            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, lookup, searching);
             nodes += result.nodes;
 
             if (root && (depth >= 5)) {
@@ -186,11 +186,12 @@ namespace Search {
         U64 nodes = 0;
         const double start = get_time();
         const double end = start + movetime;
+        const int total_mat = Eval::total_mat(pos);
 
         for (auto d = 1; d <= depth; d++) {
             if (!searching || get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
+            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, (total_mat<=options.TableLookupThres), searching);
             const double elapse = get_time() - start;
             nodes += curr_result.nodes;
 

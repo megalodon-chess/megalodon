@@ -41,8 +41,9 @@ struct Transposition {
 
 class Options {
 /*
-Hash: type=spin, default=256, min=1, max=65536, hash table size (megabytes)
+Hash: type=spin, default=256, min=1, max=8192, hash table size (megabytes)
 HashClearThres: type=spin, default=75, min=0, max=100, threshold (percent) of hashfull to clear hash.
+TableLookupThres: type=spin, default=18, min=0, max=78, threshold of material remanining to lookup eval in hash table.
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
@@ -63,6 +64,7 @@ public:
 
     int Hash;
     int HashClearThres;
+    int TableLookupThres;
 
     float EvalMaterial;
     float EvalSpace;

@@ -195,7 +195,9 @@ int loop() {
             cout << "id name Megalodon" << "\n";
             cout << "id author Megalodon Developers" << "\n";
 
-            cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
+            cout << "option name Hash type spin default 256 min 1 max 8192" << "\n";
+            cout << "option name HashClearThres type spin default 75 min 0 max 100" << "\n";
+            cout << "option name TableLookupThres type spin default 18 min 0 max 78" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";

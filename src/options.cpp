@@ -37,16 +37,17 @@ Transposition::Transposition() {
 
 
 Options::Options() {
-    Hash           = 256;
-    HashClearThres = 75;
+    Hash             = 256;
+    HashClearThres   = 75;
+    TableLookupThres = 18;
 
-    EvalMaterial   = 1;
-    EvalPawnStruct = 1;
-    EvalSpace      = 1;
-    EvalKnights    = 1;
-    EvalRooks      = 1;
-    EvalQueens     = 1;
-    EvalKings      = 1;
+    EvalMaterial     = 1;
+    EvalPawnStruct   = 1;
+    EvalSpace        = 1;
+    EvalKnights      = 1;
+    EvalRooks        = 1;
+    EvalQueens       = 1;
+    EvalKings        = 1;
 
     hash_table = new Transposition[16];
     set_hash();
