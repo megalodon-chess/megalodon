@@ -218,14 +218,16 @@ int loop() {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
+            else if (name == "HashClearThres") options.HashClearThres     = std::stoi(value);
+            else if (name == "TableLookupThres") options.TableLookupThres = std::stoi(value);
 
-            else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value)/100;
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value)/100;
-            else if (name == "EvalSpace")      options.EvalSpace      = std::stof(value)/100;
-            else if (name == "EvalKnights")    options.EvalKnights    = std::stof(value)/100;
-            else if (name == "EvalRooks")      options.EvalRooks      = std::stof(value)/100;
-            else if (name == "EvalQueens")     options.EvalQueens     = std::stof(value)/100;
-            else if (name == "EvalKings")      options.EvalKings      = std::stof(value)/100;
+            else if (name == "EvalMaterial")   options.EvalMaterial       = std::stof(value)/100;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct     = std::stof(value)/100;
+            else if (name == "EvalSpace")      options.EvalSpace          = std::stof(value)/100;
+            else if (name == "EvalKnights")    options.EvalKnights        = std::stof(value)/100;
+            else if (name == "EvalRooks")      options.EvalRooks          = std::stof(value)/100;
+            else if (name == "EvalQueens")     options.EvalQueens         = std::stof(value)/100;
+            else if (name == "EvalKings")      options.EvalKings          = std::stof(value)/100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
