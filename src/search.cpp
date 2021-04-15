@@ -160,7 +160,7 @@ namespace Search {
         }
         pv.insert(pv.begin(), moves[best_ind]);
 
-        if ((depth > entry.depth) || (!match)) {
+        if (full && ((depth > entry.depth) || (!match))) {
             if (entry.depth == 0) options.hash_filled++;
 
             const Move& best_move = moves[best_ind];
