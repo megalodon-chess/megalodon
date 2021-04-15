@@ -58,6 +58,7 @@ public:
 
     Transposition* hash_table;
     U64 hash_size;
+    U64 hash_filled;
 
     int Hash;
 

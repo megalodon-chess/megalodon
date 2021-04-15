@@ -58,6 +58,6 @@ namespace Search {
 
     float move_time(const Options&, const Position&, const float&, const float&);
 
-    SearchInfo search(const Options&, const Position&, const int&, const double&, const bool&,
+    SearchInfo search(Options&, const Position&, const int&, const double&, const bool&,
         bool&, const bool&);
 }

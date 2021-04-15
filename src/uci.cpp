@@ -87,7 +87,7 @@ void chat(const Options& options, const bool& turn, const int& movect, const flo
     else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
 }
 
-float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
+float go(Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
     int mode = 0;
     int depth = 99;
     double movetime;
@@ -262,9 +262,8 @@ int loop() {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
-                options.set_hash();
                 searching = true;
-                std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+                std::thread(go, std::ref(options), pos, parts, prev_eval, std::ref(searching)).detach();
             }
         }
         else if (cmd == "stop") searching = false;

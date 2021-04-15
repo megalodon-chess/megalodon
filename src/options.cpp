@@ -55,4 +55,5 @@ void Options::set_hash() {
     delete[] hash_table;
     hash_size = Hash * HASH_FACTOR;
     hash_table = new Transposition[hash_size];
+    hash_filled = 0;
 }
