@@ -196,8 +196,6 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 8192" << "\n";
-            cout << "option name HashClearThres type spin default 75 min 0 max 100" << "\n";
-            cout << "option name TableLookupThres type spin default 18 min 0 max 78" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
@@ -218,8 +216,6 @@ int loop() {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
-            else if (name == "HashClearThres") options.HashClearThres     = std::stoi(value);
-            else if (name == "TableLookupThres") options.TableLookupThres = std::stoi(value);
 
             else if (name == "EvalMaterial")   options.EvalMaterial       = std::stof(value)/100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct     = std::stof(value)/100;
@@ -266,7 +262,6 @@ int loop() {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
-                if ((100*options.hash_filled/options.hash_size) >= options.HashClearThres) options.set_hash();
                 searching = true;
                 std::thread(go, std::ref(options), pos, parts, prev_eval, std::ref(searching)).detach();
             }

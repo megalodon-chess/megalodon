@@ -38,8 +38,6 @@ Transposition::Transposition() {
 
 Options::Options() {
     Hash             = 256;
-    HashClearThres   = 75;
-    TableLookupThres = 18;
 
     EvalMaterial     = 1;
     EvalPawnStruct   = 1;

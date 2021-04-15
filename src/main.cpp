@@ -77,7 +77,7 @@ void bench() {
     bool searching = true;
 
     options.Hash = 256;
-    options.TableLookupThres = 0;
+    options.set_hash();
     for (char i = 0; i < num_pos; i++) {
         cout << "Position " << i+1 << " of " << +num_pos << endl;
         cout << "Fen: " << fens[i] << endl;

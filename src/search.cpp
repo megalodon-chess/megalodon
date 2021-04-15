@@ -92,7 +92,7 @@ namespace Search {
 
 
     SearchInfo dfs(Options& options, const Position& pos, const int& depth, const int& real_depth,
-            float alpha, float beta, const bool& root, const double& endtime, const bool& lookup, bool& searching) {
+            float alpha, float beta, const bool& root, const double& endtime, bool& searching) {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
@@ -108,7 +108,7 @@ namespace Search {
         const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
         const bool match = (entry.hash == hash);
         if (match) {
-            if (lookup && (entry.depth >= depth)) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
+            if (entry.depth >= depth) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             else if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
 
@@ -133,7 +133,7 @@ namespace Search {
             movecnt++;
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, lookup, searching);
+            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
 
             if (root && (depth >= 5)) {
@@ -160,7 +160,7 @@ namespace Search {
         }
         pv.insert(pv.begin(), moves[best_ind]);
 
-        if ((depth > entry.depth) || !match) {
+        if ((depth > entry.depth) || (!match)) {
             if (entry.depth == 0) options.hash_filled++;
 
             const Move& best_move = moves[best_ind];
@@ -193,13 +193,11 @@ namespace Search {
         const double start = get_time();
         const double end = start + movetime;
         const int total_mat = Eval::total_mat(pos);
-        const bool lookup = total_mat <= options.TableLookupThres;
 
-        if (lookup) options.set_hash();
         for (auto d = 1; d <= depth; d++) {
             if (!searching || get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, lookup, searching);
+            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
             const double elapse = get_time() - start;
             nodes += curr_result.nodes;
 
