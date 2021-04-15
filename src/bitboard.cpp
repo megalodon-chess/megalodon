@@ -764,7 +764,7 @@ namespace Bitboard {
 
         // Go through all pieces and check if they can capture/block
         for (char i = 0; i < 64; i++) {
-            const Location curr_loc = Location(i);
+            const Location curr_loc(i);
             if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME) == FULL) {
                 if (bit(SP, i)) {
                     const char x = curr_loc.x;
@@ -877,7 +877,7 @@ namespace Bitboard {
         const U64 o_horiz_pieces = OQ | OR;
 
         for (auto i = 0; i < 64; i++) {
-            const Location curr_loc = Location(i);
+            const Location curr_loc(i);
             if (bit(SAME, i)) {
                 const U64 pin = pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
                 const bool piece_pinned = (pin != FULL);
