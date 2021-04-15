@@ -78,7 +78,7 @@ string SearchInfo::as_string() {
 }
 
 bool SearchInfo::is_mate() {
-    return !(Search::MIN+30 <= score && score <= Search::MAX-30);
+    return !(Search::MIN+100 <= score && score <= Search::MAX-100);
 }
 
 
@@ -104,7 +104,7 @@ namespace Search {
         // Parse and store best move
         const U64 idx = Hash::hash(pos) % options.hash_size;
         Transposition& entry = options.hash_table[idx];
-        const Move best(entry.from&63, entry.to&63, entry.to&64, (entry.from&192)>>6);
+        const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
         if (entry.depth >= depth) return SearchInfo(depth, depth, entry.eval, 0, 0, 0, 0, {best}, alpha, beta, true);
         else if (entry.depth > 0) moves.insert(moves.begin(), best);
 

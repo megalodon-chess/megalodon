@@ -46,7 +46,7 @@ void print_info() {
 
 
 void bench() {
-    const Options options;
+    Options options;
     constexpr char num_pos = 20;
     constexpr char depth = 4;
     const string fens[num_pos] = {
@@ -75,8 +75,10 @@ void bench() {
     U64 nodes = 0;
     const double start = get_time();
     bool searching = true;
+    options.Hash = 256;
 
     for (char i = 0; i < num_pos; i++) {
+        options.set_hash();
         cout << "Position " << i+1 << " of " << +num_pos << endl;
         cout << "Fen: " << fens[i] << endl;
 

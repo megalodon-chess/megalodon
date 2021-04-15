@@ -32,6 +32,7 @@ using std::string;
 
 
 Transposition::Transposition() {
+    depth = 0;
 }
 
 
@@ -54,11 +55,4 @@ void Options::set_hash() {
     delete[] hash_table;
     hash_size = Hash * HASH_FACTOR;
     hash_table = new Transposition[hash_size];
-    clear_hash();
-}
-
-void Options::clear_hash() {
-    for (auto i = 0; i < hash_size; i++) {
-        hash_table[i].depth = 0;
-    }
 }

@@ -55,7 +55,6 @@ EvalKings: type=spin, default=100, min=0, max=1000, weight (percent) of king eva
 public:
     Options();
     void set_hash();
-    void clear_hash();
 
     Transposition* hash_table;
     U64 hash_size;
