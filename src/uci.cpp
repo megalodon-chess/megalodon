@@ -131,7 +131,7 @@ float go(Options& options, const Position& pos, const vector<string>& parts, con
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching, (mode==2));
+    const SearchInfo result = Search::search(options, pos, depth, movetime, (mode!=2), searching);
     cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);

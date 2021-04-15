@@ -170,7 +170,7 @@ namespace Search {
     }
 
     SearchInfo search(Options& options, const Position& pos, const int& depth, const double& movetime,
-            const bool& infinite, bool& searching, const bool& stop_early) {
+            const bool& infinite, bool& searching) {
         const int eg = Endgame::eg_type(pos);
         const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
@@ -202,15 +202,14 @@ namespace Search {
             curr_result.nps = curr_result.nodes / (elapse+0.001);
             curr_result.hashfull = 1000 * options.hash_filled / options.hash_size;
             if (!pos.turn) curr_result.score *= -1;
+            if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) {
+                curr_result.score = MAX - d;  // Score transmitted by result may not be accurate due to lookup.
+                break;
+            }
             if (curr_result.full) {
                 cout << curr_result.as_string() << endl;
                 result = curr_result;
             }
-            if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) break;
-
-            // if (stop_early && ((elapse/movetime) >= 0.6)) {    // Won't finish next depth so no point
-            //     break;
-            // }
         }
 
         return result;
