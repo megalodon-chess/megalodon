@@ -92,7 +92,7 @@ namespace Endgame {
         char corner_dist = 16;
         Location closest_corner = CORNERS[0];
         for (const auto& corner: CORNERS) {
-            const Location cor = Location(corner);
+            const Location cor(corner);
             const char dist = abs(ok.x-cor.x) + abs(ok.y-cor.y);
             if (dist < corner_dist) {
                 corner_dist = dist;
@@ -122,7 +122,7 @@ namespace Endgame {
                     Move best_move = moves[0];
                     for (const auto& move: moves) {
                         if (move.from == ckp) {
-                            const Location to = Location(move.to);
+                            const Location to(move.to);
                             const char delta = abs(k_target.x-to.x) + abs(k_target.y-to.y);
                             if (delta < closest) {
                                 closest = delta;
@@ -146,7 +146,7 @@ namespace Endgame {
                     continue;  // Continue if move results in stalemate.
                 }
 
-                const Location to = Location(move.to);
+                const Location to(move.to);
                 const char dx = abs(to.x-ok.x);
                 const char dy = abs(to.y-ok.y);
                 if ((dx==0 || dx==1) && (dy==0 || dy==1)) continue;  // If move goes to opponent's king
