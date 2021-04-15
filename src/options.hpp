@@ -37,7 +37,7 @@ struct Transposition {
     char from;     // First six bits = square, last two = promo piece
     char to;       // First six bits = square, seventh = is_promo
     float eval;
-    short modulo;  // Number to decrease collisions.
+    U64 hash;
 };
 
 class Options {

@@ -102,12 +102,12 @@ namespace Search {
         }
 
         // Parse and store best move
-        const U64 idx = Hash::hash(pos) % options.hash_size;
+        const U64 hash = Hash::hash(pos);
+        const U64 idx = hash % options.hash_size;
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
-        const short mod = idx % 65432;
-        const bool mod_match = (entry.modulo == mod);
-        if (mod_match) {
+        const bool match = (entry.hash == hash);
+        if (match) {
             if (lookup && (entry.depth >= depth)) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             else if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
@@ -160,7 +160,7 @@ namespace Search {
         }
         pv.insert(pv.begin(), moves[best_ind]);
 
-        if ((depth > entry.depth) || !mod_match) {
+        if ((depth > entry.depth) || !match) {
             if (entry.depth == 0) options.hash_filled++;
 
             const Move& best_move = moves[best_ind];
@@ -168,7 +168,7 @@ namespace Search {
             entry.to = best_move.to + (best_move.is_promo<<6);
             entry.depth = depth;
             entry.eval = best_eval;
-            entry.modulo = mod;
+            entry.hash = hash;
         }
 
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
