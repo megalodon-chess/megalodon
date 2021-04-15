@@ -108,7 +108,7 @@ namespace Search {
         const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
         const bool match = (entry.hash == hash);
         if (match) {
-            if (entry.depth >= depth) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
+            if ((entry.depth >= depth) && !root) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             else if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
 
