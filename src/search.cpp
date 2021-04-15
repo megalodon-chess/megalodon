@@ -105,8 +105,12 @@ namespace Search {
         const U64 idx = Hash::hash(pos) % options.hash_size;
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
-        if (lookup && (entry.depth >= depth)) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
-        else if (entry.depth > 0) moves.insert(moves.begin(), best);
+        const short mod = idx % 65432;
+        const bool mod_match = (entry.modulo == mod);
+        if (mod_match) {
+            if (lookup && (entry.depth >= depth)) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
+            else if (entry.depth > 0) moves.insert(moves.begin(), best);
+        }
 
         U64 nodes = 1;
         vector<Move> pv;
@@ -156,7 +160,7 @@ namespace Search {
         }
         pv.insert(pv.begin(), moves[best_ind]);
 
-        if (depth > entry.depth) {
+        if ((depth > entry.depth) || !mod_match) {
             if (entry.depth == 0) options.hash_filled++;
 
             const Move& best_move = moves[best_ind];
@@ -164,6 +168,7 @@ namespace Search {
             entry.to = best_move.to + (best_move.is_promo<<6);
             entry.depth = depth;
             entry.eval = best_eval;
+            entry.modulo = mod;
         }
 
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
@@ -171,16 +176,17 @@ namespace Search {
 
     SearchInfo search(Options& options, const Position& pos, const int& depth, const double& movetime,
             const bool& infinite, bool& searching) {
-        const int eg = Endgame::eg_type(pos);
         const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-        if (false && (moves.size() == 1)) {
-            return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
-        }
-        if (false && (eg != 0)) {
-            const Move best_move = Endgame::bestmove(pos, moves, eg);
-            return SearchInfo(1, 1, pos.turn ? MAX : MIN, moves.size(), 0, 0, 0, {best_move}, 0, 0, true);
-        }
+
+        // if (false && (moves.size() == 1)) {
+        //     return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
+        // }
+        // const int eg = Endgame::eg_type(pos);
+        // if (false && (eg != 0)) {
+        //     const Move best_move = Endgame::bestmove(pos, moves, eg);
+        //     return SearchInfo(1, 1, pos.turn ? MAX : MIN, moves.size(), 0, 0, 0, {best_move}, 0, 0, true);
+        // }
 
         SearchInfo result;
         U64 nodes = 0;

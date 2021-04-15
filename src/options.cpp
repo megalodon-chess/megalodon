@@ -22,7 +22,7 @@
 #include <string>
 #include "options.hpp"
 
-#define HASH_FACTOR  130500
+#define HASH_FACTOR  87000
 
 using std::cin;
 using std::cout;
@@ -55,7 +55,7 @@ Options::Options() {
 
 void Options::set_hash() {
     delete[] hash_table;
-    hash_size = Hash * HASH_FACTOR;
+    hash_size = Hash*HASH_FACTOR + 1;
     hash_table = new Transposition[hash_size];
     hash_filled = 0;
 }
