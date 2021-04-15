@@ -105,7 +105,7 @@ namespace Search {
         const U64 idx = Hash::hash(pos) % options.hash_size;
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
-        if (entry.depth >= depth) return SearchInfo(depth, depth, entry.eval, 0, 0, 0, 0, {best}, alpha, beta, true);
+        if (entry.depth >= depth) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
         else if (entry.depth > 0) moves.insert(moves.begin(), best);
 
         U64 nodes = 1;
