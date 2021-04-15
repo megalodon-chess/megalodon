@@ -8,6 +8,9 @@ Play against Megalodon on [Lichess][lichess]!
 
 [Version 1.0.0][latest] was recently released!
 
+The work of Megalodon is completely original. It is not a derivative or port of any other program.
+We did use many articles from [chessprogramming.org](https://chessprogramming.org) though.
+
 ## Compiling
 
 ### Compiling with automated Bash Script
@@ -15,10 +18,10 @@ Play against Megalodon on [Lichess][lichess]!
 Requires g++, CMake, and GNU Make.
 
 ``` bash
-git clone https://github.com/megalodon-chess/megalodon.git    # Clone this repository to your local device
-cd ./megalodon/                                               # change directory into the ./megalodon/ directory
-./build.sh                                                    # Run the bash script
-./build/Megalodon                                             # The executable will end up in the ./build/ directory inside the megalodon directory
+git clone https://github.com/megalodon-chess/megalodon.git
+cd ./megalodon/
+./build.sh
+./build/Megalodon
 ```
 
 ### Compiling with CMake and GNU Make
@@ -26,13 +29,13 @@ cd ./megalodon/                                               # change directory
 Requires g++, CMake, and GNU Make.
 
 ``` bash
-git clone https://github.com/megalodon-chess/megalodon.git    # Clone this repository to your local device
-cd ./megalodon/                                               # change directory into the ./megalodon/ directory
-mkdir ./build/                                                # Create a build directory where all the build contents will be stored
-cd ./build/                                                   # change directory into the build directory
-cmake ..                                                      # Create a Makefile with CMake
-make -j                                                       # Compile with flag: -j(optional, uses all cores for speed)
-./Megalodon                                                   # Megalodon will be located in the ./build/ directory, run it.
+git clone https://github.com/megalodon-chess/megalodon.git
+cd ./megalodon/
+mkdir ./build/
+cd ./build/
+cmake ..
+make -j
+./Megalodon
 ```
 
 ### Compiling Manually
@@ -40,9 +43,9 @@ make -j                                                       # Compile with fla
 Requires g++.
 
 ``` bash
-git clone https://github.com/megalodon-chess/megalodon.git    # Clone this repository to your local device
-cd ./megalodon/src/                                           # change directory into the ./megalodon/ directory and ./src/ directory at once
-g++ -pthread -Ofast *.cpp -o Megalodon                        # Compile using g++ with flags: -pthread(for threading), -Ofast(speed during runtime), -o(name of executable)
+git clone https://github.com/megalodon-chess/megalodon.git
+cd ./megalodon/src/
+g++ -pthread -Ofast *.cpp -o Megalodon
 ./Megalodon
 ```
 
