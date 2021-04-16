@@ -18,6 +18,7 @@
 //
 
 #include <iostream>
+#include <string.h>
 #include <vector>
 #include <string>
 #include "bitboard.hpp"
@@ -37,36 +38,32 @@ namespace Endgame {
     const char DRAW_COUNT = 7;
     const char DRAWS[DRAW_COUNT][10] = {
     //   P  N  B  R  Q  p  n  b  r  q
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   // KvK
-        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},   // KBvK
-        {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},   // KvKB
-        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},   // KNvK
-        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},   // KvKN
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   // K  v K
+        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},   // KB v K
+        {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},   // K  v KB
+        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},   // KN v K
+        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},   // K  v KN
     };
+    const char CHAR_BYTES = 10; // sizeof(char)*10
 
-    bool equal(const char a1[12], const char a2[12]) {
-        for (char i = 0; i < 12; i++) {
-            if (a1[i] != a2[i]) return false;
-        }
-        return true;
+    bool equal(const char a1[10], const char a2[10]) {
+        return memcmp(a1, a2, CHAR_BYTES) == 0;
     }
 
     bool is_draw(const Position& pos) {
         if (popcnt(Bitboard::get_all(pos)) > 5) return false;
 
-        const char counts[12] = {
+        const char counts[10] = {
             popcnt(pos.wp),
             popcnt(pos.wn),
             popcnt(pos.wb),
             popcnt(pos.wr),
             popcnt(pos.wq),
-            popcnt(pos.wk),
             popcnt(pos.bp),
             popcnt(pos.bn),
             popcnt(pos.bb),
             popcnt(pos.br),
             popcnt(pos.bq),
-            popcnt(pos.bk),
         };
         for (char i = 0; i < DRAW_COUNT; i++) {
             if (equal(DRAWS[i], counts)) return true;
