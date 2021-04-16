@@ -38,11 +38,11 @@ namespace Endgame {
     const char DRAW_COUNT = 7;
     const char DRAWS[DRAW_COUNT][10] = {
     //   P  N  B  R  Q  p  n  b  r  q
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   // KvK
-        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},   // KBvK
-        {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},   // KvKB
-        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},   // KNvK
-        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},   // KvKN
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   // K  v K
+        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},   // KB v K
+        {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},   // K  v KB
+        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},   // KN v K
+        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},   // K  v KN
     };
     const char CHAR_BYTES = 10; // sizeof(char)*10
 
