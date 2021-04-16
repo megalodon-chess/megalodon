@@ -78,7 +78,7 @@ string SearchInfo::as_string() {
 }
 
 bool SearchInfo::is_mate() {
-    return !(Search::MIN+100 <= score && score <= Search::MAX-100);
+    return !((Search::MIN+100 <= score) && (score <= Search::MAX-100));
 }
 
 
@@ -137,14 +137,14 @@ namespace Search {
             }
 
             // Null move pruning
-            if (options.NullMovePruning && (depth >= options.NullMovePruningDepth+3)) {
+            if (options.NullMovePruning && (depth >= options.NullMovePruningDepth+4)) {
                 Position new_pos = Bitboard::push(pos, moves[i]);
                 new_pos.turn = !new_pos.turn;
 
                 const float score = dfs(options, new_pos, depth-options.NullMovePruningDepth-1, real_depth+1,
                     alpha, beta, false, endtime, searching).score;
-                if      ( pos.turn && (score > beta))  continue;   // Black's turn on next move
-                else if (!pos.turn && (score < alpha)) continue;   // White's turn on next move
+                if      ( pos.turn && (score > beta))  break;   // Black's turn on next move
+                else if (!pos.turn && (score < alpha)) break;   // White's turn on next move
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
@@ -201,7 +201,7 @@ namespace Search {
         const int total_mat = Eval::total_mat(pos);
 
         for (auto d = 1; d <= depth; d++) {
-            if (!searching || get_time() >= end) break;
+            if (!searching || (get_time() >= end)) break;
 
             SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
             const double elapse = get_time() - start;
@@ -212,10 +212,6 @@ namespace Search {
             curr_result.nps = curr_result.nodes / (elapse+0.001);
             curr_result.hashfull = 1000 * options.hash_filled / options.hash_size;
             if (!pos.turn) curr_result.score *= -1;
-            if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) {
-                curr_result.score = MAX - d;  // Score transmitted by result may not be accurate due to lookup.
-                break;
-            }
             if (curr_result.full) {
                 cout << curr_result.as_string() << endl;
                 result = curr_result;
