@@ -44,6 +44,9 @@ class Options {
 /*
 Hash: type=spin, default=256, min=1, max=8192, hash table size (megabytes)
 
+NullMovePruning: type=check, default=true, use null move pruning
+NullMovePruningDepth: type=spin, default=2, min=1, max=5, null move pruning reduction depth.
+
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
@@ -62,6 +65,9 @@ public:
     U64 hash_filled;
 
     int Hash;
+
+    bool NullMovePruning;
+    int NullMovePruningDepth;
 
     float EvalMaterial;
     float EvalSpace;
