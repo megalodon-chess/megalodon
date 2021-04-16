@@ -19,4 +19,4 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-./build.sh && ./build/Megalodon bench
+./build.sh && echo bench | ./build/Megalodon
