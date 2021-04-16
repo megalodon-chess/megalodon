@@ -78,7 +78,7 @@ string SearchInfo::as_string() {
 }
 
 bool SearchInfo::is_mate() {
-    return !(Search::MIN+30 <= score && score <= Search::MAX-30);
+    return !(Search::MATE_BOUND_MIN <= score && score <= Search::MATE_BOUND_MAX);
 }
 
 
