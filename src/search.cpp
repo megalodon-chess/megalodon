@@ -63,7 +63,7 @@ string SearchInfo::as_string() {
         str += "mate ";
         char moves;
         if (score < 0) moves = (score-Search::MIN+1) / 2;
-        else moves = (Search::MAX-score+1) / 2;
+        else           moves = (Search::MAX-score+1) / 2;
         str += std::to_string(moves);
     } else {
         str += "cp ";
