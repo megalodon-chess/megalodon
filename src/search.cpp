@@ -143,8 +143,9 @@ namespace Search {
 
                 const float score = dfs(options, new_pos, depth-options.NullMovePruningDepth-1, real_depth+1,
                     alpha, beta, false, endtime, searching).score;
-                if      ( pos.turn && (score > beta))  break;   // Black's turn on next move
-                else if (!pos.turn && (score < alpha)) break;   // White's turn on next move
+                // The current move results in a position with a cutoff.
+                if      ( pos.turn && (score > beta))  continue;   // Black's turn on next move
+                else if (!pos.turn && (score < alpha)) continue;   // White's turn on next move
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
