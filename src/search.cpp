@@ -182,11 +182,6 @@ namespace Search {
         // if (false && (moves.size() == 1)) {
         //     return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
         // }
-        // const int eg = Endgame::eg_type(pos);
-        // if (false && (eg != 0)) {
-        //     const Move best_move = Endgame::bestmove(pos, moves, eg);
-        //     return SearchInfo(1, 1, pos.turn ? MAX : MIN, moves.size(), 0, 0, 0, {best_move}, 0, 0, true);
-        // }
 
         SearchInfo result;
         U64 nodes = 0;
