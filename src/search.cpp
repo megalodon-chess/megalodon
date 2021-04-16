@@ -137,14 +137,14 @@ namespace Search {
             }
 
             // Null move pruning
-            if (options.NullMovePruning && !root && (depth >= options.NullMovePruningDepth+3)) {
+            if (options.NullMovePruning && (depth >= options.NullMovePruningDepth+3)) {
                 Position new_pos = Bitboard::push(pos, moves[i]);
                 new_pos.turn = !new_pos.turn;
 
                 const float score = dfs(options, new_pos, depth-options.NullMovePruningDepth-1, real_depth+1,
                     alpha, beta, false, endtime, searching).score;
-                if      ( pos.turn && (score < alpha)) continue;   // Black's turn on next move
-                else if (!pos.turn && (score > beta))  continue;   // White's turn on next move
+                if      ( pos.turn && (score > beta))  continue;   // Black's turn on next move
+                else if (!pos.turn && (score < alpha)) continue;   // White's turn on next move
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
