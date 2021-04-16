@@ -132,13 +132,23 @@ namespace Search {
             }
             movecnt++;
 
-            const Position new_pos = Bitboard::push(pos, moves[i]);
-            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
-            nodes += result.nodes;
-
             if (root && (depth >= 5)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i]) << " currmovenumber " << movecnt << endl;
             }
+
+            // Null move pruning
+            if (!root && (depth >= 5)) {
+                Position new_pos = Bitboard::push(pos, moves[i]);
+                new_pos.turn = !new_pos.turn;
+
+                const float score = dfs(options, new_pos, depth-3, real_depth+1, alpha, beta, false, endtime, searching).score;
+                if      ( pos.turn && (score < alpha)) continue;   // Black's turn on next move
+                else if (!pos.turn && (score > beta))  continue;   // White's turn on next move
+            }
+
+            const Position new_pos = Bitboard::push(pos, moves[i]);
+            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
+            nodes += result.nodes;
 
             if (pos.turn) {
                 if (result.score > best_eval) {
