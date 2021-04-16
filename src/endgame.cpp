@@ -34,14 +34,16 @@ using Bitboard::popcnt;
 
 
 namespace Endgame {
-    const char DRAW_COUNT = 5;
-    const char DRAWS[DRAW_COUNT][12] = {
-    //   P  N  B  R  Q  K  p  n  b  r  q  k
-        {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},   // KvK
-        {0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1},   // KBvK
-        {0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1},   // KvKB
-        {0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},   // KNvK
-        {0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1},   // KvKN
+    const char DRAW_COUNT = 7;
+    const char DRAWS[DRAW_COUNT][10] = {
+    //   P  N  B  R  Q  p  n  b  r  q
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   // KvK
+        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0},   // KBvK
+        {0, 0, 0, 0, 0, 0, 0, 1, 0, 0},   // KvKB
+        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},   // KNvK
+        {0, 2, 0, 0, 0, 0, 0, 0, 0, 0},   // KNNvK
+        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},   // KvKN
+        {0, 0, 0, 0, 0, 0, 2, 0, 0, 0},   // KvKNN
     };
 
     bool equal(const char a1[12], const char a2[12]) {
