@@ -24,6 +24,7 @@
 #include "options.hpp"
 #include "eval.hpp"
 #include "search.hpp"
+#include "endgame.hpp"
 
 using std::cin;
 using std::cout;
@@ -326,6 +327,8 @@ namespace Eval {
 
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks,
             const bool print) {
+        if (Endgame::is_draw(pos)) return 0;
+
         if (moves.empty()) {
             bool checked = false;
             if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;

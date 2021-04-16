@@ -241,7 +241,8 @@ int loop() {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 const U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true);
+                const float eval = Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true);
+                cout << eval << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
@@ -251,7 +252,6 @@ int loop() {
             const vector<string> parts = split(cmd, " ");
             perft_push(pos, std::stoi(parts[1]));
         }
-        else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
 
         else if (cmd == "ucinewgame") {
             pos = parse_pos("position startpos");
