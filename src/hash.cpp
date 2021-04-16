@@ -64,7 +64,7 @@ namespace Hash {
 
     U64 hash(const Position& pos) {
         const U64 kings = pos.wk | pos.bk;
-        const char idx = kings % SETS;
+        const unsigned char idx = kings % SETS;
         U64 value = 0;
         for (auto i = 0; i < 64; i++) {
             if      (bit(pos.wp, i)) value ^= piece_bits[idx][i][0];
