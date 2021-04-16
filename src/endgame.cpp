@@ -18,6 +18,7 @@
 //
 
 #include <iostream>
+#include <string.h>
 #include <vector>
 #include <string>
 #include "bitboard.hpp"
@@ -54,19 +55,17 @@ namespace Endgame {
     bool is_draw(const Position& pos) {
         if (popcnt(Bitboard::get_all(pos)) > 5) return false;
 
-        const char counts[12] = {
+        const char counts[10] = {
             popcnt(pos.wp),
             popcnt(pos.wn),
             popcnt(pos.wb),
             popcnt(pos.wr),
             popcnt(pos.wq),
-            popcnt(pos.wk),
             popcnt(pos.bp),
             popcnt(pos.bn),
             popcnt(pos.bb),
             popcnt(pos.br),
             popcnt(pos.bq),
-            popcnt(pos.bk),
         };
         for (char i = 0; i < DRAW_COUNT; i++) {
             if (equal(DRAWS[i], counts)) return true;
