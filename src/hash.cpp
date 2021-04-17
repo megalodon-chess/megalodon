@@ -37,36 +37,36 @@ using Bitboard::bit;
 
 namespace Hash {
     U64 piece_bits[SETS][64][12];
-    U64 ep_square[64];
-    U64 turn[2];
-    U64 ep[2];
-    U64 castling[15];
+    U64 ep_square[SETS][64];
+    U64 turn[SETS][2];
+    U64 ep[SETS][2];
+    U64 castling[SETS][15];
 
     void init() {
-        for (auto i = 0; i < SETS; i++) {
-            for (auto j = 0; j < 64; j++) {
-                for (auto k = 0; k < 12; k++) {
-                    piece_bits[i][j][k] = randull();
+        for (auto s = 0; s < SETS; s++) {
+            for (char i = 0; i < 64; i++) {
+                for (char j = 0; j < 12; j++) {
+                    piece_bits[s][i][j] = randull();
                 }
             }
+            for (char i = 0; i < 64; i++) {
+                ep_square[s][i] = randull();
+            }
+            for (char i = 0; i < 15; i++) {
+                castling[s][i] = randull();
+            }
+            turn[s][0] = randull();
+            turn[s][1] = randull();
+            ep[s][0] = randull();
+            ep[s][1] = randull();
         }
-        for (auto i = 0; i < 64; i++) {
-            ep_square[i] = randull();
-        }
-        for (auto i = 0; i < 15; i++) {
-            castling[i] = randull();
-        }
-        turn[0] = randull();
-        turn[1] = randull();
-        ep[0] = randull();
-        ep[1] = randull();
     }
 
     U64 hash(const Position& pos) {
         const U64 kings = pos.wk | pos.bk;
-        const unsigned char idx = kings % SETS;
+        const auto idx = kings % SETS;
         U64 value = 0;
-        for (auto i = 0; i < 64; i++) {
+        for (char i = 0; i < 64; i++) {
             if      (bit(pos.wp, i)) value ^= piece_bits[idx][i][0];
             else if (bit(pos.wn, i)) value ^= piece_bits[idx][i][1];
             else if (bit(pos.wb, i)) value ^= piece_bits[idx][i][2];
@@ -80,10 +80,10 @@ namespace Hash {
             else if (bit(pos.bq, i)) value ^= piece_bits[idx][i][10];
             else if (bit(pos.bk, i)) value ^= piece_bits[idx][i][11];
         }
-        value ^= turn[pos.turn];
-        value ^= ep[pos.ep];
-        value ^= castling[pos.castling];
-        value ^= ep_square[pos.ep_square];
+        value ^= turn[idx][pos.turn];
+        value ^= ep[idx][pos.ep];
+        value ^= castling[idx][pos.castling];
+        value ^= ep_square[idx][pos.ep_square];
         return value;
     }
 }
