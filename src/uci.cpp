@@ -129,6 +129,7 @@ float go(Options& options, const Position& pos, const vector<string>& parts, con
         else          movetime = Search::move_time(options, pos, btime, binc);
     }
     if (mode == 2) movetime /= 1.5;
+    if ((movetime > options.MaxMoveTime) && (options.MaxMoveTime != 0)) movetime = options.MaxMoveTime;
 
     searching = true;
     const SearchInfo result = Search::search(options, pos, depth, movetime, (mode!=2), searching);
@@ -250,6 +251,8 @@ int loop() {
 
             cout << "option name Hash type spin default 256 min 1 max 8192" << "\n";
 
+            cout << "option name MaxMoveTime type spin default 0 min 0 max 10000000" << "\n";
+
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
@@ -268,6 +271,8 @@ int loop() {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
+
+            else if (name == "MaxMoveTime")    options.MaxMoveTime        = std::stoi(value);
 
             else if (name == "EvalMaterial")   options.EvalMaterial       = std::stof(value)/100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct     = std::stof(value)/100;

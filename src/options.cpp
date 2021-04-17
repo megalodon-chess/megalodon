@@ -39,6 +39,8 @@ Transposition::Transposition() {
 Options::Options() {
     Hash             = 256;
 
+    MaxMoveTime      = 0;
+
     EvalMaterial     = 1;
     EvalPawnStruct   = 1;
     EvalSpace        = 1;

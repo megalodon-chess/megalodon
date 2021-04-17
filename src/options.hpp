@@ -44,6 +44,8 @@ class Options {
 /*
 Hash: type=spin, default=256, min=1, max=8192, hash table size (megabytes)
 
+MaxMoveTime: type=spin, default=0, min=0, max=10000000, maximum search time in seconds (set to 0 to disable)
+
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
 EvalPawnStruct: type=spin, default=100, min=0, max=1000, weight (percent) of pawn structure eval.
@@ -62,6 +64,8 @@ public:
     U64 hash_filled;
 
     int Hash;
+
+    int MaxMoveTime;
 
     float EvalMaterial;
     float EvalSpace;
