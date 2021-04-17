@@ -47,7 +47,7 @@ void print_info() {
 
 int main(const int argc, const char* argv[]) {
     cout << std::fixed;
-    srand(1234);
+    srand(1002);
 
     Hash::init();
     Eval::init();
