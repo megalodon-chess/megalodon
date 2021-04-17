@@ -186,7 +186,7 @@ namespace Search {
         const double start = get_time();
         const double end = start + movetime;
 
-        for (auto d = 1; d <= depth; d++) {
+        for (char d = 1; d <= depth; d++) {
             if (!searching || get_time() >= end) break;
 
             SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching, hash_filled);

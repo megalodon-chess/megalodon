@@ -65,7 +65,7 @@ string replace(string str, string rep) {
 
 string join(string delim, vector<string> parts) {
     string str;
-    for (auto i = 0; i < parts.size()-1; i++) {
+    for (char i = 0; i < parts.size()-1; i++) {
         str += parts[i];
         str += delim;
     }
@@ -100,7 +100,7 @@ bool endswith(string str, string suffix) {
 
 vector<Position> flatten(vector<vector<Position>> vec) {
     vector<Position> flat;
-    for (auto v: vec) flat.insert(flat.end(), v.begin(), v.end());
+    for (const auto& v: vec) flat.insert(flat.end(), v.begin(), v.end());
     return flat;
 }
 
