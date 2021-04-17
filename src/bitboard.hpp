@@ -152,13 +152,13 @@ namespace Bitboard {
     char num_attacks(const vector<Move>&, const Location&);
     U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
-    void king_moves(Move*, int&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&, const bool& = false);
+    void king_moves(Move*, int&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&, const bool&);
     void single_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
-        const U64&, const U64&, const U64&, const Location&, const U64&, const bool& = false);
+        const U64&, const U64&, const U64&, const Location&, const U64&, const bool&);
     void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
-        const U64&, const U64&, const U64&, const Location&, const U64&, const bool& = false);
+        const U64&, const U64&, const U64&, const Location&, const U64&, const bool&);
     vector<Move> legal_moves(Position, const U64&, const bool& = false);
 
     U64 get_white(const Position&);

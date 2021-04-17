@@ -1027,11 +1027,11 @@ namespace Bitboard {
         int movecnt = 0;
         Move moves[MAX_MOVES];
         if (num_checkers == 0) {
-            no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
+            no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces, important);
         } else if (num_checkers == 1) {
-            single_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
+            single_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces, important);
         }
-        king_moves(moves, movecnt, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
+        king_moves(moves, movecnt, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, important);
         return vector<Move>(moves, moves+movecnt);
     }
 
