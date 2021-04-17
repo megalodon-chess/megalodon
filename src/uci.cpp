@@ -245,7 +245,7 @@ void parse_command(Options& options, Position& pos, float& prev_eval, bool& sear
 
         cout << "uciok" << endl;
     }
-    else if (startswith(parts[0], "setoption")) {
+    else if (parts[0] == "setoption") {
         const string name = parts[2];
         const string value = parts[4];
 
@@ -266,7 +266,7 @@ void parse_command(Options& options, Position& pos, float& prev_eval, bool& sear
     }
 
     else if (parts[0] == "d") cout << Bitboard::board_str(pos) << endl;
-    else if (startswith(parts[0], "hash")) {
+    else if (parts[0] == "hash") {
         if (parts.size() == 1) {
             cout << Hash::hash(pos) << endl;
         } else if (parts[1] == "perft" && parts.size() >= 2) {
