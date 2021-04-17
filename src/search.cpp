@@ -92,11 +92,12 @@ namespace Search {
 
 
     SearchInfo dfs(Options& options, const Position& pos, const int& depth, const int& real_depth,
-            float alpha, float beta, const bool& root, const double& endtime, bool& searching) {
+            float alpha, float beta, const bool& quiescence, const bool& root, const double& endtime,
+            bool& searching) {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
-        if (depth == 0 || moves.empty()) {
+        if (((depth == 0) && quiescence) || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
             return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
         }
@@ -111,6 +112,11 @@ namespace Search {
             if ((entry.depth >= depth) && !root) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             else if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
+
+        const int new_depth = (!quiescence && (depth == 0)) ? 2 : depth-1;
+        const bool new_quie = quiescence || (!quiescence && (depth == 0));
+        const U64 pieces = pos.wn | pos.wb | pos.wr | pos.wq | pos.bn | pos.bb | pos.br | pos.bq;
+        bool quie_searched = false;   // Whether quiescence searched any moves. If false, return eval.
 
         U64 nodes = 1;
         vector<Move> pv;
@@ -132,8 +138,13 @@ namespace Search {
             }
             movecnt++;
 
+            // Check if move is capture in quiescence mode
+            if (quiescence && !Bitboard::bit(pieces, moves[i].to)) {
+                continue;
+            }
+
             const Position new_pos = Bitboard::push(pos, moves[i]);
-            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
+            const SearchInfo result = dfs(options, new_pos, new_depth, real_depth+1, alpha, beta, new_quie, false, endtime, searching);
             nodes += result.nodes;
 
             if (root && (depth >= 5)) {
@@ -158,6 +169,12 @@ namespace Search {
                 if (beta < alpha) break;
             }
         }
+
+        if (quiescence && !quie_searched) {
+            const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
+            return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
+        }
+
         pv.insert(pv.begin(), moves[best_ind]);
 
         if (full && ((depth > entry.depth) || (!match))) {
@@ -192,7 +209,7 @@ namespace Search {
         for (auto d = 1; d <= depth; d++) {
             if (!searching || get_time() >= end) break;
 
-            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
+            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, false, true, end, searching);
             const double elapse = get_time() - start;
             nodes += curr_result.nodes;
 
