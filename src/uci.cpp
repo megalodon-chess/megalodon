@@ -221,7 +221,7 @@ void bench() {
     cout << "Time: " << elapse << " seconds" << endl;
 }
 
-void parse_command(Options& options, Position& pos, float& prev_eval, bool& searching, const vector<string> parts) {
+void parse_command(Options& options, Position& pos, float& prev_eval, bool& searching, const vector<string>& parts) {
     if (parts[0] == "quit") return;
     else if (parts[0] == "clear") {
         string str;

@@ -22,6 +22,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "options.hpp"
+#include "bitboard.hpp"
 
 using std::cin;
 using std::cout;
@@ -29,4 +31,5 @@ using std::endl;
 using std::vector;
 using std::string;
 
+void parse_command(Options&, Position&, float&, bool&, const vector<string>&);
 int loop();

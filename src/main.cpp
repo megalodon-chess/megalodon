@@ -26,6 +26,7 @@
 #include "eval.hpp"
 #include "search.hpp"
 #include "utils.hpp"
+#include "options.hpp"
 
 #define VERSION  "1.0.0"
 
@@ -49,8 +50,14 @@ int main(const int argc, const char* argv[]) {
     cout << std::fixed;
     srand(1234);
 
-    if (argc >= 2) {
-        if      (argv[1] == string("--version")) cout << VERSION << endl;
+    if (argc > 1) {
+        Options options = Options();
+        Position pos = Bitboard::startpos();
+        float prev_eval = 0;
+        bool searching = false;
+        vector<string> parts;
+        for (auto i = 1; i < argc; i++) parts.push_back(argv[i]);
+        parse_command(options, pos, prev_eval, searching, parts);
     } else {
         Hash::init();
         Eval::init();
