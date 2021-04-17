@@ -43,6 +43,7 @@ struct Transposition {
 class Options {
 /*
 Hash: type=spin, default=256, min=1, max=8192, hash table size (megabytes)
+ClearHash: type=button, clear hash table
 
 NullMovePruning: type=check, default=true, use null move pruning
 NullMovePruningDepth: type=spin, default=2, min=1, max=5, null move pruning reduction depth.
@@ -65,6 +66,7 @@ public:
     U64 hash_filled;
 
     int Hash;
+    int ClearHash;   // ClearHash is a button. This value is not used.
 
     bool NullMovePruning;
     int NullMovePruningDepth;

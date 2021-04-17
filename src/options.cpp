@@ -38,6 +38,7 @@ Transposition::Transposition() {
 
 Options::Options() {
     Hash                 = 256;
+    ClearHash            = 0;   // ClearHash is a button. This value is not used.
 
     NullMovePruning      = true;
     NullMovePruningDepth = 2;

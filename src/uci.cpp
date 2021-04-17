@@ -249,6 +249,7 @@ int loop() {
             cout << "id author Megalodon Developers" << "\n";
 
             cout << "option name Hash type spin default 256 min 1 max 8192" << "\n";
+            cout << "option name ClearHash type button" << "\n";
 
             cout << "option name NullMovePruning type check default true" << "\n";
             cout << "option name NullMovePruningDepth type spin default 2 min 1 max 5" << "\n";
@@ -265,12 +266,13 @@ int loop() {
         }
         else if (startswith(cmd, "setoption")) {
             const string name = parts[2];
-            const string value = parts[4];
+            const string value = parts.size() >= 4 ? parts[4] : "";
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
+            else if (name == "ClearHash")            options.set_hash();
 
             else if (name == "NullMovePruning")      options.NullMovePruning      = (value == "true");
             else if (name == "NullMovePruningDepth") options.NullMovePruningDepth = std::stoi(value);
