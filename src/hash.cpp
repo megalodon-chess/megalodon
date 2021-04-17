@@ -44,15 +44,15 @@ namespace Hash {
 
     void init() {
         for (auto s = 0; s < SETS; s++) {
-            for (auto i = 0; i < 64; i++) {
-                for (auto j = 0; j < 12; j++) {
+            for (char i = 0; i < 64; i++) {
+                for (char j = 0; j < 12; j++) {
                     piece_bits[s][i][j] = randull();
                 }
             }
-            for (auto i = 0; i < 64; i++) {
+            for (char i = 0; i < 64; i++) {
                 ep_square[s][i] = randull();
             }
-            for (auto i = 0; i < 15; i++) {
+            for (char i = 0; i < 15; i++) {
                 castling[s][i] = randull();
             }
             turn[s][0] = randull();
@@ -64,9 +64,9 @@ namespace Hash {
 
     U64 hash(const Position& pos) {
         const U64 kings = pos.wk | pos.bk;
-        const char idx = kings % SETS;
+        const auto idx = kings % SETS;
         U64 value = 0;
-        for (auto i = 0; i < 64; i++) {
+        for (char i = 0; i < 64; i++) {
             if      (bit(pos.wp, i)) value ^= piece_bits[idx][i][0];
             else if (bit(pos.wn, i)) value ^= piece_bits[idx][i][1];
             else if (bit(pos.wb, i)) value ^= piece_bits[idx][i][2];
