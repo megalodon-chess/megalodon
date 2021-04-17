@@ -91,13 +91,35 @@ namespace Search {
     }
 
 
+    float quiescence(const Options& options, const Position& pos, const double& endtime, bool& searching) {
+        const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks, true);
+        if (moves.empty()) return Eval::eval(options, pos, moves, 0, o_attacks);
+
+        U64 nodes = 1;
+        float best_eval = pos.turn ? MIN : MAX;
+        for (auto i = 0; i < moves.size(); i++) {
+            if ((get_time() >= endtime) || !searching) break;
+
+            const Position new_pos = Bitboard::push(pos, moves[i]);
+            const float score = quiescence(options, new_pos, endtime, searching);
+
+            if (pos.turn) {
+                if (score > best_eval) best_eval = score;
+            } else {
+                if (score < best_eval) best_eval = score;
+            }
+        }
+        return best_eval;
+    }
+
     SearchInfo dfs(const Options& options, const Position& pos, const int& depth, const int& real_depth,
             float alpha, float beta, const bool& root, const double& endtime, bool& searching, U64& hash_filled) {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
         if (depth == 0 || moves.empty()) {
-            const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
+            const float score = quiescence(options, pos, endtime, searching);
             return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
         }
 
