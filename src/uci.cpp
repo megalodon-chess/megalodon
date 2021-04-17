@@ -221,7 +221,7 @@ void bench() {
     cout << "Time: " << elapse << " seconds" << endl;
 }
 
-void parse_command(Options& options, Position& pos, float& prev_eval, bool& searching, const vector<string>& parts) {
+void parse_command(Options& options, Position& pos, float& prev_eval, bool& searching, const vector<string>& parts, const bool& arg=false) {
     if (parts[0] == "quit") return;
     else if (parts[0] == "clear") {
         string str;
@@ -296,7 +296,8 @@ void parse_command(Options& options, Position& pos, float& prev_eval, bool& sear
         else {
             options.clear_hash();
             searching = true;
-            std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+            if (!arg) std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+            else go(options, pos, parts, prev_eval, searching);
         }
     }
     else if (parts[0] == "stop") searching = false;

@@ -57,7 +57,7 @@ int main(const int argc, const char* argv[]) {
         bool searching = false;
         vector<string> parts;
         for (auto i = 1; i < argc; i++) parts.push_back(argv[i]);
-        parse_command(options, pos, prev_eval, searching, parts);
+        parse_command(options, pos, prev_eval, searching, parts, true);
     } else {
         Hash::init();
         Eval::init();

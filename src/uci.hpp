@@ -31,5 +31,5 @@ using std::endl;
 using std::vector;
 using std::string;
 
-void parse_command(Options&, Position&, float&, bool&, const vector<string>&);
+void parse_command(Options&, Position&, float&, bool&, const vector<string>&, const bool& = false);
 int loop();
