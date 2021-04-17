@@ -25,17 +25,11 @@
 #include "bitboard.hpp"
 #include "options.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-
 struct SearchInfo {
     SearchInfo();
-    SearchInfo(const int&, const int&, const float&, const U64&, const int&, const int&, const double&, const vector<Move>&,
+    SearchInfo(const int&, const int&, const float&, const U64&, const int&, const int&, const double&, const std::vector<Move>&,
         const float&, const float&, const bool&);
-    string as_string();
+    std::string as_string();
     bool is_mate();
 
     int depth;
@@ -45,7 +39,7 @@ struct SearchInfo {
     int nps;
     int hashfull;
     double time;
-    vector<Move> pv;
+    std::vector<Move> pv;
 
     float alpha;
     float beta;

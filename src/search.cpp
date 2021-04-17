@@ -29,7 +29,6 @@
 #include "hash.hpp"
 #include "endgame.hpp"
 
-using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;

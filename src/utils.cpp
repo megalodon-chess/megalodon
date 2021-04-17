@@ -25,9 +25,6 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
 using std::vector;
 using std::string;
 

@@ -24,13 +24,6 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-
-
 namespace Hash {
     U64 piece_bits[101][64][12];
     U64 ep_square[64];

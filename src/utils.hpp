@@ -24,22 +24,16 @@
 #include <string>
 #include "bitboard.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-
 double get_time();
 
-string strip(string);
-string replace(string, string);
-string join(string, vector<string>);
-vector<string> split(string, string="");
-bool startswith(string, string);
-bool endswith(string, string);
+std::string strip(std::string);
+std::string replace(std::string, std::string);
+std::string join(std::string, std::vector<std::string>);
+std::vector<std::string> split(std::string, std::string="");
+bool startswith(std::string, std::string);
+bool endswith(std::string, std::string);
 
-vector<Position> flatten(vector<vector<Position>> vec);
+std::vector<Position> flatten(std::vector<std::vector<Position>> vec);
 
-string rand_choice(vector<string>);
+std::string rand_choice(std::vector<std::string>);
 U64 randull();

@@ -24,12 +24,6 @@
 #include <string>
 #include "bitboard.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-
 struct Transposition {
     Transposition();
 

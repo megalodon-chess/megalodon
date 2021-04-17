@@ -24,22 +24,16 @@
 #include <string>
 #include "bitboard.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-
 namespace Endgame {
-    const vector<char> W_KQvK = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
-    const vector<char> B_KQvK = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
-    const vector<char> CORNERS = {0, 7, 56, 63};
+    const std::vector<char> W_KQvK = {0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+    const std::vector<char> B_KQvK = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
+    const std::vector<char> CORNERS = {0, 7, 56, 63};
 
-    bool cnt_match(const vector<char>, const vector<char>);
-    vector<char> get_cnts(const Position&);
+    bool cnt_match(const std::vector<char>, const std::vector<char>);
+    std::vector<char> get_cnts(const Position&);
     int eg_type(const Position&);
 
-    Move bestmove(const Position&, const vector<Move>&, const int&);
+    Move bestmove(const Position&, const std::vector<Move>&, const int&);
 
-    Move kqvk(const vector<Move>&, const Position&, const U64&, const U64&, const U64&);
+    Move kqvk(const std::vector<Move>&, const Position&, const U64&, const U64&, const U64&);
 }

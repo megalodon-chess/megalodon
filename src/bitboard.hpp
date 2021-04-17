@@ -23,12 +23,6 @@
 #include <vector>
 #include <string>
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-
 typedef unsigned long long U64;
 
 struct Move {
@@ -137,19 +131,19 @@ namespace Bitboard {
     char first_bit_char(const U64&);
     Location first_bit(const U64&);
 
-    string piece_at(const Position&, const char&);
+    std::string piece_at(const Position&, const char&);
     U64 color(const Position&, const bool&);
-    string board_str(const U64&, const string="X", const string="-");
-    string board_str(const Position&);
-    string square_str(const char&);
-    string move_str(const Move&);
-    string fen(const Position&);
-    Position parse_fen(const string&);
-    Move parse_uci(const string&);
+    std::string board_str(const U64&, const std::string="X", const std::string="-");
+    std::string board_str(const Position&);
+    std::string square_str(const char&);
+    std::string move_str(const Move&);
+    std::string fen(const Position&);
+    Position parse_fen(const std::string&);
+    Move parse_uci(const std::string&);
 
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
-    char num_attacks(const vector<Move>&, const Location&);
+    char num_attacks(const std::vector<Move>&, const Location&);
     U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     void king_moves(Move*, int&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
@@ -159,7 +153,7 @@ namespace Bitboard {
     void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const Location&, const U64&);
-    vector<Move> legal_moves(Position, const U64&);
+    std::vector<Move> legal_moves(Position, const U64&);
 
     U64 get_white(const Position&);
     U64 get_black(const Position&);
@@ -167,5 +161,5 @@ namespace Bitboard {
 
     Position startpos();
     Position push(Position, const Move&);
-    Position push(Position, const string&);
+    Position push(Position, const std::string&);
 }

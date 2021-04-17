@@ -25,12 +25,6 @@
 #include "bitboard.hpp"
 #include "options.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
-
 namespace Eval {
     constexpr int MIDGAME_LIM = 50;
     constexpr int ENDGAME_LIM = 20;
@@ -44,5 +38,5 @@ namespace Eval {
     float total_mat(const Position&);
     float non_pawn_mat(const Position&);
 
-    float eval(const Options&, const Position&, const vector<Move>&, const int&, const U64&, const bool=false);
+    float eval(const Options&, const Position&, const std::vector<Move>&, const int&, const U64&, const bool=false);
 }

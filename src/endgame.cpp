@@ -24,11 +24,7 @@
 #include "endgame.hpp"
 #include "eval.hpp"
 
-using std::cin;
-using std::cout;
-using std::endl;
 using std::vector;
-using std::string;
 
 
 namespace Endgame {

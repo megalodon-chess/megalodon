@@ -35,7 +35,6 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
-using std::to_string;
 
 const vector<string> GREETINGS = {"Hello!", "Lets play!", "Are you ready for a game?"};
 const vector<string> WINNING = {"Looks like I'm playing well!", "Wow!", "This is great!"};
