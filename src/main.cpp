@@ -52,6 +52,7 @@ int main(const int argc, const char* argv[]) {
 
     Hash::init();
     Eval::init();
+    print_info();
 
     if (argc > 1) {
         Options options = Options();
@@ -62,7 +63,6 @@ int main(const int argc, const char* argv[]) {
         for (auto i = 1; i < argc; i++) parts.push_back(argv[i]);
         parse_command(options, pos, prev_eval, searching, parts, true);
     } else {
-        print_info();
         return loop();
     }
 }
