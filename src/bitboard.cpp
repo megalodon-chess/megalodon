@@ -696,9 +696,12 @@ namespace Bitboard {
             const char x = kx+dir[0], y = ky+dir[1];
             if (in_board(x, y)) {
                 const char loc = (y<<3) + x;
-                if (!bit(attacks, loc) && !bit(same, loc)) moves[movecnt++] = Move(k_pos.loc, loc);
+                if (!bit(attacks, loc) && !bit(same, loc) && (!important || bit(all, loc))) moves[movecnt++] = Move(k_pos.loc, loc);
             }
         }
+
+        // Castling is not important move
+        if (important) return;
 
         // Castling
         if (side) {
