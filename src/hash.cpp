@@ -80,10 +80,10 @@ namespace Hash {
             else if (bit(pos.bq, i)) value ^= piece_bits[idx][i][10];
             else if (bit(pos.bk, i)) value ^= piece_bits[idx][i][11];
         }
-        value ^= turn[SETS][pos.turn];
-        value ^= ep[SETS][pos.ep];
-        value ^= castling[SETS][pos.castling];
-        value ^= ep_square[SETS][pos.ep_square];
+        value ^= turn[idx][pos.turn];
+        value ^= ep[idx][pos.ep];
+        value ^= castling[idx][pos.castling];
+        value ^= ep_square[idx][pos.ep_square];
         return value;
     }
 }
