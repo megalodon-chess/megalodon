@@ -128,7 +128,7 @@ namespace Search {
             if ((i != 0) && (entry.depth > 0) && match) {  // Don't search best move twice
                 const Move& curr = moves[i];
                 if ((best.from == curr.from) && (best.to == curr.to) && (best.is_promo == curr.is_promo) &&
-                        (best.promo == curr.promo)) continue;
+                    (best.promo == curr.promo)) continue;
             }
             movecnt++;
 
@@ -137,15 +137,30 @@ namespace Search {
             }
 
             // Null move pruning
-            if (options.NullMovePruning && (depth >= options.NullMovePruningDepth+4)) {
+            if (options.NullMovePruning && (depth >= options.NullMovePruningDepth+3)) {
                 Position new_pos = Bitboard::push(pos, moves[i]);
                 new_pos.turn = !new_pos.turn;
+                new_pos.ep = false;
 
-                const float score = dfs(options, new_pos, depth-options.NullMovePruningDepth-1, real_depth+1,
-                    alpha, beta, false, endtime, searching).score;
-                // The current move results in a position with a cutoff.
-                if      ( pos.turn && (score > beta))  continue;   // Black's turn on next move
-                else if (!pos.turn && (score < alpha)) continue;   // White's turn on next move
+                const SearchInfo result = dfs(options, new_pos, depth-options.NullMovePruningDepth-1, real_depth+1,
+                    alpha, beta, false, endtime, searching);
+                nodes += result.nodes;
+
+                if (pos.turn) {
+                    if (result.score > best_eval) {
+                        best_eval = result.score;
+                        best_ind = i;
+                    }
+                    if (result.score < beta) beta = result.score;
+                    if (beta < alpha) continue;
+                } else {
+                    if (result.score < best_eval) {
+                        best_eval = result.score;
+                        best_ind = i;
+                    }
+                    if (result.score > alpha) alpha = result.score;
+                    if (beta < alpha) continue;
+                }
             }
 
             const Position new_pos = Bitboard::push(pos, moves[i]);
