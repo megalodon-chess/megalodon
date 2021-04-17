@@ -680,7 +680,7 @@ namespace Bitboard {
     }
 
     void king_moves(Move* moves, int& movecnt, const Location& k_pos, const char& castling, const bool& side, const U64& same,
-            const U64& all, const U64& attacks) {
+            const U64& all, const U64& attacks, const bool& important) {
         /*
         Calculates all king moves.
         k_pos: King position.
@@ -728,7 +728,7 @@ namespace Bitboard {
 
     void single_check_moves(Move* moves, int& movecnt, const Position& pos, const U64& SP, const U64& SN, const U64& SB, const U64& SR,
             const U64& SQ, const U64& SK, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK,
-            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces, const bool& important) {
         /*
         Computes all moves when there is one check.
         */
@@ -869,7 +869,7 @@ namespace Bitboard {
 
     void no_check_moves(Move* moves, int& movecnt, const Position& pos, const U64& SP, const U64& SN, const U64& SB, const U64& SR,
             const U64& SQ, const U64& SK, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK,
-            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces, const bool& important) {
         /*
         Computes all moves when there is no check.
         */
@@ -975,7 +975,7 @@ namespace Bitboard {
         }
     }
 
-    vector<Move> legal_moves(const Position pos, const U64& attacks) {
+    vector<Move> legal_moves(const Position pos, const U64& attacks, const bool& important) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK;
