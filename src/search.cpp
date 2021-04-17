@@ -213,6 +213,8 @@ namespace Search {
             const double elapse = get_time() - start;
             nodes += curr_result.nodes;
 
+            curr_result.depth = d;
+            curr_result.seldepth = d + 2;   // Quiescence search
             curr_result.time = elapse;
             curr_result.nodes = nodes;
             curr_result.nps = curr_result.nodes / (elapse+0.001);
