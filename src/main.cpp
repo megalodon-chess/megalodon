@@ -50,6 +50,9 @@ int main(const int argc, const char* argv[]) {
     cout << std::fixed;
     srand(1234);
 
+    Hash::init();
+    Eval::init();
+
     if (argc > 1) {
         Options options = Options();
         Position pos = Bitboard::startpos();
@@ -59,9 +62,6 @@ int main(const int argc, const char* argv[]) {
         for (auto i = 1; i < argc; i++) parts.push_back(argv[i]);
         parse_command(options, pos, prev_eval, searching, parts, true);
     } else {
-        Hash::init();
-        Eval::init();
-
         print_info();
         return loop();
     }
