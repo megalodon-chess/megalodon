@@ -261,16 +261,16 @@ namespace Bitboard {
         vector<string> rows;
         string repr = "";
 
-        for (auto y = 0; y < 8; y++) {
+        for (char y = 0; y < 8; y++) {
             string row = "";
-            for (auto x = 0; x < 8; x++) {
+            for (char x = 0; x < 8; x++) {
                 row += bit(board, 8*y+x) ? on : off;
                 row += " ";
             }
             rows.push_back(row);
         }
 
-        for (auto i = 7; i >= 0; i--) {
+        for (char i = 7; i >= 0; i--) {
             repr += rows[i];
             repr += "\n";
         }
@@ -284,8 +284,8 @@ namespace Bitboard {
         string str = "";
 
         str += row + "\n";
-        for (auto y = 7; y >= 0; y--) {
-            for (auto x = 0; x < 8; x++) {
+        for (char y = 7; y >= 0; y--) {
+            for (char x = 0; x < 8; x++) {
                 const char loc = 8*y + x;
                 string symbol = piece_at(pos, loc);
                 str += col;
@@ -322,8 +322,8 @@ namespace Bitboard {
         string str = "";
         char blank_count = 0;
 
-        for (auto y = 7; y >= 0; y--) {
-            for (auto x = 0; x < 8; x++) {
+        for (char y = 7; y >= 0; y--) {
+            for (char x = 0; x < 8; x++) {
                 string piece = piece_at(pos, 8*y+x);
                 if (piece == " ") {
                     blank_count++;
@@ -876,7 +876,7 @@ namespace Bitboard {
         const char pawn_dir = pos.turn ? 1 : -1;
         const U64 o_horiz_pieces = OQ | OR;
 
-        for (auto i = 0; i < 64; i++) {
+        for (char i = 0; i < 64; i++) {
             const Location curr_loc(i);
             if (bit(SAME, i)) {
                 const U64 pin = pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);

@@ -32,14 +32,14 @@ using std::string;
 
 double get_time();
 
-string strip(string);
-string replace(string, string);
-string join(string, vector<string>);
-vector<string> split(string, string="");
-bool startswith(string, string);
-bool endswith(string, string);
+string strip(const string&);
+string replace(string, const string&);
+string join(const string&, const vector<string>&);
+vector<string> split(const string&, const string& = "");
+bool startswith(const string&, const string&);
+bool endswith(const string&, const string&);
 
-vector<Position> flatten(vector<vector<Position>> vec);
+vector<Position> flatten(const vector<vector<Position>>& vec);
 
 string rand_choice(vector<string>);
 U64 randull();
