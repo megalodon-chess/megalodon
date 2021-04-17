@@ -113,7 +113,7 @@ namespace Search {
         }
 
         // Null move pruning
-        if (options.NullMovePruning && (depth >= options.NullMovePruningDepth+3)) {
+        if (options.NullMovePruning && (depth >= (options.NullMovePruningDepth+3))) {
             Position new_pos = pos;
             new_pos.turn = !new_pos.turn;
             new_pos.ep = false;
