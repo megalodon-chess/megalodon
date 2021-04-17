@@ -747,7 +747,7 @@ namespace Bitboard {
         const char kx = k_pos.x, ky = k_pos.y;
         char dx = check_x - kx, dy = check_y - ky;
         // If not a knight move create the mask
-        if (!((abs(dx)==2 && abs(dy)==1) || (abs(dy)==2 && abs(dx)==1))) {
+        if (!important && !((abs(dx)==2 && abs(dy)==1) || (abs(dy)==2 && abs(dx)==1))) {
             if (dx > 0) dx = 1;
             else if (dx < 0) dx = -1;
             if (dy > 0) dy = 1;
@@ -774,30 +774,32 @@ namespace Bitboard {
                     char y;
 
                     // Block
-                    y = curr_loc.y;
-                    const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
-                    if (pos.turn) {
-                        for (char cy = y + 1; cy < y + speed + 1; cy++) {
-                            const char loc = (cy<<3) + x;
-                            if (bit(ALL, loc)) break;
-                            if (bit(block_mask, loc)) {
-                                if (cy == 7) {
-                                    // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
-                                } else moves[movecnt++] = Move(i, loc);
-                                break;
+                    if (!important) {
+                        y = curr_loc.y;
+                        const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                        if (pos.turn) {
+                            for (char cy = y + 1; cy < y + speed + 1; cy++) {
+                                const char loc = (cy<<3) + x;
+                                if (bit(ALL, loc)) break;
+                                if (bit(block_mask, loc)) {
+                                    if (cy == 7) {
+                                        // Promotion
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                    } else moves[movecnt++] = Move(i, loc);
+                                    break;
+                                }
                             }
-                        }
-                    } else {
-                        for (char cy = y - 1; cy > y - speed - 1; cy--) {
-                            const char loc = (cy<<3) + x;
-                            if (bit(ALL, loc)) break;
-                            if (bit(block_mask, loc)) {
-                                if (cy == 0) {
-                                    // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
-                                } else moves[movecnt++] = Move(i, loc);
-                                break;
+                        } else {
+                            for (char cy = y - 1; cy > y - speed - 1; cy--) {
+                                const char loc = (cy<<3) + x;
+                                if (bit(ALL, loc)) break;
+                                if (bit(block_mask, loc)) {
+                                    if (cy == 0) {
+                                        // Promotion
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                    } else moves[movecnt++] = Move(i, loc);
+                                    break;
+                                }
                             }
                         }
                     }
