@@ -774,7 +774,7 @@ namespace Bitboard {
                     char y;
 
                     // Block
-                    if (!important) {
+                    if (!important) {  // 
                         y = curr_loc.y;
                         const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
                         if (pos.turn) {
@@ -884,32 +884,35 @@ namespace Bitboard {
         for (auto i = 0; i < 64; i++) {
             const Location curr_loc(i);
             if (bit(SAME, i)) {
-                const U64 pin = pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
+                U64 pin = pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
+                if (important) pin &= OPPONENT;
                 const bool piece_pinned = (pin != FULL);
 
                 if (bit(SP, i)) {
                     // Forward
-                    const char speed = (curr_loc.y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
-                    if (pos.turn) {
-                        for (char cy = curr_loc.y + 1; cy < curr_loc.y + speed + 1; cy++) {
-                            const char loc = (cy<<3) + curr_loc.x;
-                            if (bit(ALL, loc)) break;
-                            if (bit(pin, loc)) {
-                                if (cy == 7) {
-                                    // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
-                                } else moves[movecnt++] = Move(i, loc);
+                    if (!important) {
+                        const char speed = (curr_loc.y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's on starting rank.
+                        if (pos.turn) {
+                            for (char cy = curr_loc.y + 1; cy < curr_loc.y + speed + 1; cy++) {
+                                const char loc = (cy<<3) + curr_loc.x;
+                                if (bit(ALL, loc)) break;
+                                if (bit(pin, loc)) {
+                                    if (cy == 7) {
+                                        // Promotion
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                    } else moves[movecnt++] = Move(i, loc);
+                                }
                             }
-                        }
-                    } else {
-                        for (char cy = curr_loc.y - 1; cy > curr_loc.y - speed - 1; cy--) {
-                            const char loc = (cy<<3) + curr_loc.x;
-                            if (bit(ALL, loc)) break;
-                            if (bit(pin, loc)) {
-                                if (cy == 0) {
-                                    // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
-                                } else moves[movecnt++] = Move(i, loc);
+                        } else {
+                            for (char cy = curr_loc.y - 1; cy > curr_loc.y - speed - 1; cy--) {
+                                const char loc = (cy<<3) + curr_loc.x;
+                                if (bit(ALL, loc)) break;
+                                if (bit(pin, loc)) {
+                                    if (cy == 0) {
+                                        // Promotion
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                    } else moves[movecnt++] = Move(i, loc);
+                                }
                             }
                         }
                     }
