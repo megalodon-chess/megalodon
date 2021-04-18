@@ -8,9 +8,12 @@ Play against Megalodon on [Lichess][lichess]!
 
 [Version 1.0.0][latest] was recently released!
 
-# Compiling
+The source code of Megalodon is completely original. It is not a derivative or port of any other program.
+We used articles from [chessprogramming.org](https://chessprogramming.org) and ideas from other engines.
 
-## Compiling With Automated Bash Script
+## Compiling
+
+### Compiling with automated Bash Script
 
 Requires g++, CMake, and GNU Make.
 
@@ -21,7 +24,7 @@ cd ./megalodon/
 ./build/Megalodon
 ```
 
-## Compiling With CMake and GNU Make
+### Compiling with CMake and GNU Make
 
 Requires g++, CMake, and GNU Make.
 
@@ -35,7 +38,7 @@ make -j
 ./Megalodon
 ```
 
-## Compiling Manually
+### Compiling Manually
 
 Requires g++.
 
