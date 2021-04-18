@@ -197,7 +197,7 @@ int loop() {
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
 
-            cout << "option name UCI_Variant type combo default chess var chess var kingofthehill var horde" << "\n";
+            cout << "option name UCI_Variant type combo default chess var chess var kingofthehill var horde var antichess" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
