@@ -62,7 +62,7 @@ string SearchInfo::as_string() {
         str += "mate ";
         char moves;
         if (score < 0) moves = (score-Search::MIN+1) / 2;
-        else moves = (Search::MAX-score+1) / 2;
+        else           moves = (Search::MAX-score+1) / 2;
         str += std::to_string(moves);
     } else {
         str += "cp ";
@@ -77,7 +77,7 @@ string SearchInfo::as_string() {
 }
 
 bool SearchInfo::is_mate() {
-    return !(Search::MIN+30 <= score && score <= Search::MAX-30);
+    return !(Search::MATE_BOUND_MIN <= score && score <= Search::MATE_BOUND_MAX);
 }
 
 
@@ -185,7 +185,7 @@ namespace Search {
         const double start = get_time();
         const double end = start + movetime;
 
-        for (auto d = 1; d <= depth; d++) {
+        for (char d = 1; d <= depth; d++) {
             if (!searching || get_time() >= end) break;
 
             SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching, hash_filled);

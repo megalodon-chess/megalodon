@@ -32,17 +32,17 @@ namespace Hash {
     U64 castling[15];
 
     void init() {
-        for (auto i = 0; i < 101; i++) {
-            for (auto j = 0; j < 64; j++) {
-                for (auto k = 0; k < 12; k++) {
+        for (char i = 0; i < 101; i++) {
+            for (char j = 0; j < 64; j++) {
+                for (char k = 0; k < 12; k++) {
                     piece_bits[i][j][k] = randull();
                 }
             }
         }
-        for (auto i = 0; i < 64; i++) {
+        for (char i = 0; i < 64; i++) {
             ep_square[i] = randull();
         }
-        for (auto i = 0; i < 15; i++) {
+        for (char i = 0; i < 15; i++) {
             castling[i] = randull();
         }
         turn[0] = randull();
@@ -55,7 +55,7 @@ namespace Hash {
         const U64 kings = pos.wk | pos.bk;
         const char idx = kings % 101;
         U64 value = 0;
-        for (auto i = 0; i < 64; i++) {
+        for (char i = 0; i < 64; i++) {
             if      (Bitboard::bit(pos.wp, i)) value ^= piece_bits[idx][i][0];
             else if (Bitboard::bit(pos.wn, i)) value ^= piece_bits[idx][i][1];
             else if (Bitboard::bit(pos.wb, i)) value ^= piece_bits[idx][i][2];

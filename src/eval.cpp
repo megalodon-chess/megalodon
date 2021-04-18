@@ -56,7 +56,7 @@ namespace Eval {
     };
 
     void init() {
-        for (auto i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
+        for (char i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
     }
 
 

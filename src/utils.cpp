@@ -30,13 +30,13 @@ using std::string;
 
 
 double get_time() {
-    auto now = std::chrono::system_clock::now().time_since_epoch();
-    double elapse = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+    const auto now = std::chrono::system_clock::now().time_since_epoch();
+    const double elapse = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
     return elapse / 1000;
 }
 
 
-string strip(string str) {
+string strip(const string& str) {
     int start = str.find_first_not_of(" ");
     int end = str.find_last_not_of(" ");
 
@@ -45,8 +45,8 @@ string strip(string str) {
     return str.substr(start, end-start+1);
 }
 
-string replace(string str, string rep) {
-    int size = rep.size();
+string replace(string str, const string& rep) {
+    const int size = rep.size();
     while (true) {
         if (str.size() == 0) break;
 
@@ -60,9 +60,9 @@ string replace(string str, string rep) {
     return str;
 }
 
-string join(string delim, vector<string> parts) {
+string join(const string& delim, const vector<string>& parts) {
     string str;
-    for (auto i = 0; i < parts.size()-1; i++) {
+    for (char i = 0; i < parts.size()-1; i++) {
         str += parts[i];
         str += delim;
     }
@@ -70,7 +70,7 @@ string join(string delim, vector<string> parts) {
     return str;
 }
 
-vector<string> split(string str, string delim) {
+vector<string> split(const string& str, const string& delim) {
     vector<string> parts;
     int prev = 0, pos = 0;
     do {
@@ -84,25 +84,25 @@ vector<string> split(string str, string delim) {
     return parts;
 }
 
-bool startswith(string str, string prefix) {
+bool startswith(const string& str, const string& prefix) {
     if (str.size() < prefix.size()) return false;
     return (str.substr(0, prefix.size()) == prefix);
 }
 
-bool endswith(string str, string suffix) {
+bool endswith(const string& str, const string& suffix) {
     if (str.size() < suffix.size()) return false;
     return (str.substr(str.size()-suffix.size(), suffix.size()) == suffix);
 }
 
 
-vector<Position> flatten(vector<vector<Position>> vec) {
+vector<Position> flatten(const vector<vector<Position>>& vec) {
     vector<Position> flat;
-    for (auto v: vec) flat.insert(flat.end(), v.begin(), v.end());
+    for (const auto& v: vec) flat.insert(flat.end(), v.begin(), v.end());
     return flat;
 }
 
 
-string rand_choice(vector<string> choices) {
+string rand_choice(const vector<string>& choices) {
     return choices[rand()%choices.size()];
 }
 

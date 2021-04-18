@@ -26,14 +26,14 @@
 
 double get_time();
 
-std::string strip(std::string);
-std::string replace(std::string, std::string);
-std::string join(std::string, std::vector<std::string>);
-std::vector<std::string> split(std::string, std::string="");
-bool startswith(std::string, std::string);
-bool endswith(std::string, std::string);
+std::string strip(const std::string&);
+std::string replace(std::string, const std::string&);
+std::string join(const std::string&, const std::vector<std::string>&);
+std::vector<std::string> split(const std::string&, const std::string& = "");
+bool startswith(const std::string&, const std::string&);
+bool endswith(const std::string&, const std::string&);
 
-std::vector<Position> flatten(std::vector<std::vector<Position>> vec);
+std::vector<Position> flatten(const std::vector<std::vector<Position>>& vec);
 
-std::string rand_choice(std::vector<std::string>);
+std::string rand_choice(const std::vector<std::string>&);
 U64 randull();
