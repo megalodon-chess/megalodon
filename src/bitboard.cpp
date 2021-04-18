@@ -690,7 +690,7 @@ namespace Bitboard {
         all: board of all pieces.
         attacks: attacks from enemy.
         */
-        if (k == 0) return;  // For variants with no king
+        if (k == EMPTY) return;  // For variants with no king
 
         const char kx = k_pos.x, ky = k_pos.y;
 
