@@ -679,8 +679,8 @@ namespace Bitboard {
         return board;
     }
 
-    void king_moves(Move* moves, int& movecnt, const Location& k_pos, const char& castling, const bool& side, const U64& same,
-            const U64& all, const U64& attacks) {
+    void king_moves(Move* moves, int& movecnt, const U64& k, const Location& k_pos, const char& castling,
+            const bool& side, const U64& same, const U64& all, const U64& attacks) {
         /*
         Calculates all king moves.
         k_pos: King position.
@@ -690,6 +690,8 @@ namespace Bitboard {
         all: board of all pieces.
         attacks: attacks from enemy.
         */
+        if (k == 0) return;  // For variants with no king
+
         const char kx = k_pos.x, ky = k_pos.y;
 
         for (const auto& dir: DIR_K) {
@@ -772,7 +774,7 @@ namespace Bitboard {
 
                     // Block
                     y = curr_loc.y;
-                    const char speed = (y == (pos.turn ? 1 : 6)) ? 2 : 1;  // If white check rank 6 else rank 1 if on that rank 2 else 1
+                    const char speed = (pos.turn ? (y <= 1) : (y == 6)) ? 2 : 1;  // Max squares pawn can move
                     if (pos.turn) {
                         for (char cy = y + 1; cy < y + speed + 1; cy++) {
                             const char loc = (cy<<3) + x;
@@ -884,7 +886,7 @@ namespace Bitboard {
 
                 if (bit(SP, i)) {
                     // Forward
-                    const char speed = (curr_loc.y == (pos.turn ? 1 : 6)) ? 2 : 1;  // Set speed to 2 if pawn's first move.
+                    const char speed = (pos.turn ? (curr_loc.y <= 1) : (curr_loc.y == 6)) ? 2 : 1;  // Max squares pawn can move
                     if (pos.turn) {
                         for (char cy = curr_loc.y + 1; cy < curr_loc.y + speed + 1; cy++) {
                             const char loc = (cy<<3) + curr_loc.x;
@@ -1023,7 +1025,7 @@ namespace Bitboard {
         } else if (num_checkers == 1) {
             single_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
         }
-        king_moves(moves, movecnt, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
+        king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
         return vector<Move>(moves, moves+movecnt);
     }
 
