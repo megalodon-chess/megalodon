@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <thread>
 #include "utils.hpp"
 #include "bitboard.hpp"
@@ -219,7 +220,14 @@ int loop() {
                 options.set_hash();
             }
 
-            else if (name == "UCI_Variant")    options.UCI_Variant    = value;
+            else if (name == "UCI_Variant") {
+                if (std::find(options.variants.begin(), options.variants.end(), value) != options.variants.end()) {
+                    cout << "Megalodon does not play " << value;
+                }
+                else {
+                    options.UCI_Variant = value;
+                }
+            }
 
             else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value)/100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value)/100;
