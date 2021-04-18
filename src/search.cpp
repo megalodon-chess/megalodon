@@ -114,35 +114,34 @@ namespace Search {
 
         U64 nodes = 1;
         vector<Move> pv;
-        int best_ind = 0;
+        Move best_move;
         float best_eval = pos.turn ? MIN : MAX;
         bool full = true;
         int movecnt = 0;  // Need to use this bc will skip a repeated best move so i != movecnt
-        for (auto i = 0; i < moves.size(); i++) {
+        for (const auto& move : moves) {
             if (depth >= 3) {
                 if ((get_time() >= endtime) || !searching) {
                     full = false;
                     break;
                 }
             }
-            if ((i != 0) && (entry.depth > 0) && match) {  // Don't search best move twice
-                const Move& curr = moves[i];
-                if ((best.from == curr.from) && (best.to == curr.to) && (best.is_promo == curr.is_promo) &&
-                        (best.promo == curr.promo)) continue;
+            if ((movecnt != 0) && (entry.depth > 0) && match) {  // Don't search best move twice
+                if ((best.from == move.from) && (best.to == move.to) && (best.is_promo == move.is_promo) &&
+                        (best.promo == move.promo)) continue;
             }
             movecnt++;
 
-            const Position new_pos = Bitboard::push(pos, moves[i]);
+            const Position new_pos = Bitboard::push(pos, move);
             const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
 
             if (root && (depth >= 5)) {
-                cout << "info depth " << depth << " currmove " << Bitboard::move_str(moves[i]) << " currmovenumber " << movecnt << endl;
+                cout << "info depth " << depth << " currmove " << Bitboard::move_str(move) << " currmovenumber " << movecnt << endl;
             }
 
             if (pos.turn) {
                 if (result.score > best_eval) {
-                    best_ind = i;
+                    best_move = move;
                     best_eval = result.score;
                     pv = result.pv;
                 }
@@ -150,7 +149,7 @@ namespace Search {
                 if (beta < alpha) break;
             } else {
                 if (result.score < best_eval) {
-                    best_ind = i;
+                    best_move = move;
                     best_eval = result.score;
                     pv = result.pv;
                 }
@@ -158,12 +157,11 @@ namespace Search {
                 if (beta < alpha) break;
             }
         }
-        pv.insert(pv.begin(), moves[best_ind]);
+        pv.insert(pv.begin(), best_move);
 
         if (full && ((depth > entry.depth) || (!match))) {
             if (entry.depth == 0) options.hash_filled++;
 
-            const Move& best_move = moves[best_ind];
             entry.from = best_move.from + (best_move.promo<<6);
             entry.to = best_move.to + (best_move.is_promo<<6);
             entry.depth = depth;
