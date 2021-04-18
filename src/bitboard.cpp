@@ -680,7 +680,7 @@ namespace Bitboard {
     }
 
     void king_moves(Move* moves, int& movecnt, const U64& k, const Location& k_pos, const char& castling,
-            const bool& side, const U64& same, const U64& all, const U64& attacks) {
+            const bool& side, const U64& same, const U64& all, const U64& attacks, const string& variant) {
         /*
         Calculates all king moves.
         k_pos: King position.
@@ -698,11 +698,18 @@ namespace Bitboard {
             const char x = kx+dir[0], y = ky+dir[1];
             if (in_board(x, y)) {
                 const char loc = (y<<3) + x;
-                if (!bit(attacks, loc) && !bit(same, loc)) moves[movecnt++] = Move(k_pos.loc, loc);
+                if (variant == "antichess-captures") {
+                    if (bit(all^same, loc)) moves[movecnt++] = Move(k_pos.loc, loc);
+                } else if (variant == "antichess-moves") {
+                    moves[movecnt++] = Move(k_pos.loc, loc);
+                } else {
+                    if (!bit(attacks, loc) && !bit(same, loc)) moves[movecnt++] = Move(k_pos.loc, loc);
+                }
             }
         }
 
         // Castling
+        if (variant == "antichess-captures") return;
         if (side) {
             if (bit(castling, 0)) {
                 if (!bit(all, 5) && !bit(all, 6)) {
