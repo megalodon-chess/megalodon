@@ -1041,14 +1041,23 @@ namespace Bitboard {
     }
 
 
-    Position startpos() {
+    Position startpos(string variant) {
         Position pos;
-        pos.wp = START_WP;
-        pos.wn = START_WN;
-        pos.wb = START_WB;
-        pos.wr = START_WR;
-        pos.wq = START_WQ;
-        pos.wk = START_WK;
+        if (variant == "horde") {
+            pos.wp = HORDE_PAWNS;
+            pos.wn = 0;
+            pos.wb = 0;
+            pos.wr = 0;
+            pos.wq = 0;
+            pos.wk = 0;
+        } else {
+            pos.wp = START_WP;
+            pos.wn = START_WN;
+            pos.wb = START_WB;
+            pos.wr = START_WR;
+            pos.wq = START_WQ;
+            pos.wk = START_WK;
+        }
         pos.bp = START_BP;
         pos.bn = START_BN;
         pos.bb = START_BB;

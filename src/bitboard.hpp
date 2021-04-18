@@ -86,6 +86,7 @@ namespace Bitboard {
     constexpr U64 START_BR = 9295429630892703744ULL;
     constexpr U64 START_BQ = 576460752303423488ULL;
     constexpr U64 START_BK = 1152921504606846976ULL;
+    constexpr U64 HORDE_PAWNS = 442381631487ULL;
 
     constexpr U64 CASTLING_BK = 8070450532247928832ULL;
     constexpr U64 CASTLING_BQ = 2017612633061982208ULL;
@@ -165,7 +166,7 @@ namespace Bitboard {
     U64 get_black(const Position&);
     U64 get_all(const Position&);
 
-    Position startpos();
+    Position startpos(string="chess");
     Position push(Position, const Move&);
     Position push(Position, const string&);
 }

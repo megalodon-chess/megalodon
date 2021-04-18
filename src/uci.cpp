@@ -43,10 +43,10 @@ const vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!", "Great jo
 const vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
-Position parse_pos(const string& str) {
+Position parse_pos(const Options& options, const string& str) {
     const vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
-        Position pos = Bitboard::startpos();
+        Position pos = Bitboard::startpos(options.UCI_Variant);
         if (parts.size() > 3 && parts[2] == "moves") {
             for (char i = 3; i < parts.size(); i++) {
                 pos = Bitboard::push(pos, parts[i]);
@@ -177,7 +177,7 @@ void perft_push(const Position& pos, const int& knodes) {
 int loop() {
     string cmd;
     Options options;
-    Position pos = parse_pos("position startpos");
+    Position pos = Bitboard::startpos();
     float prev_eval = 0;
     bool searching = false;
 
@@ -197,7 +197,7 @@ int loop() {
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
 
-            cout << "option name UCI_Variant type combo default chess var chess var kingofthehill" << "\n";
+            cout << "option name UCI_Variant type combo default chess var chess var kingofthehill var horde" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
@@ -259,10 +259,10 @@ int loop() {
         else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
 
         else if (cmd == "ucinewgame") {
-            pos = parse_pos("position startpos");
+            pos = parse_pos(options, "position startpos");
             prev_eval = 0;
         }
-        else if (startswith(cmd, "position")) pos = parse_pos(cmd);
+        else if (startswith(cmd, "position")) pos = parse_pos(options, cmd);
         else if (startswith(cmd, "go")) {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));

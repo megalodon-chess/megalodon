@@ -42,7 +42,7 @@ class Options {
 /*
 Hash: type=spin, default=256, min=1, max=65536, hash table size (megabytes)
 
-UCI_Variant: type=combo, default=chess, vars=chess, kingofthehill
+UCI_Variant: type=combo, default=chess, vars=chess, kingofthehill, horde
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
