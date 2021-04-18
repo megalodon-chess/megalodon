@@ -49,12 +49,16 @@ def solve_puzzle(board, solution):
     print(f"Solving puzzle ({len(solution)} moves)")
 
     for i, move in enumerate(solution):
+        if i % 2 == 1:  # Only solve first side moves.
+            board.push(move)
+            continue
+
         print(termcolor.colored("", "white"), end="")
         print(f"Move {i+1}...", end="", flush=True)
-        result = engine.play(board, LIMIT)
+        result = engine.play(board, LIMIT, info=chess.engine.INFO_ALL)
         if result.move == move:
             board.push(move)
-            print(termcolor.colored("Correct!", "green"))
+            print(termcolor.colored("Correct! Move is {}, eval is {}".format(move.uci(), result.info["score"].pov(chess.WHITE)), "green"))
         else:
             print(termcolor.colored("Wrong", "red"))
             break
