@@ -117,8 +117,8 @@ namespace Search {
         Move best_move;
         float best_eval = pos.turn ? MIN : MAX;
         bool full = true;
-        int movecnt = 0;  // Need to use this bc will skip a repeated best move so i != movecnt
-        for (const auto& move : moves) {
+        int movecnt = 0;
+        for (const auto& move: moves) {
             if (depth >= 3) {
                 if ((get_time() >= endtime) || !searching) {
                     full = false;
