@@ -114,7 +114,7 @@ namespace Eval {
         else return ((float)(npm-ENDGAME_LIM) / (MIDGAME_LIM-ENDGAME_LIM));
     }
 
-    float middle_game(const float& pawn_struct, const float& p_attacks, const float& knight,
+    float chess_mg(const float& pawn_struct, const float& p_attacks, const float& knight,
             const float& rook, const float& queen, const float& king, const float& space) {
         return (
             pawn_struct *  0.9F +
@@ -127,7 +127,7 @@ namespace Eval {
         );
     }
 
-    float end_game(const float& pawn_struct, const float& p_attacks, const float& knight,
+    float chess_eg(const float& pawn_struct, const float& p_attacks, const float& knight,
             const float& rook, const float& queen, const float& king, const float& space) {
         return (
             pawn_struct *  1.2F +
@@ -356,8 +356,16 @@ namespace Eval {
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk)                   / 16.F;
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
-        const float eg = end_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        float mg;
+        float eg;
+        if (options.UCI_Variant == "chess") {                  // Standard tapering
+            mg = chess_mg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+            eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        } else if (options.UCI_Variant == "kingofthehill") {   // Always use endgame. Bring king to center.
+            mg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+            eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        }
+
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
 
