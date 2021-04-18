@@ -197,6 +197,8 @@ int loop() {
 
             cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
 
+            cout << "option name UCI_Variant type combo default chess var chess var kingofthehill" << "\n";
+
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
@@ -216,6 +218,8 @@ int loop() {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
+
+            else if (name == "UCI_Variant")    options.UCI_Variant    = value;
 
             else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value)/100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value)/100;
