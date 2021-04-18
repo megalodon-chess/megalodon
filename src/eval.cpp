@@ -369,6 +369,9 @@ namespace Eval {
         } else if (options.UCI_Variant == "kingofthehill") {   // Always use endgame. Bring king to center.
             mg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
             eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        } else if (options.UCI_Variant == "horde") {           // Standard tapering
+            mg = chess_mg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+            eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
         }
 
         const float p = phase(pos);
