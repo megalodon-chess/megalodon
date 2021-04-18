@@ -326,6 +326,12 @@ namespace Eval {
 
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks,
             const bool print) {
+        // King of the hill ending
+        if (options.UCI_Variant == "kingofthehill") {
+            if ((pos.wk & INNER_CENTER) != 0) return Search::MAX - depth;
+            if ((pos.bk & INNER_CENTER) != 0) return Search::MIN + depth;
+        }
+
         if (moves.empty()) {
             bool checked = false;
             if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
@@ -334,7 +340,7 @@ namespace Eval {
                 // Increment value by depth to encourage sooner mate.
                 // The larger depth is, the closer it is to the leaf nodes.
                 if (pos.turn) return Search::MIN + depth;  // Mate by black
-                else return Search::MAX - depth;           // Mate by white
+                else          return Search::MAX - depth;  // Mate by white
             }
             return 0;
         }

@@ -245,7 +245,8 @@ int loop() {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 const U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true);
+                const float score = Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true);
+                cout << score << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
