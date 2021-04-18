@@ -27,7 +27,7 @@ import chess.engine
 
 PATH = "./build/Megalodon"
 ENDPOINT = "https://lichess.org/api/puzzle/daily"
-LIMIT = chess.engine.Limit(time=2)
+LIMIT = chess.engine.Limit(time=25)   # Adjust as needed to get correct solution
 
 
 def get_puzzle():
@@ -47,6 +47,7 @@ def get_puzzle():
 def solve_puzzle(board, solution):
     engine = chess.engine.SimpleEngine.popen_uci(PATH)
     print(f"Solving puzzle ({len(solution)} moves)")
+    print(f"Starting position is {board.fen()}")
 
     for i, move in enumerate(solution):
         if i % 2 == 1:  # Only solve first side moves.
@@ -58,9 +59,10 @@ def solve_puzzle(board, solution):
         result = engine.play(board, LIMIT, info=chess.engine.INFO_ALL)
         if result.move == move:
             board.push(move)
-            print(termcolor.colored("Correct! Move is {}, eval is {}".format(move.uci(), result.info["score"].pov(chess.WHITE)), "green"))
+            print(termcolor.colored("Correct! Move is {}, eval is {}, depth {}, {} nodes".format(move.uci(),
+                result.info["score"].relative, result.info["depth"], result.info["nodes"]), "green"))
         else:
-            print(termcolor.colored("Wrong", "red"))
+            print(termcolor.colored("Wrong. Answer is {}, engine played {}".format(move.uci(), result.move.uci()), "red"))
             break
 
     print(termcolor.colored("", "white"), end="")
