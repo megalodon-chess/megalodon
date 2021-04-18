@@ -332,9 +332,14 @@ namespace Eval {
             if ((pos.bk & INNER_CENTER) != 0) return Search::MIN + depth;
         }
 
+        // Horde ending
+        if (options.UCI_Variant == "horde") {
+            if (Bitboard::get_white(pos) == 0) return Search::MIN + depth;
+        }
+
         if (moves.empty()) {
             bool checked = false;
-            if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
+            if      ( pos.turn && ((o_attacks & pos.wk) != 0) && (options.UCI_Variant != "horde")) checked = true;
             else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
             if (checked) {
                 // Increment value by depth to encourage sooner mate.
