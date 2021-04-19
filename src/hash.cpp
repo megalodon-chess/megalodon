@@ -24,7 +24,7 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 
-#define SETS  255
+#define SETS  251
 
 using std::cin;
 using std::cout;
