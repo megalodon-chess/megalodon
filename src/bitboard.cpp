@@ -679,8 +679,8 @@ namespace Bitboard {
         return board;
     }
 
-    void king_moves(Move* moves, int& movecnt, const U64& k, const Location& k_pos, const char& castling,
-            const bool& side, const U64& same, const U64& all, const U64& attacks, const string& variant) {
+    void king_moves(Move* moves, int& movecnt, const U64& k, const Location& k_pos, const char& castling, const bool& side,
+            const U64& same, const U64& opponent, const U64& all, const U64& attacks, const string& variant) {
         /*
         Calculates all king moves.
         k_pos: King position.
@@ -700,7 +700,7 @@ namespace Bitboard {
                 const char loc = (y<<3) + x;
                 if (bit(same, loc)) break;
                 if (variant == "antichess-captures") {
-                    if (bit(all^same, loc)) moves[movecnt++] = Move(k_pos.loc, loc);
+                    if (bit(opponent, loc)) moves[movecnt++] = Move(k_pos.loc, loc);
                 } else if (variant == "antichess-moves") {
                     moves[movecnt++] = Move(k_pos.loc, loc);
                 } else {
@@ -1032,12 +1032,12 @@ namespace Bitboard {
         // Antichess
         if (variant == "antichess") {
             no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, 0, "antichess-captures");
-            king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "antichess-captures");
+            king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, OPPONENT, ALL, attacks, "antichess-captures");
 
             if (movecnt != 0) return vector<Move>(moves, moves+movecnt);
 
             no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, 0, "antichess-moves");
-            king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "antichess-moves");
+            king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, OPPONENT, ALL, attacks, "antichess-moves");
             return vector<Move>(moves, moves+movecnt);
         }
 
@@ -1049,7 +1049,7 @@ namespace Bitboard {
         } else if (num_checkers == 1) {
             single_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces, "chess");
         }
-        king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "chess");
+        king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, OPPONENT, ALL, attacks, "chess");
         return vector<Move>(moves, moves+movecnt);
     }
 
