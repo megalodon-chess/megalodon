@@ -737,7 +737,7 @@ namespace Bitboard {
 
     void single_check_moves(Move* moves, int& movecnt, const Position& pos, const U64& SP, const U64& SN, const U64& SB, const U64& SR,
             const U64& SQ, const U64& SK, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK,
-            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces, const string& variant) {
         /*
         Computes all moves when there is one check.
         */
@@ -878,42 +878,45 @@ namespace Bitboard {
 
     void no_check_moves(Move* moves, int& movecnt, const Position& pos, const U64& SP, const U64& SN, const U64& SB, const U64& SR,
             const U64& SQ, const U64& SK, const U64& OP, const U64& ON, const U64& OB, const U64& OR, const U64& OQ, const U64& OK,
-            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces) {
+            const U64& SAME, const U64& OPPONENT, const U64& ALL, const Location& k_pos, const U64& checking_pieces, const string& variant) {
         /*
         Computes all moves when there is no check.
         */
         const char pawn_dir = pos.turn ? 1 : -1;
         const U64 o_horiz_pieces = OQ | OR;
+        const bool antichess = startswith(variant, "antichess");
 
         for (char i = 0; i < 64; i++) {
             const Location curr_loc(i);
             if (bit(SAME, i)) {
-                const U64 pin = pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
+                const U64 pin = antichess ? FULL : pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
                 const bool piece_pinned = (pin != FULL);
 
                 if (bit(SP, i)) {
                     // Forward
-                    const char speed = (pos.turn ? (curr_loc.y <= 1) : (curr_loc.y == 6)) ? 2 : 1;  // Max squares pawn can move
-                    if (pos.turn) {
-                        for (char cy = curr_loc.y + 1; cy < curr_loc.y + speed + 1; cy++) {
-                            const char loc = (cy<<3) + curr_loc.x;
-                            if (bit(ALL, loc)) break;
-                            if (bit(pin, loc)) {
-                                if (cy == 7) {
-                                    // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
-                                } else moves[movecnt++] = Move(i, loc);
+                    if (variant != "antichess-captures") {
+                        const char speed = (pos.turn ? (curr_loc.y <= 1) : (curr_loc.y == 6)) ? 2 : 1;  // Max squares pawn can move
+                        if (pos.turn) {
+                            for (char cy = curr_loc.y + 1; cy < curr_loc.y + speed + 1; cy++) {
+                                const char loc = (cy<<3) + curr_loc.x;
+                                if (bit(ALL, loc)) break;
+                                if (bit(pin, loc)) {
+                                    if (cy == 7) {
+                                        // Promotion
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                    } else moves[movecnt++] = Move(i, loc);
+                                }
                             }
-                        }
-                    } else {
-                        for (char cy = curr_loc.y - 1; cy > curr_loc.y - speed - 1; cy--) {
-                            const char loc = (cy<<3) + curr_loc.x;
-                            if (bit(ALL, loc)) break;
-                            if (bit(pin, loc)) {
-                                if (cy == 0) {
-                                    // Promotion
-                                    for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
-                                } else moves[movecnt++] = Move(i, loc);
+                        } else {
+                            for (char cy = curr_loc.y - 1; cy > curr_loc.y - speed - 1; cy--) {
+                                const char loc = (cy<<3) + curr_loc.x;
+                                if (bit(ALL, loc)) break;
+                                if (bit(pin, loc)) {
+                                    if (cy == 0) {
+                                        // Promotion
+                                        for (const char& p: {0, 1, 2, 3}) moves[movecnt++] = Move(i, loc, true, p);
+                                    } else moves[movecnt++] = Move(i, loc);
+                                }
                             }
                         }
                     }
@@ -947,7 +950,7 @@ namespace Bitboard {
                             const char x = curr_loc.x + dir[0], y = curr_loc.y + dir[1];   // Current (x, y)
                             if (!in_board(x, y)) continue;
                             const char loc = (y<<3) + x;
-                            if (!bit(SAME, loc)) moves[movecnt++] = Move(i, loc);
+                            if (!bit(SAME, loc) && (!(variant=="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
                         }
                     }
                 } else if (bit(SB, i) || bit(SQ, i)) {
@@ -960,7 +963,7 @@ namespace Bitboard {
                             if (!in_board(cx, cy)) break;
                             const char loc = (cy<<3) + cx;
                             if (bit(SAME, loc)) break;
-                            if (bit(pin, loc)) moves[movecnt++] = Move(i, loc);
+                            if (bit(pin, loc) && (!(variant=="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
                             if (bit(OPPONENT, loc)) break;
                         }
                     }
@@ -975,7 +978,7 @@ namespace Bitboard {
                             if (!in_board(cx, cy)) break;
                             const char loc = (cy<<3) + cx;
                             if (bit(SAME, loc)) break;
-                            if (bit(pin, loc)) moves[movecnt++] = Move(i, loc);
+                            if (bit(pin, loc) && (!(variant=="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
                             if (bit(OPPONENT, loc)) break;
                         }
                     }
@@ -984,7 +987,7 @@ namespace Bitboard {
         }
     }
 
-    vector<Move> legal_moves(const Position pos, const U64& attacks) {
+    vector<Move> legal_moves(const Position& pos, const U64& attacks) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK;
