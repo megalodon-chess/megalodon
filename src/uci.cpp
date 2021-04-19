@@ -221,8 +221,8 @@ int loop() {
             }
 
             else if (name == "UCI_Variant") {
-                if (std::find(options.variants.begin(), options.variants.end(), value) != options.variants.end()) {
-                    cout << "Megalodon does not play " << value;
+                if (std::find(options.variants.begin(), options.variants.end(), value) == options.variants.end()) {
+                    cout << "Megalodon does not play " << value << endl;
                 }
                 else {
                     options.UCI_Variant = value;
