@@ -698,7 +698,7 @@ namespace Bitboard {
             const char x = kx+dir[0], y = ky+dir[1];
             if (in_board(x, y)) {
                 const char loc = (y<<3) + x;
-                if (bit(same, loc)) break;
+                if (bit(same, loc)) continue;
                 if (variant == "antichess-captures") {
                     if (bit(opponent, loc)) moves[movecnt++] = Move(k_pos.loc, loc);
                 } else if (variant == "antichess-moves") {
