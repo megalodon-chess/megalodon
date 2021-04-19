@@ -40,7 +40,7 @@ namespace Hash {
     U64 ep_square[SETS][64];
     U64 turn[SETS][2];
     U64 ep[SETS][2];
-    U64 castling[SETS][15];
+    U64 castling[SETS][16];
 
     void init() {
         for (auto s = 0; s < SETS; s++) {
@@ -52,7 +52,7 @@ namespace Hash {
             for (char i = 0; i < 64; i++) {
                 ep_square[s][i] = randull();
             }
-            for (char i = 0; i < 15; i++) {
+            for (char i = 0; i < 16; i++) {
                 castling[s][i] = randull();
             }
             turn[s][0] = randull();
