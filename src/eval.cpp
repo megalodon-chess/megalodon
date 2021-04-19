@@ -351,7 +351,7 @@ namespace Eval {
         }
         if (pos.draw50 >= 100) return 0;
 
-        const float mat         =                          material(pos)                           / 1.F;
+        float mat               =                          material(pos)                           / 1.F;
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp)                   / 5.F;
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp)          / 5.F;
         const float p_attacks   =                          pawn_attacks(pos)                       / 2.F;
@@ -372,6 +372,10 @@ namespace Eval {
         } else if (options.UCI_Variant == "horde") {           // Standard tapering
             mg = chess_mg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
             eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        } else if (options.UCI_Variant == "antichess") {
+            mg = 0;
+            eg = 0;
+            mat *= -1;
         }
 
         const float p = phase(pos);
