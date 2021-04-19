@@ -73,8 +73,8 @@ Position parse_pos(const Options& options, const string& str) {
 }
 
 
-void print_legal_moves(const Position& pos) {
-    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+void print_legal_moves(const Options& options, const Position& pos) {
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn), options.UCI_Variant);
     cout << moves.size() << endl;
     for (const auto& m: moves) cout << Bitboard::move_str(m) << "\n";
 }
@@ -252,7 +252,7 @@ int loop() {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
         }
-        else if (cmd == "legalmoves") print_legal_moves(pos);
+        else if (cmd == "legalmoves") print_legal_moves(options, pos);
         else if (startswith(cmd, "pushperft")) {
             const vector<string> parts = split(cmd, " ");
             perft_push(pos, std::stoi(parts[1]));
