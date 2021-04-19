@@ -1032,13 +1032,12 @@ namespace Bitboard {
         if (variant == "antichess") {
             no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, 0, "antichess-captures");
             king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "antichess-captures");
-            
-            vector<Move> vec_moves = vector<Move>(moves, moves+movecnt);
-            if (!vec_moves.empty()) return vec_moves;
+
+            if (movecnt != 0) return vector<Move>(moves, moves+movecnt);
 
             no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, 0, "antichess-moves");
             king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "antichess-moves");
-            return vec_moves;
+            return vector<Move>(moves, moves+movecnt);
         }
 
         const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, OK, SAME, attacks, pos.turn);

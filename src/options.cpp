@@ -38,7 +38,7 @@ Transposition::Transposition() {
 Options::Options() {
     Hash           = 256;
 
-    UCI_Variant    = "chess";
+    UCI_Variant    = "antichess";
 
     EvalMaterial   = 1;
     EvalPawnStruct = 1;
