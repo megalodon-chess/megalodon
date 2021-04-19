@@ -950,7 +950,7 @@ namespace Bitboard {
                             const char x = curr_loc.x + dir[0], y = curr_loc.y + dir[1];   // Current (x, y)
                             if (!in_board(x, y)) continue;
                             const char loc = (y<<3) + x;
-                            if (!bit(SAME, loc) && (!(variant=="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
+                            if (!bit(SAME, loc) && ((variant!="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
                         }
                     }
                 } else if (bit(SB, i) || bit(SQ, i)) {
@@ -963,7 +963,7 @@ namespace Bitboard {
                             if (!in_board(cx, cy)) break;
                             const char loc = (cy<<3) + cx;
                             if (bit(SAME, loc)) break;
-                            if (bit(pin, loc) && (!(variant=="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
+                            if (bit(pin, loc) && ((variant!="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
                             if (bit(OPPONENT, loc)) break;
                         }
                     }
@@ -978,7 +978,7 @@ namespace Bitboard {
                             if (!in_board(cx, cy)) break;
                             const char loc = (cy<<3) + cx;
                             if (bit(SAME, loc)) break;
-                            if (bit(pin, loc) && (!(variant=="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
+                            if (bit(pin, loc) && ((variant!="antichess-captures") || bit(OPPONENT, loc))) moves[movecnt++] = Move(i, loc);
                             if (bit(OPPONENT, loc)) break;
                         }
                     }
