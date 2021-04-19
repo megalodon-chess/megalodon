@@ -160,7 +160,7 @@ namespace Bitboard {
     void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const Location&, const U64&, const string&);
-    vector<Move> legal_moves(const Position&, const U64&);
+    vector<Move> legal_moves(const Position&, const U64&, const string& = "chess");
 
     U64 get_white(const Position&);
     U64 get_black(const Position&);

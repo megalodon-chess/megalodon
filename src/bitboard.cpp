@@ -987,7 +987,7 @@ namespace Bitboard {
         }
     }
 
-    vector<Move> legal_moves(const Position& pos, const U64& attacks) {
+    vector<Move> legal_moves(const Position& pos, const U64& attacks, const string& variant) {
         // Pass in attacks from opponent.
         // Current and opponent pieces and sides
         U64 SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK;
@@ -1022,20 +1022,34 @@ namespace Bitboard {
         const U64 OPPONENT = OP | ON | OB | OR | OQ | OK;
         const U64 ALL = SAME | OPPONENT;
 
-        const Location k_pos = first_bit(SK);
-        const char kx = k_pos.x, ky = k_pos.y;
-        const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, OK, SAME, attacks, pos.turn);
-        const char num_checkers = popcnt(checking_pieces);
-        const char pawn_dir = pos.turn ? 1 : -1;
-
         int movecnt = 0;
         Move moves[MAX_MOVES];
-        if (num_checkers == 0) {
-            no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
-        } else if (num_checkers == 1) {
-            single_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces);
+
+        const Location k_pos = first_bit(SK);
+        const char kx = k_pos.x, ky = k_pos.y;
+
+        // Antichess
+        if (variant == "antichess") {
+            no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, 0, "antichess-captures");
+            king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "antichess-captures");
+            
+            vector<Move> vec_moves = vector<Move>(moves, moves+movecnt);
+            if (!vec_moves.empty()) return vec_moves;
+
+            no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, 0, "antichess-moves");
+            king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "antichess-moves");
+            return vec_moves;
         }
-        king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
+
+        const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, OK, SAME, attacks, pos.turn);
+        const char num_checkers = popcnt(checking_pieces);
+
+        if (num_checkers == 0) {
+            no_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces, "chess");
+        } else if (num_checkers == 1) {
+            single_check_moves(moves, movecnt, pos, SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK, SAME, OPPONENT, ALL, k_pos, checking_pieces, "chess");
+        }
+        king_moves(moves, movecnt, SK, k_pos, pos.castling, pos.turn, SAME, ALL, attacks, "chess");
         return vector<Move>(moves, moves+movecnt);
     }
 
