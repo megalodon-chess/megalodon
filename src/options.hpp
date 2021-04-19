@@ -64,7 +64,6 @@ public:
     int Hash;
 
     string UCI_Variant;
-    const std::vector<std::string> variants = {"chess", "kingofthehill", "horde", "antichess"};
 
     float EvalMaterial;
     float EvalSpace;
