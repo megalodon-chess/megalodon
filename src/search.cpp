@@ -104,9 +104,10 @@ namespace Search {
         // Parse and store best move
         const U64 hash = Hash::hash(pos);
         const U64 idx = hash % options.hash_size;
+        const char pop = Bitboard::popcnt(Bitboard::get_all(pos));
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
-        const bool match = (entry.hash == hash);
+        const bool match = ((entry.hash == hash) && (pop == entry.pop));
         if (match) {
             if ((entry.depth >= depth) && !root) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             else if (entry.depth > 0) moves.insert(moves.begin(), best);
@@ -166,6 +167,7 @@ namespace Search {
             entry.depth = depth;
             entry.eval = best_eval;
             entry.hash = hash;
+            entry.pop = pop;
         }
 
         return SearchInfo(depth, depth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
