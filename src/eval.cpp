@@ -326,15 +326,16 @@ namespace Eval {
 
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks,
             const bool print) {
-        // King of the hill ending
-        if (options.UCI_Variant == "kingofthehill") {
-            if ((pos.wk & INNER_CENTER) != 0) return Search::MAX - depth;
-            if ((pos.bk & INNER_CENTER) != 0) return Search::MIN + depth;
-        }
+        const U64 white = Bitboard::get_white(pos), black = Bitboard::get_black(pos);
 
-        // Horde ending
-        if (options.UCI_Variant == "horde") {
-            if (Bitboard::get_white(pos) == 0) return Search::MIN + depth;
+        if (options.UCI_Variant == "kingofthehill") {                        // King of the hill ending
+            if ((pos.wk & INNER_CENTER) != 0)  return Search::MAX - depth;
+            if ((pos.bk & INNER_CENTER) != 0)  return Search::MIN + depth;
+        } else if (options.UCI_Variant == "horde") {                         // Horde ending
+            if (white == Bitboard::EMPTY)      return Search::MIN + depth;
+        } else if (options.UCI_Variant == "antichess") {                     // Antichess ending
+            if      (white == Bitboard::EMPTY) return Search::MIN + depth;
+            else if (black == Bitboard::EMPTY) return Search::MAX - depth;
         }
 
         if (moves.empty()) {
@@ -351,7 +352,7 @@ namespace Eval {
         }
         if (pos.draw50 >= 100) return 0;
 
-        float mat               =                          material(pos)                           / 1.F;
+        float       mat         =                          material(pos)                           / 1.F;
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp)                   / 5.F;
         const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp)          / 5.F;
         const float p_attacks   =                          pawn_attacks(pos)                       / 2.F;
