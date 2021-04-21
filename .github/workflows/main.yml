@@ -18,7 +18,8 @@ jobs:
           cd ./build/
           cmake ..
           make -j
-          ./Megalodon bench
+          cd ..
+          ./bench.sh
 
   formatting:
     runs-on: ubuntu-latest
