@@ -24,6 +24,8 @@
 #include <string>
 #include "bitboard.hpp"
 
+#define MOD_FAC  241
+
 using std::cin;
 using std::cout;
 using std::endl;
@@ -40,6 +42,7 @@ struct Transposition {
 
     // Members for verifying hash
     U64 pop;     // Split into chunks of six bits for popcnt of wp, wn, wb, wr, wq, bp, bn, bb, br, bq
+    U64 mod;     // Split into chunks of six bits for mod MOD_FAC of wp, ...
     U64 hash;
 };
 
