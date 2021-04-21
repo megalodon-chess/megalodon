@@ -188,18 +188,18 @@ int loop() {
         else if (cmd == "clear") cout << "\x1b[3J\x1b[H\x1b[2J" << std::flush;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
-            cout << "id name Megalodon" << "\n";
-            cout << "id author Megalodon Developers" << "\n";
+            cout << "id name Megalodon\n";
+            cout << "id author Megalodon Developers\n";
 
-            cout << "option name Hash type spin default 256 min 1 max 65536" << "\n";
+            cout << "option name Hash type spin default 256 min 1 max 65536\n";
 
-            cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalRooks type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalQueens type spin default 100 min 0 max 1000" << "\n";
-            cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalMaterial type spin default 100 min 0 max 1000\n";
+            cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000\n";
+            cout << "option name EvalSpace type spin default 100 min 0 max 1000\n";
+            cout << "option name EvalKnights type spin default 100 min 0 max 1000\n";
+            cout << "option name EvalRooks type spin default 100 min 0 max 1000\n";
+            cout << "option name EvalQueens type spin default 100 min 0 max 1000\n";
+            cout << "option name EvalKings type spin default 100 min 0 max 1000\n";
 
             cout << "uciok" << endl;
         }
