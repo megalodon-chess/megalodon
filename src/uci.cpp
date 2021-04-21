@@ -219,7 +219,10 @@ int loop() {
                 options.set_hash();
             }
 
-            else if (name == "UCI_Variant")    options.UCI_Variant    = value;
+            else if (name == "UCI_Variant") {
+                options.UCI_Variant = value;
+                pos = Bitboard::startpos(value);
+            }
 
             else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value)/100;
             else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value)/100;
