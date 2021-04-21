@@ -18,6 +18,7 @@ jobs:
           cd ./build/
           cmake ..
           make -j
+          cd ..
           ./bench.sh
 
   formatting:
