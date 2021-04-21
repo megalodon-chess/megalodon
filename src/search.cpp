@@ -106,11 +106,11 @@ namespace Search {
         const U64 idx = hash % options.hash_size;
         const char pop = Bitboard::popcnt(Bitboard::get_all(pos));
         Transposition& entry = options.hash_table[idx];
-        const Move best(entry.from&63, entry.to&63, entry.to&64, entry.from>>6);
+        const Move best(entry.from&63, entry.to&63, entry.to>>6, entry.from>>6);
         const bool match = ((entry.hash == hash) && (pop == entry.pop));
         if (match) {
             if ((entry.depth >= depth) && !root) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
-            else if (entry.depth > 0) moves.insert(moves.begin(), best);
+            if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
 
         U64 nodes = 1;
@@ -136,7 +136,7 @@ namespace Search {
             const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
             nodes += result.nodes;
 
-            if (root && (depth >= 5)) {
+            if (root && (depth >= 6)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(move) << " currmovenumber " << movecnt << endl;
             }
 
@@ -189,22 +189,21 @@ namespace Search {
         const int total_mat = Eval::total_mat(pos);
 
         for (char d = 1; d <= depth; d++) {
-            if (!searching || get_time() >= end) break;
+            if (!searching || (get_time() >= end)) break;
 
             SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
             const double elapse = get_time() - start;
             nodes += curr_result.nodes;
 
-            curr_result.time = elapse;
-            curr_result.nodes = nodes;
-            curr_result.nps = curr_result.nodes / (elapse+0.001);
-            curr_result.hashfull = 1000 * options.hash_filled / options.hash_size;
-            if (!pos.turn) curr_result.score *= -1;
-            if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) {
-                curr_result.score = MAX - d;  // Score transmitted by result may not be accurate due to lookup.
-                break;
-            }
             if (curr_result.full) {
+                curr_result.time = elapse;
+                curr_result.nodes = nodes;
+                curr_result.nps = curr_result.nodes / (elapse+0.001);
+                curr_result.hashfull = 1000 * options.hash_filled / options.hash_size;
+                if (!pos.turn) curr_result.score *= -1;
+                if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) {
+                    curr_result.score = MAX - d;  // Score transmitted by result may not be accurate due to lookup.
+                }
                 cout << curr_result.as_string() << endl;
                 result = curr_result;
             }
