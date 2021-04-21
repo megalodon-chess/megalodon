@@ -90,29 +90,30 @@ namespace Search {
         return std::min(move_time, time/2);
     }
 
-
-    SearchInfo dfs(Options& options, const Position& pos, const int& depth, const int& real_depth,
-            float alpha, float beta, const bool& root, const double& endtime, bool& searching) {
+    SearchInfo dfs(Options& options, const Position& pos, const double& endtime, bool& searching,
+            const int& depth, const int& real_depth, float alpha, float beta) {
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
         vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
 
+        // Return eval if depth == 0
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
             return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
         }
 
-        // Parse and store best move
+        // Read from hash table
         const U64 hash = Hash::hash(pos);
         const U64 idx = hash % options.hash_size;
         const char pop = Bitboard::popcnt(Bitboard::get_all(pos));
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to>>6, entry.from>>6);
-        const bool match = ((entry.hash == hash) && (pop == entry.pop));
+        const bool match = ((entry.hash == hash) && (entry.pop == pop));
         if (match) {
-            if ((entry.depth >= depth) && !root) return SearchInfo(depth, entry.depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
+            if ((entry.depth >= depth) && (real_depth != 0)) return SearchInfo(depth, entry.depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
 
+        // Search on all child nodes
         U64 nodes = 1;
         vector<Move> pv;
         Move best_move;
@@ -129,16 +130,16 @@ namespace Search {
             }
             if ((movecnt != 0) && (entry.depth > 0) && match) {  // Don't search best move twice
                 if ((best.from == move.from) && (best.to == move.to) && (best.is_promo == move.is_promo) &&
-                        (best.promo == move.promo)) continue;
+                    (best.promo == move.promo)) continue;
             }
             movecnt++;
 
             const Position new_pos = Bitboard::push(pos, move);
-            const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
+            const SearchInfo result = dfs(options, new_pos, endtime, searching, depth-1, real_depth+1, alpha, beta);
             if ((result.seldepth+1) > seldepth) seldepth = result.seldepth + 1;
             nodes += result.nodes;
 
-            if (root && (depth >= 6)) {
+            if ((real_depth == 0) && (depth >= 6)) {
                 cout << "info depth " << depth << " currmove " << Bitboard::move_str(move) << " currmovenumber " << movecnt << endl;
             }
 
@@ -161,6 +162,7 @@ namespace Search {
         }
         pv.insert(pv.begin(), best_move);
 
+        // Write result into hash table
         if (full && ((depth > entry.depth) || (!match))) {
             if (entry.depth == 0) options.hash_filled++;
 
@@ -175,40 +177,30 @@ namespace Search {
         return SearchInfo(depth, seldepth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
     }
 
-    SearchInfo search(Options& options, const Position& pos, const int& depth, const double& movetime,
+    SearchInfo search(Options& options, const Position& pos, const int& total_depth, const double& movetime,
             const bool& infinite, bool& searching) {
-        const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
-        const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
-
-        // if (false && (moves.size() == 1)) {
-        //     return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
-        // }
+        const double start = get_time();
+        const double endtime = start + movetime;
 
         SearchInfo result;
         U64 nodes = 0;
-        const double start = get_time();
-        const double end = start + movetime;
-        const int total_mat = Eval::total_mat(pos);
-
-        for (char d = 1; d <= depth; d++) {
-            if (!searching || (get_time() >= end)) break;
-
-            SearchInfo curr_result = dfs(options, pos, d, 0, MIN, MAX, true, end, searching);
-            const double elapse = get_time() - start;
+        for (auto depth = 1; depth <= total_depth; depth++) {
+            SearchInfo curr_result = dfs(options, pos, endtime, searching, depth, 0, MIN, MAX);
             nodes += curr_result.nodes;
 
+            const double elapse = get_time() - start;
             if (curr_result.full) {
                 curr_result.time = elapse;
                 curr_result.nodes = nodes;
-                curr_result.nps = curr_result.nodes / (elapse+0.001);
+                curr_result.nps = nodes / (elapse+0.001);
                 curr_result.hashfull = 1000 * options.hash_filled / options.hash_size;
                 if (!pos.turn) curr_result.score *= -1;
-                if (curr_result.is_mate() && (curr_result.score > 0) && !infinite) {
-                    curr_result.score = MAX - d;  // Score transmitted by result may not be accurate due to lookup.
-                }
                 cout << curr_result.as_string() << endl;
+
                 result = curr_result;
             }
+
+            if (!searching || (elapse >= movetime)) break;
         }
 
         return result;
