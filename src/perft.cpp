@@ -33,13 +33,13 @@ using std::string;
 
 
 namespace Perft {
-    long long movegen(const Position& pos, const int& depth) {
+    long long movegen(const Options& options, const Position& pos, const int& depth) {
         if (depth == 0) return 1;
 
         long long count = 0;
-        for (const auto& move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn))) {
+        for (const auto& move: Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn), options.UCI_Variant)) {
             const Position new_pos = Bitboard::push(pos, move);
-            count += movegen(new_pos, depth-1);
+            count += movegen(options, new_pos, depth-1);
         }
         return count;
     }

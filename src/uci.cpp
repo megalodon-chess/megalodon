@@ -140,7 +140,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
 }
 
 void perft(const Options& options, const Position& pos, const int& depth) {
-    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn), options.UCI_Variant);
     const double start = get_time();
     long long nodes = 0;
 
@@ -148,7 +148,7 @@ void perft(const Options& options, const Position& pos, const int& depth) {
         int move_num = 1;
         for (const auto& move: moves) {
             const Position new_pos = Bitboard::push(pos, move);
-            const long long curr_nodes = Perft::movegen(new_pos, depth-1);
+            const long long curr_nodes = Perft::movegen(options, new_pos, depth-1);
             nodes += curr_nodes;
             cout << "info currmove " << Bitboard::move_str(move) << " currmovenumber " << move_num << " nodes " << curr_nodes << endl;
             move_num++;
