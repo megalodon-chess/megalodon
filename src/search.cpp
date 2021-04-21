@@ -109,7 +109,7 @@ namespace Search {
         const Move best(entry.from&63, entry.to&63, entry.to>>6, entry.from>>6);
         const bool match = ((entry.hash == hash) && (pop == entry.pop));
         if (match) {
-            if ((entry.depth >= depth) && !root) return SearchInfo(depth, depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
+            if ((entry.depth >= depth) && !root) return SearchInfo(depth, entry.depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
 
@@ -119,6 +119,7 @@ namespace Search {
         float best_eval = pos.turn ? MIN : MAX;
         bool full = true;
         int movecnt = 0;
+        char seldepth = depth;
         for (const auto& move: moves) {
             if (depth >= 3) {
                 if ((get_time() >= endtime) || !searching) {
@@ -134,6 +135,7 @@ namespace Search {
 
             const Position new_pos = Bitboard::push(pos, move);
             const SearchInfo result = dfs(options, new_pos, depth-1, real_depth+1, alpha, beta, false, endtime, searching);
+            if ((result.seldepth+1) > seldepth) seldepth = result.seldepth + 1;
             nodes += result.nodes;
 
             if (root && (depth >= 6)) {
@@ -170,7 +172,7 @@ namespace Search {
             entry.pop = pop;
         }
 
-        return SearchInfo(depth, depth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
+        return SearchInfo(depth, seldepth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
     }
 
     SearchInfo search(Options& options, const Position& pos, const int& depth, const double& movetime,
