@@ -35,6 +35,8 @@ using std::endl;
 using std::vector;
 using std::string;
 
+using Bitboard::popcnt;
+
 
 SearchInfo::SearchInfo() {
 }
@@ -104,7 +106,17 @@ namespace Search {
         // Read from hash table
         const U64 hash = Hash::hash(pos);
         const U64 idx = hash % options.hash_size;
-        const char pop = Bitboard::popcnt(Bitboard::get_all(pos));
+        const char pop =
+            ((U64)popcnt(pos.wp)) +
+            ((U64)popcnt(pos.wn)<<6) +
+            ((U64)popcnt(pos.wb)<<12) +
+            ((U64)popcnt(pos.wr)<<18) +
+            ((U64)popcnt(pos.wq)<<24) +
+            ((U64)popcnt(pos.bp)<<30) +
+            ((U64)popcnt(pos.bn)<<36) +
+            ((U64)popcnt(pos.bb)<<42) +
+            ((U64)popcnt(pos.br)<<48) +
+            ((U64)popcnt(pos.bq)<<54);
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to>>6, entry.from>>6);
         const bool match = ((entry.hash == hash) && (entry.pop == pop));

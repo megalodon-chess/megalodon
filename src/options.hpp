@@ -36,8 +36,10 @@ struct Transposition {
     char depth;
     char from;     // First six bits = square, last two = promo piece
     char to;       // First six bits = square, seventh = is_promo
-    char pop;
     float eval;
+
+    // Members for verifying hash
+    U64 pop;     // Split into chunks of six bits for popcnt of wp, wn, wb, wr, wq, bp, bn, bb, br, bq
     U64 hash;
 };
 

@@ -38,9 +38,9 @@ using Bitboard::bit;
 namespace Hash {
     U64 piece_bits[SETS][64][12];
     U64 ep_square[SETS][64];
+    U64 castling[SETS][16];
     U64 turn[SETS][2];
     U64 ep[SETS][2];
-    U64 castling[SETS][16];
 
     void init() {
         for (auto s = 0; s < SETS; s++) {
