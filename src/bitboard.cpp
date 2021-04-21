@@ -885,7 +885,7 @@ namespace Bitboard {
         */
         const char pawn_dir = pos.turn ? 1 : -1;
         const U64 o_horiz_pieces = OQ | OR;
-        const bool antichess = startswith(variant, "antichess");
+        const bool antichess = ((variant == "antichess-captures") || (variant == "antichess-moves"));
 
         for (char i = 0; i < 64; i++) {
             const Location curr_loc(i);
