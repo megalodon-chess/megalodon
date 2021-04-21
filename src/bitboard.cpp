@@ -920,7 +920,7 @@ namespace Bitboard {
                                     if (!piece_pinned && ((o_horiz_pieces & RANKS[curr_loc.y]) != EMPTY) && ((SK & RANKS[curr_loc.y]) != EMPTY)) {
                                         U64 tmp_op = OP;
                                         unset_bit(tmp_op, pos.ep_square-pawn_dir*8);
-                                        if (pinned(k_pos, Location(i), tmp_op, ON, OB, OR, OQ, OK, SAME) == FULL) moves[movecnt++] = Move(i, loc_move);
+                                        if (pinned(k_pos, curr_loc, tmp_op, ON, OB, OR, OQ, OK, SAME) == FULL) moves[movecnt++] = Move(i, loc_move);
                                     } else if (bit(pin, loc_move)) moves[movecnt++] = Move(i, loc_move);
                                 }
                             }
