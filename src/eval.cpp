@@ -334,8 +334,8 @@ namespace Eval {
         } else if (options.UCI_Variant == "horde") {                         // Horde ending
             if (white == Bitboard::EMPTY)      return Search::MIN + depth;
         } else if (options.UCI_Variant == "antichess") {                     // Antichess ending
-            if      (white == Bitboard::EMPTY) return Search::MIN + depth;
-            else if (black == Bitboard::EMPTY) return Search::MAX - depth;
+            if      (white == Bitboard::EMPTY) return Search::MAX - depth;
+            else if (black == Bitboard::EMPTY) return Search::MIN + depth;
         }
 
         if (moves.empty()) {
