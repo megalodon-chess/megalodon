@@ -41,9 +41,10 @@ struct Transposition {
     float eval;
 
     // Members for verifying hash
-    U64 pop;     // Split into chunks of six bits for popcnt of wp, wn, wb, wr, wq, bp, bn, bb, br, bq
-    U64 mod;     // Split into chunks of six bits for mod MOD_FAC of wp, ...
-    U64 hash;
+    U64 wp, wn, wb, wr, wq, wk, bp, bn, bb, br, bq, bk;
+    bool turn;
+    bool ep;
+    char castling;
 };
 
 class Options {

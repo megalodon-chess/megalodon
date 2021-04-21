@@ -106,31 +106,25 @@ namespace Search {
         // Read from hash table
         const U64 hash = Hash::hash(pos);
         const U64 idx = hash % options.hash_size;
-        const U64 pop =
-            ((U64)popcnt(pos.wp)) +
-            ((U64)popcnt(pos.wn)<<6) +
-            ((U64)popcnt(pos.wb)<<12) +
-            ((U64)popcnt(pos.wr)<<18) +
-            ((U64)popcnt(pos.wq)<<24) +
-            ((U64)popcnt(pos.bp)<<30) +
-            ((U64)popcnt(pos.bn)<<36) +
-            ((U64)popcnt(pos.bb)<<42) +
-            ((U64)popcnt(pos.br)<<48) +
-            ((U64)popcnt(pos.bq)<<54);
-        const U64 mod =
-            ((U64)(pos.wp%MOD_FAC)) +
-            ((U64)(pos.wn%MOD_FAC)<<6) +
-            ((U64)(pos.wb%MOD_FAC)<<12) +
-            ((U64)(pos.wr%MOD_FAC)<<18) +
-            ((U64)(pos.wq%MOD_FAC)<<24) +
-            ((U64)(pos.bp%MOD_FAC)<<30) +
-            ((U64)(pos.bn%MOD_FAC)<<36) +
-            ((U64)(pos.bb%MOD_FAC)<<42) +
-            ((U64)(pos.br%MOD_FAC)<<48) +
-            ((U64)(pos.bq%MOD_FAC)<<54);
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to>>6, entry.from>>6);
-        const bool match = ((entry.hash == hash) && (entry.pop == pop) && (entry.mod == mod));
+        const bool match = (
+            (entry.wp == pos.wp) &&
+            (entry.wn == pos.wn) &&
+            (entry.wb == pos.wb) &&
+            (entry.wr == pos.wr) &&
+            (entry.wq == pos.wq) &&
+            (entry.wk == pos.wk) &&
+            (entry.bp == pos.bp) &&
+            (entry.bn == pos.bn) &&
+            (entry.bb == pos.bb) &&
+            (entry.br == pos.br) &&
+            (entry.bq == pos.bq) &&
+            (entry.bk == pos.bk) &&
+            (entry.turn == pos.turn) &&
+            (entry.castling == pos.castling) &&
+            (entry.ep == pos.ep)
+        );
         if (match) {
             if ((entry.depth >= depth) && (real_depth != 0)) return SearchInfo(depth, entry.depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
             if (entry.depth > 0) moves.insert(moves.begin(), best);
@@ -193,9 +187,22 @@ namespace Search {
             entry.to = best_move.to + (best_move.is_promo<<6);
             entry.depth = depth;
             entry.eval = best_eval;
-            entry.hash = hash;
-            entry.pop = pop;
-            entry.mod = mod;
+
+            entry.wp = pos.wp;
+            entry.wn = pos.wn;
+            entry.wb = pos.wb;
+            entry.wr = pos.wr;
+            entry.wq = pos.wq;
+            entry.wk = pos.wk;
+            entry.bp = pos.bp;
+            entry.bn = pos.bn;
+            entry.bb = pos.bb;
+            entry.br = pos.br;
+            entry.bq = pos.bq;
+            entry.bk = pos.bk;
+            entry.turn = pos.turn;
+            entry.castling = pos.castling;
+            entry.ep = pos.ep;
         }
 
         return SearchInfo(depth, seldepth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
