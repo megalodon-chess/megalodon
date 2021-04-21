@@ -40,7 +40,7 @@ def get_puzzle():
 
     solution = [chess.Move.from_uci(uci) for uci in data["puzzle"]["solution"]]
 
-    print("Done", flush=True)
+    print("Done")
     return (board, solution)
 
 

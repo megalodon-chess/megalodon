@@ -2,6 +2,15 @@
 
 # Megalodon
 
+![license](https://img.shields.io/github/license/megalodon-chess/megalodon)
+![issues](https://img.shields.io/github/issues/megalodon-chess/megalodon)
+![pulls](https://img.shields.io/github/issues-pr/megalodon-chess/megalodon)
+![build](https://img.shields.io/github/workflow/status/megalodon-chess/megalodon/CI)
+![release](https://img.shields.io/github/v/release/megalodon-chess/megalodon)
+![stars](https://img.shields.io/github/stars/megalodon-chess/megalodon)
+![forks](https://img.shields.io/github/forks/megalodon-chess/megalodon)
+![size](https://img.shields.io/github/repo-size/megalodon-chess/megalodon)
+
 UCI chess engine.
 
 Play against Megalodon on [Lichess][lichess]!
