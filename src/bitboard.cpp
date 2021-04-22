@@ -97,13 +97,13 @@ Location::Location() {
     loc = 0;
 }
 
-Location::Location(const char _x, const char _y) {
+Location::Location(const unsigned char _x, const unsigned char _y) {
     x = _x;
     y = _y;
     loc = (_y<<3) + x;
 }
 
-Location::Location(const char _loc) {
+Location::Location(const unsigned char _loc) {
     x = _loc & 7;
     y = _loc >> 3;
     loc = _loc;
@@ -126,7 +126,7 @@ namespace Bitboard {
         return ((1ULL << pos) & board) != 0;
     }
 
-    bool bit(const char& board, const char& pos) {
+    bool bit(const unsigned char& board, const char& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
@@ -151,11 +151,11 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
-    void set_bit(char& board, const char& pos) {
+    void set_bit(unsigned char& board, const char& pos) {
         board |= (1ULL << pos);
     }
 
-    void unset_bit(char& board, const char& pos) {
+    void unset_bit(unsigned char& board, const char& pos) {
         board &= ~(1ULL << pos);
     }
 
@@ -679,7 +679,7 @@ namespace Bitboard {
         return board;
     }
 
-    void king_moves(Move* moves, int& movecnt, const Location& k_pos, const char& castling, const bool& side, const U64& same,
+    void king_moves(Move* moves, int& movecnt, const Location& k_pos, const unsigned char& castling, const bool& side, const U64& same,
             const U64& all, const U64& attacks) {
         /*
         Calculates all king moves.
@@ -1071,7 +1071,7 @@ namespace Bitboard {
         const bool is_pawn = bit(pos.wp|pos.bp, move.from);
 
         // Find to_board and set bits.
-        for (char i = 0; i < 12; i++) {
+        for (unsigned char i = 0; i < 12; i++) {
             U64* p = pointers[i];
             if (bit(*p, move.from)) {
                 to_board = p;

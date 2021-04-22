@@ -36,8 +36,8 @@ using Bitboard::bit;
 
 
 namespace Eval {
-    char CENTER_DIST_MAP[64];
-    const char FILE_DIST_MAP[8] = {3, 2, 1, 0, 0, 1, 2, 3};
+    unsigned char CENTER_DIST_MAP[64];
+    const unsigned char FILE_DIST_MAP[8] = {3, 2, 1, 0, 0, 1, 2, 3};
     const U64 SURROUNDINGS[64] = {    // Bitboard of surrounding squares up to 2 sq away.
         460551ULL, 986895ULL, 2039583ULL, 4079166ULL,
         8158332ULL, 16316664ULL, 15790320ULL, 14737632ULL,
@@ -58,7 +58,7 @@ namespace Eval {
     };
 
     void init() {
-        for (char i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
+        for (unsigned char i = 0; i < 64; i++) CENTER_DIST_MAP[i] = center_dist(i);
     }
 
 
@@ -171,7 +171,7 @@ namespace Eval {
         char w_adv[8], b_adv[8];     // Position of most advanced pawn, side dependent (-1 if no pawn)
         char w_back[8], b_back[8];   // Position of least advanced pawn, side dependent (-1 if no pawn)
         U64 w_files[8], b_files[8];  // Bitboards of pawns on each file
-        for (char i = 0; i < 8; i++) {
+        for (unsigned char i = 0; i < 8; i++) {
             w_files[i] = wp & Bitboard::FILES[i];
             b_files[i] = bp & Bitboard::FILES[i];
 
@@ -209,7 +209,7 @@ namespace Eval {
         // Stacked and islands
         bool w_on = false;
         bool b_on = false;
-        for (char i = 0; i < 8; i++) {
+        for (unsigned char i = 0; i < 8; i++) {
             if (w_files[i] == 0) w_on = false;
             else {
                 if (!w_on) islands++;
@@ -228,7 +228,7 @@ namespace Eval {
         }
 
         // Passed
-        for (char i = 0; i < 8; i++) {
+        for (unsigned char i = 0; i < 8; i++) {
             if (w_files[i] != 0) {
                 const bool blocked_right = (i>=1) && (b_back[i-1]!=-1) && (w_adv[i]>=b_back[i-1]);
                 const bool blocked_left = (i<=6) && (b_back[i+1]!=-1) && (w_adv[i]>=b_back[i+1]);
@@ -265,7 +265,7 @@ namespace Eval {
         const bool wp_in_cent = true;//((INNER_CENTER|OUTER_CENTER) & wp) != 0;
         const bool bp_in_cent = true;//((INNER_CENTER|OUTER_CENTER) & bp) != 0;
 
-        for (char i = 0; i < 64; i++) {
+        for (unsigned char i = 0; i < 64; i++) {
             if (wp_in_cent && bit(wn, i)) {
                 wdist += 6 - CENTER_DIST_MAP[i];
             } else if (bp_in_cent && bit(bn, i)) {
@@ -281,8 +281,8 @@ namespace Eval {
     float rooks(const U64& wr, const U64& br, const U64& wp, const U64& bp) {
         float score = 0;
 
-        for (char i = 0; i < 64; i++) {
-            const char x = i&7, y = i>>3;
+        for (unsigned char i = 0; i < 64; i++) {
+            const unsigned char x = i&7, y = i>>3;
             const U64 w = wp & Bitboard::FILES[x];
             const U64 b = bp & Bitboard::FILES[x];
             const bool open = (w == 0) && (b == 0);
@@ -304,7 +304,7 @@ namespace Eval {
     }
 
     float queens(const Position& pos) {
-        const char wq = Bitboard::first_bit(pos.wq).loc, bq = Bitboard::first_bit(pos.bq).loc;
+        const unsigned char wq = Bitboard::first_bit(pos.wq).loc, bq = Bitboard::first_bit(pos.bq).loc;
         const U64 white = Bitboard::get_white(pos), black = Bitboard::get_black(pos);
 
         float score = 0;
