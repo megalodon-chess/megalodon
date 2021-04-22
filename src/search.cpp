@@ -113,7 +113,7 @@ namespace Search {
         float best_eval = pos.turn ? MIN : MAX;
         bool full = true;
         int movecnt = 0;  // Need to use this bc will skip a repeated best move so i != movecnt
-        for (auto i = 0; i < moves.size(); i++) {
+        for (unsigned int i = 0; i < moves.size(); i++) {
             if (depth >= 3) {
                 if ((get_time() >= endtime) || !searching) {
                     full = false;
