@@ -183,7 +183,7 @@ namespace Eval {
             } else {
                 bool found = false;
                 for (char j = 7; j > -1; j--) {
-                    if ((w & (1ULL<<(j*8))) != 0) {
+                    if (bit(w, j<<3)) {
                         if (!found) w_adv[i] = j;
                         w_back[i] = j;
                         found = true;
@@ -198,7 +198,7 @@ namespace Eval {
             } else {
                 bool found = false;
                 for (char j = 7; j > -1; j--) {
-                    if ((b & (1ULL<<(j*8))) != 0) {
+                    if (bit(b, j<<3)) {
                         if (!found) b_adv[i] = j;
                         b_back[i] = j;
                         found = true;
@@ -283,7 +283,7 @@ namespace Eval {
         float score = 0;
 
         for (char i = 0; i < 64; i++) {
-            const char x = i&7, y = i>>3;
+            const char x = i&7;
             const U64 w = wp & Bitboard::FILES[x];
             const U64 b = bp & Bitboard::FILES[x];
             const bool open = (w == 0) && (b == 0);
@@ -317,10 +317,8 @@ namespace Eval {
     }
 
     float kings(const U64& wk, const U64& bk) {
-        const Location w = Bitboard::first_bit(wk);
-        const Location b = Bitboard::first_bit(bk);
-        const char wdist = CENTER_DIST_MAP[w.loc];
-        const char bdist = CENTER_DIST_MAP[b.loc];
+        const char wdist = CENTER_DIST_MAP[Bitboard::first_bit_char(wk)];
+        const char bdist = CENTER_DIST_MAP[Bitboard::first_bit_char(bk)];
         return wdist - bdist;
     }
 
