@@ -170,8 +170,8 @@ namespace Search {
     SearchInfo search(const Options& options, const Position& pos, const int& depth, const double& movetime,
             const bool& infinite, bool& searching, const bool& stop_early) {
         const int eg = Endgame::eg_type(pos);
-        const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
         const U64 o_attacks = Bitboard::attacked(pos, !pos.turn);
+        const vector<Move> moves = Bitboard::legal_moves(pos, o_attacks);
         if (false && (moves.size() == 1)) {
             return SearchInfo(1, 1, 0, 1, 1, 0, 0, {moves[0]}, 0, 0, true);
         }

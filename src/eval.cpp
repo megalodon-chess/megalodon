@@ -165,7 +165,6 @@ namespace Eval {
         char stacked = 0;
         char islands = 0;
         char passed = 0;
-        char backwards = 0;
 
         // Generate file values
         char w_adv[8], b_adv[8];     // Position of most advanced pawn, side dependent (-1 if no pawn)
@@ -282,7 +281,7 @@ namespace Eval {
         float score = 0;
 
         for (unsigned char i = 0; i < 64; i++) {
-            const unsigned char x = i&7, y = i>>3;
+            const unsigned char x = i&7;
             const U64 w = wp & Bitboard::FILES[x];
             const U64 b = bp & Bitboard::FILES[x];
             const bool open = (w == 0) && (b == 0);

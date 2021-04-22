@@ -551,40 +551,42 @@ namespace Bitboard {
         if (dy > 0) dy = 1;
         else if (dy < 0) dy = -1;
 
-        if (!(dx == 0 && dy == 0) && (dx == 0 && dy != 0) || (dx != 0 && dy == 0)) {
-            char cx = kx, cy = ky;   // Current (x, y)
-            while (true) {
-                cx += dx;
-                cy += dy;
-                if (!in_board(cx, cy)) {
-                    found = false;
-                    break;
+        if (!(dx == 0 && dy == 0)) {
+            if ((dx == 0 && dy != 0) || (dx != 0 && dy == 0)) {   // Rook
+                char cx = kx, cy = ky;   // Current (x, y)
+                while (true) {
+                    cx += dx;
+                    cy += dy;
+                    if (!in_board(cx, cy)) {
+                        found = false;
+                        break;
+                    }
+                    const char loc = (cy<<3) + cx;
+                    set_bit(pin_ray, loc);
+                    if (cx==px && cy==py) found = true;
+                    else if (bit(rooks, loc) || bit(queens, loc)) break;
+                    else if (bit(all, loc)) {
+                        found = false;
+                        break;
+                    }
                 }
-                const char loc = (cy<<3) + cx;
-                set_bit(pin_ray, loc);
-                if (cx==px && cy==py) found = true;
-                else if (bit(rooks, loc) || bit(queens, loc)) break;
-                else if (bit(all, loc)) {
-                    found = false;
-                    break;
-                }
-            }
-        } else if (!(dx == 0 && dy == 0) && (abs(dx) == abs(dy))) {
-            char cx = kx, cy = ky;   // Current (x, y)
-            while (true) {
-                cx += dx;
-                cy += dy;
-                if (!in_board(cx, cy)) {
-                    found = false;
-                    break;
-                }
-                const char loc = (cy<<3) + cx;
-                set_bit(pin_ray, loc);
-                if (cx==px && cy==py) found = true;
-                else if (bit(bishops, loc) || bit(queens, loc)) break;
-                else if (bit(all, loc)) {
-                    found = false;
-                    break;
+            } else if (abs(dx) == abs(dy)) {   // Bishop
+                char cx = kx, cy = ky;   // Current (x, y)
+                while (true) {
+                    cx += dx;
+                    cy += dy;
+                    if (!in_board(cx, cy)) {
+                        found = false;
+                        break;
+                    }
+                    const char loc = (cy<<3) + cx;
+                    set_bit(pin_ray, loc);
+                    if (cx==px && cy==py) found = true;
+                    else if (bit(bishops, loc) || bit(queens, loc)) break;
+                    else if (bit(all, loc)) {
+                        found = false;
+                        break;
+                    }
                 }
             }
         }
@@ -1011,10 +1013,8 @@ namespace Bitboard {
         const U64 ALL = SAME | OPPONENT;
 
         const Location k_pos = first_bit(SK);
-        const char kx = k_pos.x, ky = k_pos.y;
         const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, OK, SAME, attacks, pos.turn);
         const char num_checkers = popcnt(checking_pieces);
-        const char pawn_dir = pos.turn ? 1 : -1;
 
         int movecnt = 0;
         Move moves[MAX_MOVES];
