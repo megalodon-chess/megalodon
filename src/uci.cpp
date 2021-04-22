@@ -48,7 +48,7 @@ Position parse_pos(const string& str) {
     if (parts[1] == "startpos") {
         Position pos = Bitboard::startpos();
         if (parts.size() > 3 && parts[2] == "moves") {
-            for (char i = 3; i < parts.size(); i++) {
+            for (UCH i = 3; i < parts.size(); i++) {
                 pos = Bitboard::push(pos, parts[i]);
             }
         }
@@ -62,7 +62,7 @@ Position parse_pos(const string& str) {
         Position pos = Bitboard::parse_fen(fen);
 
         if (parts.size() > 9 && parts[8] == "moves") {
-            for (char i = 9; i < parts.size(); i++) {
+            for (UCH i = 9; i < parts.size(); i++) {
                 pos = Bitboard::push(pos, parts[i]);
             }
         }
@@ -91,10 +91,9 @@ float go(Options& options, const Position& pos, const vector<string>& parts, con
     int mode = 0;
     int depth = 99;
     double movetime;
-    const int total = Eval::total_mat(pos);
     float wtime = 0, btime = 0, winc = 0, binc = 0;
     bool infinite = false;
-    for (char i = 0; i < parts.size()-1; i++) {
+    for (UCH i = 0; i < parts.size()-1; i++) {
         if (parts[i] == "depth") {
             mode = 1;
             depth = std::stoi(parts[i+1]);
@@ -133,7 +132,7 @@ float go(Options& options, const Position& pos, const vector<string>& parts, con
 
     searching = true;
     const SearchInfo result = Search::search(options, pos, depth, movetime, (mode!=2), searching);
-    cout << "bestmove " << Bitboard::move_str(result.pv[0]) << endl;
+    cout << "bestmove " << Bitboard::move_str(result.pv.front()) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
     return result.score;
