@@ -65,7 +65,7 @@ namespace Endgame {
             popcnt(pos.br),
             popcnt(pos.bq),
         };
-        for (char i = 0; i < DRAW_COUNT; i++) {
+        for (unsigned char i = 0; i < DRAW_COUNT; i++) {
             if (equal(DRAWS[i], counts)) return true;
         }
         return false;

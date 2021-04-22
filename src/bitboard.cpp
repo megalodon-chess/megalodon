@@ -163,7 +163,7 @@ namespace Bitboard {
         return (0 <= x && x < 8 && 0 <= y && y < 8);
     }
 
-    char first_bit_char(const U64& board) {
+    UCH first_bit_char(const U64& board) {
         switch (board) {
             case 1ULL:                   return 0;
             case 2ULL:                   return 1;

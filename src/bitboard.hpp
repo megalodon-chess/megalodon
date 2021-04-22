@@ -135,7 +135,7 @@ namespace Bitboard {
     void set_bit(UCH&, const char&);
     void unset_bit(UCH&, const char&);
     bool in_board(const char&, const char&);
-    char first_bit_char(const U64&);
+    UCH first_bit_char(const U64&);
     Location first_bit(const U64&);
 
     string piece_at(const Position&, const char&);

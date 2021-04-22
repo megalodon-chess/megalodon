@@ -92,7 +92,7 @@ float go(Options& options, const Position& pos, const vector<string>& parts, con
     int depth = 99;
     double movetime;
     float wtime = 0, btime = 0, winc = 0, binc = 0;
-    bool infinite = false;
+    //bool infinite = false;
     for (UCH i = 0; i < parts.size()-1; i++) {
         if (parts[i] == "depth") {
             mode = 1;
@@ -113,7 +113,7 @@ float go(Options& options, const Position& pos, const vector<string>& parts, con
             mode = 3;
             movetime = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "infinite") {
-            infinite = true;
+            //infinite = true;
         }
     }
 
@@ -176,8 +176,8 @@ void perft_push(const Position& pos, const int& knodes) {
 
 void bench() {
     Options options;
-    const char num_pos = 20;
-    const char depth = 4;
+    const unsigned char num_pos = 20;
+    const unsigned char depth = 4;
     const string fens[num_pos] = {
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         "r2q1rk1/ppp2pp1/2np1n1p/2b1p3/2B1P1b1/2NPBN2/PPPQ1PPP/R3R1K1 b Qq - 0 1",
@@ -207,7 +207,7 @@ void bench() {
 
     options.Hash = 256;
     options.set_hash();
-    for (char i = 0; i < num_pos; i++) {
+    for (unsigned char i = 0; i < num_pos; i++) {
         cout << "Position " << i+1 << " of " << +num_pos << endl;
         cout << "Fen: " << fens[i] << endl;
 
