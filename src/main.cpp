@@ -76,7 +76,7 @@ void bench() {
     const double start = get_time();
     bool searching = true;
 
-    for (unsigned char i = 0; i < num_pos; i++) {
+    for (UCH i = 0; i < num_pos; i++) {
         cout << "Position " << i+1 << " of " << +num_pos << endl;
         cout << "Fen: " << fens[i] << endl;
 

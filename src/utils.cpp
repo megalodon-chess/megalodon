@@ -65,7 +65,7 @@ string replace(string str, const string& rep) {
 
 string join(const string& delim, const vector<string>& parts) {
     string str;
-    for (unsigned char i = 0; i < parts.size()-1; i++) {
+    for (UCH i = 0; i < parts.size()-1; i++) {
         str += parts[i];
         str += delim;
     }
