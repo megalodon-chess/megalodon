@@ -345,23 +345,23 @@ namespace Eval {
 
         const float mat         =                          material(pos)                           / 1.F;
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp)                   / 5.F;
-        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp)          / 5.F;
-        const float p_attacks   =                          pawn_attacks(pos)                       / 2.F;
+        // const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp)          / 5.F;
+        // const float p_attacks   =                          pawn_attacks(pos)                       / 2.F;
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
         const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp)   / 2.F;
         const float queen       = options.EvalQueens     * queens(pos)                             / 6.F;
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk)                   / 16.F;
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
-        const float eg = end_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        const float mg = middle_game(0, 0, knight, rook, queen, king, sp);
+        const float eg = end_game(0, 0, knight, rook, queen, king, sp);
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
 
         if (print) {
             cout << "       Material | " << mat           << "\n";
-            cout << " Pawn Structure | " << pawn_struct   << "\n";
-            cout << "   Pawn Attacks | " << p_attacks     << "\n";
+            // cout << " Pawn Structure | " << pawn_struct   << "\n";
+            // cout << "   Pawn Attacks | " << p_attacks     << "\n";
             cout << "        Knights | " << knight        << "\n";
             cout << "          Rooks | " << rook          << "\n";
             cout << "         Queens | " << queen         << "\n";
