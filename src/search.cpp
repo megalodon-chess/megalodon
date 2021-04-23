@@ -180,7 +180,7 @@ namespace Search {
         pv.insert(pv.begin(), best_move);
 
         // Write result into hash table
-        if (full && ((depth > entry.depth) || (!match))) {
+        if (full && (depth >= 2) && ((depth > entry.depth) || (!match))) {
             if (entry.depth == 0) options.hash_filled++;
 
             entry.from = best_move.from + (best_move.promo<<6);
