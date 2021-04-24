@@ -109,21 +109,21 @@ namespace Search {
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to>>6, entry.from>>6);
         const bool match = (
-            (entry.wp == pos.wp) &&
-            (entry.wn == pos.wn) &&
-            (entry.wb == pos.wb) &&
-            (entry.wr == pos.wr) &&
-            (entry.wq == pos.wq) &&
-            (entry.wk == pos.wk) &&
-            (entry.bp == pos.bp) &&
-            (entry.bn == pos.bn) &&
-            (entry.bb == pos.bb) &&
-            (entry.br == pos.br) &&
-            (entry.bq == pos.bq) &&
-            (entry.bk == pos.bk) &&
-            (entry.turn == pos.turn) &&
+            (entry.wp       == pos.wp)       &&
+            (entry.wn       == pos.wn)       &&
+            (entry.wb       == pos.wb)       &&
+            (entry.wr       == pos.wr)       &&
+            (entry.wq       == pos.wq)       &&
+            (entry.wk       == pos.wk)       &&
+            (entry.bp       == pos.bp)       &&
+            (entry.bn       == pos.bn)       &&
+            (entry.bb       == pos.bb)       &&
+            (entry.br       == pos.br)       &&
+            (entry.bq       == pos.bq)       &&
+            (entry.bk       == pos.bk)       &&
+            (entry.turn     == pos.turn)     &&
             (entry.castling == pos.castling) &&
-            (entry.ep == pos.ep)
+            (entry.ep       == pos.ep)
         );
         if (match) {
             if ((entry.depth >= depth) && (real_depth != 0)) return SearchInfo(depth, entry.depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
