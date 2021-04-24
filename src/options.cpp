@@ -58,7 +58,7 @@ void Options::set_hash() {
 }
 
 void Options::clear_hash() {
-    for (char i = 0; i < hash_size; i++) {
+    for (unsigned int i = 0; i < hash_size; i++) {
         hash_table[i].depth = 0;
     }
 }

@@ -97,13 +97,13 @@ Location::Location() {
     loc = 0;
 }
 
-Location::Location(const char _x, const char _y) {
+Location::Location(const UCH _x, const UCH _y) {
     x = _x;
     y = _y;
     loc = (_y<<3) + x;
 }
 
-Location::Location(const char _loc) {
+Location::Location(const UCH _loc) {
     x = _loc & 7;
     y = _loc >> 3;
     loc = _loc;
@@ -126,7 +126,7 @@ namespace Bitboard {
         return ((1ULL << pos) & board) != 0;
     }
 
-    bool bit(const char& board, const char& pos) {
+    bool bit(const UCH& board, const char& pos) {
         return ((1ULL << pos) & board) != 0;
     }
 
@@ -151,11 +151,11 @@ namespace Bitboard {
         board &= ~(1ULL << pos);
     }
 
-    void set_bit(char& board, const char& pos) {
+    void set_bit(UCH& board, const char& pos) {
         board |= (1ULL << pos);
     }
 
-    void unset_bit(char& board, const char& pos) {
+    void unset_bit(UCH& board, const char& pos) {
         board &= ~(1ULL << pos);
     }
 
@@ -551,40 +551,42 @@ namespace Bitboard {
         if (dy > 0) dy = 1;
         else if (dy < 0) dy = -1;
 
-        if (!(dx == 0 && dy == 0) && (dx == 0 && dy != 0) || (dx != 0 && dy == 0)) {
-            char cx = kx, cy = ky;   // Current (x, y)
-            while (true) {
-                cx += dx;
-                cy += dy;
-                if (!in_board(cx, cy)) {
-                    found = false;
-                    break;
+        if (!(dx == 0 && dy == 0)) {
+            if ((dx == 0 && dy != 0) || (dx != 0 && dy == 0)) {   // Rook
+                char cx = kx, cy = ky;   // Current (x, y)
+                while (true) {
+                    cx += dx;
+                    cy += dy;
+                    if (!in_board(cx, cy)) {
+                        found = false;
+                        break;
+                    }
+                    const char loc = (cy<<3) + cx;
+                    set_bit(pin_ray, loc);
+                    if (cx==px && cy==py) found = true;
+                    else if (bit(rooks, loc) || bit(queens, loc)) break;
+                    else if (bit(all, loc)) {
+                        found = false;
+                        break;
+                    }
                 }
-                const char loc = (cy<<3) + cx;
-                set_bit(pin_ray, loc);
-                if (cx==px && cy==py) found = true;
-                else if (bit(rooks, loc) || bit(queens, loc)) break;
-                else if (bit(all, loc)) {
-                    found = false;
-                    break;
-                }
-            }
-        } else if (!(dx == 0 && dy == 0) && (abs(dx) == abs(dy))) {
-            char cx = kx, cy = ky;   // Current (x, y)
-            while (true) {
-                cx += dx;
-                cy += dy;
-                if (!in_board(cx, cy)) {
-                    found = false;
-                    break;
-                }
-                const char loc = (cy<<3) + cx;
-                set_bit(pin_ray, loc);
-                if (cx==px && cy==py) found = true;
-                else if (bit(bishops, loc) || bit(queens, loc)) break;
-                else if (bit(all, loc)) {
-                    found = false;
-                    break;
+            } else if (abs(dx) == abs(dy)) {   // Bishop
+                char cx = kx, cy = ky;   // Current (x, y)
+                while (true) {
+                    cx += dx;
+                    cy += dy;
+                    if (!in_board(cx, cy)) {
+                        found = false;
+                        break;
+                    }
+                    const char loc = (cy<<3) + cx;
+                    set_bit(pin_ray, loc);
+                    if (cx==px && cy==py) found = true;
+                    else if (bit(bishops, loc) || bit(queens, loc)) break;
+                    else if (bit(all, loc)) {
+                        found = false;
+                        break;
+                    }
                 }
             }
         }
@@ -679,7 +681,7 @@ namespace Bitboard {
         return board;
     }
 
-    void king_moves(Move* moves, int& movecnt, const Location& k_pos, const char& castling, const bool& side, const U64& same,
+    void king_moves(Move* moves, int& movecnt, const Location& k_pos, const UCH& castling, const bool& side, const U64& same,
             const U64& all, const U64& attacks) {
         /*
         Calculates all king moves.
@@ -1011,10 +1013,8 @@ namespace Bitboard {
         const U64 ALL = SAME | OPPONENT;
 
         const Location k_pos = first_bit(SK);
-        const char kx = k_pos.x, ky = k_pos.y;
         const U64 checking_pieces = checkers(k_pos, OP, ON, OB, OR, OQ, OK, SAME, attacks, pos.turn);
         const char num_checkers = popcnt(checking_pieces);
-        const char pawn_dir = pos.turn ? 1 : -1;
 
         int movecnt = 0;
         Move moves[MAX_MOVES];
@@ -1071,7 +1071,7 @@ namespace Bitboard {
         const bool is_pawn = bit(pos.wp|pos.bp, move.from);
 
         // Find to_board and set bits.
-        for (char i = 0; i < 12; i++) {
+        for (UCH i = 0; i < 12; i++) {
             U64* p = pointers[i];
             if (bit(*p, move.from)) {
                 to_board = p;

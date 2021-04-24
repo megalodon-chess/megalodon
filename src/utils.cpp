@@ -40,8 +40,8 @@ double get_time() {
 
 
 string strip(const string& str) {
-    int start = str.find_first_not_of(" ");
-    int end = str.find_last_not_of(" ");
+    unsigned int start = str.find_first_not_of(" ");
+    unsigned int end = str.find_last_not_of(" ");
 
     if (start == string::npos) start = 0;
     if (end == string::npos) end = str.size()-1;
@@ -53,7 +53,7 @@ string replace(string str, const string& rep) {
     while (true) {
         if (str.size() == 0) break;
 
-        int pos = str.find(rep);
+        unsigned int pos = str.find(rep);
         if (pos == string::npos) break;
 
         if (pos > 0) str = str.substr(0, pos) + str.substr(pos+size);
@@ -65,7 +65,7 @@ string replace(string str, const string& rep) {
 
 string join(const string& delim, const vector<string>& parts) {
     string str;
-    for (char i = 0; i < parts.size()-1; i++) {
+    for (UCH i = 0; i < parts.size()-1; i++) {
         str += parts[i];
         str += delim;
     }
@@ -75,7 +75,7 @@ string join(const string& delim, const vector<string>& parts) {
 
 vector<string> split(const string& str, const string& delim) {
     vector<string> parts;
-    int prev = 0, pos = 0;
+    unsigned int prev = 0, pos = 0;
     do {
         pos = str.find(delim, prev);
         if (pos == string::npos) pos = str.length();

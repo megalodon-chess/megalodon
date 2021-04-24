@@ -29,16 +29,17 @@ using std::endl;
 using std::vector;
 using std::string;
 
-typedef unsigned long long U64;
+typedef unsigned long long  U64;
+typedef unsigned char       UCH;
 
 struct Move {
     Move();
     Move(const char, const char, const bool=false, const char=0);
 
-    char from;
-    char to;
+    UCH from;
+    UCH to;
+    UCH promo;  // 0, 1, 2, 3
     bool is_promo;
-    char promo;  // 0, 1, 2, 3
 };
 
 struct Position {
@@ -48,24 +49,24 @@ struct Position {
 
     U64 wp, wn, wb, wr, wq, wk, bp, bn, bb, br, bq, bk;
     bool turn;
-    char castling;
+    UCH castling;
+    UCH ep_square;
     bool ep;
-    char ep_square;
 
-    float eval;
     Position* parent;
+    float eval;
     int move_cnt;
-    char draw50;
+    UCH draw50;
 };
 
 struct Location {
     Location();
-    Location(const char, const char);
-    Location(const char);
+    Location(const UCH, const UCH);
+    Location(const UCH);
 
-    char x;
-    char y;
-    char loc;
+    UCH x;
+    UCH y;
+    UCH loc;
 };
 
 namespace Bitboard {
@@ -127,12 +128,12 @@ namespace Bitboard {
     constexpr char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
     bool bit(const U64&, const char&);
-    bool bit(const char&, const char&);
+    bool bit(const UCH&, const char&);
     char popcnt(const U64&);
     void set_bit(U64&, const char&);
     void unset_bit(U64&, const char&);
-    void set_bit(char&, const char&);
-    void unset_bit(char&, const char&);
+    void set_bit(UCH&, const char&);
+    void unset_bit(UCH&, const char&);
     bool in_board(const char&, const char&);
     char first_bit_char(const U64&);
     Location first_bit(const U64&);
@@ -152,7 +153,7 @@ namespace Bitboard {
     char num_attacks(const vector<Move>&, const Location&);
     U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
-    void king_moves(Move*, int&, const Location&, const char&, const bool&, const U64&, const U64&, const U64&);
+    void king_moves(Move*, int&, const Location&, const UCH&, const bool&, const U64&, const U64&, const U64&);
     void single_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const Location&, const U64&);

@@ -33,7 +33,7 @@ using std::string;
 
 namespace Endgame {
     bool cnt_match(const vector<char> c1, const vector<char> c2) {
-        for (char i = 0; i < c1.size(); i++) {
+        for (UCH i = 0; i < c1.size(); i++) {
             if (c1[i] != c2[i]) return false;
         }
         return true;
