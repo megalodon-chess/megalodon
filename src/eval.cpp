@@ -331,10 +331,8 @@ namespace Eval {
             if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
             else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
             if (checked) {
-                // Increment value by depth to encourage sooner mate.
-                // The larger depth is, the closer it is to the leaf nodes.
-                if (pos.turn) return Search::MIN + depth;  // Mate by black
-                else return Search::MAX - depth;           // Mate by white
+                if (pos.turn) return Search::MIN;  // Mate by black
+                else return Search::MAX;           // Mate by white
             }
             return 0;
         }

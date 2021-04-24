@@ -63,7 +63,7 @@ string SearchInfo::as_string() {
     str += " multipv 1 score ";
     if (is_mate()) {
         str += "mate ";
-        char moves;
+        unsigned char moves;
         if (score < 0) moves = (score-Search::MIN+1) / 2;
         else           moves = (Search::MAX-score+1) / 2;
         str += std::to_string(moves);
@@ -205,6 +205,8 @@ namespace Search {
             entry.ep = pos.ep;
         }
 
+        if      (best_eval < MATE_BOUND_MIN) best_eval++;
+        else if (best_eval > MATE_BOUND_MAX) best_eval--;
         return SearchInfo(depth, seldepth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
     }
 
