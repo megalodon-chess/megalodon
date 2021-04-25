@@ -260,12 +260,13 @@ int loop() {
         }
         else if (startswith(cmd, "setoption")) {
             const string name = parts[2];
-            const string value = parts[4];
+            const string value = (parts.size() >= 5) ? parts[4] : "";
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
+            else if (name == "ClearHash") options.set_hash();
 
             else if (name == "MaxMoveTime")    options.MaxMoveTime        = std::stoi(value);
 

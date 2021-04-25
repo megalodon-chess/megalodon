@@ -37,6 +37,7 @@ Transposition::Transposition() {
 
 Options::Options() {
     Hash             = 256;
+    ClearHash        = 0;    // Not used
 
     MaxMoveTime      = 0;
 

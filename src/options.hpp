@@ -50,6 +50,7 @@ struct Transposition {
 class Options {
 /*
 Hash: type=spin, default=256, min=1, max=8192, hash table size (megabytes)
+ClearHash: type=button
 
 MaxMoveTime: type=spin, default=0, min=0, max=10000000, maximum search time in seconds (set to 0 to disable)
 
@@ -71,6 +72,7 @@ public:
     U64 hash_filled;
 
     int Hash;
+    int ClearHash;   // Not used (type button)
 
     int MaxMoveTime;
 
