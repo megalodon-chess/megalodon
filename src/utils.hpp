@@ -43,3 +43,6 @@ vector<Position> flatten(const vector<vector<Position>>& vec);
 
 string rand_choice(vector<string>);
 U64 randull();
+
+string str_variant(const Bitboard::Variant&);
+Bitboard::Variant variant_str(const string&);

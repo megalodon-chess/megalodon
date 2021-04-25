@@ -23,7 +23,6 @@
 #include <string>
 #include <chrono>
 #include "bitboard.hpp"
-#include "utils.hpp"
 
 using std::cin;
 using std::cout;
@@ -111,4 +110,25 @@ string rand_choice(const vector<string>& choices) {
 
 U64 randull() {
     return ((U64)rand()) + (((U64)rand())<<32);
+}
+
+
+string str_variant(const Bitboard::Variant& variant) {
+    switch (variant) {
+        case Bitboard::KOTH:      return "kingofthehill";
+        case Bitboard::HORDE:     return "horde";
+        case Bitboard::ANTICHESS: return "antichess";
+        default:                  return "chess";
+    }
+}
+
+Bitboard::Variant variant_str(const string& variant) {
+    if (variant == "kingofthehill") {
+        return Bitboard::KOTH;
+    } else if ("horde") {
+        return Bitboard::HORDE;
+    } else if ("antichess") {
+        return Bitboard::ANTICHESS;
+    }
+    return Bitboard::CHESS;
 }
