@@ -109,6 +109,7 @@ namespace Search {
         Transposition& entry = options.hash_table[idx];
         const Move best(entry.from&63, entry.to&63, entry.to>>6, entry.from>>6);
         const bool match = (
+            (entry.depth    >  0)            &&
             (entry.wp       == pos.wp)       &&
             (entry.wn       == pos.wn)       &&
             (entry.wb       == pos.wb)       &&

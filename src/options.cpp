@@ -57,4 +57,8 @@ void Options::set_hash() {
     hash_size = Hash*HASH_FACTOR + 1;
     hash_table = new Transposition[hash_size];
     hash_filled = 0;
+
+    for (U64 i = 0; i < hash_size; i++) {
+        hash_table[i].depth = 0;
+    }
 }
