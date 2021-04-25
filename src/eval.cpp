@@ -328,19 +328,19 @@ namespace Eval {
             const bool print) {
         const U64 white = Bitboard::get_white(pos), black = Bitboard::get_black(pos);
 
-        if (options.UCI_Variant == "kingofthehill") {                        // King of the hill ending
+        if (options.UCI_Variant == Bitboard::KOTH) {                                 // King of the hill ending
             if ((pos.wk & INNER_CENTER) != 0)  return Search::MAX - depth;
             if ((pos.bk & INNER_CENTER) != 0)  return Search::MIN + depth;
-        } else if (options.UCI_Variant == "horde") {                         // Horde ending
+        } else if (options.UCI_Variant == Bitboard::HORDE) {                         // Horde ending
             if (white == Bitboard::EMPTY)      return Search::MIN + depth;
-        } else if (options.UCI_Variant == "antichess") {                     // Antichess ending
+        } else if (options.UCI_Variant == Bitboard::ANTICHESS) {                     // Antichess ending
             if      (white == Bitboard::EMPTY) return Search::MAX - depth;
             else if (black == Bitboard::EMPTY) return Search::MIN + depth;
         }
 
         if (moves.empty()) {
             bool checked = false;
-            if      ( pos.turn && ((o_attacks & pos.wk) != 0) && (options.UCI_Variant != "horde")) checked = true;
+            if      ( pos.turn && ((o_attacks & pos.wk) != 0) && (options.UCI_Variant != Bitboard::HORDE)) checked = true;
             else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
             if (checked) {
                 // Increment value by depth to encourage sooner mate.
@@ -364,16 +364,16 @@ namespace Eval {
         // Endgame and middle game are for weighting categories.
         float mg;
         float eg;
-        if (options.UCI_Variant == "chess") {                  // Standard tapering
+        if (options.UCI_Variant == Bitboard::CHESS) {                  // Standard tapering
             mg = chess_mg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
             eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
-        } else if (options.UCI_Variant == "kingofthehill") {   // Always use endgame. Bring king to center.
+        } else if (options.UCI_Variant == Bitboard::KOTH) {   // Always use endgame. Bring king to center.
             mg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
             eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
-        } else if (options.UCI_Variant == "horde") {           // Standard tapering
+        } else if (options.UCI_Variant == Bitboard::HORDE) {           // Standard tapering
             mg = chess_mg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
             eg = chess_eg(pawn_struct, p_attacks, knight, rook, queen, king, sp);
-        } else if (options.UCI_Variant == "antichess") {
+        } else if (options.UCI_Variant == Bitboard::ANTICHESS) {
             mg = 0;
             eg = 0;
             mat *= -1;
