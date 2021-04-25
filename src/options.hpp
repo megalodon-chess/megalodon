@@ -63,7 +63,7 @@ public:
 
     int Hash;
 
-    string UCI_Variant;
+    Bitboard::Variant UCI_Variant;
 
     float EvalMaterial;
     float EvalSpace;
