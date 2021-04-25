@@ -29,11 +29,15 @@ using std::string;
 
 
 namespace Random {
+    unsigned long long curr = 1;
+
     void set_seed(unsigned long long s) {
-        ;
+        curr = s;
+        if (curr == 0) curr++;
     }
 
-    auto random() {
-        ;
+    unsigned long long random() {
+        curr *= 16807;
+        return curr;
     }
 }

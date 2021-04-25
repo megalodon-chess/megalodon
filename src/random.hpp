@@ -30,5 +30,5 @@ using std::string;
 
 namespace Random {
     void set_seed(unsigned long long);
-    auto random();
+    unsigned long long random();
 }
