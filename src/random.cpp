@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "utils.hpp"
 
 using std::cin;
 using std::cout;
@@ -29,7 +30,7 @@ using std::string;
 
 
 namespace Random {
-    unsigned long long curr = 1;
+    unsigned long long curr = get_time();
 
     void set_seed(unsigned long long s) {
         curr = s;
