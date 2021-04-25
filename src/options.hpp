@@ -53,6 +53,8 @@ Hash: type=spin, default=256, min=1, max=8192, hash table size (megabytes)
 ClearHash: type=button
 
 MaxMoveTime: type=spin, default=0, min=0, max=10000000, maximum search time in seconds (set to 0 to disable)
+NullMovePruning: type=check, default=true, whether to use null move pruning.
+NullMovePruningDepth: type=spin, default=2, min=1, max=6, null move pruning reduction depth.
 
 EvalMaterial: type=spin, default=100, min=0, max=1000, weight (percent) of material eval.
 EvalSpace: type=spin, default=100, min=0, max=1000, weight (percent) of space eval.
@@ -75,6 +77,8 @@ public:
     int ClearHash;   // Not used (type button)
 
     int MaxMoveTime;
+    bool NullMovePruning;
+    int NullMovePruningDepth;
 
     float EvalMaterial;
     float EvalSpace;

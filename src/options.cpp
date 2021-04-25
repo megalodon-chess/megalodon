@@ -36,18 +36,20 @@ Transposition::Transposition() {
 
 
 Options::Options() {
-    Hash             = 256;
-    ClearHash        = 0;    // Not used
+    Hash                 = 256;
+    ClearHash            = 0;    // Not used
 
-    MaxMoveTime      = 0;
+    MaxMoveTime          = 0;
+    NullMovePruning      = true;
+    NullMovePruningDepth = 2;
 
-    EvalMaterial     = 1;
-    EvalPawnStruct   = 1;
-    EvalSpace        = 1;
-    EvalKnights      = 1;
-    EvalRooks        = 1;
-    EvalQueens       = 1;
-    EvalKings        = 1;
+    EvalMaterial         = 1;
+    EvalPawnStruct       = 1;
+    EvalSpace            = 1;
+    EvalKnights          = 1;
+    EvalRooks            = 1;
+    EvalQueens           = 1;
+    EvalKings            = 1;
 
     hash_table = new Transposition[16];
     set_hash();
