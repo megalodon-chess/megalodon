@@ -110,5 +110,6 @@ string rand_choice(const vector<string>& choices) {
 }
 
 U64 randull() {
-    return ((U64)rand()) + (((U64)rand())<<32);
+    const U64 r1 = rand(), r2 = rand();
+    return r1 + (r2<<32);
 }

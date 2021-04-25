@@ -135,7 +135,7 @@ namespace Bitboard {
     void set_bit(UCH&, const char&);
     void unset_bit(UCH&, const char&);
     bool in_board(const char&, const char&);
-    char first_bit_char(const U64&);
+    UCH first_bit_char(const U64&);
     Location first_bit(const U64&);
 
     string piece_at(const Position&, const char&);
@@ -151,7 +151,7 @@ namespace Bitboard {
     U64 attacked(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     U64 attacked(const Position&, const bool&);
     char num_attacks(const vector<Move>&, const Location&);
-    U64 pinned(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
+    U64 pin_mask(const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&);
     U64 checkers(const Location&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const bool&);
     void king_moves(Move*, int&, const Location&, const UCH&, const bool&, const U64&, const U64&, const U64&);
     void single_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
@@ -160,7 +160,8 @@ namespace Bitboard {
     void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const Location&, const U64&);
-    vector<Move> legal_moves(Position, const U64&);
+    vector<Move> legal_moves(const Position&, const U64&);
+    vector<Move> legal_moves(const Position&);
 
     U64 get_white(const Position&);
     U64 get_black(const Position&);

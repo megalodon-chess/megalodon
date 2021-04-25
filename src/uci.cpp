@@ -73,7 +73,7 @@ Position parse_pos(const string& str) {
 
 
 void print_legal_moves(const Position& pos) {
-    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos);
     cout << moves.size() << endl;
     for (const auto& m: moves) cout << Bitboard::move_str(m) << "\n";
 }
@@ -87,12 +87,12 @@ void chat(const Options& options, const bool& turn, const int& movect, const flo
     else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
 }
 
-float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
+float go(Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
     int mode = 0;
     int depth = 99;
     double movetime;
     float wtime = 0, btime = 0, winc = 0, binc = 0;
-    bool infinite = false;
+    //bool infinite = false;
     for (UCH i = 0; i < parts.size()-1; i++) {
         if (parts[i] == "depth") {
             mode = 1;
@@ -113,7 +113,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
             mode = 3;
             movetime = std::stof(parts[i+1]) / 1000;
         } else if (parts[i] == "infinite") {
-            infinite = true;
+            //infinite = true;
         }
     }
 
@@ -128,9 +128,10 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         else          movetime = Search::move_time(options, pos, btime, binc);
     }
     if (mode == 2) movetime /= 1.5;
+    if ((movetime > options.MaxMoveTime) && (options.MaxMoveTime != 0)) movetime = options.MaxMoveTime;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching, (mode==2));
+    const SearchInfo result = Search::search(options, pos, depth, movetime, (mode!=2), searching);
     cout << "bestmove " << Bitboard::move_str(result.pv.front()) << endl;
 
     chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
@@ -138,7 +139,7 @@ float go(const Options& options, const Position& pos, const vector<string>& part
 }
 
 void perft(const Options& options, const Position& pos, const int& depth) {
-    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos);
     const double start = get_time();
     long long nodes = 0;
 
@@ -173,6 +174,58 @@ void perft_push(const Position& pos, const int& knodes) {
 }
 
 
+void bench() {
+    Options options;
+    const unsigned char num_pos = 20;
+    const unsigned char depth = 4;
+    const string fens[num_pos] = {
+        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "r2q1rk1/ppp2pp1/2np1n1p/2b1p3/2B1P1b1/2NPBN2/PPPQ1PPP/R3R1K1 b Qq - 0 1",
+        "6k1/5ppp/8/8/8/8/5PPP/6K1 w - - 0 1",
+        "8/8/NnNnNnNn/8/8/8/8/2k2K2 b - - 0 1",
+        "7k/p6P/p6P/p6P/p6P/p6P/p6P/K7 w - - 0 1",
+        "8/8/8/8/8/2k5/8/1QK5 w - - 0 1",
+        "4k3/p7/Pp6/1Pp1p3/2PpPp1p/3P1PpP/6P1/3K4 w - - 0 1",
+        "8/1k6/3K4/2P5/8/8/8/8 w - - 0 1",
+        "r2q1rk1/pbp1bpp1/1pn1pn1p/3p4/2PP3B/1PN1PN2/P3BPPP/R2Q1RK1 b Qq - 0 1",
+        "2k4r/1pp5/p7/2p1N3/3n1P2/7P/6P1/R5K1 b - - 0 1",
+        "7k/p7/8/8/8/8/P7/7K b - - 0 1",
+        "8/8/8/3b4/8/3Bk3/1BK2b2/8 b - - 0 1",
+        "8/3qPK2/8/8/8/4k3/8/8 w - - 0 1",
+        "8/7P/5K2/8/8/4k3/p7/8 w - - 0 1",
+        "r5k1/2p2ppp/pp2n3/8/P7/1B1P3P/1PP2PP1/3R1RK1 b - - 0 1",
+        "4k3/pppppppp/8/8/8/8/PPPPPPPP/4K3 b - - 0 1",
+        "r1r1r1r1/k7/8/8/8/8/1K6/1R1R1R1R w - - 0 1",
+        "K7/8/8/3P4/4p3/8/8/7k b - - 0 1",
+        "8/kpP3p1/p2n2P1/3Q3P/5q2/P7/KP6/8 w - - 0 1",
+        "8/8/8/8/8/k7/8/K7 w - - 0 1",
+    };
+
+    U64 nodes = 0;
+    const double start = get_time();
+    bool searching = true;
+
+    options.Hash = 256;
+    options.set_hash();
+    for (unsigned char i = 0; i < num_pos; i++) {
+        cout << "Position " << i+1 << " of " << +num_pos << endl;
+        cout << "Fen: " << fens[i] << endl;
+
+        const Position pos = Bitboard::parse_fen(fens[i]);
+        const SearchInfo result = Search::search(options, pos, depth, 10000, false, searching);
+        nodes += result.nodes;
+    }
+
+    const double elapse = get_time() - start;
+    const int nps = nodes / elapse;
+
+    cout << "\nBenchmark results:" << endl;
+    cout << "Nodes: " << nodes << endl;
+    cout << "NPS: " << nps << endl;
+    cout << "Time: " << elapse << " seconds" << endl;
+}
+
+
 int loop() {
     string cmd;
     Options options;
@@ -182,50 +235,54 @@ int loop() {
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
+        const vector<string> parts = split(cmd, " ");
 
         if (cmd == "quit") break;
         else if (cmd == "clear") cout << "\x1b[3J\x1b[H\x1b[2J" << std::flush;
         else if (cmd == "isready") cout << "readyok" << endl;
         else if (cmd == "uci") {
-            cout << "id name Megalodon\n";
-            cout << "id author Megalodon Developers\n";
+            cout << "id name Megalodon" << "\n";
+            cout << "id author Megalodon Developers" << "\n";
 
-            cout << "option name Hash type spin default 256 min 1 max 65536\n";
+            cout << "option name Hash type spin default 256 min 1 max 8192" << "\n";
 
-            cout << "option name EvalMaterial type spin default 100 min 0 max 1000\n";
-            cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000\n";
-            cout << "option name EvalSpace type spin default 100 min 0 max 1000\n";
-            cout << "option name EvalKnights type spin default 100 min 0 max 1000\n";
-            cout << "option name EvalRooks type spin default 100 min 0 max 1000\n";
-            cout << "option name EvalQueens type spin default 100 min 0 max 1000\n";
-            cout << "option name EvalKings type spin default 100 min 0 max 1000\n";
+            cout << "option name MaxMoveTime type spin default 0 min 0 max 10000000" << "\n";
+
+            cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalSpace type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalKnights type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalRooks type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalQueens type spin default 100 min 0 max 1000" << "\n";
+            cout << "option name EvalKings type spin default 100 min 0 max 1000" << "\n";
 
             cout << "uciok" << endl;
         }
         else if (startswith(cmd, "setoption")) {
-            const vector<string> parts = split(cmd, " ");
             const string name = parts[2];
-            const string value = parts[4];
+            const string value = (parts.size() >= 5) ? parts[4] : "";
 
             if (name == "Hash") {
                 options.Hash = std::stoi(value);
                 options.set_hash();
             }
+            else if (name == "ClearHash") options.set_hash();
 
-            else if (name == "EvalMaterial")   options.EvalMaterial   = std::stof(value)/100;
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct = std::stof(value)/100;
-            else if (name == "EvalSpace")      options.EvalSpace      = std::stof(value)/100;
-            else if (name == "EvalKnights")    options.EvalKnights    = std::stof(value)/100;
-            else if (name == "EvalRooks")      options.EvalRooks      = std::stof(value)/100;
-            else if (name == "EvalQueens")     options.EvalQueens     = std::stof(value)/100;
-            else if (name == "EvalKings")      options.EvalKings      = std::stof(value)/100;
+            else if (name == "MaxMoveTime")    options.MaxMoveTime        = std::stoi(value);
+
+            else if (name == "EvalMaterial")   options.EvalMaterial       = std::stof(value)/100;
+            else if (name == "EvalPawnStruct") options.EvalPawnStruct     = std::stof(value)/100;
+            else if (name == "EvalSpace")      options.EvalSpace          = std::stof(value)/100;
+            else if (name == "EvalKnights")    options.EvalKnights        = std::stof(value)/100;
+            else if (name == "EvalRooks")      options.EvalRooks          = std::stof(value)/100;
+            else if (name == "EvalQueens")     options.EvalQueens         = std::stof(value)/100;
+            else if (name == "EvalKings")      options.EvalKings          = std::stof(value)/100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
 
         else if (cmd == "d") cout << Bitboard::board_str(pos) << endl;
         else if (startswith(cmd, "hash")) {
-            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 cout << Hash::hash(pos) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
@@ -233,20 +290,21 @@ int loop() {
             }
         }
         else if (startswith(cmd, "eval")) {
-            const vector<string> parts = split(cmd, " ");
             if (parts.size() == 1) {
                 const U64 attacked = Bitboard::attacked(pos, !pos.turn);
-                Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true);
+                const float eval = Eval::eval(options, pos, Bitboard::legal_moves(pos, attacked), 0, attacked, true);
+                cout << eval << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
                 perft_eval(options, pos, std::stoi(parts[2]));
             }
         }
         else if (cmd == "legalmoves") print_legal_moves(pos);
         else if (startswith(cmd, "pushperft")) {
-            const vector<string> parts = split(cmd, " ");
             perft_push(pos, std::stoi(parts[1]));
         }
-        else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
+        else if (cmd == "bench") {
+            bench();
+        }
 
         else if (cmd == "ucinewgame") {
             pos = parse_pos("position startpos");
@@ -254,12 +312,10 @@ int loop() {
         }
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
-            const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
-                options.clear_hash();
                 searching = true;
-                std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+                std::thread(go, std::ref(options), pos, parts, prev_eval, std::ref(searching)).detach();
             }
         }
         else if (cmd == "stop") searching = false;

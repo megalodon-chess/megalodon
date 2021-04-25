@@ -24,62 +24,66 @@
 #include "bitboard.hpp"
 #include "utils.hpp"
 
+#define SETS  251
+
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
 
+using Bitboard::bit;
+
 
 namespace Hash {
-    U64 piece_bits[101][64][12];
-    U64 ep_square[64];
-    U64 turn[2];
-    U64 ep[2];
-    U64 castling[15];
+    U64 piece_bits[SETS][64][12];
+    U64 ep_square[SETS][64];
+    U64 castling[SETS][16];
+    U64 turn[SETS][2];
+    U64 ep[SETS][2];
 
     void init() {
-        for (UCH i = 0; i < 101; i++) {
-            for (UCH j = 0; j < 64; j++) {
-                for (UCH k = 0; k < 12; k++) {
-                    piece_bits[i][j][k] = randull();
+        for (UCH s = 0; s < SETS; s++) {
+            for (UCH i = 0; i < 64; i++) {
+                for (UCH j = 0; j < 12; j++) {
+                    piece_bits[s][i][j] = randull();
                 }
             }
+            for (UCH i = 0; i < 64; i++) {
+                ep_square[s][i] = randull();
+            }
+            for (UCH i = 0; i < 16; i++) {
+                castling[s][i] = randull();
+            }
+            turn[s][0] = randull();
+            turn[s][1] = randull();
+            ep[s][0] = randull();
+            ep[s][1] = randull();
         }
-        for (UCH i = 0; i < 64; i++) {
-            ep_square[i] = randull();
-        }
-        for (UCH i = 0; i < 15; i++) {
-            castling[i] = randull();
-        }
-        turn[0] = randull();
-        turn[1] = randull();
-        ep[0] = randull();
-        ep[1] = randull();
     }
 
     U64 hash(const Position& pos) {
         const U64 kings = pos.wk | pos.bk;
-        const UCH idx = kings % 101;
+        const UCH idx = kings % SETS;
         U64 value = 0;
         for (UCH i = 0; i < 64; i++) {
-            if      (Bitboard::bit(pos.wp, i)) value ^= piece_bits[idx][i][0];
-            else if (Bitboard::bit(pos.wn, i)) value ^= piece_bits[idx][i][1];
-            else if (Bitboard::bit(pos.wb, i)) value ^= piece_bits[idx][i][2];
-            else if (Bitboard::bit(pos.wr, i)) value ^= piece_bits[idx][i][3];
-            else if (Bitboard::bit(pos.wq, i)) value ^= piece_bits[idx][i][4];
-            else if (Bitboard::bit(pos.wk, i)) value ^= piece_bits[idx][i][5];
-            else if (Bitboard::bit(pos.bp, i)) value ^= piece_bits[idx][i][6];
-            else if (Bitboard::bit(pos.bn, i)) value ^= piece_bits[idx][i][7];
-            else if (Bitboard::bit(pos.bb, i)) value ^= piece_bits[idx][i][8];
-            else if (Bitboard::bit(pos.br, i)) value ^= piece_bits[idx][i][9];
-            else if (Bitboard::bit(pos.bq, i)) value ^= piece_bits[idx][i][10];
-            else if (Bitboard::bit(pos.bk, i)) value ^= piece_bits[idx][i][11];
+            if      (bit(pos.wp, i)) value ^= piece_bits[idx][i][0];
+            else if (bit(pos.wn, i)) value ^= piece_bits[idx][i][1];
+            else if (bit(pos.wb, i)) value ^= piece_bits[idx][i][2];
+            else if (bit(pos.wr, i)) value ^= piece_bits[idx][i][3];
+            else if (bit(pos.wq, i)) value ^= piece_bits[idx][i][4];
+            else if (bit(pos.wk, i)) value ^= piece_bits[idx][i][5];
+            else if (bit(pos.bp, i)) value ^= piece_bits[idx][i][6];
+            else if (bit(pos.bn, i)) value ^= piece_bits[idx][i][7];
+            else if (bit(pos.bb, i)) value ^= piece_bits[idx][i][8];
+            else if (bit(pos.br, i)) value ^= piece_bits[idx][i][9];
+            else if (bit(pos.bq, i)) value ^= piece_bits[idx][i][10];
+            else if (bit(pos.bk, i)) value ^= piece_bits[idx][i][11];
         }
-        value ^= turn[pos.turn];
-        value ^= ep[pos.ep];
-        value ^= castling[pos.castling];
-        value ^= ep_square[pos.ep_square];
+        value ^= turn[idx][pos.turn];
+        value ^= ep[idx][pos.ep];
+        value ^= castling[idx][pos.castling];
+        value ^= ep_square[idx][pos.ep_square];
         return value;
     }
 }

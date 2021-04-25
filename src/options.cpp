@@ -22,7 +22,7 @@
 #include <string>
 #include "options.hpp"
 
-#define HASH_FACTOR  348000
+#define HASH_FACTOR  9280
 
 using std::cin;
 using std::cout;
@@ -36,15 +36,18 @@ Transposition::Transposition() {
 
 
 Options::Options() {
-    Hash           = 256;
+    Hash             = 256;
+    ClearHash        = 0;    // Not used
 
-    EvalMaterial   = 1;
-    EvalPawnStruct = 1;
-    EvalSpace      = 1;
-    EvalKnights    = 1;
-    EvalRooks      = 1;
-    EvalQueens     = 1;
-    EvalKings      = 1;
+    MaxMoveTime      = 0;
+
+    EvalMaterial     = 1;
+    EvalPawnStruct   = 1;
+    EvalSpace        = 1;
+    EvalKnights      = 1;
+    EvalRooks        = 1;
+    EvalQueens       = 1;
+    EvalKings        = 1;
 
     hash_table = new Transposition[16];
     set_hash();
@@ -52,13 +55,11 @@ Options::Options() {
 
 void Options::set_hash() {
     delete[] hash_table;
-    hash_size = Hash * HASH_FACTOR;
+    hash_size = Hash*HASH_FACTOR + 1;
     hash_table = new Transposition[hash_size];
-    clear_hash();
-}
+    hash_filled = 0;
 
-void Options::clear_hash() {
-    for (unsigned int i = 0; i < hash_size; i++) {
+    for (U64 i = 0; i < hash_size; i++) {
         hash_table[i].depth = 0;
     }
 }

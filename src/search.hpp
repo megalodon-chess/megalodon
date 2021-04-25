@@ -33,7 +33,7 @@ using std::string;
 
 struct SearchInfo {
     SearchInfo();
-    SearchInfo(const int&, const int&, const float&, const U64&, const int&, const int&, const double&, const vector<Move>&,
+    SearchInfo(const int&, const int&, const float&, const U64&, const vector<Move>&,
         const float&, const float&, const bool&);
     string as_string();
     bool is_mate();
@@ -61,6 +61,6 @@ namespace Search {
 
     float move_time(const Options&, const Position&, const float&, const float&);
 
-    SearchInfo search(const Options&, const Position&, const int&, const double&, const bool&,
-        bool&, const bool&);
+    SearchInfo search(Options&, const Position&, const int&, const double&, const bool&,
+        bool&);
 }

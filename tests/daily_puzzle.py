@@ -27,7 +27,7 @@ import chess.engine
 
 PATH = "./build/Megalodon"
 ENDPOINT = "https://lichess.org/api/puzzle/daily"
-LIMIT = chess.engine.Limit(time=25)   # Adjust as needed to get correct solution
+LIMIT = chess.engine.Limit(time=int(input("Time limit: ")))   # Adjust as needed to get correct solution
 
 
 def get_puzzle():

@@ -24,6 +24,7 @@
 #include "options.hpp"
 #include "eval.hpp"
 #include "search.hpp"
+#include "endgame.hpp"
 
 using std::cin;
 using std::cout;
@@ -181,7 +182,7 @@ namespace Eval {
             } else {
                 bool found = false;
                 for (char j = 7; j > -1; j--) {
-                    if ((w & (1ULL<<(j*8))) != 0) {
+                    if (bit(w, j<<3)) {
                         if (!found) w_adv[i] = j;
                         w_back[i] = j;
                         found = true;
@@ -196,7 +197,7 @@ namespace Eval {
             } else {
                 bool found = false;
                 for (char j = 7; j > -1; j--) {
-                    if ((b & (1ULL<<(j*8))) != 0) {
+                    if (bit(b, j<<3)) {
                         if (!found) b_adv[i] = j;
                         b_back[i] = j;
                         found = true;
@@ -315,25 +316,23 @@ namespace Eval {
     }
 
     float kings(const U64& wk, const U64& bk) {
-        const Location w = Bitboard::first_bit(wk);
-        const Location b = Bitboard::first_bit(bk);
-        const char wdist = CENTER_DIST_MAP[w.loc];
-        const char bdist = CENTER_DIST_MAP[b.loc];
+        const char wdist = CENTER_DIST_MAP[Bitboard::first_bit_char(wk)];
+        const char bdist = CENTER_DIST_MAP[Bitboard::first_bit_char(bk)];
         return wdist - bdist;
     }
 
 
     float eval(const Options& options, const Position& pos, const vector<Move>& moves, const int& depth, const U64& o_attacks,
             const bool print) {
+        if (Endgame::is_draw(pos)) return 0;
+
         if (moves.empty()) {
             bool checked = false;
             if      ( pos.turn && ((o_attacks & pos.wk) != 0)) checked = true;
             else if (!pos.turn && ((o_attacks & pos.bk) != 0)) checked = true;
             if (checked) {
-                // Increment value by depth to encourage sooner mate.
-                // The larger depth is, the closer it is to the leaf nodes.
-                if (pos.turn) return Search::MIN + depth;  // Mate by black
-                else return Search::MAX - depth;           // Mate by white
+                if (pos.turn) return Search::MIN;  // Mate by black
+                else return Search::MAX;           // Mate by white
             }
             return 0;
         }
@@ -341,23 +340,23 @@ namespace Eval {
 
         const float mat         =                          material(pos)                           / 1.F;
         const float sp          = options.EvalSpace      * space(pos.wp, pos.bp)                   / 5.F;
-        const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp)          / 5.F;
-        const float p_attacks   =                          pawn_attacks(pos)                       / 2.F;
+        // const float pawn_struct = options.EvalPawnStruct * pawn_structure(pos.wp, pos.bp)          / 5.F;
+        // const float p_attacks   =                          pawn_attacks(pos)                       / 2.F;
         const float knight      = options.EvalKnights    * knights(pos.wn, pos.bn, pos.wp, pos.bp) / 16.F;
         const float rook        = options.EvalRooks      * rooks(pos.wr, pos.br, pos.wp, pos.bp)   / 2.F;
         const float queen       = options.EvalQueens     * queens(pos)                             / 6.F;
         const float king        = options.EvalKings      * kings(pos.wk, pos.bk)                   / 16.F;
 
         // Endgame and middle game are for weighting categories.
-        const float mg = middle_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
-        const float eg = end_game(pawn_struct, p_attacks, knight, rook, queen, king, sp);
+        const float mg = middle_game(0, 0, knight, rook, queen, king, sp);
+        const float eg = end_game(0, 0, knight, rook, queen, king, sp);
         const float p = phase(pos);
         const float imbalance = mg*p + eg*(1-p);
 
         if (print) {
             cout << "       Material | " << mat           << "\n";
-            cout << " Pawn Structure | " << pawn_struct   << "\n";
-            cout << "   Pawn Attacks | " << p_attacks     << "\n";
+            // cout << " Pawn Structure | " << pawn_struct   << "\n";
+            // cout << "   Pawn Attacks | " << p_attacks     << "\n";
             cout << "        Knights | " << knight        << "\n";
             cout << "          Rooks | " << rook          << "\n";
             cout << "         Queens | " << queen         << "\n";
