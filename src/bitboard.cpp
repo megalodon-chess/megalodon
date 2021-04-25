@@ -977,8 +977,8 @@ namespace Bitboard {
         }
     }
 
-    vector<Move> legal_moves(const Position pos, const U64& attacks) {
-        // Pass in attacks from opponent.
+    vector<Move> legal_moves(const Position& pos, const U64& attacks) {
+        // Pass in attacks from opponent
         // Current and opponent pieces and sides
         U64 SP, SN, SB, SR, SQ, SK, OP, ON, OB, OR, OQ, OK;
         if (pos.turn) {
@@ -1025,6 +1025,10 @@ namespace Bitboard {
         }
         king_moves(moves, movecnt, k_pos, pos.castling, pos.turn, SAME, ALL, attacks);
         return vector<Move>(moves, moves+movecnt);
+    }
+
+    vector<Move> legal_moves(const Position& pos) {
+        return legal_moves(pos, attacked(pos, !pos.turn));
     }
 
 

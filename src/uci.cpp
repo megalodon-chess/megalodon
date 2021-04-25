@@ -73,7 +73,7 @@ Position parse_pos(const string& str) {
 
 
 void print_legal_moves(const Position& pos) {
-    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos);
     cout << moves.size() << endl;
     for (const auto& m: moves) cout << Bitboard::move_str(m) << "\n";
 }
@@ -139,7 +139,7 @@ float go(Options& options, const Position& pos, const vector<string>& parts, con
 }
 
 void perft(const Options& options, const Position& pos, const int& depth) {
-    const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
+    const vector<Move> moves = Bitboard::legal_moves(pos);
     const double start = get_time();
     long long nodes = 0;
 
