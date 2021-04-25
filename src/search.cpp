@@ -123,7 +123,7 @@ namespace Search {
             (entry.ep       == pos.ep)
         );
         if (match) {
-            if ((entry.depth >= depth) && (real_depth >= depth)) return SearchInfo(depth, entry.depth, entry.eval, 1, {best}, alpha, beta, true);
+            if ((entry.depth >= depth) && (real_depth >= 1)) return SearchInfo(depth, entry.depth, entry.eval, 1, {best}, alpha, beta, true);
             if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
 
