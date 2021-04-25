@@ -33,11 +33,12 @@ namespace Random {
 
     void set_seed(unsigned long long s) {
         curr = s;
-        if (curr == 0) curr++;
+        if (curr == 0) curr = 1;
     }
 
     unsigned long long random() {
         curr *= 16807;
+        if (curr == 0) curr = 1;
         return curr;
     }
 }
