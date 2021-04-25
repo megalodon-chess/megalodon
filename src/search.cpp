@@ -128,11 +128,11 @@ namespace Search {
         }
 
         // Null move pruning
-        if (depth >= 4) {
+        if ((depth >= options.NullMovePruningDepth+2) && options.NullMovePruning) {
             Position new_pos = pos;
             new_pos.turn = !new_pos.turn;
 
-            const SearchInfo result = dfs(options, new_pos, endtime, searching, depth-2, real_depth+1, alpha, beta);
+            const SearchInfo result = dfs(options, new_pos, endtime, searching, depth-options.NullMovePruningDepth, real_depth+1, alpha, beta);
             if ( pos.turn && (result.score > beta )) return SearchInfo(depth, depth, beta, result.nodes, result.pv, alpha, beta, result.full);
             if (!pos.turn && (result.score < alpha)) return SearchInfo(depth, depth, alpha, result.nodes, result.pv, alpha, beta, result.full);
         }

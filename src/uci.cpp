@@ -247,6 +247,8 @@ int loop() {
             cout << "option name Hash type spin default 256 min 1 max 8192" << "\n";
 
             cout << "option name MaxMoveTime type spin default 0 min 0 max 10000000" << "\n";
+            cout << "option name NullMovePruning type check default true" << "\n";
+            cout << "option name NullMovePruningDepth type spin default 2 min 1 max 6" << "\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000" << "\n";
             cout << "option name EvalPawnStruct type spin default 100 min 0 max 1000" << "\n";
@@ -268,15 +270,17 @@ int loop() {
             }
             else if (name == "ClearHash") options.set_hash();
 
-            else if (name == "MaxMoveTime")    options.MaxMoveTime        = std::stoi(value);
+            else if (name == "MaxMoveTime")          options.MaxMoveTime          = std::stoi(value);
+            else if (name == "NullMovePruning")      options.NullMovePruning      = (value == "true");
+            else if (name == "NullMovePruningDepth") options.NullMovePruningDepth = std::stoi(value);
 
-            else if (name == "EvalMaterial")   options.EvalMaterial       = std::stof(value)/100;
-            else if (name == "EvalPawnStruct") options.EvalPawnStruct     = std::stof(value)/100;
-            else if (name == "EvalSpace")      options.EvalSpace          = std::stof(value)/100;
-            else if (name == "EvalKnights")    options.EvalKnights        = std::stof(value)/100;
-            else if (name == "EvalRooks")      options.EvalRooks          = std::stof(value)/100;
-            else if (name == "EvalQueens")     options.EvalQueens         = std::stof(value)/100;
-            else if (name == "EvalKings")      options.EvalKings          = std::stof(value)/100;
+            else if (name == "EvalMaterial")         options.EvalMaterial         = std::stof(value)/100;
+            else if (name == "EvalPawnStruct")       options.EvalPawnStruct       = std::stof(value)/100;
+            else if (name == "EvalSpace")            options.EvalSpace            = std::stof(value)/100;
+            else if (name == "EvalKnights")          options.EvalKnights          = std::stof(value)/100;
+            else if (name == "EvalRooks")            options.EvalRooks            = std::stof(value)/100;
+            else if (name == "EvalQueens")           options.EvalQueens           = std::stof(value)/100;
+            else if (name == "EvalKings")            options.EvalKings            = std::stof(value)/100;
 
             else std::cerr << "Unknown option: " << name << endl;
         }
