@@ -127,6 +127,18 @@ namespace Bitboard {
     constexpr char DIR_Q[DIR_Q_SIZE][2] = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}, {0, 1}, {-1, 0}, {1, 0}, {0, -1}};
     constexpr char DIR_K[DIR_K_SIZE][2] = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
+    enum Variant {
+        // Standard variants
+        CHESS,
+        KOTH,
+        HORDE,
+        ANTICHESS,
+
+        // Used in legal moves
+        ANTI_CAPTURES,
+        ANTI_MOVES
+    };
+
     bool bit(const U64&, const char&);
     bool bit(const char&, const char&);
     char popcnt(const U64&);
@@ -160,13 +172,13 @@ namespace Bitboard {
     void no_check_moves(Move*, int&, const Position&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&, const U64&,
         const U64&, const U64&, const U64&, const Location&, const U64&, const string&);
-    vector<Move> legal_moves(const Position&, const U64&, const string& = "chess");
+    vector<Move> legal_moves(const Position&, const U64&, const Variant& = CHESS);
 
     U64 get_white(const Position&);
     U64 get_black(const Position&);
     U64 get_all(const Position&);
 
-    Position startpos(string="chess");
+    Position startpos(const Variant& = CHESS);
     Position push(Position, const Move&);
     Position push(Position, const string&);
 }
