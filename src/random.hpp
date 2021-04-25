@@ -26,3 +26,9 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+
+
+namespace Random {
+    void set_seed(unsigned long long);
+    auto random();
+}
