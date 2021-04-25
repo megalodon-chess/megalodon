@@ -41,16 +41,12 @@ using Bitboard::popcnt;
 SearchInfo::SearchInfo() {
 }
 
-SearchInfo::SearchInfo(const int& _depth, const int& _seldepth, const float& _score, const U64& _nodes, const int& _nps,
-        const int& _hashfull, const double& _time, const vector<Move>& _pv, const float& _alpha, const float& _beta,
-        const bool& _full) {
+SearchInfo::SearchInfo(const int& _depth, const int& _seldepth, const float& _score, const U64& _nodes,
+        const vector<Move>& _pv, const float& _alpha, const float& _beta, const bool& _full) {
     depth = _depth;
     seldepth = _seldepth;
     score = _score;
     nodes = _nodes;
-    nps = _nps;
-    hashfull = _hashfull;
-    time = _time;
     pv = _pv;
     alpha = _alpha;
     beta = _beta;
@@ -100,7 +96,7 @@ namespace Search {
         // Return eval if depth == 0
         if (depth == 0 || moves.empty()) {
             const float score = Eval::eval(options, pos, moves, real_depth, o_attacks);
-            return SearchInfo(depth, depth, score, 1, 0, 0, 0, {}, alpha, beta, true);
+            return SearchInfo(depth, depth, score, 1, {}, alpha, beta, true);
         }
 
         // Read from hash table
@@ -127,7 +123,7 @@ namespace Search {
             (entry.ep       == pos.ep)
         );
         if (match) {
-            if ((entry.depth >= depth) && (real_depth != 0)) return SearchInfo(depth, entry.depth, entry.eval, 1, 0, 0, 0, {best}, alpha, beta, true);
+            if ((entry.depth >= depth) && (real_depth >= 2)) return SearchInfo(depth, entry.depth, entry.eval, 1, {best}, alpha, beta, true);
             if (entry.depth > 0) moves.insert(moves.begin(), best);
         }
 
@@ -208,7 +204,7 @@ namespace Search {
 
         if      (best_eval < MATE_BOUND_MIN) best_eval++;
         else if (best_eval > MATE_BOUND_MAX) best_eval--;
-        return SearchInfo(depth, seldepth, best_eval, nodes, 0, 0, 0, pv, alpha, beta, full);
+        return SearchInfo(depth, seldepth, best_eval, nodes, pv, alpha, beta, full);
     }
 
     SearchInfo search(Options& options, const Position& pos, const int& total_depth, const double& movetime,
