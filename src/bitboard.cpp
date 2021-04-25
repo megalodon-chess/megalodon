@@ -529,7 +529,7 @@ namespace Bitboard {
         return cnt;
     }
 
-    U64 pinned(const Location& k_pos, const Location& piece_pos, const U64& pawns, const U64& knights, const U64& bishops,
+    U64 pin_mask(const Location& k_pos, const Location& piece_pos, const U64& pawns, const U64& knights, const U64& bishops,
             const U64& rooks, const U64& queens, const U64& kings, const U64& same) {
         /*
         Calculates a bitboard of all squares the piece at piece_pos can move to.
@@ -767,7 +767,7 @@ namespace Bitboard {
         // Go through all pieces and check if they can capture/block
         for (char i = 0; i < 64; i++) {
             const Location curr_loc(i);
-            if (bit(SAME, i) && pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME) == FULL) {
+            if (bit(SAME, i) && pin_mask(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME) == FULL) {
                 if (bit(SP, i)) {
                     const char x = curr_loc.x;
                     char y;
@@ -881,7 +881,7 @@ namespace Bitboard {
         for (char i = 0; i < 64; i++) {
             const Location curr_loc(i);
             if (bit(SAME, i)) {
-                const U64 pin = pinned(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
+                const U64 pin = pin_mask(k_pos, curr_loc, OP, ON, OB, OR, OQ, OK, SAME);
                 const bool piece_pinned = (pin != FULL);
 
                 if (bit(SP, i)) {
@@ -926,7 +926,7 @@ namespace Bitboard {
                                     if (!piece_pinned && ((o_horiz_pieces & RANKS[curr_loc.y]) != EMPTY) && ((SK & RANKS[curr_loc.y]) != EMPTY)) {
                                         U64 tmp_op = OP;
                                         unset_bit(tmp_op, pos.ep_square-pawn_dir*8);
-                                        if (pinned(k_pos, curr_loc, tmp_op, ON, OB, OR, OQ, OK, SAME) == FULL) moves[movecnt++] = Move(i, loc_move);
+                                        if (pin_mask(k_pos, curr_loc, tmp_op, ON, OB, OR, OQ, OK, SAME) == FULL) moves[movecnt++] = Move(i, loc_move);
                                     } else if (bit(pin, loc_move)) moves[movecnt++] = Move(i, loc_move);
                                 }
                             }
