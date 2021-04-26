@@ -79,7 +79,7 @@ void print_legal_moves(const Position& pos) {
 }
 
 
-float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
+float go(const Options& options, const Position& pos, const vector<string>& parts, bool& searching) {
     int mode = 0;
     int depth = 99;
     double movetime;
@@ -116,19 +116,19 @@ float go(const Options& options, const Position& pos, const vector<string>& part
         movetime = 10000000;
     } else if (mode == 2) {
         depth = 99;
-        if (pos.turn) movetime = Search::move_time(options, pos, wtime, winc);
-        else          movetime = Search::move_time(options, pos, btime, binc);
+        if (pos.turn) movetime = Search::move_time(pos, wtime, winc);
+        else          movetime = Search::move_time(pos, btime, binc);
     }
     if (mode == 2) movetime /= 1.5;
 
     searching = true;
-    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching, (mode==2));
+    const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching);
     cout << "bestmove " << Bitboard::move_str(result.pv.front()) << endl;
 
     return result.score;
 }
 
-void perft(const Options& options, const Position& pos, const int& depth) {
+void perft(const Position& pos, const int& depth) {
     const vector<Move> moves = Bitboard::legal_moves(pos, Bitboard::attacked(pos, !pos.turn));
     const double start = get_time();
     long long nodes = 0;
@@ -148,7 +148,7 @@ void perft(const Options& options, const Position& pos, const int& depth) {
     cout << "info depth " << depth << " nodes " << nodes << " nps " << (long long)(nodes/elapse) << " time " << (long long)(elapse*1000) << endl;
 }
 
-void perft_hash(const Options& options, const Position& pos, const int& knodes) {
+void perft_hash(const Position& pos, const int& knodes) {
     const double time = Perft::hash_perft(pos, knodes);
     cout << "info nodes " << 1000*knodes << " nps " << (int)(knodes*1000/time) << " time " << (int)(time*1000) << endl;
 }
@@ -168,7 +168,6 @@ int loop() {
     string cmd;
     Options options;
     Position pos = parse_pos("position startpos");
-    float prev_eval = 0;
     bool searching = false;
 
     while (getline(cin, cmd)) {
@@ -220,7 +219,7 @@ int loop() {
             if (parts.size() == 1) {
                 cout << Hash::hash(pos) << endl;
             } else if (parts[1] == "perft" && parts.size() >= 2) {
-                perft_hash(options, pos, std::stoi(parts[2]));
+                perft_hash(pos, std::stoi(parts[2]));
             }
         }
         else if (startswith(cmd, "eval")) {
@@ -239,18 +238,15 @@ int loop() {
         }
         else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
 
-        else if (cmd == "ucinewgame") {
-            pos = parse_pos("position startpos");
-            prev_eval = 0;
-        }
+        else if (cmd == "ucinewgame") pos = parse_pos("position startpos");
         else if (startswith(cmd, "position")) pos = parse_pos(cmd);
         else if (startswith(cmd, "go")) {
             const vector<string> parts = split(cmd, " ");
-            if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
+            if (parts.size() > 1 && parts[1] == "perft") perft(pos, std::stoi(parts[2]));
             else {
                 options.clear_hash();
                 searching = true;
-                std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
+                std::thread(go, options, pos, parts, std::ref(searching)).detach();
             }
         }
         else if (cmd == "stop") searching = false;
