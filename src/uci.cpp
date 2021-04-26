@@ -78,14 +78,6 @@ void print_legal_moves(const Position& pos) {
     for (const auto& m: moves) cout << Bitboard::move_str(m) << "\n";
 }
 
-void chat(const Options& options, const bool& turn, const int& movect, const float& score, const float& prev_score) {
-    return;  //! CHAT IS DISABLED
-    if (movect == 0) cout << "info string " << rand_choice(GREETINGS) << endl;
-    else if (turn  && (score > (prev_score+1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    else if (!turn && (score < (prev_score-1.5))) cout << "info string " << rand_choice(WINNING) << endl;
-    else if (turn  && (score < (prev_score-1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
-    else if (!turn && (score > (prev_score+1.5))) cout << "info string " << rand_choice(LOSING)  << endl;
-}
 
 float go(const Options& options, const Position& pos, const vector<string>& parts, const float& prev_eval, bool& searching) {
     int mode = 0;
@@ -133,7 +125,6 @@ float go(const Options& options, const Position& pos, const vector<string>& part
     const SearchInfo result = Search::search(options, pos, depth, movetime, infinite, searching, (mode==2));
     cout << "bestmove " << Bitboard::move_str(result.pv.front()) << endl;
 
-    chat(options, pos.turn, pos.move_cnt, result.score, prev_eval);
     return result.score;
 }
 
