@@ -23,13 +23,8 @@
 #include <string>
 #include <chrono>
 #include "bitboard.hpp"
+#include "consts.hpp"
 #include "utils.hpp"
-
-using std::cin;
-using std::cout;
-using std::endl;
-using std::vector;
-using std::string;
 
 
 double get_time() {
@@ -38,31 +33,25 @@ double get_time() {
     return elapse / 1000;
 }
 
-
 string strip(const string& str) {
     unsigned int start = str.find_first_not_of(" ");
     unsigned int end = str.find_last_not_of(" ");
-
     if (start == string::npos) start = 0;
     if (end == string::npos) end = str.size()-1;
     return str.substr(start, end-start+1);
 }
-
 string replace(string str, const string& rep) {
     const int size = rep.size();
     while (true) {
         if (str.size() == 0) break;
-
         unsigned int pos = str.find(rep);
         if (pos == string::npos) break;
-
         if (pos > 0) str = str.substr(0, pos) + str.substr(pos+size);
         else if (pos+size < str.size()) str = str.substr(pos+size);
         else str = "";
     }
     return str;
 }
-
 string join(const string& delim, const vector<string>& parts) {
     string str;
     for (UCH i = 0; i < parts.size()-1; i++) {
@@ -72,7 +61,6 @@ string join(const string& delim, const vector<string>& parts) {
     str += parts[parts.size()-1];
     return str;
 }
-
 vector<string> split(const string& str, const string& delim) {
     vector<string> parts;
     unsigned int prev = 0, pos = 0;
@@ -86,17 +74,14 @@ vector<string> split(const string& str, const string& delim) {
     while (pos < str.length() && prev < str.length());
     return parts;
 }
-
 bool startswith(const string& str, const string& prefix) {
     if (str.size() < prefix.size()) return false;
     return (str.substr(0, prefix.size()) == prefix);
 }
-
 bool endswith(const string& str, const string& suffix) {
     if (str.size() < suffix.size()) return false;
     return (str.substr(str.size()-suffix.size(), suffix.size()) == suffix);
 }
-
 
 vector<Position> flatten(const vector<vector<Position>>& vec) {
     vector<Position> flat;
@@ -104,11 +89,9 @@ vector<Position> flatten(const vector<vector<Position>>& vec) {
     return flat;
 }
 
-
 string rand_choice(const vector<string>& choices) {
     return choices[rand()%choices.size()];
 }
-
 U64 randull() {
     return ((U64)rand()) + (((U64)rand())<<32);
 }
