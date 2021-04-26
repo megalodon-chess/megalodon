@@ -22,6 +22,7 @@
 #include <vector>
 
 #define DEBUG  0
+#define VERSION  "1.0.0"
 
 typedef unsigned long long U64;
 typedef unsigned char      UCH;
