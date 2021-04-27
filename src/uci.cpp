@@ -154,6 +154,7 @@ int loop() {
         if (cmd == "quit") break;
         else if (cmd == "clear") cout << "\x1b[3J\x1b[H\x1b[2J" << std::flush;
         else if (cmd == "isready") cout << "readyok" << endl;
+        else if (cmd == "version") cout << VERSION << endl;
         else if (cmd == "uci") {
             cout << "id name Megalodon\n";
             cout << "id author Megalodon Developers\n";
