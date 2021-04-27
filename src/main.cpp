@@ -23,6 +23,7 @@
 #include "uci.hpp"
 #include "bitboard.hpp"
 #include "consts.hpp"
+#include "random.hpp"
 #include "hash.hpp"
 #include "eval.hpp"
 #include "search.hpp"
@@ -82,7 +83,7 @@ void bench() {
 
 int main(const int argc, const char* argv[]) {
     cout << std::fixed;
-    srand(1234);
+    Random::set_seed(1234);
     if (argc >= 2) {
         if      (argv[1] == string("--version")) cout << VERSION << endl;
         else if (argv[1] == string("bench")) bench();
