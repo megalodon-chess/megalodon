@@ -30,7 +30,7 @@ using std::string;
 
 
 namespace Random {
-    unsigned long long curr = get_time();
+    unsigned long long curr = 1234;
 
     void set_seed(unsigned long long s) {
         curr = s;
