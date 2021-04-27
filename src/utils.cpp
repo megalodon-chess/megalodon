@@ -23,6 +23,7 @@
 #include <string>
 #include <chrono>
 #include "bitboard.hpp"
+#include "random.hpp"
 #include "utils.hpp"
 
 using std::cin;
@@ -106,9 +107,9 @@ vector<Position> flatten(const vector<vector<Position>>& vec) {
 
 
 string rand_choice(const vector<string>& choices) {
-    return choices[rand()%choices.size()];
+    return choices[Random::random()%choices.size()];
 }
 
 U64 randull() {
-    return ((U64)rand()) + (((U64)rand())<<32);
+    return ((U64)Random::random()) + (((U64)Random::random())<<32);
 }
