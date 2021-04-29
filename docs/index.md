@@ -19,7 +19,7 @@ Play against Megalodon on [Lichess][lichess]!
 
 ## Version 2.0.0
 
-Megalodon 2.0.0 is scheduled to be released on May 26th
+Megalodon 2.0.0 does not have a scheduled release date.
 
 ### Goals
 
