@@ -48,8 +48,8 @@ void print_info() {
 
 void bench() {
     const Options options;
-    constexpr char num_pos = 20;
-    constexpr char depth = 4;
+    constexpr UCH num_pos = 20;
+    constexpr UCH depth = 4;
     const string fens[num_pos] = {
         "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
         "r2q1rk1/ppp2pp1/2np1n1p/2b1p3/2B1P1b1/2NPBN2/PPPQ1PPP/R3R1K1 b Qq - 0 1",
