@@ -35,6 +35,7 @@ typedef unsigned char       UCH;
 struct Move {
     Move();
     Move(const char, const char, const bool=false, const char=0);
+    bool operator==(const Move &rhs) const;
 
     UCH from;
     UCH to;
@@ -42,10 +43,12 @@ struct Move {
     bool is_promo;
 };
 
+
 struct Position {
     Position();
     Position(const U64, const U64, const U64, const U64, const U64, const U64, const U64, const U64, const U64,
         const U64, const U64, const U64, const bool, const char, const bool, const char);
+    bool operator==(const Position &rhs) const;
 
     U64 wp, wn, wb, wr, wq, wk, bp, bn, bb, br, bq, bk;
     bool turn;

@@ -44,6 +44,10 @@ Move::Move(const char _from, const char _to, const bool _is_promo, const char _p
     promo = _promo;
 }
 
+bool Move::operator==(const Move &rhs) const {
+    return from == rhs.from && to == rhs.to && is_promo == rhs.is_promo && promo == rhs.promo;
+}
+
 
 Position::Position() {
     wp = Bitboard::EMPTY;
@@ -89,6 +93,14 @@ Position::Position(const U64 _wp, const U64 _wn, const U64 _wb, const U64 _wr, c
     move_cnt = 0;
     draw50 = 0;
 }
+
+bool Position::operator==(const Position &rhs) const {
+    return  wp == rhs.wp && wn == rhs.wn && wb == rhs.wb && wr == rhs.wr && wq == rhs.wq && wk == rhs.wk
+        && bp == rhs.bp && bn == rhs.bn && bb == rhs.bb && br == rhs.br && bq == rhs.bq && bk == rhs.bk
+        && turn == rhs.turn && castling == rhs.castling && ep == rhs.ep 
+        && ep_square == rhs.ep_square && move_cnt == rhs.move_cnt && draw50 == rhs.draw50;
+}
+
 
 
 Location::Location() {
