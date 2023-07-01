@@ -32,6 +32,7 @@ using std::cout;
 using std::endl;
 using std::vector;
 using std::string;
+using std::to_string;
 
 
 Move::Move() {
@@ -303,8 +304,9 @@ namespace Bitboard {
                 str += col;
                 str += symbol;
             }
-            str += col + "\n" + row + "\n";
+            str += col + to_string(y+1) + "\n" + row + "\n";
         }
+        str += "   a   b   c   d   e   f   g   h\n";
         str += "\nFen: " + fen(pos) + "\n";
         str += "Hash: " + std::to_string(Hash::hash(pos)) + "\n";
 
