@@ -60,7 +60,7 @@ namespace Opening {
         for (string opening: openings) {
             if (startswith(opening, moves)) {
                 possible.push_back(opening.substr(moves.size(), 4));
-            } 
+            }
         }
 
         return possible[Random::random()%possible.size()];
