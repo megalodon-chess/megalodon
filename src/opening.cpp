@@ -59,10 +59,14 @@ namespace Opening {
 
         for (string opening: openings) {
             if (startswith(opening, moves)) {
-                possible.push_back(opening.substr(moves.size(), 4));
+                // adding one just in case `opening` has extra space at the end
+                if (opening.size() > moves.size() + 1) {
+                    possible.push_back(opening.substr(moves.size(), 5));
+                }
             }
         }
 
-        return possible[Random::random()%possible.size()];
+        if (possible.empty()) return "";
+        else                  return strip(possible[Random::random()%possible.size()]);
     }
 }

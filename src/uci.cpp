@@ -278,7 +278,7 @@ int loop() {
                     vector<string> moves_only(move_list.begin()+1, move_list.end());
                     string moves = "";
                     if (!moves_only.empty()) {
-                        string moves = join(" ", moves_only);
+                        moves = join(" ", moves_only);
                     }
                     const string move = Opening::get_move(moves);
                     if (move != "") {
