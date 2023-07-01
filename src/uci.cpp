@@ -176,7 +176,7 @@ void perft_push(const Position& pos, const int& knodes) {
 int loop() {
     string cmd;
     Options options;
-    Position pos = parse_pos("position startpos");
+    Position pos = Bitboard::startpos();
     float prev_eval = 0;
     bool searching = false;
 
