@@ -46,7 +46,7 @@ Options::Options() {
     EvalQueens     = 1;
     EvalKings      = 1;
 
-    OwnBook        = true;
+    OwnBook        = false;
 
     hash_table = new Transposition[16];
     set_hash();
