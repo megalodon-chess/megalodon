@@ -190,6 +190,7 @@ int loop() {
             cout << "id name Megalodon\n";
             cout << "id author Megalodon Developers\n";
 
+            cout << "option name OwnBook type check default false\n";
             cout << "option name Hash type spin default 256 min 1 max 65536\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000\n";
@@ -219,6 +220,12 @@ int loop() {
             else if (name == "EvalRooks")      options.EvalRooks      = std::stof(value)/100;
             else if (name == "EvalQueens")     options.EvalQueens     = std::stof(value)/100;
             else if (name == "EvalKings")      options.EvalKings      = std::stof(value)/100;
+
+            else if (name == "OwnBook") {
+                if (value == "true") options.OwnBook = true;
+                else if (value == "false") options.OwnBook = false;
+                else std::cerr << "Unknown value: " << value << endl;
+            }
 
             else std::cerr << "Unknown option: " << name << endl;
         }
