@@ -15,7 +15,7 @@ UCI chess engine.
 
 Play against Megalodon on [Lichess][lichess]!
 
-[Version 1.0.0][latest] was recently released!
+[Version 1.1.0][latest] was recently released!
 
 The source code of Megalodon is completely original. It is not a derivative or port of any other program.
 We used articles from [chessprogramming.org](https://chessprogramming.org) and ideas from other engines.
