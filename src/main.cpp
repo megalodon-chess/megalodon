@@ -25,6 +25,7 @@
 #include "random.hpp"
 #include "hash.hpp"
 #include "eval.hpp"
+#include "opening.hpp"
 #include "search.hpp"
 #include "utils.hpp"
 
@@ -106,6 +107,7 @@ int main(const int argc, const char* argv[]) {
     } else {
         Hash::init();
         Eval::init();
+        Opening::init();
 
         print_info();
         return loop();
