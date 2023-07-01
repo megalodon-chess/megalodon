@@ -68,4 +68,6 @@ public:
     float EvalRooks;
     float EvalQueens;
     float EvalKings;
+
+    bool OwnBook;
 };
