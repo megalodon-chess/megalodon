@@ -26,6 +26,7 @@
 #include "search.hpp"
 #include "options.hpp"
 #include "eval.hpp"
+#include "opening.hpp"
 #include "perft.hpp"
 #include "hash.hpp"
 #include "endgame.hpp"
@@ -43,12 +44,15 @@ const vector<string> LOSING = {"Oh no!", "I blundered.", "Nice play!", "Great jo
 const vector<string> GAME_END = {"Good game!", "I look forward to playing again.", "Want to play another one?", "Rematch?"};
 
 
-Position parse_pos(const string& str) {
+Position parse_pos(const string& str, vector<string>& move_list) {
     const vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
+        move_list.clear();
+        move_list.push_back("ok");
         Position pos = Bitboard::startpos();
         if (parts.size() > 3 && parts[2] == "moves") {
             for (UCH i = 3; i < parts.size(); i++) {
+                move_list.push_back(parts[i]);
                 pos = Bitboard::push(pos, parts[i]);
             }
         }
@@ -59,10 +63,15 @@ Position parse_pos(const string& str) {
             fen += parts[i];
             fen += " ";
         }
+        move_list.clear();
+        move_list.push_back("bad");
         Position pos = Bitboard::parse_fen(fen);
 
         if (parts.size() > 9 && parts[8] == "moves") {
+            move_list.clear();
+            move_list.push_back("ok");
             for (UCH i = 9; i < parts.size(); i++) {
+                move_list.push_back(parts[i]);
                 pos = Bitboard::push(pos, parts[i]);
             }
         }
@@ -177,6 +186,7 @@ int loop() {
     string cmd;
     Options options;
     Position pos = Bitboard::startpos();
+    vector<string> move_list = {"ok"};  // first element is flag for opening book
     float prev_eval = 0;
     bool searching = false;
 
@@ -256,14 +266,26 @@ int loop() {
         else if (cmd == "eg") cout << Endgame::eg_type(pos) << endl;
 
         else if (cmd == "ucinewgame") {
-            pos = parse_pos("position startpos");
+            pos = parse_pos("position startpos", move_list);
             prev_eval = 0;
         }
-        else if (startswith(cmd, "position")) pos = parse_pos(cmd);
+        else if (startswith(cmd, "position")) pos = parse_pos(cmd, move_list);
         else if (startswith(cmd, "go")) {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
+                if (options.OwnBook && move_list[0] == "ok") {
+                    vector<string> moves_only(move_list.begin()+1, move_list.end());
+                    string moves = "";
+                    if (!moves_only.empty()) {
+                        string moves = join(" ", moves_only);
+                    }
+                    const string move = Opening::get_move(moves);
+                    if (move != "") {
+                        cout << "bestmove " << move << endl;
+                        continue;
+                    }
+                }
                 options.clear_hash();
                 searching = true;
                 std::thread(go, options, pos, parts, prev_eval, std::ref(searching)).detach();
