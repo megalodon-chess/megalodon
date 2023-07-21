@@ -49,24 +49,30 @@ namespace Opening {
             while (openings_file) {
                 string line;
                 getline(openings_file, line);
-                openings.push_back(line);
+                if (openings_file) {
+                    openings.push_back(strip(line));
+                }
             }
         }
     }
 
-    string get_move(const string& moves) {
+    vector<string> get_sequence(const string& moves) {
         vector<string> possible;
 
         for (string opening: openings) {
             if (startswith(opening, moves)) {
-                // adding one just in case `opening` has extra space at the end
-                if (opening.size() > moves.size() + 1) {
-                    possible.push_back(opening.substr(moves.size(), 5));
+                if (opening.size() > moves.size()) {
+                    possible.push_back(opening);
                 }
             }
         }
 
-        if (possible.empty()) return "";
-        else                  return strip(possible[Random::random()%possible.size()]);
+        if (possible.empty()) {
+            return {"", ""};
+        }
+
+        string sequence = strip(possible[Random::random()%possible.size()]);
+        
+        return {sequence, sequence.substr(moves.size(), 5)};
     }
 }

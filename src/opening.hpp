@@ -32,5 +32,5 @@ using std::string;
 
 namespace Opening {
     void init();
-    string get_move(const string&);
+    vector<string> get_sequence(const string&);
 }

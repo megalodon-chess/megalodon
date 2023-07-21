@@ -41,6 +41,7 @@ double get_time() {
 
 
 string strip(const string& str) {
+    if (str == "") return str;
     unsigned int start = str.find_first_not_of(" ");
     unsigned int end = str.find_last_not_of(" ");
 

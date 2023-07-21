@@ -48,7 +48,6 @@ Position parse_pos(const string& str, vector<string>& move_list) {
     const vector<string> parts = split(str, " ");
     if (parts[1] == "startpos") {
         move_list.clear();
-        move_list.push_back("ok");
         Position pos = Bitboard::startpos();
         if (parts.size() > 3 && parts[2] == "moves") {
             for (UCH i = 3; i < parts.size(); i++) {
@@ -64,12 +63,10 @@ Position parse_pos(const string& str, vector<string>& move_list) {
             fen += " ";
         }
         move_list.clear();
-        move_list.push_back("bad");
         Position pos = Bitboard::parse_fen(fen);
 
         if (parts.size() > 9 && parts[8] == "moves") {
             move_list.clear();
-            move_list.push_back("ok");
             for (UCH i = 9; i < parts.size(); i++) {
                 move_list.push_back(parts[i]);
                 pos = Bitboard::push(pos, parts[i]);
@@ -186,7 +183,7 @@ int loop() {
     string cmd;
     Options options;
     Position pos = Bitboard::startpos();
-    vector<string> move_list = {"ok"};  // first element is flag for opening book
+    vector<string> move_list = {};
     float prev_eval = 0;
     bool searching = false;
 
@@ -274,15 +271,18 @@ int loop() {
             const vector<string> parts = split(cmd, " ");
             if (parts.size() > 1 && parts[1] == "perft") perft(options, pos, std::stoi(parts[2]));
             else {
-                if (options.OwnBook && move_list[0] == "ok") {
-                    vector<string> moves_only(move_list.begin()+1, move_list.end());
+                if (options.OwnBook) {
                     string moves = "";
-                    if (!moves_only.empty()) {
-                        moves = join(" ", moves_only);
+                    if (!move_list.empty()) {
+                        moves = join(" ", move_list);
                     }
-                    const string move = Opening::get_move(moves);
+                    const vector<string> sequence = Opening::get_sequence(moves);
+                    const string move = sequence[1];
                     if (move != "") {
                         cout << "bestmove " << move << endl;
+                        #if DEBUG
+                            cout << "info string Opening book sequence: " << sequence[0] << endl;
+                        #endif
                         continue;
                     }
                 }
