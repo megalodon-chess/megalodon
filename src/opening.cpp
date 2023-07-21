@@ -72,7 +72,7 @@ namespace Opening {
         }
 
         string sequence = strip(possible[Random::random()%possible.size()]);
-        
+
         return {sequence, sequence.substr(moves.size(), 5)};
     }
 }
