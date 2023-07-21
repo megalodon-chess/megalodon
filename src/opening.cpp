@@ -23,6 +23,7 @@
 #include <fstream>
 #include "hash.hpp"
 #include "bitboard.hpp"
+#include "options.hpp"
 #include "utils.hpp"
 #include "random.hpp"
 
@@ -37,11 +38,10 @@ using std::getline;
 
 
 namespace Opening {
-    const string OPENINGS_FILE = "openings.txt";
     vector<string> openings;
 
-    void init() {
-        ifstream openings_file(OPENINGS_FILE);
+    void load_openings(Options& options) {
+        ifstream openings_file(options.OwnBookPath);
 
         if (!openings_file.is_open()) {
             cerr << "Warning: could not open openings file." << endl;

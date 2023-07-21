@@ -107,7 +107,6 @@ int main(const int argc, const char* argv[]) {
     } else {
         Hash::init();
         Eval::init();
-        Opening::init();
 
         print_info();
         return loop();

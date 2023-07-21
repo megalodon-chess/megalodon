@@ -23,6 +23,7 @@
 #include <vector>
 #include <string>
 #include "bitboard.hpp"
+#include "options.hpp"
 
 using std::cin;
 using std::cout;
@@ -31,6 +32,6 @@ using std::vector;
 using std::string;
 
 namespace Opening {
-    void init();
+    void load_openings(Options&);
     vector<string> get_sequence(const string&);
 }

@@ -70,4 +70,5 @@ public:
     float EvalKings;
 
     bool OwnBook;
+    string OwnBookPath;
 };

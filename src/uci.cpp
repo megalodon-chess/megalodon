@@ -183,6 +183,7 @@ int loop() {
     string cmd;
     Options options;
     Position pos = Bitboard::startpos();
+    Opening::load_openings(options);
     vector<string> move_list = {};
     float prev_eval = 0;
     bool searching = false;
@@ -198,6 +199,7 @@ int loop() {
             cout << "id author Megalodon Developers\n";
 
             cout << "option name OwnBook type check default false\n";
+            cout << "option name OwnBookPath type path default 'openings.txt'\n";
             cout << "option name Hash type spin default 256 min 1 max 65536\n";
 
             cout << "option name EvalMaterial type spin default 100 min 0 max 1000\n";
@@ -232,6 +234,11 @@ int loop() {
                 if (value == "true") options.OwnBook = true;
                 else if (value == "false") options.OwnBook = false;
                 else std::cerr << "Unknown value: " << value << endl;
+            }
+
+            else if (name == "OwnBookPath") {
+                options.OwnBookPath = value;
+                Opening::load_openings(options);
             }
 
             else std::cerr << "Unknown option: " << name << endl;

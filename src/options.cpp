@@ -47,6 +47,7 @@ Options::Options() {
     EvalKings      = 1;
 
     OwnBook        = false;
+    OwnBookPath    = "openings.txt";
 
     hash_table = new Transposition[16];
     set_hash();
