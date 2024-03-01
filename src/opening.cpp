@@ -57,6 +57,11 @@ namespace Opening {
     }
 
     vector<string> get_sequence(const string& moves) {
+        // if board started from fen, don't use openings
+        if (moves.substr(0, 3) == "FEN") {
+            return {"", ""};
+        }
+
         vector<string> possible;
 
         for (string opening: openings) {

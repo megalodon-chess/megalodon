@@ -63,10 +63,10 @@ Position parse_pos(const string& str, vector<string>& move_list) {
             fen += " ";
         }
         move_list.clear();
+        move_list.push_back("FEN");
         Position pos = Bitboard::parse_fen(fen);
 
         if (parts.size() > 9 && parts[8] == "moves") {
-            move_list.clear();
             for (UCH i = 9; i < parts.size(); i++) {
                 move_list.push_back(parts[i]);
                 pos = Bitboard::push(pos, parts[i]);
