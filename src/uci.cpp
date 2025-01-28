@@ -183,10 +183,13 @@ int loop() {
     string cmd;
     Options options;
     Position pos = Bitboard::startpos();
-    Opening::load_openings(options);
     vector<string> move_list = {};
     float prev_eval = 0;
     bool searching = false;
+
+    if (options.OwnBook) {
+        Opening::load_openings(options);
+    }
 
     while (getline(cin, cmd)) {
         cmd = strip(cmd);
@@ -231,9 +234,14 @@ int loop() {
             else if (name == "EvalKings")      options.EvalKings      = std::stof(value)/100;
 
             else if (name == "OwnBook") {
-                if (value == "true") options.OwnBook = true;
-                else if (value == "false") options.OwnBook = false;
-                else std::cerr << "Unknown value: " << value << endl;
+                if (value == "true") {
+                    options.OwnBook = true;
+                    Opening::load_openings(options);
+                } else if (value == "false") {
+                    options.OwnBook = false;
+                } else {
+                    std::cerr << "Unknown value: " << value << endl;
+                }
             }
 
             else if (name == "OwnBookPath") {
